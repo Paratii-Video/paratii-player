@@ -1,0 +1,13 @@
+<template name="connection">
+    <ul>
+    <li>Connection to ethereum node: {{ web3.currentProvider.host }}: 
+    <b>
+    {{#if web3.currentProvider.isConnected }}
+    Connected!
+    {{else}}
+    Not connected :-(
+    {{/if}}
+    </b>
+    </li>
+    </ul>
+</template>
