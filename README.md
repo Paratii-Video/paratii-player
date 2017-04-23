@@ -10,17 +10,21 @@ Clone this repository
 
     git clone git@github.com:Paratii-Video/paratii-player.git
 
-Now run meteor
+Install the package
 
     cd paratii-player
     npm install
-    meteor
 
-You may need to install web3 (TODO: include this)
+Now start the application
 
-    meteor npm install --save web3  
+    npm start
+
 
 # Contributing
+
+Testing
+
+    npm test
 
 Pull requests are welcome.
 

@@ -1,4 +1,5 @@
 import { Template } from 'meteor/templating'; 
+import '/imports/lib/ethereum/web3.js'
 import './connection.html' 
 
 Template.body.onCreated(function bodyOnCreated() {
