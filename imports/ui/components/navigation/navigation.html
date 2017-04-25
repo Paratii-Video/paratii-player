@@ -1,9 +1,17 @@
 <template name="navigation">
     <ul>
-        <li>signup or login</li>
+        <li>
+	        <a href="{{pathFor route='App.home'}}">home</a>
+        </li>
+        <li>
+            <a href="{{pathFor route='create_account'}}">signup or login</a>
+        </li>
         <li>my videos</li>
         <li>playlists</li>
         <li>trending causes</li>
         <li>Wanderlust</li>
+        <li>
+	        <a href="{{pathFor route='debug'}}">debug</a>
+        </li>
     </ul>  
 </template>

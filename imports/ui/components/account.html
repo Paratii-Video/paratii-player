@@ -1,0 +1,73 @@
+<template name="elements_account">
+ACCOUNT INFO
+    {{#with account}}
+        <a href="{{pathFor route='account' address=address}}" class="wallet-box {{#if creating}}creating{{/if}} {{#if disabled}}disabled{{/if}} {{#if ../wallets}}wallets{{/if}} {{#if new}}new{{/if}}">
+            {{#with unConfirmed}}
+                <div class="dapp-progress">
+                    <div class="dapp-bar" style="width: {{percent}}%;"></div>
+                </div>
+            {{/with}}
+
+            {{#unless ../main}}
+                <!-- <div class="account-pattern"> -->
+                {{#if address}}
+                    {{> dapp_identicon identity=address class="dapp-small"}}
+                {{else}}
+                    <span class="dapp-identicon dapp-small dapp-icon-loading"></span>
+                {{/if}}
+                <!-- </div> -->
+            {{else}}
+                <div class="account-pattern">
+                    {{#if address}}
+                        {{> dapp_identicon identity=address class="dapp-small"}}
+                    {{else}}
+                        {{> spinner}}
+                    {{/if}}
+                </div>
+            {{/unless}}
+
+
+            {{#with tokens}}
+                <ul class="token-list">
+                    {{#each this}}
+                        <li data-tooltip="{{name}} ({{formattedTokenBalance}})" class="simptip-position-right simptip-movable">{{> dapp_identicon identity=address class="dapp-tiny"}}</li>
+                    {{/each}}
+                </ul>
+            {{/with}}
+
+            <h3>
+                {{#if isVulnerable}}
+                    <span class="red">
+                        <i class="icon-info"></i>
+                        {{name}}
+                    </span>
+                {{else}}
+                    {{#if ../isContract}}
+                        <i class="icon-doc"></i>
+                    {{else}}
+                        {{walletIcon}}
+                    {{/if}}
+                    {{name}}
+                {{/if}}
+            </h3>
+
+            {{#unless creating}}
+                {{> elements_balance balance=balance}}
+            {{else}}
+                {{#if imported}}
+                    <span class="account-balance">{{i18n "wallet.accounts.importing"}} <span>...</span></span>
+                {{else}}
+                    <span class="account-balance">{{i18n "wallet.accounts.creating"}} <span>...</span></span>
+                {{/if}}
+            {{/unless}}
+            <!-- {{#if tokens}}
+                {{#each tokens}} 
+                    {{#if formattedCoinBalance}}
+                        <span class="token-balances">{{formattedCoinBalance account}}</span>
+                    {{/if}}
+                {{/each}}
+            {{/if}} -->
+            <span class="account-id {{#if creating}}creating{{/if}}">{{toChecksumAddress address}}</span>                
+        </a>
+    {{/with}}
+</template>

@@ -1,0 +1,43 @@
+<template name="debug">
+	<tt>
+	<h1>Debug information and general play area</h1>
+		   <ul>
+        {{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-small"}}
+    <li>Connection to ethereum node: {{ $.Session.get "host" }} 
+    </li>
+    <li>Connection status: <b>
+    {{#if $.Session.get "connected"}}
+    Connected :-)
+    {{else}}
+    Not connected :-(
+    {{/if}}
+    </b>
+    </li>
+    <li><a href="{{pathFor route='create_account'}}">create an account</a>
+    </li>    
+    <li class="block-info dapp-flex-item  {{#if TemplateVar.get 'syncing'}}syncing{{/if}}">
+
+                    {{#with TemplateVar.get "syncing"}}
+                        <span class="text">
+                            <i class="icon-feed"></i> {{$.Session.get "peerCount"}} <span class="hide-on-small">peers</span>
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <i class="icon-layers"></i>"wallet.app.texts.nodeSyncing" blockDiff=blockDiff}}
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <i class="icon-cloud-download"></i> {{progress}}%
+                            <br>
+                        </span>
+                        <progress max="100" value="{{progress}}"></progress>
+                    {{else}}
+                        <i class="icon-feed"></i> {{$.Session.get "peerCount"}} <span class="hide-on-small">'wallet.app.texts.peers'}}</span>
+                        &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <i class="icon-layers"></i> {{formattedBlockNumber}} <i class="icon-clock" style="margin-left: 10px;"></i> {{{timeSinceBlock}}} <span class="hide-on-small">{{{timeSinceBlockText}}}</span>
+                    {{/with}}
+            </li>
+            <li class="wallet-balance">
+                <h3>{{wallet.app.texts.balance}}</h3>
+                > elements_balance balance=totalBalance changeUnit=true}}
+            </li>
+
+            </ul>
+	</tt>
+</template>

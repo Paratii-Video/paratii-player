@@ -29,3 +29,9 @@ ethereum:web3
 session
 ethereum:blocks
 twbs:bootstrap
+arillo:flow-router-helpers
+raix:handlebar-helpers
+ethereum:elements
+tap:i18n
+accounts-ui
+accounts-password

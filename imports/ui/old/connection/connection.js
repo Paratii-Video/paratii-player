@@ -1,10 +1,9 @@
 import { Template } from 'meteor/templating';
 import { web3 } from '/imports/lib/ethereum/web3.js';
-import { EthAccounts } from 'meteor/ethereum';
 import './connection.html';
 
 Template.body.onCreated(function bodyOnCreated() {
-  // this.state = new ReactiveDict();
+  this.state = new ReactiveDict();
 });
 
 

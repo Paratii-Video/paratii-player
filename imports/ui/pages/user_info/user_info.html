@@ -1,0 +1,14 @@
+<template name="user_info">
+    <h1>User information</h1>	
+   <tt>{{user_info_as_string}}</tt> 
+    <div class="container">
+    <ul>
+    <li>your name: {{currentUser.username}}</li>
+    <li>your email: {{#each currentUser.emails}}
+        {{ this }}
+    {{/each}}
+    </li>
+    </ul>
+
+    </div>
+</template>

@@ -1,0 +1,69 @@
+tmp
+<template name="connection">
+    <ul>
+    <li>Connection to ethereum node: {{ web3.currentProvider.host }}: 
+    <b>
+    {{#if web3.currentProvider.isConnected }}
+    Connected!
+    {{else}}
+    Not connected :-(
+    {{/if}}
+    </b>
+    </li>
+    </ul>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{pathFor route='dashboard'}}" class="{{isActiveRoute regex='dashboard'}}">
+                    <i class="icon-wallet"></i>
+                    <span>{{i18n 'wallet.app.buttons.wallet'}}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{goToSend}}" class="{{isActiveRoute regex='send'}}">
+                    <i class="icon-arrow-up"></i>
+                    <span>{{i18n 'wallet.app.buttons.send'}}</span>
+                </a>
+            </li>            
+            
+            <li class="block-info dapp-flex-item  {{#if TemplateVar.get 'syncing'}}syncing{{/if}}">
+                {{#unless isMistMode}}
+
+                    {{#if $eq ($.Session.get "network") "test"}}
+                        <span class="private-chain" title="{{i18n 'wallet.app.texts.testnetExplain'}}">TEST-NET</span> &nbsp;&nbsp; 
+                    {{/if}}
+                    {{#if $eq ($.Session.get "network") "private"}}
+                        <span class="private-chain" title="{{i18n 'wallet.app.texts.testnetExplain'}}">PRIVATE-NET</span> &nbsp;&nbsp; 
+                    {{/if}}
+
+                    {{#with TemplateVar.get "syncing"}}
+                        <span class="text">
+                            <i class="icon-feed"></i> {{$.Session.get "peerCount"}} <span class="hide-on-small">{{i18n 'wallet.app.texts.peers'}}</span>
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <i class="icon-layers"></i> {{i18n "wallet.app.texts.nodeSyncing" blockDiff=blockDiff}}
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <i class="icon-cloud-download"></i> {{progress}}%
+                            <br>
+                        </span>
+                        <progress max="100" value="{{progress}}"></progress>
+                    {{else}}
+                        <i class="icon-feed"></i> {{$.Session.get "peerCount"}} <span class="hide-on-small">{{i18n 'wallet.app.texts.peers'}}</span>
+                        &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <i class="icon-layers"></i> {{formattedBlockNumber}} <i class="icon-clock" style="margin-left: 10px;"></i> {{{timeSinceBlock}}} <span class="hide-on-small">{{{timeSinceBlockText}}}</span>
+                    {{/with}}
+                {{/unless}}
+            </li>
+            <li>
+                <a href="{{pathFor route='contracts'}}" class="{{isActiveRoute regex='contracts'}}">
+                    <i class="icon-docs"></i>
+                    <span>{{i18n 'wallet.app.buttons.contracts'}}</span>
+                </a>
+            </li>
+            <li class="wallet-balance">
+                <h3>{{i18n 'wallet.app.texts.balance'}}</h3>
+                {{> elements_balance balance=totalBalance changeUnit=true}}
+            </li>
+
+            </ul>
+    </nav>
+</template>
