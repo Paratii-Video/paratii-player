@@ -1,0 +1,23 @@
+<template name="playlists">
+    <div class="container">
+    <h1>playlist</h1>
+    </div>
+    <div class="container">
+    <h1>Best of Surf Collection</h1>
+    </div>
+    <div class="container">
+    	{{# each videos }}
+    		<div class="video-preview">
+    			<div>id: {{ id }}</div>
+    			<div>thumb: {{ thumb }}</div>
+    			<div>title: {{ title }}</div>
+    			<div>duration: {{ duration }}</div>
+    			<div>stats.views: {{ stats.views }}</div>
+    			<div>stats.likes_percentage: {{ stats.likes_percentage}}</div>
+    			<div>price: {{ price }}</div>
+    			<div>link: <a href="{{pathFor route='video'}}">./video/{{id}}</a></div>
+    		</div>
+    	{{/each}}
+    </div>
+
+</template>

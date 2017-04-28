@@ -96,8 +96,7 @@ connectToNode = function () {
 
     // observeCustomContracts();
 
-  Session.set("connected", web3.isConnected());
-  Session.set("host", web3.currentProvider.host);
+
   console.timeEnd('startNode');
 };
 

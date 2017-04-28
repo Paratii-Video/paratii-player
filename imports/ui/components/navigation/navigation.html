@@ -1,17 +1,15 @@
 <template name="navigation">
     <ul>
         <li>
-	        <a href="{{pathFor route='App.home'}}">home</a>
+            <a href="{{pathFor route='account'}}">signup or login</a>
         </li>
+        <li>upload [locked]</li>
+        <li>my videos [locked]</li>
+        <li><a href="{{pathFor route='playlists'}}">playlists</a></li>
+        <li>trending causes [locked]</li>
+        <li>Wanderlust [locked]</li>
         <li>
-            <a href="{{pathFor route='create_account'}}">signup or login</a>
-        </li>
-        <li>my videos</li>
-        <li>playlists</li>
-        <li>trending causes</li>
-        <li>Wanderlust</li>
-        <li>
-	        <a href="{{pathFor route='debug'}}">debug</a>
+	        <a href="{{pathFor route='about'}}">about Paratii</a>
         </li>
     </ul>  
 </template>

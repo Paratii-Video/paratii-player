@@ -12,9 +12,9 @@ function createWallet(password, extraEntropy) {
 
 
     lightwallet.keystore.deriveKeyFromPassword(password, function(err, pwDerivedKey) {
-        var numAddr = 1;
         global_keystore = new lightwallet.keystore(seed, pwDerivedKey);
-        global_keystore.generateNewAddress(pwDerivedKey, numAddr);
+        // generate one address
+        global_keystore.generateNewAddress(pwDerivedKey, 1);
 
         // var addresses = global_keystore.getAddresses();
     });

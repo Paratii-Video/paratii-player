@@ -5,12 +5,13 @@ import HookedWeb3Provider from "hooked-web3-provider";
 import users from '../../../api/users.js';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import {createWallet} from '../../../lib/ethereum/wallet.js'
-import './create_account.html';
+import './signup.html';
 
-Template.create_account.events({
+Template.account_signup.events({
 	'submit #form-create-account'(event) {
 	    // Prevent default browser form submit
 	    event.preventDefault();
+    	FlowRouter.go('user-info');
 	    const target = event.target;
 	    let password = target.password.value;
 	    let options = {
@@ -25,8 +26,6 @@ Template.create_account.events({
     	let seed = createWallet(password, 'xxx');
     	console.log('seed is important:' + seed);
     	console.log(user)
-    	FlowRouter.go('user-info/' + user);
 	    return
 	},
-
 });

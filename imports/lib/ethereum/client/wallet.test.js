@@ -1,6 +1,6 @@
+
 /* eslint-env mocha */
 
-import lightwallet from "eth-lightwallet/dist/lightwallet.js";
 import { createWallet } from '../wallet.js'
 
 describe('wallet', function () {

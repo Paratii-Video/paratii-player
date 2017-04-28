@@ -1,0 +1,17 @@
+<template name="account">
+    <div class="container">
+    <h2>your account</h2>
+    Login or <a href="{{pathFor route='account_signup'}}">create an account</a>
+    <div class="container">
+        <form>
+            <input type="text" class="form-control" placeholder="username">
+            <input type="text" class="form-control" placeholder="password">
+        </form>
+    </div>
+    <tt>
+    [debug: next step is: 
+    <a href="{{pathFor route='account_info'}}">{{pathFor route='account_info'}}</a>
+    ]
+    </tt>
+    </div>
+</template>
