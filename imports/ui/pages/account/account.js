@@ -8,10 +8,10 @@ import {createWallet} from '../../../lib/ethereum/wallet.js'
 import './account.html';
 
 Template.account.events({
+	// next lines are not working at this moment
 	'submit #form-create-account'(event) {
 	    // Prevent default browser form submit
 	    event.preventDefault();
-    	FlowRouter.go('user-info');
 	    const target = event.target;
 	    let password = target.password.value;
 	    let options = {

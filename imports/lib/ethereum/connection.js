@@ -35,4 +35,3 @@ const init = function(){
 	connect();
 };
 
-// export {init}

@@ -1,17 +1,21 @@
 <template name="account">
     <div class="container">
-    <h2>your account</h2>
-    Login or <a href="{{pathFor route='account_signup'}}">create an account</a>
+    {{> atForm }}
+    </div>   
+    {{#if currentUser }}
     <div class="container">
-        <form>
-            <input type="text" class="form-control" placeholder="username">
-            <input type="text" class="form-control" placeholder="password">
-        </form>
+	    <h2>your account</h2>
+	    You are logged in!
+	    <ul>
+	    <li>your name: {{currentUser.username}}</li>
+	    <li>your email: {{#each currentUser.emails}}
+	        {{ address }}
+	    {{/each}}
+	    </li>
+	    <li>
+	    <!-- your address: {{user.paratii.account}} -->
+	    </li>
+	    </ul>
     </div>
-    <tt>
-    [debug: next step is: 
-    <a href="{{pathFor route='account_info'}}">{{pathFor route='account_info'}}</a>
-    ]
-    </tt>
-    </div>
+    {{/if}}
 </template>

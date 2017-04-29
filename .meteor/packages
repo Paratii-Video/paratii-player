@@ -35,3 +35,6 @@ ethereum:elements
 tap:i18n
 accounts-ui
 accounts-password
+# accounts-facebook
+# accounts-github
+useraccounts:bootstrap

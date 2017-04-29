@@ -2,14 +2,14 @@
 
 
 import { Meteor } from 'meteor/meteor';
-import Web3 from 'web3';
+// import Web3 from 'web3';
 
 import './routes.js';
-import '../../lib/ethereum/web3.js';
-import '../../lib/ethereum/wallet.js';
-import {connection } from  '../../lib/ethereum/connection.js';
+// import '../../lib/ethereum/web3.js';
+// import '../../lib/ethereum/wallet.js';
+// import {connection } from  '../../lib/ethereum/connection.js';
 
-
+AccountsTemplates.configure()
 
 Meteor.startup(function () {
   // delay so we make sure the data is already loaded from the indexedDB
