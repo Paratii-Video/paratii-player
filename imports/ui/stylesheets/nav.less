@@ -1,0 +1,41 @@
+.nav {
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #DDD;
+  overflow-x: hidden;
+  transition: 0.5s;
+  box-sizing: border-box;
+  z-index: 3;
+  li {
+    white-space: nowrap;
+  }
+  &.hidden {
+    width: 0;
+  }
+
+  &.minimized {
+    width: 60px;
+  }
+
+  &.maximized {
+    width: 120px;
+  }
+}
+
+.nav-overlay {
+  transition: 0.5s;
+  position: absolute;
+  visibility: hidden;
+  background-color: #00000000;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.darkness {
+  visibility: visible;
+  background-color: #00000088;
+}

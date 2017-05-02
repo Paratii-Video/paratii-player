@@ -9,7 +9,8 @@ import '/imports/ui/pages/about/about.js';
 import '/imports/ui/pages/account/account.js';
 import '/imports/ui/pages/debug/debug.js';
 import '/imports/ui/pages/playlists/playlists.js';
-import '/imports/ui/pages/video/video.js';
+import '/imports/ui/pages/player/player.js';
+import '/imports/ui/pages/wallet/wallet.js';
 
 
 // Set up all routes in the app
@@ -34,26 +35,13 @@ FlowRouter.route('/account', {
   },
 });
 
-// FlowRouter.route('/account-signup', {
-//   name: 'account_signup',
-//   action() {
-//     BlazeLayout.render('App_body', { main: 'account_signup' });
-//   },
-// });
 
-// FlowRouter.route('/account-created', {
-//   name: 'account_created',
-//   action() {
-//     BlazeLayout.render('App_body', { main: 'account_created' });
-//   },
-// });
-// FlowRouter.route('/account-info', {
-//   name: 'account_info',
-//   action() {
-//     BlazeLayout.render('App_body', { main: 'account_info' });
-//   },
-// });
-
+FlowRouter.route('/wallet', {
+  name: 'wallet',
+  action() {
+    BlazeLayout.render('App_body', { main: 'wallet' });
+  },
+});
 
 FlowRouter.route('/playlists', {
   name: 'playlists',
@@ -62,10 +50,10 @@ FlowRouter.route('/playlists', {
   },
 });
 
-FlowRouter.route('/video', {
-  name: 'video',
+FlowRouter.route('/player', {
+  name: 'player',
   action() {
-    BlazeLayout.render('App_body', { main: 'video' });
+    BlazeLayout.render('App_body', { main: 'player' });
   },
 });
 

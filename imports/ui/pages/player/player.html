@@ -1,0 +1,19 @@
+<template name="player">
+  <div id="player-container">
+    <video id="video-player">
+      <source src="https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4" />
+    </video>
+    <div class="player-overlay {{playPause}}">
+      <div class="player-tags">Tags here</div>
+      <div class="player-uploader">Uploader here</div>
+      <div class="player-info">Info Here</div>
+      <div class="player-statistics">Statistics Here</div>
+      <div class="player-controls">
+        <button id="play-pause-button" title="{{playPause}}">
+          {{playPause}}
+        </button>
+        <button id="fullscreen-button" title="fullscreen">fullscreen</button>
+      </div>
+    </div>
+  </div>
+</template>

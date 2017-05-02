@@ -29,3 +29,5 @@ Template.account.events({
 	    return
 	},
 });
+
+// Template['override-atTitle'].replaces('atTitle');

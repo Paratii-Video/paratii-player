@@ -1,18 +1,22 @@
 <template name="navigation">
+  <div id="nav" class="nav {{navState}}">
     <ul>
+      {{#each navLinks}}
         <li>
-            <a href="{{pathFor route='account'}}">signup or login</a>
+          <a href="{{path}}">
+          {{icon}}
+          {{#if isMaximized}}
+            {{text}}
+          {{/if}}
+          </a>
         </li>
-        <li>upload [locked]</li>
-        <li>my videos [locked]</li>
-        <li><a href="{{pathFor route='playlists'}}">playlists</a></li>
-        <li>trending causes [locked]</li>
-        <li>Wanderlust [locked]</li>
-        <li>
-	        <a href="{{pathFor route='about'}}">about Paratii</a>
-        </li>
-        <li>
-            <a href="{{pathFor route='debug'}}">debug info</a>
-        </li>
-    </ul>  
+      {{/each}}
+      {{#if currentUser}}
+      <li>xxxx
+      {{> atNavButton }}
+      </li>
+      {{/if}}
+    </ul>
+  </div>
+
 </template>

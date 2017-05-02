@@ -2,12 +2,10 @@
 
 
 import { Meteor } from 'meteor/meteor';
-// import Web3 from 'web3';
 
 import './routes.js';
-// import '../../lib/ethereum/web3.js';
-// import '../../lib/ethereum/wallet.js';
-// import {connection } from  '../../lib/ethereum/connection.js';
+import './at_config.js';
+
 
 AccountsTemplates.configure()
 

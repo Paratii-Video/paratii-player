@@ -4,18 +4,23 @@
     </div>   
     {{#if currentUser }}
     <div class="container">
-	    <h2>your account</h2>
+	    <h2>Y</h2>
 	    You are logged in!
 	    <ul>
 	    <li>your name: {{currentUser.username}}</li>
 	    <li>your email: {{#each currentUser.emails}}
 	        {{ address }}
 	    {{/each}}
+	    	<a href="/configure_account">configure your account</a>
+	    	or
+	    	<a href="">go to your wallet</a>
 	    </li>
-	    <li>
-	    <!-- your address: {{user.paratii.account}} -->
-	    </li>
-	    </ul>
+    </ul>
     </div>
     {{/if}}
+</template>
+
+
+<template name="override-atTitle">
+<h1>XXX</h1>
 </template>

@@ -4,6 +4,7 @@ accounts-password@1.3.5
 accounts-ui@1.1.9
 accounts-ui-unstyled@1.2.1
 aldeed:simple-schema@1.3.3
+aldeed:template-extension@4.1.0
 alexvandesande:identicon@2.0.2
 allow-deny@1.0.5
 amplify@1.0.0
@@ -114,6 +115,7 @@ underscore@1.0.10
 url@1.1.0
 useraccounts:bootstrap@1.14.2
 useraccounts:core@1.14.2
+useraccounts:flow-routing@1.14.2
 webapp@1.3.15
 webapp-hashing@1.0.9
 zimme:active-route@2.3.2

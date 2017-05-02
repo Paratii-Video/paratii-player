@@ -1,16 +1,8 @@
 <template name="App_body">
-	<head>
-		<div><h1>Paratii Web Player</h1>
-    </div>
-	</head>
-
-  <div class="container">
-    <div class="col-md-4">
-      {{> navigation }}
-      {{> atNavButton }}
-    </div>
-    <div class="col-md-8">
-    	{{> Template.dynamic template=main}}
-    </div>
+  <div style="width: 100%; height: 100%; position: absolute;">
+    <div class="nav-overlay {{#if dark}}darkness{{/if}}"></div>
+    {{> navigation }}
+      {{> Template.dynamic template=main}}
   </div>
+
 </template>
