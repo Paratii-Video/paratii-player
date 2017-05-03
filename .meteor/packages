@@ -40,3 +40,4 @@ twbs:bootstrap
 useraccounts:bootstrap
 aldeed:template-extension
 useraccounts:flow-routing
+dispatch:mocha
