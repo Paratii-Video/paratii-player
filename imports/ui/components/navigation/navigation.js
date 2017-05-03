@@ -14,7 +14,7 @@ Template.navigation.helpers({
     if (Meteor.userId()) {
       links = links.concat([
         {
-          icon: 'L',
+          icon: '/img/avatar_img.svg',
           text: 'Your wallet',
           path: FlowRouter.path('wallet'),
         },
@@ -22,7 +22,7 @@ Template.navigation.helpers({
     } else {
       links = links.concat([
         {
-          icon: 'L',
+          icon: '',
           text: 'Login',
           path: FlowRouter.path('account'),
         },
@@ -31,27 +31,31 @@ Template.navigation.helpers({
 
     links = links.concat([
       {
-        icon: 'P',
+        icon: '/img/playlists_icon.svg',
         text: 'Playlist',
         path: FlowRouter.path('playlists'),
       }, {
-        icon: 'V',
-        text: 'my videos [locked]',
+        icon: '/img/myvideos_icon.svg',
+        text: 'My Videos',
+        
       }, {
-        icon: 'U',
-        text: 'upload [locked]',
+        icon: '/img/upload_icon.svg',
+        text: 'Upload',
+       
       }, {
-        icon: 'T',
-        text: 'trending causes [locked]',
+        icon: '/img/trendingcause_icon.svg',
+        text: 'Trending causes',
+       
       }, {
-        icon: 'W',
-        text: 'Wanderlust [locked]',
+        icon: '/img/wanderlust_icon.svg',
+        text: '   Wanderlust',
+      
       }, {
-        icon: 'P',
-        text: 'About Paratii',
+        icon: '/img/logo_paratii.svg',
+        text: '   About Paratii',
         path: FlowRouter.path('about'),
       }, {
-        icon: 'X',
+        icon: 'img/lock_icon.svg',
         text: 'DEBUG',
         path: FlowRouter.path('debug'),
       },
