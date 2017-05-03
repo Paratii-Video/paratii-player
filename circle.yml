@@ -1,0 +1,12 @@
+dependencies:
+  pre:
+    - meteor || curl https://install.meteor.com | /bin/sh
+test:
+  override:
+    - meteor test --once --driver-package dispatch:mocha
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - ./deploy_staging.sh
