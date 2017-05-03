@@ -22,7 +22,7 @@ const requestFullscreen = (element) => {
   } else if (element.webkitRequestFullscreen) {
     element.webkitRequestFullscreen();
   } else {
-    console.log('Ununsuported fullscreen.');
+    console.log('Unsuported fullscreen.');
   }
 };
 
@@ -34,7 +34,7 @@ const requestCancelFullscreen = (element) => {
   } else if (element.webkitExitFullscreen) {
     element.webkitExitFullscreen();
   } else {
-    console.log('Ununsuported fullscreen.');
+    console.log('Unsuported fullscreen.');
   }
 };
 

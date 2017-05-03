@@ -2,7 +2,9 @@
   <div style="width: 100%; height: 100%; position: absolute;">
     <div class="nav-overlay {{#if dark}}darkness{{/if}}"></div>
     {{> navigation }}
+    <div class="app-container">
       {{> Template.dynamic template=main}}
+    </div>      
   </div>
 
 </template>

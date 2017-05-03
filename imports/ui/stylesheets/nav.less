@@ -16,12 +16,20 @@
     width: 0;
   }
 
+  .nav-text {
+    transition: 0.5s;
+  }
+
   &.minimized {
     width: 60px;
+    .nav-text {
+      visibility: hidden;
+      color: transparent;
+    }
   }
 
   &.maximized {
-    // width: 120px; // change this in the future
+    width: 220px // change this in the future
   }
 }
 
