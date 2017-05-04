@@ -33,7 +33,7 @@ Template.navigation.helpers({
     } else {
       links = links.concat([
         {
-          icon: '',
+          icon: '/img/avatar_img.svg',
           text: 'Login',
           path: FlowRouter.path('account'),
         },
@@ -59,11 +59,10 @@ Template.navigation.helpers({
 
       }, {
         icon: '/img/wanderlust_icon.svg',
-        text: '   Wanderlust',
-
+        text: 'Wanderlust',
       }, {
         icon: '/img/logo_paratii.svg',
-        text: '   About Paratii',
+        text: 'About Paratii',
         path: FlowRouter.path('about'),
       }, {
         icon: 'img/lock_icon.svg',

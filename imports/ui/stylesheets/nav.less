@@ -1,59 +1,65 @@
+
+
 .nav {
   height: 100%;
   position: absolute;
   z-index: 1;
-  top: 0;
-  left: 0;
   background-color: #fff;
   overflow-x: hidden;
   transition: 0.5s;
   box-sizing: border-box;
   z-index: 3;
-  border: thin solid #eee;
-  // border-width: 10px;
-  // border-color: blueviolet;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+  text-align: left;
+  color: #fff;
+  border-right: .1rem solid lightgray;
+  border-top: .1rem solid lightgray;
+  border-bottom: .1rem solid lightgray;
+  border-left: .1rem solid lightgray;
+  
+  a:hover {
+    color:  purple;
+  }
+  
+  a:link, a:visited, a:active {
+    color: grey;
+  }
+  
   li {
     white-space: nowrap;
+   // margin-right: 10px;
+    align-content: center;
   }
+  
   &.hidden {
     width: 0;
   }
-  a:link, a:visited, a:hover, a:active {
-    color: grey;
-  }
-
-  .nav-text {
-    transition: 0.5s;
-    color: black;
-  }
 
   .active {
-    border-right: medium solid blueviolet;
+    border-right: medium solid purple;
     a:link, a:visited, a:hover, a:active {
-      color: blueviolet;
+      color: purple;
       font-weight: bold;
     }
     .svg path {
-      fill: blueviolet;
+      fill: purple;
     }
   }
   &.minimized {
     width: 60px;
+
     .nav-text {
       visibility: hidden;
-      color: transparent;
     }
   }
 
   &.maximized {
-    width: 220px; // change this in the future
+    width: 220p;
   }
 }
 
 .nav-overlay {
-  transition: 0.5s;
   position: absolute;
   visibility: hidden;
   background-color: black;
@@ -61,6 +67,7 @@
   width: 100%;
   height: 100%;
   z-index: 2;
+
 }
 
 .darkness {
