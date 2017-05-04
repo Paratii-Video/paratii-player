@@ -1,7 +1,7 @@
 #!/bin/bash
 export TOOL_NODE_FLAGS="--max-old-space-size=4096" 
 
-# meteor build .
+meteor build .
 
 rsync -az paratii-player.tar.gz paratii@paratii.gerbrandy.com:/home/paratii/
 ssh paratii@paratii.gerbrandy.com <<'ENDSSH'
