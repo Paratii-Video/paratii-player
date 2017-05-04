@@ -27,6 +27,7 @@ Template.navigation.helpers({
           icon: '/img/avatar_img.svg',
           text: 'Your wallet',
           path: FlowRouter.path('wallet'),
+
         },
       ]);
     } else {
