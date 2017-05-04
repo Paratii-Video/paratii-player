@@ -1,8 +1,18 @@
+import 'meteor/johnantoni:meteor-svginjector';
 import './navigation.html';
+
+const loadSVG = () => {
+  const mySVGsToInject = document.querySelectorAll('.svg');
+  SVGInjector(mySVGsToInject);
+};
 
 Template.navigation.onCreated(function () {
   const appInstance = this.view.parentView.templateInstance();
   this.navState = appInstance.navState;
+});
+
+Template.navigation.onRendered(function () {
+  loadSVG();
 });
 
 Template.navigation.helpers({
@@ -37,19 +47,19 @@ Template.navigation.helpers({
       }, {
         icon: '/img/myvideos_icon.svg',
         text: 'My Videos',
-        
+
       }, {
         icon: '/img/upload_icon.svg',
         text: 'Upload',
-       
+
       }, {
         icon: '/img/trendingcause_icon.svg',
         text: 'Trending causes',
-       
+
       }, {
         icon: '/img/wanderlust_icon.svg',
         text: '   Wanderlust',
-      
+
       }, {
         icon: '/img/logo_paratii.svg',
         text: '   About Paratii',
