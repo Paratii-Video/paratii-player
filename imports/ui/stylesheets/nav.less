@@ -9,6 +9,8 @@
   transition: 0.5s;
   box-sizing: border-box;
   z-index: 3;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
   text-align: left;
   color: #fff;
   border-right: .1rem solid lightgray;
@@ -18,20 +20,32 @@
   
   a:hover {
     color:  purple;
-
   }
-
-
-
+  
+  a:link, a:visited, a:active {
+    color: grey;
+  }
+  
   li {
     white-space: nowrap;
    // margin-right: 10px;
     align-content: center;
   }
+  
   &.hidden {
     width: 0;
   }
 
+  .active {
+    border-right: medium solid purple;
+    a:link, a:visited, a:hover, a:active {
+      color: purple;
+      font-weight: bold;
+    }
+    .svg path {
+      fill: purple;
+    }
+  }
   &.minimized {
     width: 60px;
 
@@ -41,8 +55,7 @@
   }
 
   &.maximized {
-    width: 220p; 
-  
+    width: 220p;
   }
 }
 
