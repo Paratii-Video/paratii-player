@@ -7,27 +7,31 @@ Template.playlists.helpers({
 		return [
 			{
 				id: 1,
-				title: 'Nature Power - surf',
-				thumb: 'https://url_to_thumbnail.png',
+				title: 'Nature Power - Surf',
+				thumb: '/img/thumb1-img.png',
 				duration: '15:30',
 				stats: {
 					likes_percentage: 84,
 					views: 15524,
-
 				},
+
+			
+		
 			},
-			{
+{
 				id: 1,
-				title: 'Longboard Northen California',
-				thumb: 'https://url_to_thumbnail.png',
-				duration: '3:22',
-				price: 2.22,
+				title: 'Nature Power - Surf',
+				thumb: '/img/thumb2-img.png',
+				duration: '15:30',
 				stats: {
 					likes_percentage: 84,
 					views: 15524,
-
 				},
+
+			
+		
 			},
+		
 		]
 	}	
 })
