@@ -3,7 +3,7 @@
 
 import { createWallet } from '../wallet.js'
 
-describe('wallet', function () {
+describe('ethereum wallet', function () {
   
   it('create a wallet', function() {
       let extraEntropy = '12345';

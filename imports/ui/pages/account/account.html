@@ -15,6 +15,11 @@
 	    	or
 	    	<a href="">go to your wallet</a>
 	    </li>
+        {{#if currentUser}}
+        <li>
+           {{> atNavButton }}
+	    </li>
+      {{/if}}
     </ul>
     </div>
     {{/if}}
