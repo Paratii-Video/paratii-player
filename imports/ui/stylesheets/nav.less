@@ -22,7 +22,6 @@
   }
   a:link, a:visited, a:hover, a:active {
     color: grey;
-        
   }
 
   .nav-text {
@@ -32,15 +31,14 @@
 
   .active {
     border-right: medium solid blueviolet;
-    /* unvisited link */
     a:link, a:visited, a:hover, a:active {
-        color: blueviolet;
-        font-weight: bold;
+      color: blueviolet;
+      font-weight: bold;
     }
-  }   
-
-
-
+    .svg path {
+      fill: blueviolet;
+    }
+  }
   &.minimized {
     width: 60px;
     .nav-text {
@@ -50,12 +48,8 @@
   }
 
   &.maximized {
-    width: 220px // change this in the future
+    width: 220px; // change this in the future
   }
-
-  .svg path {
-    fill: blueviolet;
-  } 
 }
 
 .nav-overlay {
