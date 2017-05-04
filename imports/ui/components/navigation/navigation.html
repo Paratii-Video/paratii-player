@@ -2,9 +2,9 @@
   <div id="nav" class="nav {{navState}}">
     
       {{#each navLinks}}
-        <li>
+        <li class="{{isActivePath path }}">
           <a href="{{path}}">
-         <img src= "{{icon}}">
+          <img src="{{icon}}">
           {{#if isMaximized}}
             {{text}}
           {{/if}}

@@ -1,5 +1,6 @@
 import './navigation.html';
 
+
 Template.navigation.onCreated(function () {
   const appInstance = this.view.parentView.templateInstance();
   this.navState = appInstance.navState;
@@ -17,6 +18,7 @@ Template.navigation.helpers({
           icon: '/img/avatar_img.svg',
           text: 'Your wallet',
           path: FlowRouter.path('wallet'),
+
         },
       ]);
     } else {
