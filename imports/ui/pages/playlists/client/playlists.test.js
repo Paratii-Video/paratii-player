@@ -8,9 +8,9 @@ import '../playlists.js';
 
 describe('playlists page', function () {
   it('renders correctly with simple data', function () {
-    const data = {};
-    withRenderedTemplate('playlists', data, (el) => {
-      chai.assert.isAbove($(el).find('div.titleContainer').length, 0);
+    const data = {}
+    withRenderedTemplate('playlists', data, el => {
+      chai.assert.isAbove($(el).find('.titleContainer').length, 0);
     });
   });
 });
