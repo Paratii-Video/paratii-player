@@ -11,7 +11,7 @@ describe('playlists page', function () {
   it('renders correctly with simple data', function () {
     const data = {}
     withRenderedTemplate('playlists', data, el => {
-      chai.assert.isAbove($(el).find('h1').length, 0);
+      chai.assert.isAbove($(el).find('.titleContainer').length, 0);
     });
   });
 });

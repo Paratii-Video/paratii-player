@@ -11,7 +11,7 @@ describe('about page', function () {
   it('renders correctly with simple data', function () {
     const data = {}
     withRenderedTemplate('about', data, el => {
-      chai.assert.equal($(el).find('h1').length, 1);
+      chai.assert.equal($(el).find('.titleContainer').length, 1);
     });
   });
 });
