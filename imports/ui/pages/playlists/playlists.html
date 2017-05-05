@@ -1,20 +1,23 @@
 <template name="playlists">
-    <div class="titleContainer">Playlist</div>
-	<div class="line"></div>
-    <div class="titleContainer">Best of Surf Collection</div>
-  	{{# each videos }}
-    <div class="videocardContainer">
-		<div class="videothumbContent">
-			<img src= "{{thumb}}">
-		</div>
-		<div  class="videocardContent">
-			<div>title: {{ title }}</div>
-			<div>duration: {{ duration }}</div>
-			<div>stats.views: {{ stats.views }}</div>
-			<div>stats.likes_percentage: {{ stats.likes_percentage}}</div>
-			<div>price: {{ price }} </div>
-			<div>link: <a href="{{pathFor route='player'}}">./player/{{id}}</a></div>
-		</div>
-	</div>
-	{{/each}}
+  <div class="titleContainer">Playlist</div>
+  <div class="line"></div>
+  <div class="titleContainer">Best of Surf Collection</div>
+  {{# each videos }}
+    <div class="videoCardContainer">
+      <div class="videoThumbContent">
+        <img src="{{thumb}}"/>
+        <div class="videoCardDuration">{{duration}}</div>
+        <div class="videoCardPrice">{{price}}</div>   
+      </div>
+      <div class="videoCardTitle"><a href="{{pathFor route='player'}}">{{title}}</a></div>
+      <div class="videoCardViews">{{formatViews stats.views}}</div>
+      <div class="videoCardLikes">
+        <img src= "/img/likesmall-icon.svg"/>
+        {{stats.likes_percentage}}%
+      </div>         
+      
+          
+      
+    </div>
+  {{/each}}
 </template>
