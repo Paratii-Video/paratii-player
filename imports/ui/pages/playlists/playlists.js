@@ -21,7 +21,7 @@ Template.playlists.helpers({
       title: 'Longboard Northern California Jorney',
       thumb: '/img/thumb2-img.png',
       duration: '03:22',
-      price: '2.22',
+      price: '',
       stats: {
         likes_percentage: 98,
         views: 2244245,
