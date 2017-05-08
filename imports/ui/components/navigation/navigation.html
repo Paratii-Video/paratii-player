@@ -2,13 +2,14 @@
   <div id="nav" class="nav {{navState}}">
       {{#each navLinks}}
         <li class="{{isActivePath path }}">
-          <a href="{{path}}">
+          <a href="{{path}}" class="textNav">
           <img src= "{{icon}}" class="svg">
           {{#if isMaximized}}
-            {{text}}
+          {{text}}
           {{/if}}
           </a>
         </li>
       {{/each}}
+    
   </div>
 </template>
