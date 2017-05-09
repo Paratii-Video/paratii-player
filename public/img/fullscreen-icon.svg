@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>fullscreen-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="player_v01" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="mvp-paused-signup" transform="translate(-656.000000, -375.000000)" fill="#FFFFFF">
+            <g id="player-control" transform="translate(88.000000, 321.000000)">
+                <path d="M570,63 L568,63 L568,68 L573,68 L573,66 L570,66 L570,63 L570,63 Z M568,59 L570,59 L570,56 L573,56 L573,54 L568,54 L568,59 L568,59 Z M580,66 L577,66 L577,68 L582,68 L582,63 L580,63 L580,66 L580,66 Z M577,54 L577,56 L580,56 L580,59 L582,59 L582,54 L577,54 L577,54 Z" id="fullscreen-icon"></path>
+            </g>
+        </g>
+    </g>
+</svg>
