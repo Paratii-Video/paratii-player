@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="14px" viewBox="0 0 13 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="player_v01" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="mvp-paused-signup" transform="translate(-154.000000, -375.000000)" fill="#FFFFFF">
+            <g id="player-control" transform="translate(88.000000, 321.000000)">
+                <g id="slide">
+                    <g id="Group" transform="translate(66.000000, 54.000000)">
+                        <rect id="Rectangle" x="0" y="0" width="5" height="14"></rect>
+                        <rect id="Rectangle" x="8" y="0" width="5" height="14"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

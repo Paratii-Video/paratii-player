@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="15px" viewBox="0 0 22 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>view-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="player_v01" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="mvp-paused-signup" transform="translate(-93.000000, -204.000000)" fill="#FFFFFF">
+            <g id="stas-video" transform="translate(93.000000, 202.000000)">
+                <path d="M0,9.5 C1.73,13.89 6,17 11,17 C16,17 20.27,13.89 22,9.5 C20.27,5.11 16,2 11,2 C6,2 1.73,5.11 0,9.5 Z M6,9.5 C6,6.74 8.24,4.5 11,4.5 C13.76,4.5 16,6.74 16,9.5 C16,12.26 13.76,14.5 11,14.5 C8.24,14.5 6,12.26 6,9.5 Z M8,9.5 C8,11.16 9.34,12.5 11,12.5 C12.66,12.5 14,11.16 14,9.5 C14,7.84 12.66,6.5 11,6.5 C9.34,6.5 8,7.84 8,9.5 Z" id="view-icon"></path>
+            </g>
+        </g>
+    </g>
+</svg>

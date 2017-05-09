@@ -26,23 +26,21 @@
     background-color: transparent;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-
   }
   
-  &.pause div:not(.player-controls){
+  &.pause div:not(.player-overlay){
     color: transparent;
     visibility: hidden;
   }
 
   div{
     transition: 0.5s;
-  
   }
-  button {
-    color: purple;
-    border-radius: 10px;
-    background-color: black;
 
+  button {
+    color: white;
+    background-color: transparent;
+    border: 0;
   }
 }
 
@@ -53,31 +51,53 @@
   z-index: 0;
 }
 
-.player-tags {
-  width: 70%;
-  height: 20%;
-  float: left;
+.primary-tag {
+  font-family:'Roboto';
+  position:absolute;
+  font-size: 10px;
+  left: 20px;
+  top: 20px;
+  margin: 5px;
+  padding: 3px;
+  color: white;
+  font-weight:bold;
+  background-color: orangered;
+  border-radius: 3px;
 }
 
 .player-uploader {
-  width: 30%;
-  height: 20%;
-  float: left
+  font-family:'Roboto-Light';
+  position:absolute;
+  font-size: 14px;
+  right: 20px;
+  top: 20px;
 }
 
 .player-info {
-  width: 100%;
-  float: left;
+  font-family:'Roboto-Thin';
+  font-size: 30px;
+  margin-top: 20%;
+  margin-left: 20px;
+  color: white;
+}
+
+.player-description {
+  font-family:'Roboto-Light';
+  font-size: 14px;
+  margin-top: 10px;
+  margin-left: 20px;
+  color: white;
+  background-color: transparent;
+  border-radius: 3px;
 }
 
 .player-statistics {
-  width: 100%;
-  height: 10%;
-  float: left;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 
 .player-controls {
   position: absolute;
-  bottom: 0;
-  width: 100%;
+  left: 20px;
+  bottom: 20px;
 }

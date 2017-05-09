@@ -5,7 +5,7 @@ let fullscreenOn = false;
 
 Template.player.onCreated(function () {
   this.navState = Blaze.getView('Template.App_body').templateInstance().navState;
-  this.playPause = new ReactiveVar('play');
+  this.playPause = new ReactiveVar('img/play-icon.svg');
 });
 
 Template.player.helpers({
@@ -40,17 +40,17 @@ const requestCancelFullscreen = (element) => {
 
 Template.player.events({
   'ended #video-player'(event, instance) {
-    instance.playPause.set('play');
+    instance.playPause.set('img/play-icon.svg');
   },
   'click #play-pause-button'(event, instance) {
     const playPause = instance.playPause;
     const navState = instance.navState;
     const video = instance.find('#video-player');
-    if (playPause.get() === 'play') {
-      playPause.set('pause');
+    if (playPause.get() === 'img/play-icon.svg') {
+      playPause.set('img/pause-icon.svg');
       video.play();
     } else {
-      playPause.set('play');
+      playPause.set('img/play-icon.svg');
       video.pause();
     }
     navState.set('minimized');

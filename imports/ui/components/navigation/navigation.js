@@ -34,7 +34,7 @@ Template.navigation.helpers({
       links = links.concat([
         {
           icon: '/img/avatar_img.svg',
-          text: 'Login',
+          text: 'Sign In',
           path: FlowRouter.path('account'),
         },
       ]);
