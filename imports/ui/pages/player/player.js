@@ -1,10 +1,12 @@
 import { Template } from 'meteor/templating';
+import { Blaze } from 'meteor/blaze';
 import './player.html';
 
 let fullscreenOn = false;
 
 Template.player.onCreated(function () {
-  this.navState = Blaze.getView('Template.App_body').templateInstance().navState;
+  const bodyView = Blaze.getView('Template.App_body');
+  this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized');
   this.playPause = new ReactiveVar('img/play-icon.svg');
 });
 
