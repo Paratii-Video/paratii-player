@@ -6,6 +6,7 @@ let fullscreenOn = false;
 
 Template.player.onCreated(function () {
   const bodyView = Blaze.getView('Template.App_body');
+  // this makes the test works
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized');
   this.playPause = new ReactiveVar('img/play-icon.svg');
 });
