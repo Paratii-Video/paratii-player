@@ -3,7 +3,7 @@ import './navigation.html';
 
 const loadSVG = () => {
   const mySVGsToInject = document.querySelectorAll('.svg');
-  SVGInjector(mySVGsToInject);
+  return new SVGInjector(mySVGsToInject);
 };
 
 Template.navigation.onCreated(function () {
