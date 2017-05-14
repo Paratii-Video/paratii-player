@@ -1,3 +1,4 @@
+/* eslint no-console: "off" */
 import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import './player.html';
@@ -60,7 +61,6 @@ Template.player.events({
   },
   'click #fullscreen-button'(event, instance) {
     const video = instance.find('#player-container');
-    console.log(fullscreenOn);
     if (fullscreenOn) {
       requestCancelFullscreen(document);
       fullscreenOn = false;
