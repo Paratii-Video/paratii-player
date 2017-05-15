@@ -48,6 +48,7 @@ Template.navigation.helpers({
       }, {
         icon: '/img/myvideos_icon.svg',
         text: 'My Videos',
+        path: FlowRouter.path('myvideos'),
 
       }, {
         icon: '/img/upload_icon.svg',
