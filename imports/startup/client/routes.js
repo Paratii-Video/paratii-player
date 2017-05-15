@@ -50,6 +50,15 @@ FlowRouter.route('/playlists', {
   },
 });
 
+
+FlowRouter.route('/myvideos', {
+  name: 'myvideos',
+  action() {
+    BlazeLayout.render('App_body', { main: 'myvideos' });
+  },
+});
+
+
 FlowRouter.route('/player', {
   name: 'player',
   action() {
