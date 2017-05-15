@@ -53,6 +53,7 @@ Template.navigation.helpers({
       }, {
         icon: '/img/upload_icon.svg',
         text: 'Upload',
+        path: FlowRouter.path('upload'),
 
       }, {
         icon: '/img/trendingcause_icon.svg',

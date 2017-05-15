@@ -11,6 +11,8 @@ import '/imports/ui/pages/debug/debug.js';
 import '/imports/ui/pages/playlists/playlists.js';
 import '/imports/ui/pages/player/player.js';
 import '/imports/ui/pages/wallet/wallet.js';
+import '/imports/ui/pages/myvideos/myvideos.js';
+import '/imports/ui/pages/upload/upload.js';
 
 
 // Set up all routes in the app
@@ -58,6 +60,13 @@ FlowRouter.route('/myvideos', {
   },
 });
 
+
+FlowRouter.route('/upload', {
+  name: 'upload',
+  action() {
+    BlazeLayout.render('App_body', { main: 'upload' });
+  },
+});
 
 FlowRouter.route('/player', {
   name: 'player',
