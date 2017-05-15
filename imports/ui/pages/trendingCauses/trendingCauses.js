@@ -1,0 +1,1 @@
+import './trendingCauses.html'

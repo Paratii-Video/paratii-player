@@ -58,10 +58,12 @@ Template.navigation.helpers({
       }, {
         icon: '/img/trendingcause_icon.svg',
         text: 'Trending causes',
+        path: FlowRouter.path('trendingCauses'),
 
       }, {
         icon: '/img/wanderlust_icon.svg',
         text: 'Wanderlust',
+        path: FlowRouter.path('wanderlust'),
       }, {
         icon: '/img/logo_paratii.svg',
         text: 'About Paratii',

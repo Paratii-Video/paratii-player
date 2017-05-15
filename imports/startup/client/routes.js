@@ -13,6 +13,8 @@ import '/imports/ui/pages/player/player.js';
 import '/imports/ui/pages/wallet/wallet.js';
 import '/imports/ui/pages/myvideos/myvideos.js';
 import '/imports/ui/pages/upload/upload.js';
+import '/imports/ui/pages/trendingCauses/trendingCauses.js';
+import '/imports/ui/pages/wanderlust/wanderlust.js';
 
 
 // Set up all routes in the app
@@ -67,6 +69,25 @@ FlowRouter.route('/upload', {
     BlazeLayout.render('App_body', { main: 'upload' });
   },
 });
+
+
+FlowRouter.route('/trendingCauses', {
+  name: 'trendingCauses',
+  action() {
+    BlazeLayout.render('App_body', { main: 'trendingCauses' });
+  },
+});
+
+
+FlowRouter.route('/wanderlust', {
+  name: 'wanderlust',
+  action() {
+    BlazeLayout.render('App_body', { main: 'wanderlust' });
+  },
+});
+
+
+
 
 FlowRouter.route('/player', {
   name: 'player',
