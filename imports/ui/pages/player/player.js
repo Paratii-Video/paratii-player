@@ -85,9 +85,9 @@ Template.player.events({
     const time = (event.offsetX / progressBar.offsetWidth) * video.duration;
     video.currentTime = time;
   },
-  'click #vol-control'(event, instance) {
+  'change #vol-control'(event, instance) {
     const video = instance.find('#video-player');
-    const volControl = instance.find('#vol-control');
-    video.volume = volControl.value / 100.0;
+    const inputValue = event.target.valueAsNumber;
+    video.volume = inputValue / 100.0;
   },
 });
