@@ -3,6 +3,20 @@
     <video id="video-player">
       <source src="https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4" />
     </video>
+    <div class="player-controls">
+      <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress>
+      <br />
+      <button id="play-pause-button" title="{{playPause}}">
+        <img src= "{{playPause}}">
+      </button>
+
+      <input id="vol-control" value=100 type="range" min="0" max="100" step="1"/>
+
+      <button id="fullscreen-button" title="{{fullscreen}}">
+        <img src= "img/fullscreen-icon.svg">
+      </button>
+
+    </div>
     <div class="player-overlay {{playPause}}">
       <div class="primary-tag">NATURE</div>
       <div class="player-uploader">Pole Pole Channel</div>
@@ -12,20 +26,6 @@
         <img src= "img/view-icon.svg">2.223.444
         <img src= "/img/like-icon.svg"/>11.4556
         <img src= "/img/deslike-icon.svg"/>174
-      </div>
-      <div class="player-controls">
-        <button id="play-pause-button" title="{{playPause}}">
-          <img src= "{{playPause}}">
-        </button>
-        
-        <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress>
-
-        
-
-        <button id="fullscreen-button" title="{{fullscreen}}">
-          <img src= "img/fullscreen-icon.svg">
-        </button>
-
       </div>
     </div>
   </div>

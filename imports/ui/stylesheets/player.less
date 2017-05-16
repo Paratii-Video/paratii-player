@@ -17,17 +17,17 @@
   height: 100%;
   color: white;
   background-color: rgba(0,0,0,0.5);
-  z-index: 1;
+  z-index: 2;
   transition: 0.5s;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  
+
   &.pause {
     background-color: transparent;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
   }
-  
+
   &.pause div:not(.player-overlay){
     color: transparent;
     visibility: hidden;
@@ -97,7 +97,31 @@
 }
 
 .player-controls {
+  width: 100%;
+  z-index: 3;
   position: absolute;
-  left: 20px;
+  left: 0;
+  box-sizing: border-box;
+  padding-left: 20px;
   bottom: 20px;
+  button {
+    color: white;
+    background-color: transparent;
+    border: 0;
+  }
+  button, input, progress {
+    position: relative;
+    float: left;
+    margin: 0 10px;
+  }
+  #vol-control {
+    width: 10%;
+  }
+  progress {
+    margin-left: 5%;
+    width: 90%;
+  }
+  #fullscreen-button {
+    float: right;
+  }
 }
