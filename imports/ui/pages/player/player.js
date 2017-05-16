@@ -79,13 +79,13 @@ Template.player.events({
     const percentage = Math.floor((100 / video.duration) * video.currentTime);
     progressBar.value = percentage;
   },
-  'change #progress-bar'(event, instance) {
+  'input #progress-bar'(event, instance) {
     const video = instance.find('#video-player');
     const inputValue = event.target.valueAsNumber;
     const time = (inputValue / 100.0) * video.duration;
     video.currentTime = time;
   },
-  'change #vol-control'(event, instance) {
+  'input #vol-control'(event, instance) {
     const video = instance.find('#video-player');
     const inputValue = event.target.valueAsNumber;
     video.volume = inputValue / 100.0;
