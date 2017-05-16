@@ -9,16 +9,24 @@
       <div class="player-info">Longboard Northern California Journey</div>
       <div class="player-description">Longboard Expression Session at NC before the final Pro 2016! Best barrels ever seen in a longboard!!</div>
       <div class="player-statistics">
-          <img src= "img/view-icon.svg">2.223.444
-          <img src= "/img/like-icon.svg"/>11.4556
-          <img src= "/img/deslike-icon.svg"/>174
+        <img src= "img/view-icon.svg">2.223.444
+        <img src= "/img/like-icon.svg"/>11.4556
+        <img src= "/img/deslike-icon.svg"/>174
       </div>
       <div class="player-controls">
-          <button id="play-pause-button" title="{{playPause}}">
-         <img src= "{{playPause}}">
-          </button>
-          <button id="fullscreen-button" title="{{fullscreen}}"><img src= "img/fullscreen-icon.svg"></button>
-          </div>
+        <button id="play-pause-button" title="{{playPause}}">
+          <img src= "{{playPause}}">
+        </button>
+        
+        <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress>
+
+        
+
+        <button id="fullscreen-button" title="{{fullscreen}}">
+          <img src= "img/fullscreen-icon.svg">
+        </button>
+
       </div>
     </div>
-         </template>
+  </div>
+</template>

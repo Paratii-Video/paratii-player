@@ -69,4 +69,16 @@ Template.player.events({
       fullscreenOn = true;
     }
   },
+  'timeupdate'(event, instance) {
+    const progressBar = instance.find('#progress-bar');
+    const video = instance.find('#video-player');
+    const percentage = Math.floor((100/video.duration)*video.currentTime);
+    progressBar.value=percentage;    
+  },
+  'click #progress-bar'(event, instance){
+    const video = instance.find('#video-player');
+    const progressBar = instance.find('#progress-bar');
+    const time = event.offsetX/progressBar.offsetWidth * video.duration;
+    video.currentTime = time;
+  }
 });
