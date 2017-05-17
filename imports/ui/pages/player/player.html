@@ -3,22 +3,32 @@
     <video id="video-player">
       <source src="https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4" />
     </video>
+    <div class="player-controls">
+      <input type="range" id="progress-bar" value="0">
+      <!-- <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress> -->
+      <br />
+      <button id="play-pause-button" title="{{playPause}}">
+        <img src= "{{playPauseIcon}}">
+      </button>
+      <input id="vol-control" value=100 type="range" min="0" max="100" step="1"/>
+      <span id="current-time"></span>
+      <span class="slash">/</span>
+      <span id="total-time"></span>
+      <button id="fullscreen-button" title="{{fullscreen}}">
+        <img src= "img/fullscreen-icon.svg">
+      </button>
+
+    </div>
     <div class="player-overlay {{playPause}}">
       <div class="primary-tag">NATURE</div>
       <div class="player-uploader">Pole Pole Channel</div>
       <div class="player-info">Longboard Northern California Journey</div>
       <div class="player-description">Longboard Expression Session at NC before the final Pro 2016! Best barrels ever seen in a longboard!!</div>
       <div class="player-statistics">
-          <img src= "img/view-icon.svg">2.223.444
-          <img src= "/img/like-icon.svg"/>11.4556
-          <img src= "/img/deslike-icon.svg"/>174
-      </div>
-      <div class="player-controls">
-          <button id="play-pause-button" title="{{playPause}}">
-         <img src= "{{playPause}}">
-          </button>
-          <button id="fullscreen-button" title="{{fullscreen}}"><img src= "img/fullscreen-icon.svg"></button>
-          </div>
+        <img src= "img/view-icon.svg">2.223.444
+        <img src= "/img/like-icon.svg"/>11.4556
+        <img src= "/img/deslike-icon.svg"/>174
       </div>
     </div>
-         </template>
+  </div>
+</template>

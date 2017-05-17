@@ -2,7 +2,6 @@
 /* eslint-disable func-names, prefer-arrow-callback */
 
 import { chai } from 'meteor/practicalmeteor:chai';
-import { Template } from 'meteor/templating';
 import { $ } from 'meteor/jquery';
 import { withRenderedTemplate } from '../../../test-helpers.js';
 import '../about.js';

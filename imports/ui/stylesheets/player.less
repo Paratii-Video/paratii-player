@@ -17,24 +17,19 @@
   height: 100%;
   color: white;
   background-color: rgba(0,0,0,0.5);
-  z-index: 1;
-  transition: 0.5s;
+  z-index: 2;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  
+
   &.pause {
     background-color: transparent;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
   }
-  
+
   &.pause div:not(.player-overlay){
     color: transparent;
     visibility: hidden;
-  }
-
-  div{
-    transition: 0.5s;
   }
 
   button {
@@ -97,7 +92,93 @@
 }
 
 .player-controls {
+  width: 100%;
+  z-index: 3;
   position: absolute;
-  left: 20px;
+  left: 0;
+  box-sizing: border-box;
+  padding-left: 20px;
   bottom: 20px;
+  button {
+    color: white;
+    background-color: transparent;
+    border: 0;
+  }
+  button, input {
+    position: relative;
+    float: left;
+    margin: 0 10px;
+  }
+  #vol-control {
+    width: 10%;
+  }
+  #progress-bar {
+    margin: auto;
+    border: none;
+    height: 5px;
+    width: 95%;
+  }
+
+  /* Firefox */
+  /* remove dotted outline form input FF */
+  input[type=range]::-moz-focus-outer {
+    border: 0;
+  }
+
+  /* after the thumb */
+  input[type=range]::-moz-range-track {
+    background: rgba(255, 255, 255, 0.3);
+    height: 5px;
+    border: none;
+    border-radius: 3px;
+  }
+
+  /* before the thumb */
+  input[type="range"]::-moz-range-progress {
+    background: #FFF;
+    height: 5px;
+    border-radius: 3px;
+  }
+
+  input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  /* Webkit */
+  input[type=range]{
+    -webkit-appearance: none;
+  }
+
+  input[type=range]::-webkit-slider-runnable-track {
+    height: 5px;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: e-resize;
+    border: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background: white;
+    margin-top: -5px;
+    // box-shadow: -9999px 0 0 9999px #FFF;
+  }
+
+  #fullscreen-button {
+    float: right;
+  }
+
+  #current-time {
+    color: #fff;
+  }
+  #total-time, .slash {
+    color: #aaa;
+  }
 }
