@@ -42,3 +42,4 @@ aldeed:template-extension
 useraccounts:flow-routing
 dispatch:mocha
 johnantoni:meteor-svginjector
+sgi:sprintfjs
