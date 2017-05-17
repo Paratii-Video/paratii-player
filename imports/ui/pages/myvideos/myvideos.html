@@ -1,4 +1,5 @@
 <template name="myvideos">
+  {{#isAuthorized}}
   <div class="playlistContainer">
     <div class="titleContainer">My Videos</div>
     <div class="line"></div>
@@ -25,4 +26,5 @@
       {{/each}}
     </div>
   </div>
+  {{/isAuthorized}}
 </template>
