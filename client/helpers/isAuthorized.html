@@ -1,0 +1,12 @@
+<template name='isAuthorized'>
+    {{#if isAuthorized}}
+      {{> Template.contentBlock}}
+      {{else}}
+        {{#if loggingIn}}
+        Loading
+          <!-- {{>spinner}} -->
+        {{else}}
+          Need login ... 
+        {{/if}}
+    {{/if}}
+</template>
