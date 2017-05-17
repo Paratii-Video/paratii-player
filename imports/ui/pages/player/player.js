@@ -1,6 +1,7 @@
 /* eslint no-console: "off" */
 import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
+import { sprintf } from 'meteor/sgi:sprintfjs';
 import './player.html';
 
 let fullscreenOn = false;
@@ -74,10 +75,19 @@ Template.player.events({
     }
   },
   'timeupdate'(event, instance) {
-    const progressBar = instance.find('#progress-bar');
     const video = instance.find('#video-player');
-    const percentage = Math.floor((100 / video.duration) * video.currentTime);
+    const currentTime = video.currentTime;
+
+    // update progress bar
+    const progressBar = instance.find('#progress-bar');
+    const percentage = Math.floor((100 / video.duration) * currentTime);
     progressBar.value = percentage;
+
+    // update current time
+    const minutes = currentTime / 60;
+    const seconds = currentTime % 60;
+    const currentSpan = instance.find('#current-time');
+    currentSpan.textContent = sprintf('%02d:%02d', minutes, seconds);
   },
   'input #progress-bar'(event, instance) {
     const video = instance.find('#video-player');
@@ -89,5 +99,15 @@ Template.player.events({
     const video = instance.find('#video-player');
     const inputValue = event.target.valueAsNumber;
     video.volume = inputValue / 100.0;
+  },
+  'loadedmetadata'(event, instance) {
+    const video = instance.find('#video-player');
+    const duration = Math.floor(video.duration);
+    const minutes = duration / 60;
+    const seconds = duration % 60;
+    const totalSpan = instance.find('#total-time');
+    totalSpan.textContent = sprintf('%02d:%02d', minutes, seconds);
+    const currentSpan = instance.find('#current-time');
+    currentSpan.textContent = sprintf('%02d:%02d', 0, 0);
   },
 });
