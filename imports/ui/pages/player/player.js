@@ -57,12 +57,13 @@ Template.player.events({
     const video = instance.find('#video-player');
     if (playPause.get() === 'play') {
       playPause.set('pause');
+      navState.set('hidden');
       video.play();
     } else {
       playPause.set('play');
+      navState.set('minimized');
       video.pause();
     }
-    navState.set('minimized');
   },
   'click #fullscreen-button'(event, instance) {
     const video = instance.find('#player-container');
