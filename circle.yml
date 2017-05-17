@@ -3,7 +3,7 @@ dependencies:
     - curl https://install.meteor.com | /bin/sh
 test:
   override:
-    -  TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package dispatch:mocha
+    -  TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha
 
 deployment:
   staging:
