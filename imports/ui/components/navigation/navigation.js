@@ -83,7 +83,6 @@ Template.navigation.helpers({
 
 Template.navigation.events({
   'click #nav'(event, instance) {
-    console.log('init nav', event);
     const navState = instance.navState.get();
     const targetName = event.target.tagName;
     let newState = 'minimized';
@@ -91,6 +90,11 @@ Template.navigation.events({
       newState = 'maximized';
     }
     instance.navState.set(newState);
-    console.log('end nav');
+  },
+  'mouseover #nav'(event, instance) {
+    instance.navState.set('maximized');
+  },
+  'mouseout #nav'(event, instance) {
+    instance.navState.set('minimized');
   },
 });
