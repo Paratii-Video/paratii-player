@@ -5,8 +5,7 @@
   width: ~"calc(100% + 60px)";
   height: 100%;
   background-color: black;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-radius: 10px;
 }
 
 .player-overlay {
@@ -18,8 +17,12 @@
   color: white;
   background-color: rgba(0,0,0,0.5);
   z-index: 2;
-  border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  transition: 0.5s;
+  div {
+    transition: inherit;
+  }
 
   &.pause {
     background-color: transparent;

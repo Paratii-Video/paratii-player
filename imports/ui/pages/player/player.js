@@ -50,6 +50,7 @@ const requestCancelFullscreen = (element) => {
 Template.player.events({
   'ended #video-player'(event, instance) {
     instance.playPause.set('play');
+    navState.set('minimized');
   },
   'click #play-pause-button'(event, instance) {
     const playPause = instance.playPause;
@@ -57,7 +58,7 @@ Template.player.events({
     const video = instance.find('#video-player');
     if (playPause.get() === 'play') {
       playPause.set('pause');
-      navState.set('hidden');
+      navState.set('closed');
       video.play();
     } else {
       playPause.set('play');
