@@ -3,16 +3,10 @@ dependencies:
     - curl https://install.meteor.com | /bin/sh
 test:
   override:
-    -  TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha
+    - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --once --driver-package dispatch:mocha  --port 9999
 
 deployment:
   staging:
     branch: master
     commands:
       - ./deploy_staging.sh
-
-machine:
-  node:
-    version: 7.10.0
-  npm:
-    version: 3.10.10
