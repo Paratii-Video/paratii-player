@@ -3,27 +3,8 @@
   <div class="playlistContainer">
     <div class="titleContainer">My Videos</div>
     <div class="line"></div>
-
-
     <div class="descriptionPlaylist">
-      Your preferits
-    </div>
-    <div class="videosListContainer">
-      {{# each videos }}
-        <div class="videoCardContainer">
-          <div class="videoThumbContent">
-            <a href="{{pathFor route='player'}}"><img src="{{thumb}}"/></a>
-            <div class="videoCardDuration">{{duration}}</div>
-            <div class="videoCardPrice">{{formatNumber price}} PTI</div>
-          </div>
-          <div class="videoCardTitle"><a href="{{pathFor route='player'}}">{{title}}</a></div>
-          <div class="videoCardViews">{{formatNumber stats.views}} views</div>
-          <div class="videoCardLikes">
-            <img src= "/img/likesmall-icon.svg"/>
-            {{stats.likes_percentage}}%
-          </div>
-        </div>
-      {{/each}}
+      Your favorites (not implemented in this Demo)
     </div>
   </div>
   {{/isAuthorized}}

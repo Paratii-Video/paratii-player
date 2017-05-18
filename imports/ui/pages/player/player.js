@@ -3,7 +3,7 @@ import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import { sprintf } from 'meteor/sgi:sprintfjs';
 
-import { Videos } from '/imports/api/videos.js'
+import { Videos } from '/imports/api/videos.js';
 
 import './player.html';
 
@@ -13,7 +13,6 @@ let controlsHandler;
 // Template.player.onCreated(function bodyOnCreated() {
 //   Meteor.subscribe('videos');
 // });
-
 
 Template.player.onCreated(function () {
   const bodyView = Blaze.getView('Template.App_body');
@@ -36,8 +35,8 @@ Template.player.helpers({
   },
 
   video() {
-    const video_id = FlowRouter.getParam('_id')
-    const video = Videos.findOne({'_id': video_id});
+    const videoId = FlowRouter.getParam('_id');
+    const video = Videos.findOne({ _id: videoId });
     return video;
   },
   formatNumber(number) {

@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating';
-import { Videos } from '/imports/api/videos.js'
+import { Videos } from '/imports/api/videos.js';
 
 import './playlists.html';
 // Template.playlists.onCreated(function bodyOnCreated() {
@@ -9,7 +9,7 @@ import './playlists.html';
 Template.playlists.helpers({
   videos() {
     const videos = Videos.find().fetch();
-    return videos
+    return videos;
   },
 
   formatNumber(number) {
