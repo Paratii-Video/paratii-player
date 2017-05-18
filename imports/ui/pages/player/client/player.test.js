@@ -1,12 +1,11 @@
 /* eslint-env mocha */
 /* eslint-disable func-names, prefer-arrow-callback */
 
-import { chai } from 'meteor/practicalmeteor:chai';
+import 'chai'
 import { $ } from 'meteor/jquery';
 import { withRenderedTemplate } from '/imports/ui/test-helpers.js';
 import '../player.js';
 import '../../../layouts/body/body.js';
-import '/lib/collections.js'
 
 
 describe('player page', function () {

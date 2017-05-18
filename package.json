@@ -3,12 +3,13 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "test": "meteor test --driver-package practicalmeteor:mocha --port 8754",
+    "test": "NODE_OPTIONS='--debug' meteor test --driver-package practicalmeteor:mocha --port 8754",
     "lint": "eslint ."
   },
   "dependencies": {
     "babel-runtime": "^6.20.0",
     "bcrypt": "^1.0.2",
+    "chai": "^3.5.0",
     "eth-lightwallet": "^2.5.4",
     "hooked-web3-provider": "^1.0.0",
     "meteor-node-stubs": "~0.2.4",
