@@ -1,7 +1,7 @@
+[![CircleCI](https://circleci.com/gh/Paratii-Video/paratii-player.svg?style=svg)](https://circleci.com/gh/Paratii-Video/paratii-player)
 
 
-# Installation
-
+# Installation 
 
 
 Install node (https://nodejs.org/en/download/) and npma. (These are the instructions for a debian based system - please check the download page for instructions for your OS)
