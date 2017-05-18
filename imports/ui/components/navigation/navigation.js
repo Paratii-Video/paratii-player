@@ -25,8 +25,8 @@ Template.navigation.helpers({
       links = links.concat([
         {
           icon: '/img/avatar_img.svg',
-          text: 'Your wallet',
-          path: FlowRouter.path('wallet'),
+          text: 'Your account',
+          path: FlowRouter.path('account'),
 
         },
       ]);
