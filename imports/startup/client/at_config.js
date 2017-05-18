@@ -78,5 +78,5 @@ AccountsTemplates.addField(email);
 AccountsTemplates.addField(pwd);
 
 
-AccountsTemplates.configureRoute('signIn');
-AccountsTemplates.configureRoute('enrollAccount');
+// AccountsTemplates.configureRoute('signIn', redirect="/account");
+// AccountsTemplates.configureRoute('enrollAccount');

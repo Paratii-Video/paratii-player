@@ -1,7 +1,7 @@
 // /* eslint-env mocha */
 
 // import { Meteor } from 'meteor/meteor';
-// import { assert } from 'meteor/practicalmeteor:chai';
+// import { assert } from 'chai';
 // import { Template } from 'meteor/templating';
 // import '../connection.js';
 

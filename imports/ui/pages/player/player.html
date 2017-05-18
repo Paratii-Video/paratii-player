@@ -1,8 +1,10 @@
 <template name="player">
   <div id="player-container">
+    {{#with video}}
     <video id="video-player">
-      <source src="https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4" />
+      <source src="{{ src }}" type="video/mp4" />
     </video>
+    {{/with}}
     <div class="player-controls">
       <input type="range" id="progress-bar" value="0">
       <!-- <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress> -->
@@ -19,16 +21,20 @@
       </button>
 
     </div>
+    {{#with video}}
     <div class="player-overlay {{playPause}}">
-      <div class="primary-tag">NATURE</div>
-      <div class="player-uploader">Pole Pole Channel</div>
-      <div class="player-info">Longboard Northern California Journey</div>
-      <div class="player-description">Longboard Expression Session at NC before the final Pro 2016! Best barrels ever seen in a longboard!!</div>
+      {{#each tag in tags }}
+        <div class="primary-tag">{{ tag }}</div>
+      {{/each}}
+      <div class="player-uploader">{{ uploader }}</div>
+      <div class="player-info">{{ title }}</div>
+      <div class="player-description">{{ description }}</div>
       <div class="player-statistics">
-        <img src= "img/view-icon.svg">2.223.444
-        <img src= "/img/like-icon.svg"/>11.4556
-        <img src= "/img/deslike-icon.svg"/>174
+        <img src= "img/view-icon.svg">{{formatNumber stats.views}} 
+        <img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}} 
+        <img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}
       </div>
     </div>
+    {{/with}}
   </div>
 </template>

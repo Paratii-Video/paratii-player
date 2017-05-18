@@ -21,7 +21,7 @@ import '/imports/ui/pages/wanderlust/wanderlust.js';
 FlowRouter.route('/', {
   name: 'App.home',
   action() {
-    BlazeLayout.render('App_body', { main: 'App_home' });
+    BlazeLayout.render('App_body', { main: 'account' });
   },
 });
 
@@ -38,7 +38,6 @@ FlowRouter.route('/account', {
     BlazeLayout.render('App_body', { main: 'account' });
   },
 });
-
 
 FlowRouter.route('/wallet', {
   name: 'wallet',
@@ -86,10 +85,7 @@ FlowRouter.route('/wanderlust', {
   },
 });
 
-
-
-
-FlowRouter.route('/player', {
+FlowRouter.route('/player/:_id', {
   name: 'player',
   action() {
     BlazeLayout.render('App_body', { main: 'player' });
@@ -108,11 +104,3 @@ FlowRouter.notFound = {
     BlazeLayout.render('App_body', { main: 'App_notFound' });
   },
 };
-
-//Routes
-// AccountsTemplates.configureRoute('changePwd');
-// AccountsTemplates.configureRoute('forgotPwd');
-// AccountsTemplates.configureRoute('resetPwd');
-// AccountsTemplates.configureRoute('signIn');
-// AccountsTemplates.configureRoute('signUp');
-// AccountsTemplates.configureRoute('verifyEmail');

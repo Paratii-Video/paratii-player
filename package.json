@@ -1,14 +1,15 @@
 {
-  "name": "play",
+  "name": "paratii-player",
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "test": "meteor test --driver-package practicalmeteor:mocha --port 8754",
+    "test": "NODE_OPTIONS='--debug' meteor test --driver-package practicalmeteor:mocha --port 8754",
     "lint": "eslint ."
   },
   "dependencies": {
     "babel-runtime": "^6.20.0",
     "bcrypt": "^1.0.2",
+    "chai": "^3.5.0",
     "eth-lightwallet": "^2.5.4",
     "hooked-web3-provider": "^1.0.0",
     "meteor-node-stubs": "~0.2.4",
@@ -22,7 +23,7 @@
     "eslint-import-resolver-meteor": "^0.3.3",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
-    "eslint-plugin-meteor": "^4.0.0",
+    "eslint-plugin-meteor": "^4.0.1",
     "eslint-plugin-react": "^7.0.1",
     "nightmare": "^2.10.0",
     "shell-source": "^1.1.0",
@@ -41,11 +42,12 @@
       "plugin:meteor/recommended"
     ],
     "rules": {
+      "func-names": "off",
       "import/no-extraneous-dependencies": "off",
       "import/prefer-default-export": "off",
       "import/no-unresolved": "off",
+      "import/extensions": "off",
       "no-underscore-dangle": "off",
-      "func-names": "off",
       "prefer-arrow-callback": "off",
       "no-undef": "off",
       "object-shorthand": [

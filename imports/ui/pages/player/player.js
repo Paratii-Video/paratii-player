@@ -2,10 +2,17 @@
 import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import { sprintf } from 'meteor/sgi:sprintfjs';
+
+import { Videos } from '/imports/api/videos.js';
+
 import './player.html';
 
 let fullscreenOn = false;
 let controlsHandler;
+
+// Template.player.onCreated(function bodyOnCreated() {
+//   Meteor.subscribe('videos');
+// });
 
 Template.player.onCreated(function () {
   const bodyView = Blaze.getView('Template.App_body');
@@ -25,6 +32,17 @@ Template.player.helpers({
   playPauseIcon() {
     const state = Template.instance().playPause.get();
     return (state === 'play') ? 'img/play-icon.svg' : 'img/pause-icon.svg';
+  },
+
+  video() {
+    const videoId = FlowRouter.getParam('_id');
+    const video = Videos.findOne({ _id: videoId });
+    return video;
+  },
+  formatNumber(number) {
+    const parts = number.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return parts.join('.');
   },
 });
 
