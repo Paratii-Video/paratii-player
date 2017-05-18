@@ -5,12 +5,17 @@ import { sprintf } from 'meteor/sgi:sprintfjs';
 import './player.html';
 
 let fullscreenOn = false;
+let controlsHandler;
 
 Template.player.onCreated(function () {
   const bodyView = Blaze.getView('Template.App_body');
   // this makes the test works
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized');
   this.playPause = new ReactiveVar('play');
+});
+
+Template.player.onDestroyed(function () {
+  Meteor.clearTimeout(controlsHandler);
 });
 
 Template.player.helpers({
@@ -50,19 +55,26 @@ const requestCancelFullscreen = (element) => {
 Template.player.events({
   'ended #video-player'(event, instance) {
     instance.playPause.set('play');
+    navState.set('minimized');
   },
   'click #play-pause-button'(event, instance) {
     const playPause = instance.playPause;
     const navState = instance.navState;
     const video = instance.find('#video-player');
+    const controls = instance.find('.player-controls');
     if (playPause.get() === 'play') {
       playPause.set('pause');
+      navState.set('closed');
       video.play();
+      controlsHandler = Meteor.setTimeout(() => {
+        controls.style.display = 'none';
+      }, 3000);
     } else {
       playPause.set('play');
+      navState.set('minimized');
       video.pause();
+      Meteor.clearTimeout(controlsHandler);
     }
-    navState.set('minimized');
   },
   'click #fullscreen-button'(event, instance) {
     const video = instance.find('#player-container');
@@ -109,5 +121,13 @@ Template.player.events({
     totalSpan.textContent = sprintf('%02d:%02d', minutes, seconds);
     const currentSpan = instance.find('#current-time');
     currentSpan.textContent = sprintf('%02d:%02d', 0, 0);
+  },
+  'mousemove'(event, instance) {
+    const controls = instance.find('.player-controls');
+    controls.style.display = 'block';
+    Meteor.clearTimeout(controlsHandler);
+    controlsHandler = Meteor.setTimeout(() => {
+      controls.style.display = 'none';
+    }, 3000);
   },
 });

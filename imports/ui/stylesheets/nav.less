@@ -16,19 +16,12 @@
   border-left: .1rem solid lightgray;
   white-space: nowrap;
 
-
   a {
     color: lightgray;
   }
 
   a:hover {
     color: #7d70ff;
-  }
-
-
-  &.hidden {
-    width: 0;
-    
   }
 
   .active {
@@ -40,12 +33,14 @@
     .svg path {
       fill: #7d70ff;
     }
-   
   }
+
+  &.closed {
+    width: 0px;
+  }
+
   &.minimized {
     width: 60px;
-  
-   
   }
 
   &.maximized {

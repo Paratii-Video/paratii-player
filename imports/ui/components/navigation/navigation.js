@@ -84,12 +84,17 @@ Template.navigation.helpers({
 Template.navigation.events({
   'click #nav'(event, instance) {
     const navState = instance.navState.get();
-    let newState;
-    if (navState !== 'maximized') {
+    const targetName = event.target.tagName;
+    let newState = 'minimized';
+    if (navState === 'minimized' && targetName === 'DIV') {
       newState = 'maximized';
-    } else {
-      newState = 'minimized';
     }
     instance.navState.set(newState);
+  },
+  'mouseover #nav'(event, instance) {
+    instance.navState.set('maximized');
+  },
+  'mouseout #nav'(event, instance) {
+    instance.navState.set('minimized');
   },
 });
