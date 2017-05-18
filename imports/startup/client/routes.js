@@ -39,7 +39,6 @@ FlowRouter.route('/account', {
   },
 });
 
-
 FlowRouter.route('/wallet', {
   name: 'wallet',
   action() {
@@ -86,7 +85,7 @@ FlowRouter.route('/wanderlust', {
   },
 });
 
-FlowRouter.route('/player', {
+FlowRouter.route('/player/:_id', {
   name: 'player',
   action() {
     BlazeLayout.render('App_body', { main: 'player' });
