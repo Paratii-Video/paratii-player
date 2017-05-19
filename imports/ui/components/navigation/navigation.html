@@ -1,5 +1,29 @@
 <template name="navigation">
   <div id="nav" class="nav {{navState}}">
+    {{#if currentUser }}
+      <li class="{{isActivePath '/account'}}">
+        <a href="/account" class="textNav">
+          <img src= "/img/avatar_img.svg" class="svg">
+        </a>
+          {{#if isMaximized}}
+          <a href="/account" class="textNav">
+          <span class='nav-text'>Carla Tiber</span>
+          </a>
+          <a href="/wallet" class="textNav">
+          <span class='nav-text'>1.234.567 PTI</span>
+          </a>
+          {{/if}}
+      </li>
+    {{ else }}
+      <li class="{{isActivePath '/account'}}">
+        <a href="/account" class="textNav">
+          <img src= "/img/avatar_img.svg" class="svg">
+          {{#if isMaximized}}
+          <span class='nav-text'>Sign up or login</span>
+          {{/if}}
+        </a>
+      </li>
+    {{/if}}
     {{#each navLinks}}
       <li class="{{isActivePath path }}">
         <a href="{{path}}" class="textNav">
@@ -10,5 +34,19 @@
         </a>
       </li>
     {{/each}}
+
+    {{#with aboutLink}}
+      <li class="{{isActivePath path }}">
+        <a href="{{path}}" class="textNav">
+          <img src= "{{icon}}" class="svg">
+          {{#if isMaximized}}
+          <span class='nav-text'>{{text}}</span>
+          {{/if}}
+        </a>
+      </li>
+    {{/with}}
+    <li>
+        indigo release - alpha v.0.1
+    </li>
   </div>
 </template>

@@ -21,24 +21,6 @@ Template.navigation.helpers({
   },
   navLinks() {
     let links = [];
-    if (Meteor.userId()) {
-      links = links.concat([
-        {
-          icon: '/img/avatar_img.svg',
-          text: 'Your account',
-          path: FlowRouter.path('account'),
-
-        },
-      ]);
-    } else {
-      links = links.concat([
-        {
-          icon: '/img/avatar_img.svg',
-          text: 'Sign In',
-          path: FlowRouter.path('account'),
-        },
-      ]);
-    }
 
     links = links.concat([
       {
@@ -65,16 +47,30 @@ Template.navigation.helpers({
         text: 'Wanderlust',
         path: FlowRouter.path('wanderlust'),
       }, {
-        icon: '/img/logo_paratii.svg',
-        text: 'About Paratii',
-        path: FlowRouter.path('about'),
-      }, {
         icon: '/img/lock_icon.svg',
         text: 'DEBUG',
         path: FlowRouter.path('debug'),
       },
     ]);
+
+    if (Meteor.userId()) {
+      links = links.concat([
+        {
+          icon: '/img/avatar_img.svg',
+          text: 'Log out',
+          path: '',
+
+        },
+      ]);
+    }
     return links;
+  },
+  aboutLink() {
+    return {
+      icon: '/img/logo_paratii.svg',
+      text: 'About Paratii',
+      path: FlowRouter.path('about'),
+    };
   },
   isMaximized() {
     return (Template.instance().navState.get() === 'maximized');
