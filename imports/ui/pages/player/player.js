@@ -87,6 +87,13 @@ const requestCancelFullscreen = (element) => {
   }
 };
 
+const pauseVideo = (instance) => {
+  instance.templateDict.set('playing', false);
+  instance.navState.set('minimized');
+  instance.find('#video-player').pause();
+  Meteor.clearTimeout(controlsHandler);
+};
+
 Template.player.events({
   'ended #video-player'(event, instance) {
     const navState = instance.navState;
@@ -98,10 +105,7 @@ Template.player.events({
     const navState = instance.navState;
     const video = instance.find('#video-player');
     if (dict.get('playing')) {
-      dict.set('playing', false);
-      navState.set('minimized');
-      video.pause();
-      Meteor.clearTimeout(controlsHandler);
+      pauseVideo(instance);
     } else {
       dict.set('playing', true);
       navState.set('closed');
@@ -162,5 +166,8 @@ Template.player.events({
         dict.set('hideControls', true);
       }
     }, 3000);
+  },
+  'click #video-player'(event, instance) {
+    pauseVideo(instance);
   },
 });
