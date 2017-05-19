@@ -5,7 +5,7 @@
       <source src="{{ src }}" type="video/mp4" />
     </video>
     {{/with}}
-    <div class="player-controls {{playPause}}">
+    <div class="player-controls {{playPause}} {{hideControls}}">
       <input type="range" id="progress-bar" value="0">
       <br />
       <button id="play-pause-button" title="{{playPause}}">

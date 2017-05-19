@@ -22,6 +22,7 @@ Template.player.onCreated(function () {
   this.templateDict.set('playPause', 'play');
   this.templateDict.set('currentTime', 0);
   this.templateDict.set('totalTime', 0);
+  this.templateDict.set('hideControls', false);
 });
 
 Template.player.onDestroyed(function () {
@@ -46,6 +47,9 @@ Template.player.helpers({
     const videoId = FlowRouter.getParam('_id');
     const video = Videos.findOne({ _id: videoId });
     return video;
+  },
+  hideControls() {
+    return Template.instance().templateDict.get('hideControls') ? 'toggleFade' : '';
   },
   formatNumber(number) {
     const parts = number.toString().split('.');
@@ -93,15 +97,13 @@ Template.player.events({
     const dict = instance.templateDict;
     const navState = instance.navState;
     const video = instance.find('#video-player');
-    const controls = instance.find('.player-controls');
     if (dict.get('playPause') === 'play') {
       dict.set('playPause', 'pause');
       navState.set('closed');
       video.play();
       controlsHandler = Meteor.setTimeout(() => {
         if (!video.paused) {
-          controls.style.opacity = 0;
-          controls.style.visibility = 'hidden';
+          dict.set('hideControls', true);
         }
       }, 3000);
     } else {
@@ -151,15 +153,13 @@ Template.player.events({
     instance.templateDict.set('currentTime', 0);
   },
   'mousemove'(event, instance) {
+    const dict = instance.templateDict;
     const video = instance.find('#video-player');
-    const controls = instance.find('.player-controls');
-    controls.style.opacity = 1;
-    controls.style.visibility = 'visible';
+    dict.set('hideControls', false);
     Meteor.clearTimeout(controlsHandler);
     controlsHandler = Meteor.setTimeout(() => {
       if (!video.paused) {
-        controls.style.opacity = 0;
-        controls.style.visibility = 'hidden';
+        dict.set('hideControls', true);
       }
     }, 3000);
   },
