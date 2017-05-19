@@ -11,7 +11,7 @@ describe('wallet', function () {
   it('renders signin form when user is not logged in', function () {
     const data = {};
     withRenderedTemplate('account', data, el => {
-        assert.equal($(el).find('#at-pwd-form').length, 1);
+      assert.equal($(el).find('#at-pwd-form').length, 1);
     });
   });
 });

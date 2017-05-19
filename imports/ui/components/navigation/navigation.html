@@ -3,7 +3,7 @@
     {{#if currentUser }}
       <li class="{{isActivePath '/account'}}">
         <a href="/account" class="textNav">
-          <img src= "/img/avatar_img.svg" class="svg">
+          {{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-tiny"}}
         </a>
           {{#if isMaximized}}
           <a href="/account" class="textNav">

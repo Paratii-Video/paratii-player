@@ -1,4 +1,3 @@
-
 /* eslint-env mocha */
 
 import { createWallet } from '../wallet.js'
@@ -10,6 +9,6 @@ describe('ethereum wallet', function () {
     let password = 'mypass'
     console.log('(enter password): ' + password);
     let seed = createWallet(password, extraEntropy);
-    console.log('seed is:'  + seed);
+    console.log('seed is:' + seed);
   });
 });
