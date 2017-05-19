@@ -85,9 +85,9 @@ Template.navigation.events({
   'click #nav'(event, instance) {
     const navState = instance.navState.get();
     const targetName = event.target.tagName;
-    let newState = 'minimized';
-    if (navState === 'minimized' && targetName === 'DIV') {
-      newState = 'maximized';
+    let newState = 'maximized';
+    if (navState === 'maximized' && targetName === 'DIV') {
+      newState = 'minimized';
     }
     instance.navState.set(newState);
   },
