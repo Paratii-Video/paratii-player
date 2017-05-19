@@ -10,28 +10,23 @@
 
 .player-overlay {
   position: absolute;
+  padding: 10px 10px 10px 70px;
   top: 0px;
-  left: 60px;
-  width: ~"calc(100% - 60px)";
+  left: 0px;
+  width: 100%;
   height: 100%;
   color: white;
   background-color: rgba(0,0,0,0.5);
-  z-index: 2;
-  border-bottom-right-radius: 10px;
-  border-top-right-radius: 10px;
+  z-index: 50;
+  // border-bottom-right-radius: 10px;
+  // border-top-right-radius: 10px;
   transition: 0.5s;
   div {
     transition: inherit;
   }
 
   &.pause {
-    background-color: transparent;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-
-  &.pause div:not(.player-overlay){
-    color: transparent;
+    opacity: 0;
     visibility: hidden;
   }
 
@@ -53,7 +48,7 @@
   font-family:'Roboto';
   position:absolute;
   font-size: 10px;
-  left: 20px;
+  left: 80px;
   top: 20px;
   margin: 5px;
   padding: 3px;
@@ -72,9 +67,15 @@
 }
 
 .player-info {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.player-title {
   font-family:'Roboto-Thin';
   font-size: 30px;
-  margin-top: 20%;
+  margin-top: 10px;
   margin-left: 20px;
   color: white;
 }
@@ -96,12 +97,16 @@
 
 .player-controls {
   width: 100%;
-  z-index: 3;
+  padding: 10px 10px 10px 70px;
+  z-index: 100;
   position: absolute;
   left: 0;
   box-sizing: border-box;
-  padding-left: 80px;
-  bottom: 20px;
+  bottom: 0px;
+  transition: 0.5s;
+  &.pause{
+    background-color: rgba(0,0,0,0.5);
+  }
   button {
     color: white;
     background-color: transparent;
@@ -119,7 +124,6 @@
     margin: auto;
     border: none;
     height: 5px;
-    width: 90%;
   }
 
   /* Firefox */

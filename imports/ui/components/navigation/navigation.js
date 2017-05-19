@@ -69,7 +69,7 @@ Template.navigation.helpers({
         text: 'About Paratii',
         path: FlowRouter.path('about'),
       }, {
-        icon: 'img/lock_icon.svg',
+        icon: '/img/lock_icon.svg',
         text: 'DEBUG',
         path: FlowRouter.path('debug'),
       },
@@ -85,9 +85,9 @@ Template.navigation.events({
   'click #nav'(event, instance) {
     const navState = instance.navState.get();
     const targetName = event.target.tagName;
-    let newState = 'minimized';
-    if (navState === 'minimized' && targetName === 'DIV') {
-      newState = 'maximized';
+    let newState = 'maximized';
+    if (navState === 'maximized' && targetName === 'DIV') {
+      newState = 'minimized';
     }
     instance.navState.set(newState);
   },

@@ -4,7 +4,7 @@
   background-color: lightgray;
 }
 
-.app-container { 
+.app-container {
   position: absolute;
   height: 100%;
   width: ~"calc(100% - 60px)";
@@ -18,6 +18,19 @@
   border-bottom-right-radius: 10px;
 }
 
+.nav-overlay {
+  transition: 0.5s;
+  position: absolute;
+  background-color: black;
+  opacity: .7;
+  width: 100%;
+  height: 100%;
+  z-index: 900;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
 
 .alert-config{
   font-family:'Roboto';
@@ -43,4 +56,9 @@
   padding: 5px;
   font-family:'Roboto';
   font-size: 10px
+}
+
+.toggleFade{
+  opacity: 0;
+  visibility: hidden;
 }

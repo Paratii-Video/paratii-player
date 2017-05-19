@@ -3,7 +3,7 @@ import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import { sprintf } from 'meteor/sgi:sprintfjs';
 
-import { Videos } from '/imports/api/videos.js';
+import { Videos } from '../../../api/videos.js';
 
 import './player.html';
 
@@ -18,7 +18,11 @@ Template.player.onCreated(function () {
   const bodyView = Blaze.getView('Template.App_body');
   // this makes the test works
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized');
-  this.playPause = new ReactiveVar('play');
+  this.templateDict = new ReactiveDict();
+  this.templateDict.set('playing', false);
+  this.templateDict.set('currentTime', 0);
+  this.templateDict.set('totalTime', 0);
+  this.templateDict.set('hideControls', false);
 });
 
 Template.player.onDestroyed(function () {
@@ -27,22 +31,35 @@ Template.player.onDestroyed(function () {
 
 Template.player.helpers({
   playPause() {
-    return Template.instance().playPause.get();
+    return Template.instance().templateDict.get('playing') ? 'pause' : 'play';
   },
   playPauseIcon() {
-    const state = Template.instance().playPause.get();
-    return (state === 'play') ? 'img/play-icon.svg' : 'img/pause-icon.svg';
+    const state = Template.instance().templateDict.get('playing');
+    return (state) ? '/img/pause-icon.svg' : '/img/play-icon.svg';
   },
-
+  currentTime() {
+    return Template.instance().templateDict.get('currentTime');
+  },
+  totalTime() {
+    return Template.instance().templateDict.get('totalTime');
+  },
   video() {
     const videoId = FlowRouter.getParam('_id');
     const video = Videos.findOne({ _id: videoId });
     return video;
   },
+  hideControls() {
+    return Template.instance().templateDict.get('hideControls') ? 'toggleFade' : '';
+  },
   formatNumber(number) {
     const parts = number.toString().split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     return parts.join('.');
+  },
+  formatTime(seconds) {
+    const minutes = seconds / 60;
+    const remainingSeconds = seconds % 60;
+    return sprintf('%02d:%02d', minutes, remainingSeconds);
   },
 });
 
@@ -70,28 +87,34 @@ const requestCancelFullscreen = (element) => {
   }
 };
 
+const pauseVideo = (instance) => {
+  instance.templateDict.set('playing', false);
+  instance.navState.set('minimized');
+  instance.find('#video-player').pause();
+  Meteor.clearTimeout(controlsHandler);
+};
+
 Template.player.events({
   'ended #video-player'(event, instance) {
-    instance.playPause.set('play');
+    const navState = instance.navState;
+    instance.templateDict.set('playing', false);
     navState.set('minimized');
   },
   'click #play-pause-button'(event, instance) {
-    const playPause = instance.playPause;
+    const dict = instance.templateDict;
     const navState = instance.navState;
     const video = instance.find('#video-player');
-    const controls = instance.find('.player-controls');
-    if (playPause.get() === 'play') {
-      playPause.set('pause');
+    if (dict.get('playing')) {
+      pauseVideo(instance);
+    } else {
+      dict.set('playing', true);
       navState.set('closed');
       video.play();
       controlsHandler = Meteor.setTimeout(() => {
-        controls.style.display = 'none';
+        if (!video.paused) {
+          dict.set('hideControls', true);
+        }
       }, 3000);
-    } else {
-      playPause.set('play');
-      navState.set('minimized');
-      video.pause();
-      Meteor.clearTimeout(controlsHandler);
     }
   },
   'click #fullscreen-button'(event, instance) {
@@ -106,18 +129,15 @@ Template.player.events({
   },
   'timeupdate'(event, instance) {
     const video = instance.find('#video-player');
-    const currentTime = video.currentTime;
+    const time = video.currentTime;
 
     // update progress bar
     const progressBar = instance.find('#progress-bar');
-    const percentage = Math.floor((100 / video.duration) * currentTime);
+    const percentage = Math.floor((100 / video.duration) * time);
     progressBar.value = percentage;
 
     // update current time
-    const minutes = currentTime / 60;
-    const seconds = currentTime % 60;
-    const currentSpan = instance.find('#current-time');
-    currentSpan.textContent = sprintf('%02d:%02d', minutes, seconds);
+    instance.templateDict.set('currentTime', time);
   },
   'input #progress-bar'(event, instance) {
     const video = instance.find('#video-player');
@@ -133,19 +153,21 @@ Template.player.events({
   'loadedmetadata'(event, instance) {
     const video = instance.find('#video-player');
     const duration = Math.floor(video.duration);
-    const minutes = duration / 60;
-    const seconds = duration % 60;
-    const totalSpan = instance.find('#total-time');
-    totalSpan.textContent = sprintf('%02d:%02d', minutes, seconds);
-    const currentSpan = instance.find('#current-time');
-    currentSpan.textContent = sprintf('%02d:%02d', 0, 0);
+    instance.templateDict.set('totalTime', duration);
+    instance.templateDict.set('currentTime', 0);
   },
   'mousemove'(event, instance) {
-    const controls = instance.find('.player-controls');
-    controls.style.display = 'block';
+    const dict = instance.templateDict;
+    const video = instance.find('#video-player');
+    dict.set('hideControls', false);
     Meteor.clearTimeout(controlsHandler);
     controlsHandler = Meteor.setTimeout(() => {
-      controls.style.display = 'none';
+      if (!video.paused) {
+        dict.set('hideControls', true);
+      }
     }, 3000);
+  },
+  'click #video-player'(event, instance) {
+    pauseVideo(instance);
   },
 });

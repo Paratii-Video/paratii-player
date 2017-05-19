@@ -1,12 +1,11 @@
 .nav {
   height: 100%;
   position: fixed;
-  z-index: 1;
   background-color: #fff;
   overflow-x: hidden;
   transition: 0.5s;
   box-sizing: border-box;
-  z-index: 3;
+  z-index: 999;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   color: #fff;
@@ -18,10 +17,21 @@
 
   a {
     color: lightgray;
+    margin: auto;
   }
 
   a:hover {
     color: #7d70ff;
+  }
+
+  .svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .nav-text {
+    margin: auto 10px;
+    position: absolute;
   }
 
   .active {
@@ -37,6 +47,7 @@
 
   &.closed {
     width: 0px;
+    visibility: hidden;
   }
 
   &.minimized {
@@ -47,24 +58,4 @@
     width: 220px;
     border-right: .0rem solid lightgray;
   }
-}
-
-.nav-overlay {
-  position: absolute;
-  visibility: hidden;
-  background-color: black;
-  opacity: .9;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-}
-
-.darkness {
-  visibility: visible;
-  background-color: black;
-  opacity: .7;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
 }
