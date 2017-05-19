@@ -19,7 +19,7 @@ Template.player.onCreated(function () {
   // this makes the test works
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized');
   this.templateDict = new ReactiveDict();
-  this.templateDict.set('playPause', 'play');
+  this.templateDict.set('playing', false);
   this.templateDict.set('currentTime', 0);
   this.templateDict.set('totalTime', 0);
   this.templateDict.set('hideControls', false);
@@ -31,11 +31,11 @@ Template.player.onDestroyed(function () {
 
 Template.player.helpers({
   playPause() {
-    return Template.instance().templateDict.get('playPause');
+    return Template.instance().templateDict.get('playing') ? 'pause' : 'play';
   },
   playPauseIcon() {
-    const state = Template.instance().templateDict.get('playPause');
-    return (state === 'play') ? '/img/play-icon.svg' : '/img/pause-icon.svg';
+    const state = Template.instance().templateDict.get('playing');
+    return (state) ? '/img/pause-icon.svg' : '/img/play-icon.svg';
   },
   currentTime() {
     return Template.instance().templateDict.get('currentTime');
@@ -90,15 +90,20 @@ const requestCancelFullscreen = (element) => {
 Template.player.events({
   'ended #video-player'(event, instance) {
     const navState = instance.navState;
-    instance.templateDict.set('playPause', 'play');
+    instance.templateDict.set('playing', false);
     navState.set('minimized');
   },
   'click #play-pause-button'(event, instance) {
     const dict = instance.templateDict;
     const navState = instance.navState;
     const video = instance.find('#video-player');
-    if (dict.get('playPause') === 'play') {
-      dict.set('playPause', 'pause');
+    if (dict.get('playing')) {
+      dict.set('playing', false);
+      navState.set('minimized');
+      video.pause();
+      Meteor.clearTimeout(controlsHandler);
+    } else {
+      dict.set('playing', true);
       navState.set('closed');
       video.play();
       controlsHandler = Meteor.setTimeout(() => {
@@ -106,11 +111,6 @@ Template.player.events({
           dict.set('hideControls', true);
         }
       }, 3000);
-    } else {
-      dict.set('playPause', 'play');
-      navState.set('minimized');
-      video.pause();
-      Meteor.clearTimeout(controlsHandler);
     }
   },
   'click #fullscreen-button'(event, instance) {
