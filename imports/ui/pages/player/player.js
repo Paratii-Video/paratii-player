@@ -18,9 +18,10 @@ Template.player.onCreated(function () {
   const bodyView = Blaze.getView('Template.App_body');
   // this makes the test works
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized');
-  this.playPause = new ReactiveVar('play');
-  this.currentTime = new ReactiveVar(0);
-  this.totalTime = new ReactiveVar(0);
+  this.templateDict = new ReactiveDict();
+  this.templateDict.set('playPause', 'play');
+  this.templateDict.set('currentTime', 0);
+  this.templateDict.set('totalTime', 0);
 });
 
 Template.player.onDestroyed(function () {
@@ -29,17 +30,17 @@ Template.player.onDestroyed(function () {
 
 Template.player.helpers({
   playPause() {
-    return Template.instance().playPause.get();
+    return Template.instance().templateDict.get('playPause');
   },
   playPauseIcon() {
-    const state = Template.instance().playPause.get();
+    const state = Template.instance().templateDict.get('playPause');
     return (state === 'play') ? '/img/play-icon.svg' : '/img/pause-icon.svg';
   },
   currentTime() {
-    return Template.instance().currentTime.get();
+    return Template.instance().templateDict.get('currentTime');
   },
   totalTime() {
-    return Template.instance().totalTime.get();
+    return Template.instance().templateDict.get('totalTime');
   },
   video() {
     const videoId = FlowRouter.getParam('_id');
@@ -55,7 +56,7 @@ Template.player.helpers({
     const minutes = seconds / 60;
     const remainingSeconds = seconds % 60;
     return sprintf('%02d:%02d', minutes, remainingSeconds);
-  }
+  },
 });
 
 const requestFullscreen = (element) => {
@@ -85,26 +86,26 @@ const requestCancelFullscreen = (element) => {
 Template.player.events({
   'ended #video-player'(event, instance) {
     const navState = instance.navState;
-    instance.playPause.set('play');
+    instance.templateDict.set('playPause', 'play');
     navState.set('minimized');
   },
   'click #play-pause-button'(event, instance) {
-    const playPause = instance.playPause;
+    const dict = instance.templateDict;
     const navState = instance.navState;
     const video = instance.find('#video-player');
     const controls = instance.find('.player-controls');
-    if (playPause.get() === 'play') {
-      playPause.set('pause');
+    if (dict.get('playPause') === 'play') {
+      dict.set('playPause', 'pause');
       navState.set('closed');
       video.play();
       controlsHandler = Meteor.setTimeout(() => {
-        if(!video.paused){
+        if (!video.paused) {
           controls.style.opacity = 0;
           controls.style.visibility = 'hidden';
         }
       }, 3000);
     } else {
-      playPause.set('play');
+      dict.set('playPause', 'play');
       navState.set('minimized');
       video.pause();
       Meteor.clearTimeout(controlsHandler);
@@ -124,13 +125,13 @@ Template.player.events({
     const video = instance.find('#video-player');
     const time = video.currentTime;
 
-    //update progress bar
+    // update progress bar
     const progressBar = instance.find('#progress-bar');
     const percentage = Math.floor((100 / video.duration) * time);
     progressBar.value = percentage;
 
     // update current time
-    instance.currentTime.set(time);
+    instance.templateDict.set('currentTime', time);
   },
   'input #progress-bar'(event, instance) {
     const video = instance.find('#video-player');
@@ -146,21 +147,20 @@ Template.player.events({
   'loadedmetadata'(event, instance) {
     const video = instance.find('#video-player');
     const duration = Math.floor(video.duration);
-    instance.totalTime.set(duration);
-    instance.currentTime.set(0);
+    instance.templateDict.set('totalTime', duration);
+    instance.templateDict.set('currentTime', 0);
   },
   'mousemove'(event, instance) {
     const video = instance.find('#video-player');
-    
-      const controls = instance.find('.player-controls');
-      controls.style.opacity = 1;
-      controls.style.visibility = 'visible';
-      Meteor.clearTimeout(controlsHandler);
-      controlsHandler = Meteor.setTimeout(() => {
-        if(!video.paused){
-          controls.style.opacity = 0;
-          controls.style.visibility = 'hidden';
-        }
-      }, 3000);
+    const controls = instance.find('.player-controls');
+    controls.style.opacity = 1;
+    controls.style.visibility = 'visible';
+    Meteor.clearTimeout(controlsHandler);
+    controlsHandler = Meteor.setTimeout(() => {
+      if (!video.paused) {
+        controls.style.opacity = 0;
+        controls.style.visibility = 'hidden';
+      }
+    }, 3000);
   },
 });
