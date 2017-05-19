@@ -1,11 +1,11 @@
 
 <template name="App_body">
   <div style="width: 100%; height: 100%; position: absolute;">
-    <div class="nav-overlay {{#if dark}}darkness{{/if}}"></div>
+    <div class="nav-overlay {{light}}"></div>
     {{> navigation }}
     <div class="app-container">
       {{> Template.dynamic template=main}}
-    </div>      
+    </div>
   </div>
 
 </template>
