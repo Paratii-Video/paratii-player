@@ -10,13 +10,14 @@
 
 .player-overlay {
   position: absolute;
+  padding: 10px;
   top: 0px;
   left: 60px;
   width: ~"calc(100% - 60px)";
   height: 100%;
   color: white;
   background-color: rgba(0,0,0,0.5);
-  z-index: 2;
+  z-index: 50;
   border-bottom-right-radius: 10px;
   border-top-right-radius: 10px;
   transition: 0.5s;
@@ -95,13 +96,19 @@
 }
 
 .player-controls {
-  width: 100%;
-  z-index: 3;
+  width: ~"calc(100% - 100px)";
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 100;
   position: absolute;
   left: 0;
   box-sizing: border-box;
-  padding-left: 80px;
-  bottom: 20px;
+  margin-left: 80px;
+  bottom: 0px;
+  transition: 0.5s;
+  &.pause{
+    background-color: rgba(0,0,0,0.5);
+  }
   button {
     color: white;
     background-color: transparent;
@@ -119,7 +126,6 @@
     margin: auto;
     border: none;
     height: 5px;
-    width: 90%;
   }
 
   /* Firefox */

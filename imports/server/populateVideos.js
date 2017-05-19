@@ -2,7 +2,7 @@ import { Videos } from '/imports/api/videos.js'
 
 export const populateVideos = () => {
   // we repopulate the video list on each restart
-    // if (Videos.find().count() === 0) {
+    if (Videos.find().count() === 0) {
 
       console.log("|"); console.log("|")
       console.log("--> Resetting video collection")
@@ -47,5 +47,5 @@ export const populateVideos = () => {
           Videos.insert(video)
         })
 
-    // }
+    }
 }

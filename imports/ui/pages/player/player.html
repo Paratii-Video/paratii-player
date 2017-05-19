@@ -5,19 +5,18 @@
       <source src="{{ src }}" type="video/mp4" />
     </video>
     {{/with}}
-    <div class="player-controls">
+    <div class="player-controls {{playPause}}">
       <input type="range" id="progress-bar" value="0">
-      <!-- <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress> -->
       <br />
       <button id="play-pause-button" title="{{playPause}}">
         <img src= "{{playPauseIcon}}">
       </button>
       <input id="vol-control" value=100 type="range" min="0" max="100" step="1"/>
-      <span id="current-time"></span>
+      <span id="current-time">{{formatTime currentTime}}</span>
       <span class="slash">/</span>
-      <span id="total-time"></span>
+      <span id="total-time">{{formatTime totalTime}}</span>
       <button id="fullscreen-button" title="{{fullscreen}}">
-        <img src= "img/fullscreen-icon.svg">
+        <img src= "/img/fullscreen-icon.svg">
       </button>
 
     </div>
@@ -30,8 +29,8 @@
       <div class="player-info">{{ title }}</div>
       <div class="player-description">{{ description }}</div>
       <div class="player-statistics">
-        <img src= "img/view-icon.svg">{{formatNumber stats.views}} 
-        <img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}} 
+        <img src= "/img/view-icon.svg">{{formatNumber stats.views}}
+        <img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}
         <img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}
       </div>
     </div>
