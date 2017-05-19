@@ -4,7 +4,7 @@ dependencies:
 test:
   override:
     - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --once --driver-package dispatch:mocha  --port 9999
-    - npm run lint
+
 deployment:
   staging:
     branch: master
