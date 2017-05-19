@@ -69,7 +69,7 @@ Template.navigation.helpers({
         text: 'About Paratii',
         path: FlowRouter.path('about'),
       }, {
-        icon: 'img/lock_icon.svg',
+        icon: '/img/lock_icon.svg',
         text: 'DEBUG',
         path: FlowRouter.path('debug'),
       },
