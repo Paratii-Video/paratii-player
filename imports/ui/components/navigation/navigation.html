@@ -25,7 +25,7 @@
       </li>
     {{/if}}
     {{#each navLinks}}
-      <li class="{{isActivePath path }}">
+      <li class="{{isActivePath path }}" id="{{ id }}">
         <a href="{{path}}" class="textNav">
           <img src= "{{icon}}" class="svg">
           {{#if isMaximized}}
@@ -36,7 +36,7 @@
     {{/each}}
 
     {{#with aboutLink}}
-      <li class="{{isActivePath path }}">
+      <li class="{isActivePath path }}">
         <a href="{{path}}" class="textNav">
           <img src= "{{icon}}" class="svg">
           {{#if isMaximized}}

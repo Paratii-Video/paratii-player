@@ -27,29 +27,35 @@ Template.navigation.helpers({
         icon: '/img/playlists_icon.svg',
         text: 'Playlist',
         path: FlowRouter.path('playlists'),
+        id: 'playlist',
       }, {
         icon: '/img/myvideos_icon.svg',
         text: 'My Videos',
         path: FlowRouter.path('myvideos'),
+        id: 'myvideos',
 
       }, {
         icon: '/img/upload_icon.svg',
         text: 'Upload',
         path: FlowRouter.path('upload'),
+        id: 'upload',
 
       }, {
         icon: '/img/trendingcause_icon.svg',
         text: 'Trending causes',
         path: FlowRouter.path('trendingCauses'),
+        id: 'trendingCauses',
 
       }, {
         icon: '/img/wanderlust_icon.svg',
         text: 'Wanderlust',
         path: FlowRouter.path('wanderlust'),
+        id: 'wanderlust',
       }, {
         icon: '/img/lock_icon.svg',
         text: 'DEBUG',
         path: FlowRouter.path('debug'),
+        id: 'debug',
       },
     ]);
 
@@ -58,8 +64,8 @@ Template.navigation.helpers({
         {
           icon: '/img/avatar_img.svg',
           text: 'Log out',
-          path: '',
-
+          path: 'account',
+          id: 'logout',
         },
       ]);
     }
@@ -92,5 +98,8 @@ Template.navigation.events({
   },
   'mouseout #nav'(event, instance) {
     instance.navState.set('minimized');
+  },
+  'click #logout'(event) {
+    Meteor.logout();
   },
 });
