@@ -92,6 +92,7 @@ const pauseVideo = (instance) => {
   instance.navState.set('minimized');
   instance.find('#video-player').pause();
   Meteor.clearTimeout(controlsHandler);
+  instance.templateDict.set('hideControls', false);
 };
 
 Template.player.events({
