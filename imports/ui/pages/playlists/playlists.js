@@ -11,7 +11,9 @@ Template.playlists.helpers({
     const videos = Videos.find();
     return videos;
   },
-
+  hasPrice(video) {
+    return video && video.price && video.price > 0;
+  },
   formatNumber(number) {
     const parts = number.toString().split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
