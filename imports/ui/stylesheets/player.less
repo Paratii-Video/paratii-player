@@ -116,14 +116,16 @@
     position: relative;
     float: left;
     margin: 0 10px;
+    transition: 0.5s;
   }
   #vol-control {
     width: 10%;
+    height: 20px;
   }
   #progress-bar {
     margin: auto;
     border: none;
-    height: 5px;
+    height: 20px;
   }
 
   /* Firefox */
@@ -188,4 +190,9 @@
   #total-time, .slash {
     color: #aaa;
   }
+}
+
+.closed {
+  width: 0 !important;
+  visibility: hidden;
 }

@@ -9,6 +9,8 @@ import './player.html';
 
 let fullscreenOn = false;
 let controlsHandler;
+let volumeHandler;
+let previousVolume = 100;
 
 // Template.player.onCreated(function bodyOnCreated() {
 //   Meteor.subscribe('videos');
@@ -23,6 +25,7 @@ Template.player.onCreated(function () {
   this.templateDict.set('currentTime', 0);
   this.templateDict.set('totalTime', 0);
   this.templateDict.set('hideControls', false);
+  this.templateDict.set('showVolume', false);
 });
 
 Template.player.onDestroyed(function () {
@@ -60,6 +63,9 @@ Template.player.helpers({
     const minutes = seconds / 60;
     const remainingSeconds = seconds % 60;
     return sprintf('%02d:%02d', minutes, remainingSeconds);
+  },
+  volumeClass() {
+    return Template.instance().templateDict.get('showVolume') ? '' : 'closed';
   },
 });
 
@@ -170,5 +176,26 @@ Template.player.events({
   },
   'click #video-player'(event, instance) {
     pauseVideo(instance);
+  },
+  'mouseover #volume-button, mouseover #vol-control'(event, instance) {
+    Meteor.clearTimeout(volumeHandler);
+    instance.templateDict.set('showVolume', true);
+  },
+  'mouseout #volume-button, mouseout #vol-control'(event, instance) {
+    volumeHandler = Meteor.setTimeout(() => {
+      instance.templateDict.set('showVolume', false);
+    }, 1000);
+  },
+  'click #volume-button'(event, instance) {
+    const video = instance.find('#video-player');
+    const volumeBar = instance.find('#vol-control');
+    if (video.volume > 0) {
+      previousVolume = video.volume;
+      video.volume = 0;
+      volumeBar.value = 0;
+    } else {
+      video.volume = previousVolume;
+      volumeBar.value = previousVolume * 100;
+    }
   },
 });
