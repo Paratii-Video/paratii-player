@@ -8,7 +8,7 @@ import './playlists.html';
 
 Template.playlists.helpers({
   videos() {
-    const videos = Videos.find().fetch();
+    const videos = Videos.find();
     return videos;
   },
 
