@@ -81,6 +81,10 @@ Template.navigation.helpers({
   isMaximized() {
     return (Template.instance().navState.get() === 'maximized');
   },
+  user(){
+    return Meteor.user()
+  },
+
 });
 
 Template.navigation.events({
