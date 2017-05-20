@@ -5,8 +5,7 @@ export const populateVideos = () => {
     if (Videos.find().count() === 0) {
 
       console.log("|"); console.log("|")
-      console.log("--> Resetting video collection")
-      Videos.remove({});
+      console.log("--> populate video collection")
 
       const v1 = {
         id: 1,

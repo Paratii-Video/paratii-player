@@ -1,1 +1,1 @@
-import './upload.html'
+import './upload.html';

@@ -98,6 +98,7 @@ reactive-var@1.0.11
 reload@1.1.11
 retry@1.0.9
 routepolicy@1.0.12
+sacha:spin@2.3.1
 service-configuration@1.0.11
 session@1.1.7
 sgi:sprintfjs@0.0.2

@@ -23,14 +23,9 @@ less@2.7.9                    # Leaner CSS language
 
 practicalmeteor:mocha             # A package for writing and running your meteor app and package tests with mocha
 johanbrook:publication-collector  # Test a Meteor publication by collecting its output
-ethereum:tools
-ethereum:accounts
-ethereum:web3
-ethereum:blocks
 session@1.1.7
 arillo:flow-router-helpers
 raix:handlebar-helpers
-ethereum:elements
 tap:i18n
 accounts-ui@1.1.9
 accounts-password@1.3.6
@@ -48,3 +43,10 @@ hwillson:stub-collections
 dburles:factory
 practicalmeteor:sinon
 reactive-dict
+
+ethereum:accounts
+ethereum:blocks
+ethereum:elements
+ethereum:tools
+ethereum:web3
+sacha:spin

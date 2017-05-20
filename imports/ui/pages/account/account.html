@@ -13,7 +13,7 @@
 	    {{/each}}
 	    	<a href="/configure_account">configure your account</a>
 	    	or
-	    	<a href="">go to your wallet</a>
+	    	<a href="{{pathFor route='wallet' }}">go to your wallet</a>
 	    </li>
         {{#if currentUser}}
         <li>
@@ -25,7 +25,3 @@
     {{/if}}
 </template>
 
-
-<template name="override-atTitle">
-<h1>XXX</h1>
-</template>

@@ -1,1 +1,1 @@
-import './trendingCauses.html'
+import './trendingCauses.html';

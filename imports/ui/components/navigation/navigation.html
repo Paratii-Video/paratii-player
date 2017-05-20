@@ -1,14 +1,54 @@
 <template name="navigation">
   <div id="nav" class="nav {{navState}}">
+    {{#if currentUser }}
+      <li class="{{isActivePath '/account'}} main">
+        <a href="/account" class="textNav">
+          {{#if isMaximized}}
+          {{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-tiny"}}
+          <span class="nav-text">
+            {{user.profile.name}}
+          </span>
+          <span class="nav-text nav-text2">1.234.567 PTI</span>
+          {{else}}
+          {{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-tiny"}}
+          {{/if}}
+        </a>
+      </li>
+
+
+    {{ else }}
+      <li class="{{isActivePath '/account'}} main">
+        <a href="/account" class="textNav">
+          <img src= "/img/avatar_img.svg" class="svg">
+          {{#if isMaximized}}
+          <span class="nav-text  nav-text3">Sign up or login</span>
+          {{/if}}
+        </a>
+      </li>
+    {{/if}}
     {{#each navLinks}}
-      <li class="{{isActivePath path }}">
+      <li class="{{isActivePath path }}" id="{{ id }}">
         <a href="{{path}}" class="textNav">
           <img src= "{{icon}}" class="svg">
           {{#if isMaximized}}
-          <span class='nav-text'>{{text}}</span>
+          <span class="nav-text">{{text}}</span>
           {{/if}}
         </a>
       </li>
     {{/each}}
+
+    {{#with aboutLink}}
+      <li class="{isActivePath path }}">
+        <a href="{{path}}" class="textNav">
+          <img src= "{{icon}}" class="svg">
+          {{#if isMaximized}}
+          <span class="nav-text">{{text}}</span>
+          {{/if}}
+        </a>
+      </li>
+    {{/with}}
+    <li>
+        indigo release - alpha v.0.1
+    </li>
   </div>
 </template>

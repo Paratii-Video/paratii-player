@@ -5,6 +5,21 @@ Template.App_body.onCreated(function () {
   this.navState = new ReactiveVar('minimized');
 });
 
+
+
+Template.App_body.onRendered(function () {
+  /*
+    Minimize the menu when route change, is used to prevent
+    UI bug if user play the video and go back with the browser back function
+  */
+  this.autorun(() => {
+    FlowRouter.watchPathChange();
+    var currentContext = FlowRouter.current();
+    this.navState.set('minimized');
+  });
+
+});
+
 Template.App_body.helpers({
   light() {
     return (Template.instance().navState.get() === 'maximized') ? '' : 'toggleFade';
