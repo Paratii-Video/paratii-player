@@ -20,4 +20,7 @@ describe('account', function () {
 
 
   });
+  it('changes name and email on form submit', function() {
+  			
+  })
 });
