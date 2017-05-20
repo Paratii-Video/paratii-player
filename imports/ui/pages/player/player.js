@@ -1,4 +1,3 @@
-/* eslint no-console: "off" */
 import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import { sprintf } from 'meteor/sgi:sprintfjs';
@@ -11,15 +10,26 @@ let fullscreenOn = false;
 let controlsHandler;
 let volumeHandler;
 let previousVolume = 100;
+let _video;
 
 // Template.player.onCreated(function bodyOnCreated() {
 //   Meteor.subscribe('videos');
 // });
 
+const video = () => {
+  if (!_video) {
+    const videoId = FlowRouter.getParam('_id');
+    _video = Videos.findOne({ _id: videoId });
+  }
+  return _video;
+};
+
 Template.player.onCreated(function () {
   const bodyView = Blaze.getView('Template.App_body');
+
   // this makes the test works
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized');
+
   this.templateDict = new ReactiveDict();
   this.templateDict.set('playing', false);
   this.templateDict.set('currentTime', 0);
@@ -47,9 +57,7 @@ Template.player.helpers({
     return Template.instance().templateDict.get('totalTime');
   },
   video() {
-    const videoId = FlowRouter.getParam('_id');
-    const video = Videos.findOne({ _id: videoId });
-    return video;
+    return video();
   },
   hideControls() {
     return Template.instance().templateDict.get('hideControls') ? 'toggleFade' : '';
@@ -77,7 +85,7 @@ const requestFullscreen = (element) => {
   } else if (element.webkitRequestFullscreen) {
     element.webkitRequestFullscreen();
   } else {
-    console.log('Unsuported fullscreen.');
+    // console.log('Unsuported fullscreen.');
   }
 };
 
@@ -89,7 +97,7 @@ const requestCancelFullscreen = (element) => {
   } else if (element.webkitExitFullscreen) {
     element.webkitExitFullscreen();
   } else {
-    console.log('Unsuported fullscreen.');
+    // console.log('Unsuported fullscreen.');
   }
 };
 
@@ -110,66 +118,66 @@ Template.player.events({
   'click #play-pause-button'(event, instance) {
     const dict = instance.templateDict;
     const navState = instance.navState;
-    const video = instance.find('#video-player');
+    const videoPlayer = instance.find('#video-player');
     if (dict.get('playing')) {
       pauseVideo(instance);
     } else {
       dict.set('playing', true);
       navState.set('closed');
-      video.play();
+      videoPlayer.play();
       controlsHandler = Meteor.setTimeout(() => {
-        if (!video.paused) {
+        if (!videoPlayer.paused) {
           dict.set('hideControls', true);
         }
       }, 3000);
     }
   },
   'click #fullscreen-button'(event, instance) {
-    const video = instance.find('#player-container');
+    const videoPlayer = instance.find('#player-container');
     if (fullscreenOn) {
       requestCancelFullscreen(document);
       fullscreenOn = false;
     } else {
-      requestFullscreen(video);
+      requestFullscreen(videoPlayer);
       fullscreenOn = true;
     }
   },
   'timeupdate'(event, instance) {
-    const video = instance.find('#video-player');
-    const time = video.currentTime;
+    const videoPlayer = instance.find('#video-player');
+    const time = videoPlayer.currentTime;
 
     // update progress bar
     const progressBar = instance.find('#progress-bar');
-    const percentage = Math.floor((100 / video.duration) * time);
+    const percentage = Math.floor((100 / videoPlayer.duration) * time);
     progressBar.value = percentage;
 
     // update current time
     instance.templateDict.set('currentTime', time);
   },
   'input #progress-bar'(event, instance) {
-    const video = instance.find('#video-player');
+    const videoPlayer = instance.find('#video-player');
     const inputValue = event.target.valueAsNumber;
-    const time = (inputValue / 100.0) * video.duration;
-    video.currentTime = time;
+    const time = (inputValue / 100.0) * videoPlayer.duration;
+    videoPlayer.currentTime = time;
   },
   'input #vol-control'(event, instance) {
-    const video = instance.find('#video-player');
+    const videoPlayer = instance.find('#video-player');
     const inputValue = event.target.valueAsNumber;
-    video.volume = inputValue / 100.0;
+    videoPlayer.volume = inputValue / 100.0;
   },
   'loadedmetadata'(event, instance) {
-    const video = instance.find('#video-player');
-    const duration = Math.floor(video.duration);
+    const videoPlayer = instance.find('#video-player');
+    const duration = Math.floor(videoPlayer.duration);
     instance.templateDict.set('totalTime', duration);
     instance.templateDict.set('currentTime', 0);
   },
   'mousemove'(event, instance) {
     const dict = instance.templateDict;
-    const video = instance.find('#video-player');
+    const videoPlayer = instance.find('#video-player');
     dict.set('hideControls', false);
     Meteor.clearTimeout(controlsHandler);
     controlsHandler = Meteor.setTimeout(() => {
-      if (!video.paused) {
+      if (!videoPlayer.paused) {
         dict.set('hideControls', true);
       }
     }, 3000);
@@ -187,14 +195,14 @@ Template.player.events({
     }, 1000);
   },
   'click #volume-button'(event, instance) {
-    const video = instance.find('#video-player');
+    const videoPlayer = instance.find('#video-player');
     const volumeBar = instance.find('#vol-control');
-    if (video.volume > 0) {
-      previousVolume = video.volume;
-      video.volume = 0;
+    if (videoPlayer.volume > 0) {
+      previousVolume = videoPlayer.volume;
+      videoPlayer.volume = 0;
       volumeBar.value = 0;
     } else {
-      video.volume = previousVolume;
+      videoPlayer.volume = previousVolume;
       volumeBar.value = previousVolume * 100;
     }
   },
