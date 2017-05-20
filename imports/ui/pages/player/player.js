@@ -59,6 +59,9 @@ Template.player.helpers({
   video() {
     return video();
   },
+  hasPrice() {
+    return video().price && video().price > 0;
+  },
   hideControls() {
     return Template.instance().templateDict.get('hideControls') ? 'toggleFade' : '';
   },

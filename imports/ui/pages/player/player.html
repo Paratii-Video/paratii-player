@@ -37,6 +37,9 @@
           <span class="statistic-text"><img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
           <span class="statistic-text"><img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
         </div>
+        {{#if hasPrice}}
+          <button class="player-price">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
+        {{/if}}
       </div>
     </div>
     {{/with}}
