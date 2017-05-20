@@ -17,8 +17,8 @@ let _video;
 // });
 
 const video = () => {
-  if (!_video) {
-    const videoId = FlowRouter.getParam('_id');
+  const videoId = FlowRouter.getParam('_id');
+  if (!_video || _video.id !== videoId) {
     _video = Videos.findOne({ _id: videoId });
   }
   return _video;
