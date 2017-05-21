@@ -43,15 +43,15 @@ AccountsTemplates.configure({
   // Texts
   texts: {
     button: {
-        signUp: "Create your account"
+      signUp: 'Create your account',
     },
     // socialSignUp: "Register...",
     socialIcons: {
-        'meteor-developer': 'fa fa-rocket'
+      'meteor-developer': 'fa fa-rocket',
     },
     title: {
-        forgotPwd: 'Recover Your Password',
-        signUp: 'Sign Up',
+      forgotPwd: 'Recover Your Password',
+      signUp: 'Sign Up',
     },
   },
 });
@@ -71,7 +71,7 @@ AccountsTemplates.addField(
     minLength: 4,
     // re: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
     // errStr: 'At least 1 digit, 1 lowercase and 1 uppercase',
-  }
+  },
 );
 
 AccountsTemplates.addField(email);

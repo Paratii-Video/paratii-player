@@ -1,9 +1,4 @@
 import { Template } from 'meteor/templating';
-// import { web3 } from '/imports/lib/ethereum/web3.js';
-// import lightwallet from "eth-lightwallet/dist/lightwallet.js";
-// import HookedWeb3Provider from 'hooked-web3-provider';
-import users from '../../../api/users.js';
-// import { FlowRouter } from 'meteor/kadira:flow-router';
 import { createWallet } from '../../../lib/ethereum/wallet.js';
 import './account.html';
 
@@ -13,28 +8,26 @@ Template.account.events({
     // Prevent default browser form submit
     event.preventDefault();
     const target = event.target;
-    let password = target.password.value;
-    let options = {
+    const password = target.password.value;
+    const options = {
       username: target.username.value,
       email: target.email.value,
-      password: password,
-      profile: {},
-    }
-    // create a new user
-    const user = users.createUser(options)
-    // create a wallet
-    const seed = createWallet(password, 'xxx');
-    console.log('seed is important:' + seed);
-    console.log(user)
-    return
+      password,
+      // profile: {},
+    };
+    // create a new user (method returns user object)
+    Meteor.call('users.create', options);
+    // create a wallet (method returns seed)
+    // todo: show the seed to the user
+    createWallet(password, 'xxx');
   },
   'submit #form-update-account'(event) {
     // Prevent default browser form submit
     event.preventDefault();
     const target = event.target;
-    Meteor.call('users.update', Meteor.userId(), {
-        'profile.fullname' : target.fullname.value,
-        email: target.email.value,
+    Meteor.call('users.update', {
+      'profile.fullname': target.fullname.value,
+      email: target.email.value,
     });
   },
 });

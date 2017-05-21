@@ -2,9 +2,6 @@ import { Template } from 'meteor/templating';
 import { Videos } from '../../../../imports/api/videos.js';
 
 import './playlists.html';
-// Template.playlists.onCreated(function bodyOnCreated() {
-//   Meteor.subscribe('videos');
-// });
 
 Template.playlists.helpers({
   videos() {
@@ -16,7 +13,7 @@ Template.playlists.helpers({
     /*
       Add check if number is not defiend
     */
-    if(!number){
+    if (!number) {
       return false;
     }
     const parts = number.toString().split('.');

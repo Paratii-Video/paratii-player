@@ -8,9 +8,9 @@ import '../about.js';
 
 describe('about page', function () {
   it('renders correctly with simple data', function () {
-    const data = {}
-    withRenderedTemplate('about', data, el => {
-       	assert.isAtLeast($(el).find('.titleContainer').length, 1);
+    const data = {};
+    withRenderedTemplate('about', data, (el) => {
+      assert.isAtLeast($(el).find('.titleContainer').length, 1);
     });
   });
 });

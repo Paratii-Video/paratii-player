@@ -1,4 +1,4 @@
-export const Videos = new Mongo.Collection("videos");
+export const Videos = new Mongo.Collection('videos');
 
 // if (Meteor.isServer) {
 //   // This code only runs on the server
