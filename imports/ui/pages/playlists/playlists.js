@@ -8,7 +8,9 @@ Template.playlists.helpers({
     const videos = Videos.find();
     return videos;
   },
-
+  hasPrice(video) {
+    return video && video.price && video.price > 0;
+  },
   formatNumber(number) {
     /*
       Add check if number is not defiend

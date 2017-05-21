@@ -11,7 +11,10 @@
       <button id="play-pause-button" title="{{playPause}}">
         <img src= "{{playPauseIcon}}">
       </button>
-      <input id="vol-control" value=100 type="range" min="0" max="100" step="1"/>
+      <button id="volume-button" title="volume">
+        <img src="/img/volume-icon.svg" />
+      </button>
+      <input id="vol-control" class="{{ volumeClass }}" value=100 type="range" min="0" max="100" step="1"/>
       <span id="current-time">{{formatTime currentTime}}</span>
       <span class="slash">/</span>
       <span id="total-time">{{formatTime totalTime}}</span>
@@ -30,10 +33,13 @@
         <div class="player-title">{{ title }}</div>
         <div class="player-description">{{ description }}</div>
         <div class="player-statistics">
-          <img src= "/img/view-icon.svg">{{formatNumber stats.views}}
-          <img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}
-          <img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}
+          <span class="statistic-text"><img src= "/img/view-icon.svg">{{formatNumber stats.views}}</span>
+          <span class="statistic-text"><img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
+          <span class="statistic-text"><img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
         </div>
+        {{#if hasPrice}}
+          <button class="player-price">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
+        {{/if}}
       </div>
     </div>
     {{/with}}

@@ -20,7 +20,9 @@
           <div class="videoThumbContent">
             <a href="{{pathFor route='player' _id=this._id}}"><img src="{{thumb}}"/></a>
             <div class="videoCardDuration">{{duration}}</div>
-            <div class="videoCardPrice">{{formatNumber price}} PTI</div>   
+            {{#if hasPrice this}}
+              <div class="videoCardPrice">{{price }} PTI</div>
+            {{/if}}
           </div>
           <div class="videoCardTitle"><a href="{{pathFor route='player' _id=this._id}}">{{title}}</a></div>
           <div class="videoCardViews">{{formatNumber stats.views}} views</div>
