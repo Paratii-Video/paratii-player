@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint-disable func-names, prefer-arrow-callback, arrow-parens */
 
 import { createWallet } from '../wallet.js'
 

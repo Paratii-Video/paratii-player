@@ -6,7 +6,6 @@ Template.App_body.onCreated(function () {
 });
 
 
-
 Template.App_body.onRendered(function () {
   /*
     Minimize the menu when route change, is used to prevent
@@ -14,10 +13,9 @@ Template.App_body.onRendered(function () {
   */
   this.autorun(() => {
     FlowRouter.watchPathChange();
-    var currentContext = FlowRouter.current();
+    // const currentContext = FlowRouter.current();
     this.navState.set('minimized');
   });
-
 });
 
 Template.App_body.helpers({

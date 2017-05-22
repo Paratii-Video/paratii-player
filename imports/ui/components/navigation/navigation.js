@@ -81,8 +81,8 @@ Template.navigation.helpers({
   isMaximized() {
     return (Template.instance().navState.get() === 'maximized');
   },
-  user(){
-    return Meteor.user()
+  user() {
+    return Meteor.user();
   },
 
 });
@@ -103,7 +103,7 @@ Template.navigation.events({
   'mouseout #nav'(event, instance) {
     instance.navState.set('minimized');
   },
-  'click #logout'(event) {
+  'click #logout'() {
     Meteor.logout();
   },
 });

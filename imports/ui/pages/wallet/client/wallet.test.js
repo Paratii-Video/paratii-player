@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* eslint-disable func-names, prefer-arrow-callback */
+/* eslint-disable func-names, prefer-arrow-callback, arrow-parens */
 
 import { assert } from 'chai';
 import { $ } from 'meteor/jquery';

@@ -1,27 +1,42 @@
 <template name="account">
-    <div class="container">
-    {{> atForm }}
-    </div>   
     {{#if currentUser }}
     <div class="container">
-	    <h2>Y</h2>
-	    You are logged in!
-	    <ul>
-	    <li>your name: {{currentUser.username}}</li>
-	    <li>your email: {{#each currentUser.emails}}
-	        {{ address }}
-	    {{/each}}
-	    	<a href="/configure_account">configure your account</a>
-	    	or
-	    	<a href="{{pathFor route='wallet' }}">go to your wallet</a>
-	    </li>
-        {{#if currentUser}}
-        <li>
-           {{> atNavButton }}
-	    </li>
-      {{/if}}
-    </ul>
+    	<div class="titleContainer">Profile
+	    	<a href="{{pathFor route='wallet' }}" class="btn btn-default">Go to wallet</a>
+    	</div>
+	    <div class="line"></div>
+	    <div class="container">
+    	<form id="form-update-account">
+	    <div class="row">
+	    <div class="col-md-8">
+    		    Your name <input type="text" name="fullname" placeholder="Your name" value="{{currentUser.profile.fullname}}" >
+    		    <br>
+    		    Your email
+	    	    {{#each currentUser.emails}}
+    		   		<input type="text" name="email" placeholder="Your email" value="{{address}}" >
+			    {{/each}}
+	    </div>
+	    <div class="col-md-4">
+	    	{{#if currentUser.profile.image }}
+          	{{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-medium"}}
+	    	<button class="btn btn-default" id="button-upload-image">Remove Image</button>
+	    	{{else}}
+          	{{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-medium"}}
+	    	<button class="btn btn-default" id="button-upload-image">Upload Image</button>
+	    	{{/if}}
+	    </div>
+	    </div>
+	    <div class="row">
+			<button class="btn btn-default" id="button-change-password">Change password</button>
+			<input type="submit" class="btn btn-default" value="Save changes"/>
+	    </div>
+	    </form>
+	    </div>
     </div>
+	{{else}}
+    <div class="container">
+	    {{> atForm }}
+    </div>   
     {{/if}}
 </template>
 
