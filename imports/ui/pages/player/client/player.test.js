@@ -6,6 +6,7 @@ import { $ } from 'meteor/jquery';
 import StubCollections from 'meteor/hwillson:stub-collections';
 import { Factory } from 'meteor/dburles:factory';
 import { sinon } from 'meteor/practicalmeteor:sinon';
+import { Blaze } from 'meteor/blaze';
 
 import { withRenderedTemplate } from '../../../test-helpers.js';
 import { Videos } from '../../../../api/videos.js';
@@ -64,10 +65,9 @@ describe('player page', function () {
   });
 
   it('playpause helper is working', function () {
-    const data = {};
     const el = document.createElement('div');
     document.body.appendChild(el);
-    const view = Blaze.renderWithData(Template.player, data, el);
+    const view = Blaze.render(Template.player, el);
     // force Template.instance() to return view.templateInstance
     Template._currentTemplateInstanceFunc = view.templateInstance;
     assert.equal(Template.player.__helpers[' playPause'](), 'play');
