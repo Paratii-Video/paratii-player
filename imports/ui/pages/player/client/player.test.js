@@ -24,7 +24,7 @@ describe('player page', function () {
     Factory.create('video', {
       _id: videoId,
       title: videoTitle,
-      price: price,
+      price,
     });
 
     sinon.stub(FlowRouter, 'getParam', () => videoId);
@@ -48,12 +48,12 @@ describe('player page', function () {
   it('the formatNumber() helper returns the number formatted correctly', function () {
     const value = Template.player.__helpers[' formatNumber'](1000);
     assert.equal(value, '1.000');
-  }); 
+  });
 
   it('the formatTime() helper returns the number formatted correctly', function () {
     const value = Template.player.__helpers[' formatTime'](140);
     assert.equal(value, '02:20');
-  }); 
+  });
 
   it('renders correctly with simple data', function () {
     const data = {
@@ -61,5 +61,15 @@ describe('player page', function () {
     withRenderedTemplate('player', data, (el) => {
       assert.equal($(el).find('#video-player').length, 1);
     });
+  });
+
+  it('playpause helper is working', function () {
+    const data = {};
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const view = Blaze.renderWithData(Template.player, data, el);
+    // force Template.instance() to return view.templateInstance
+    Template._currentTemplateInstanceFunc = view.templateInstance;
+    assert.equal(Template.player.__helpers[' playPause'](), 'play');
   });
 });
