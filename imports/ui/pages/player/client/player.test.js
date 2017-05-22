@@ -18,12 +18,13 @@ Factory.define('video', Videos, {});
 describe('player page', function () {
   const videoId = '12345';
   const videoTitle = 'Rosencrants and Guildenstern are dead';
-
+  const price = 10;
   beforeEach(function () {
     StubCollections.stub([Videos]);
     Factory.create('video', {
       _id: videoId,
       title: videoTitle,
+      price: price,
     });
 
     sinon.stub(FlowRouter, 'getParam', () => videoId);
@@ -38,6 +39,21 @@ describe('player page', function () {
     const video = Template.player.__helpers[' video']();
     assert.equal(video._id, videoId);
   });
+
+  it('the hasPrice() helper returns the expected value', function () {
+    const value = Template.player.__helpers[' hasPrice']();
+    assert.equal(value, true);
+  });
+
+  it('the formatNumber() helper returns the number formatted correctly', function () {
+    const value = Template.player.__helpers[' formatNumber'](1000);
+    assert.equal(value, '1.000');
+  }); 
+
+  it('the formatTime() helper returns the number formatted correctly', function () {
+    const value = Template.player.__helpers[' formatTime'](140);
+    assert.equal(value, '02:20');
+  }); 
 
   it('renders correctly with simple data', function () {
     const data = {
