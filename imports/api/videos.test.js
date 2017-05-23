@@ -11,6 +11,15 @@ function likeVideo(videoId, userId) {
   method.apply(invocation, [videoId]);
 }
 
+function dislikeVideo(videoId, userId) {
+  const method = Meteor.server.method_handlers['videos.dislike'];
+  // Set up a fake method invocation that looks like what the method expects
+  const invocation = { userId };
+  // Run the method with `this` set to the fake invocation
+  method.apply(invocation, [videoId]);
+}
+
+
 if (Meteor.isServer) {
   describe('Videos', () => {
     describe('methods', () => {
@@ -38,8 +47,24 @@ if (Meteor.isServer) {
         // the first like shoudl increment the likes counter with 1
         likeVideo(videoId, userId);
         assert.equal(Videos.findOne({ _id: videoId }).stats.likes, 3142);
+        // the like is also registered with the user
+        assert.deepEqual(Meteor.users.findOne({ _id: userId }).stats.likes, [videoId]);
 
         // if our user likes the same video again, it will have no effect
+        likeVideo(videoId, userId);
+        assert.equal(Videos.findOne({ _id: videoId }).stats.likes, 3142);
+        assert.equal(Videos.findOne({ _id: videoId }).stats.dislikes, 2718);
+
+
+        // if the user dislikes the video, the likes counter will be down
+        dislikeVideo(videoId, userId);
+        assert.equal(Videos.findOne({ _id: videoId }).stats.likes, 3141);
+        assert.equal(Videos.findOne({ _id: videoId }).stats.dislikes, 2719);
+
+        // dislikes again and nothing will change, the likes counter will be down
+        dislikeVideo(videoId, userId);
+        assert.equal(Videos.findOne({ _id: videoId }).stats.likes, 3141);
+        assert.equal(Videos.findOne({ _id: videoId }).stats.dislikes, 2719);
       });
     });
   });
