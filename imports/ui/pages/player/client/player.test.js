@@ -22,11 +22,16 @@ describe('player page', function () {
   const price = 10;
 
   beforeEach(function () {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const view = Blaze.render(Template.player, el);
+    Template._currentTemplateInstanceFunc = view.templateInstance;
+    
     StubCollections.stub([Videos]);
     Factory.create('video', {
       _id: videoId,
       title: videoTitle,
-      price,
+      price: price,
       stats: {
         likes: 3141,
         dislikes: 2718,
@@ -41,6 +46,22 @@ describe('player page', function () {
     FlowRouter.getParam.restore();
   });
 
+  it('playpause helper is working', function () {
+    assert.equal(Template.player.__helpers[' playPause'](), 'play');
+  });
+
+  it('playPauseIcon returns the expected initial value', function () {    
+    assert.equal(Template.player.__helpers[' playPauseIcon'](), '/img/play-icon.svg');
+  });
+
+  it('currentTime returns the expected initial value', function () {    
+    assert.equal(Template.player.__helpers[' currentTime'](), 0);
+  });
+
+  it('totalTime returns the expected initial value', function () {    
+    assert.equal(Template.player.__helpers[' totalTime'](), 0);
+  });
+
   it('the video() helper returns the expected video', function () {
     const video = Template.player.__helpers[' video']();
     assert.equal(video._id, videoId);
@@ -51,14 +72,22 @@ describe('player page', function () {
     assert.equal(value, true);
   });
 
+  it('hideControls returns the expected initial value', function () {    
+    assert.equal(Template.player.__helpers[' hideControls'](), '');
+  });
+
   it('the formatNumber() helper returns the number formatted correctly', function () {
     const value = Template.player.__helpers[' formatNumber'](1000);
     assert.equal(value, '1.000');
   });
 
   it('the formatTime() helper returns the number formatted correctly', function () {
-    const value = Template.player.__helpers[' formatTime'](140);
-    assert.equal(value, '02:20');
+    const value = Template.player.__helpers[' formatTime'](130);
+    assert.equal(value, '02:10');
+  });
+
+  it('volumeClass returns the expected initial value', function () {    
+    assert.equal(Template.player.__helpers[' volumeClass'](), 'closed');
   });
 
   it('renders correctly with simple data', function () {
@@ -68,15 +97,7 @@ describe('player page', function () {
       assert.equal($(el).find('#video-player').length, 1);
     });
   });
-
-  it('playpause helper is working', function () {
-    const el = document.createElement('div');
-    document.body.appendChild(el);
-    const view = Blaze.render(Template.player, el);
-    // force Template.instance() to return view.templateInstance
-    Template._currentTemplateInstanceFunc = view.templateInstance;
-    assert.equal(Template.player.__helpers[' playPause'](), 'play');
-  });
+  
 
   it('increments the likes counter when clicked', function () {
     data = {};
