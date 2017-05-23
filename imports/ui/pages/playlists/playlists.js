@@ -4,6 +4,10 @@ import { Videos } from '../../../../imports/api/videos.js';
 
 import './playlists.html';
 
+Template.playlists.onCreated(function () {
+  Meteor.subscribe('videos');
+});
+
 Template.playlists.helpers({
   videos() {
     const videos = Videos.find();

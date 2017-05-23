@@ -13,10 +13,6 @@ let volumeHandler;
 let previousVolume = 100;
 let _video;
 
-// Template.player.onCreated(function bodyOnCreated() {
-//   Meteor.subscribe('videos');
-// });
-
 const video = () => {
   const videoId = FlowRouter.getParam('_id');
   if (!_video || _video.id !== videoId) {
@@ -38,6 +34,8 @@ Template.player.onCreated(function () {
   this.templateDict.set('totalTime', 0);
   this.templateDict.set('hideControls', false);
   this.templateDict.set('showVolume', false);
+
+  Meteor.subscribe('videos');
 });
 
 Template.player.onDestroyed(function () {
