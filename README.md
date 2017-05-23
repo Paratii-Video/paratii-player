@@ -39,6 +39,10 @@ Testing
 
     npm test
 
+Run lint:
+
+    npm run lint
+
 Pull requests are welcome.
 
 [preach here about testing]
