@@ -3,6 +3,7 @@ import { Blaze } from 'meteor/blaze';
 import { sprintf } from 'meteor/sgi:sprintfjs';
 
 import { Videos } from '../../../api/videos.js';
+import { formatNumber } from '/imports/lib/utils.js';
 
 import './player.html';
 
@@ -66,9 +67,7 @@ Template.player.helpers({
     return Template.instance().templateDict.get('hideControls') ? 'toggleFade' : '';
   },
   formatNumber(number) {
-    const parts = number.toString().split('.');
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    return parts.join('.');
+    return formatNumber(number);
   },
   formatTime(seconds) {
     const minutes = seconds / 60;
