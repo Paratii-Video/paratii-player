@@ -34,8 +34,8 @@
         <div class="player-description">{{ description }}</div>
         <div class="player-statistics">
           <span class="statistic-text"><img src= "/img/view-icon.svg">{{formatNumber stats.views}}</span>
-          <span class="statistic-text"><img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
-          <span class="statistic-text"><img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
+          <span class="statistic-text" id="button-like"><img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
+          <span class="statistic-text" id="button-dislike"><img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
         </div>
         {{#if hasPrice}}
           <button class="player-price">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>

@@ -8,8 +8,8 @@ import { Factory } from 'meteor/dburles:factory';
 import { sinon } from 'meteor/practicalmeteor:sinon';
 import { Blaze } from 'meteor/blaze';
 
+import { Videos } from '/imports/api/videos.js';
 import { withRenderedTemplate } from '../../../test-helpers.js';
-import { Videos } from '../../../../api/videos.js';
 import '../player.html';
 import '../player.js';
 import '../../../layouts/body/body.js';
@@ -20,12 +20,17 @@ describe('player page', function () {
   const videoId = '12345';
   const videoTitle = 'Rosencrants and Guildenstern are dead';
   const price = 10;
+
   beforeEach(function () {
     StubCollections.stub([Videos]);
     Factory.create('video', {
       _id: videoId,
       title: videoTitle,
       price,
+      stats: {
+        likes: 3141,
+        dislikes: 2718,
+      },
     });
 
     sinon.stub(FlowRouter, 'getParam', () => videoId);
@@ -71,5 +76,27 @@ describe('player page', function () {
     // force Template.instance() to return view.templateInstance
     Template._currentTemplateInstanceFunc = view.templateInstance;
     assert.equal(Template.player.__helpers[' playPause'](), 'play');
+  });
+
+  it('increments the likes counter when clicked', function () {
+    data = {};
+    withRenderedTemplate('player', data, (el) => {
+      assert.equal($(el).find('#button-like').text(), '3.141');
+    });
+    Template.player.fireEvent('click #button-like');
+    withRenderedTemplate('player', data, (el) => {
+      assert.equal($(el).find('#button-like').text(), '3.142');
+    });
+  });
+
+  it('increments the dislikes counter when clicked', function () {
+    data = {};
+    withRenderedTemplate('player', data, (el) => {
+      assert.equal($(el).find('#button-dislike').text(), '2.718');
+    });
+    Template.player.fireEvent('click #button-dislike');
+    withRenderedTemplate('player', data, (el) => {
+      assert.equal($(el).find('#button-dislike').text(), '2.719');
+    });
   });
 });

@@ -25,6 +25,7 @@ const video = () => {
   return _video;
 };
 
+
 Template.player.onCreated(function () {
   const bodyView = Blaze.getView('Template.App_body');
 
@@ -207,5 +208,14 @@ Template.player.events({
       videoPlayer.volume = previousVolume;
       volumeBar.value = previousVolume * 100;
     }
+  },
+  'click #button-like'() {
+    const videoId = FlowRouter.getParam('_id');
+    // const videoId = this._id // works as well
+    Meteor.call('videos.like', videoId);
+  },
+  'click #button-dislike'() {
+    const videoId = FlowRouter.getParam('_id');
+    Meteor.call('videos.dislike', videoId);
   },
 });
