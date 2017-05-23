@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating';
-import { Videos } from '../../../../imports/api/videos.js';
 import { formatNumber } from '/imports/lib/utils.js';
+import { Videos } from '../../../../imports/api/videos.js';
 
 import './playlists.html';
 

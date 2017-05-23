@@ -7,4 +7,4 @@ function formatNumber(number) {
   return parts.join('.');
 }
 
-export { formatNumber }
+export { formatNumber };

@@ -2,8 +2,8 @@ import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import { sprintf } from 'meteor/sgi:sprintfjs';
 
-import { Videos } from '../../../api/videos.js';
 import { formatNumber } from '/imports/lib/utils.js';
+import { Videos } from '../../../api/videos.js';
 
 import './player.html';
 
