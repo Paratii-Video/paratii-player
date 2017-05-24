@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "test": "NODE_OPTIONS='--debug' meteor test --driver-package practicalmeteor:mocha --port 8754",
+    "test": "NODE_OPTIONS='--debug' meteor test --driver-package practicalmeteor:mocha --port 8754 --debug-port 5858",
     "lint": "eslint ."
   },
   "dependencies": {

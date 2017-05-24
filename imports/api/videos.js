@@ -2,19 +2,15 @@ import { check } from 'meteor/check';
 
 export const Videos = new Mongo.Collection('videos');
 
-function userHasLikedVideo(user, videoId) {
-  return (
-    user.stats &&
-    user.stats.likes &&
-    user.stats.likes.includes(videoId)
+export function userLikesVideo(userId, videoId) {
+  return Boolean(
+    Meteor.users.findOne({ _id: userId, 'stats.likes': { $in: [videoId] } }),
   );
 }
 
-function userHasDisLikedVideo(user, videoId) {
-  return (
-    user.stats &&
-    user.stats.dislikes &&
-    user.stats.dislikes.includes(videoId)
+export function userDislikesVideo(userId, videoId) {
+  return Boolean(
+    Meteor.users.findOne({ _id: userId, 'stats.dislikes': { $in: [videoId] } }),
   );
 }
 
@@ -35,11 +31,11 @@ Meteor.methods({
     }
 
     // if the user has already likes this video, we don't do anything
-    if (userHasLikedVideo(user, videoId)) {
+    if (userLikesVideo(this.userId, videoId)) {
       return false;
     }
     // if the user has disliked this video, we remove the dislike
-    if (userHasDisLikedVideo(user, videoId)) {
+    if (userDislikesVideo(this.userId, videoId)) {
       Videos.update(videoId, { $inc: { 'stats.dislikes': -1 } });
       Meteor.users.update(this.userId, { $pull: { 'stats.dislikes': videoId } });
     }
@@ -57,11 +53,11 @@ Meteor.methods({
     }
 
     // if the user has already likes this video, we don't do anything
-    if (userHasDisLikedVideo(user, videoId)) {
+    if (userDislikesVideo(this.userId, videoId)) {
       return false;
     }
     // if the user has disliked this video, we remove the dislike
-    if (userHasLikedVideo(user, videoId)) {
+    if (userLikesVideo(this.userId, videoId)) {
       Videos.update(videoId, { $inc: { 'stats.likes': -1 } });
       Meteor.users.update(this.userId, { $pull: { 'stats.likes': videoId } });
     }

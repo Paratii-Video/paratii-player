@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { assert } from 'meteor/practicalmeteor:chai';
 
-import { Videos } from './videos.js';
+import { Videos, userLikesVideo, userDislikesVideo } from './videos.js';
 
 function likeVideo(videoId, userId) {
   const method = Meteor.server.method_handlers['videos.like'];
@@ -19,7 +19,6 @@ function dislikeVideo(videoId, userId) {
   method.apply(invocation, [videoId]);
 }
 
-
 if (Meteor.isServer) {
   describe('Videos', () => {
     describe('methods', () => {
@@ -36,12 +35,25 @@ if (Meteor.isServer) {
             dislikes: 2718,
           },
         });
+        Meteor.users.remove();
         userId = Meteor.users.insert({
           name: 'Rosencrantz',
         });
       });
 
-      it('vidoes.like works as expected', () => {
+      it('userLikesVideo returns correct value', () => {
+        assert.equal(userLikesVideo(userId, videoId), false);
+        likeVideo(videoId, userId);
+        assert.equal(userLikesVideo(userId, videoId), true);
+      });
+
+      it('userDislikesVideo returns correct value', () => {
+        assert.equal(userDislikesVideo(userId, videoId), false);
+        dislikeVideo(videoId, userId);
+        assert.equal(userDislikesVideo(userId, videoId), true);
+      });
+
+      it('videos.like works as expected', () => {
         assert.equal(Videos.findOne({ _id: videoId }).stats.likes, 3141);
 
         // the first like shoudl increment the likes counter with 1
