@@ -3,15 +3,11 @@
 
 import { assert } from 'chai';
 import { $ } from 'meteor/jquery';
+import { Factory } from 'meteor/dburles:factory';
 import { withRenderedTemplate } from '../../../test-helpers.js';
 import '../playlists.js';
-import StubCollections from 'meteor/hwillson:stub-collections';
-import { Factory } from 'meteor/dburles:factory';
-import { Videos } from '/imports/api/videos.js';
-
 
 describe('playlists page', function () {
-  
   it('renders correctly with simple data', function () {
     const data = {};
     withRenderedTemplate('playlists', data, el => {
@@ -38,5 +34,4 @@ describe('playlists page', function () {
     const value = Template.playlists.__helpers[' formatNumber'](1000);
     assert.equal(value, '1.000');
   });
-
 });
