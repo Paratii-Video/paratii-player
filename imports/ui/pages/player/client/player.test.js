@@ -128,3 +128,30 @@ describe('player helpers', function () {
     assert.equal(Template.player.__helpers[' volumeClass'](), 'closed');
   });
 });
+
+describe('player events', function () {
+  beforeEach(function () {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const view = Blaze.render(Template.player, el);
+    Template._currentTemplateInstanceFunc = view.templateInstance;
+  });
+
+  // it('video ended changes playing state', function () {
+  //   const el = document.createElement('div');
+  //   document.body.appendChild(el);
+  //   const view = Blaze.render(Template.player, el);
+  //   Template._currentTemplateInstanceFunc = view.templateInstance;
+  //   Template.player.fireEvent('ended #video-player',
+  //      { templateInstance: view.templateInstance });
+  //   assert(Template.player.__helpers[' playPause'](), 'play');
+  //   assert(Template.player.__helpers[' playPauseIcon'](), '/img/play-icon.svg');
+  // });
+  //
+  // it('playing state changes when play button is clicked', function () {
+  //   Template.player.fireEvent('click #play-pause-button');
+  //   assert(Template.player.__helpers[' playPause'](), 'pause');
+  //   assert(Template.player.__helpers[' hideControls'](), 'toggleFade');
+  //   assert(Template.player.__helpers[' playPauseIcon'](), '/img/pause-icon.svg');
+  // });
+});
