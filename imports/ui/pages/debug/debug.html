@@ -3,16 +3,21 @@
 	<h1>Debug information and general play area</h1>
 		   <ul>
         {{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-small"}}
-    <li>Connection to ethereum node: {{ $.Session.get "host" }} 
+    <li>Connection to ethereum node: {{ ethNode.host }} 
     </li>
     <li>Connection status: <b>
-    {{#if $.Session.get "connected"}}
-        Connected :-t
+    {{#if ethNode.isConnected }}
+        Connected :-)
     {{else}}
         Not connected :-(
     {{/if}}
     </b>
     </li>
+    <!-- <li>Accounts: {{ .web3.eth.accounts }}</li> -->
+    <li>blocknumber: {{ ethNode.blockNumber }}</li>
+    {{#if ethNode.error }}
+    <li>error: {{ ethNode.error }}</li>
+    {{/if }}
     </ul>
 	</tt>
 </template>

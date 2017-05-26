@@ -4,14 +4,13 @@ import { Meteor } from 'meteor/meteor';
 
 import './routes.js';
 import './at_config.js';
-
+import '../../lib/ethereum/connection.js';
 
 AccountsTemplates.configure();
-
 Meteor.startup(function () {
   // delay so we make sure the data is already loaded from the indexedDB
   // TODO improve persistent-minimongo2 ?
   Meteor.setTimeout(function () {
-      // connection.init();
+    connection.init();
   }, 1000);
 });

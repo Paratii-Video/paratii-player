@@ -2,22 +2,28 @@ import './web3.js'
 
 const DEFAULT_PROVIDER = 'http://paratii-chain.gerbrandy.com';
 
-function status() {
+function checkStatus() {
     try {
-        Session.set('connected',web3.isConnected())
+      Session.set('ethNode', {
+        host: web3.currentProvider.host,
+        isConnected: web3.isConnected(),
+        blockNumber: web3.eth.blockNumber,
+        error: null,
+      });
+
     }
     catch (e) {
-        Session.set('connected',false)
+      Session.set('ethNode', {
+        host: null,
+        isConnected: null,
+        error: e,
+      })
+ 
     }
 }
-//Call the status function every second
-// Meteor.setInterval(status, 1000);
 
-setProvider = function(url) {
-	web3.setProvider(new web3.providers.HttpProvider(url));
-  	Session.set("host", web3.currentProvider.host);
-}
-
+// call the status function every second
+Meteor.setInterval(checkStatus, 1000);
 
 const connect = function () {
   console.log('Connecting....')
@@ -31,7 +37,6 @@ const connect = function () {
 };
 
 const init = function(){
-	setProvider(DEFAULT_PROVIDER);
+  web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
 	connect();
 };
-

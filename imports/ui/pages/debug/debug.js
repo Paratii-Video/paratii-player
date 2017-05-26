@@ -6,7 +6,7 @@ Template.debug.helpers({
   accounts() {
     return EthAccounts.find();
   },
-  // web3() {
-  //   return web3;
-  // },
+  ethNode() {
+    return Session.get('ethNode');
+  },
 });
