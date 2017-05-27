@@ -11,6 +11,7 @@ import '/imports/ui/pages/debug/debug.js';
 import '/imports/ui/pages/playlists/playlists.js';
 import '/imports/ui/pages/player/player.js';
 import '/imports/ui/pages/wallet/wallet.js';
+import '/imports/ui/pages/wallet/wallet-create.js';
 import '/imports/ui/pages/myvideos/myvideos.js';
 import '/imports/ui/pages/upload/upload.js';
 import '/imports/ui/pages/trendingCauses/trendingCauses.js';
@@ -36,6 +37,13 @@ FlowRouter.route('/account', {
   name: 'account',
   action() {
     BlazeLayout.render('App_body', { main: 'account' });
+  },
+});
+
+FlowRouter.route('/create-wallet', {
+  name: 'wallet-create',
+  action() {
+    BlazeLayout.render('App_body', { main: 'wallet-create' });
   },
 });
 

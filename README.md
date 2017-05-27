@@ -33,11 +33,28 @@ Now start the application
     npm start
 
 
+# Testing
+
+The application has to kind of tests. 
+
+    meteor test
+
+And end-to-end tetst that can be run by starting up the application in one window:
+
+    meteor run
+
+And running the tests in another window
+
+    meteor run chimp-test
+
 # Contributing
+
+Make sure all tests pass:
 
 Testing
 
     npm test
+    npm run 
 
 Run lint:
 

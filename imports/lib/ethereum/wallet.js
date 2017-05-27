@@ -4,19 +4,14 @@ var global_keystore;
 
 function createWallet(password, extraEntropy) {
     // create a wallet, with an address, save it in global_keystore, return the generated seed
-    console.log('(enter entropy): ' + extraEntropy)
     let seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
-    console.log('seed is:'  + seed);
-    // let password = 'mypass'
-    console.log('(enter password): ' + password)
-
 
     lightwallet.keystore.deriveKeyFromPassword(password, function(err, pwDerivedKey) {
         global_keystore = new lightwallet.keystore(seed, pwDerivedKey);
         // generate one address
         global_keystore.generateNewAddress(pwDerivedKey, 1);
 
-        // var addresses = global_keystore.getAddresses();
+        const addresses = global_keystore.getAddresses();
     });
     return seed;
 }

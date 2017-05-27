@@ -1,6 +1,26 @@
+
+import { createWallet } from '/imports/lib/ethereum/wallet.js';
+
+const mySubmitFunc = function (error, state) {
+  if (state === 'signUp') {
+    const seed = Session.get('seed');
+    // do not close when user clicks outside of the window
+    const modalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+    };
+    Modal.show('show-seed', { seed }, modalOptions);
+  }
+};
+
+const myPreSingupFunc = function (password) {
+  // TODO: use some real entropy (instead of 'xxx')
+  const seed = createWallet(password, 'xxx');
+  Session.set('seed', seed);
+};
+
 // Options for accounts
 // https://github.com/meteor-useraccounts/core/blob/master/Guide.md#configuration-api
-
 AccountsTemplates.configure({
   // Behavior
   confirmPassword: true,
@@ -31,13 +51,13 @@ AccountsTemplates.configure({
   termsUrl: 'terms-of-use',
 
   // Redirects
-  homeRoutePath: '/account',
+  // homeRoutePath: '/account',
   redirectTimeout: 4000,
 
   // Hookups
   // onLogoutHook: myLogoutFunc,
-  // onSubmitHook: mySubmitFunc,
-  // preSignUpHook: myPreSubmitFunc,
+  onSubmitHook: mySubmitFunc,
+  preSignUpHook: myPreSingupFunc,
   // postSignUpHook: myPostSubmitFunc,
 
   // Texts
