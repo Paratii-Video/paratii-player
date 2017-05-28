@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "lint-fix-errors": "eslint . --fix",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
-    "chimp-test": "chimp --mocha --path=tests"
+    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests"
   },
   "dependencies": {
     "babel-runtime": "^6.20.0",
