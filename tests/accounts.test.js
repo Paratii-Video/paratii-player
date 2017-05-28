@@ -21,8 +21,10 @@ describe('account workflow', function () {
   it('register a new user @watch', function () {
     browser.url('http://localhost:3000/account');
     // we should see the login form, we click on the register link
-    // fill in the form
+    browser.waitForExist('#at-signUp');
     browser.$('#at-signUp').click();
+
+    // fill in the form and submit it
     browser.waitForExist('[name="at-field-name"]');
     browser
       .setValue('[name="at-field-name"]', 'Guildenstern')
@@ -31,9 +33,9 @@ describe('account workflow', function () {
       .setValue('[name="at-field-password_again"]', 'a-common-password')
       .submitForm('form');
 
-    browser.waitForExist('#show-seed');
-    // assert.equal(browser.getUrl(), 'ldskjl');
     // we now should see the model dialog
+    // browser.waitForExist('#show-seed');
+    // assert.equal(browser.getUrl(), 'ldskjl');
     // assert.equal(browser.$('[name="field-name"]').getValue(), 'guildenstern@rosencrantz.com')
     // assert.equal(browser.$('[name="field-email"]').getValue(), 'guildenstern@rosencrantz.com')
   });
