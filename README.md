@@ -47,6 +47,11 @@ And running the tests in another window
 
     meteor run chimp-test
 
+Or, when you are developing:
+
+    meteor run chimp-watch
+
+
 # Contributing
 
 Make sure all tests pass:

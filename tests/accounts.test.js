@@ -21,7 +21,7 @@ describe('account workflow', function () {
   it('register a new user @watch', function () {
     browser.url('http://localhost:3000/account');
     // we should see the login form, we click on the register link
-    // fill in the form
+    browser.waitForExist('#at-signUp');
     browser.$('#at-signUp').click();
 
     // fill in the form 
