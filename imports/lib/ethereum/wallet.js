@@ -2,18 +2,46 @@ import lightwallet from "eth-lightwallet/dist/lightwallet.js";
 
 var global_keystore;
 
-function createWallet(password, extraEntropy) {
-    // create a wallet, with an address, save it in global_keystore, return the generated seed
-    let seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
+function createWallet(password) {
+    let seedPhrase = lightwallet.keystore.generateRandomSeed();
+    lightwallet.keystore.createVault({
+      password: password,
+      seedPhrase: seedPhrase, // Optionally provide a 12-word seed phrase
+      // salt: fixture.salt,     // Optionally provide a salt.
+                                 // A unique salt will be generated otherwise.
+      // hdPathString: hdPath    // Optional custom HD Path String
+    }, function (err, ks) {
+      console.log('callback createVault was called');
+      global_keystore = ks;
+      // Some methods will require providing the `pwDerivedKey`,
+      // Allowing you to only decrypt private keys on an as-needed basis.
+      // You can generate that value with this convenient method:
+      ks.keyFromPassword(password, function (err, pwDerivedKey) {
+        console.log('callback keyFrompassword was called');
+        if (err) throw err;
 
-    lightwallet.keystore.deriveKeyFromPassword(password, function(err, pwDerivedKey) {
-        global_keystore = new lightwallet.keystore(seed, pwDerivedKey);
-        // generate one address
-        global_keystore.generateNewAddress(pwDerivedKey, 1);
+        // generate five new address/private key pairs
+        // the corresponding private keys are also encrypted
+        ks.generateNewAddress(pwDerivedKey, 5);
+        var addresses = ks.getAddresses();
+        var wallet = Session.get('wallet');
+        wallet.address = addresses[0];
 
-        const addresses = global_keystore.getAddresses();
+        ks.passwordProvider = function (callback) {
+          var pw = prompt("Please enter password", "Password");
+          callback(null, pw);
+        };
+    // Now set ks as transaction_signer in the hooked web3 provider
+    // and you can start using web3 using the keys/addresses in ks!
+        // var web3Provider = new HookedWeb3Provider({
+        //   host: "http://04.236.65.136:8545",
+        //   transaction_signer: keystore
+        // });
+        web3.setProvider(web3Provider);
     });
-    return seed;
+  });
+
+        return { seed: seedPhrase };
 }
 
 export {createWallet}
