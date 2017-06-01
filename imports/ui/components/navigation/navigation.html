@@ -4,13 +4,13 @@
       <li class="{{isActivePath '/account'}} main">
         <a href="/account" class="textNav">
           {{#if isMaximized}}
-          {{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-tiny"}}
+          {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-tiny"}}
           <span class="nav-text">
-            {{user.profile.name}}
+            {{ currentUser.profile.name}}
           </span>
-          <span class="nav-text nav-text2">1.234.567 PTI</span>
+          <span class="nav-text nav-text2">{{ ethNode.balance }} PTI</span>
           {{else}}
-          {{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-tiny"}}
+          {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-tiny"}}
           {{/if}}
         </a>
       </li>

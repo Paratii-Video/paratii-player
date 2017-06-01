@@ -1,23 +1,15 @@
 import { createWallet } from '/imports/lib/ethereum/wallet.js';
+import { showSeed } from '/imports/ui/pages/wallet/wallet.js';
 
 const mySubmitFunc = function (error, state) {
   if (state === 'signUp') {
     const wallet = Session.get('wallet');
-
-    // do not close when user clicks outside of the window
-    const modalOptions = {
-      backdrop: 'static',
-      keyboard: false,
-    };
-    Modal.show('show-seed', {
-      seed: wallet.seed,
-      username: Meteor.user().profile.name,
-    }, modalOptions);
+    // show the seed to the user
+    showSeed(wallet);
   }
 };
 
 const myPreSignupFunc = function (password) {
-  // TODO: use some real entropy (instead of 'xxx')
   const wallet = createWallet(password);
   Session.set('wallet', wallet);
 };

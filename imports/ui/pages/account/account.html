@@ -18,10 +18,10 @@
         </div>
         <div class="col-md-4">
             {{#if currentUser.profile.image }}
-            {{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-medium"}}
+            <tt>show image here</tt>
             <button class="btn btn-default" id="button-upload-image">Remove Image</button>
             {{else}}
-            {{> dapp_identicon identity='0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e' class="dapp-medium"}}
+            {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-medium"}}
             <button class="btn btn-default" id="button-upload-image">Upload Image</button>
             {{/if}}
         </div>

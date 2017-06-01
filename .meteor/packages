@@ -28,7 +28,7 @@ arillo:flow-router-helpers
 raix:handlebar-helpers
 tap:i18n
 accounts-ui@1.1.9
-accounts-password@1.3.6
+accounts-password
 # accounts-facebook
 # accounts-github
 twbs:bootstrap

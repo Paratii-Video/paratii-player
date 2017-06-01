@@ -6,7 +6,15 @@
         Loading
           <!-- {{>spinner}} -->
         {{else}}
-          Need login ... 
+          <div class="titleContainer">
+            We don't know who you are!
+          </div>
+          <div class="line"></div>
+          <div class="container">
+            <p>
+            Please <a href="{{pathFor route='account' }}" id="signin-link">sign in</a> to see this page.
+            </p>
+          </div>
         {{/if}}
     {{/if}}
 </template>

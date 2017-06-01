@@ -24,8 +24,9 @@ function createWallet(password) {
         // the corresponding private keys are also encrypted
         ks.generateNewAddress(pwDerivedKey, 5);
         var addresses = ks.getAddresses();
-        var wallet = Session.get('wallet');
-        wallet.address = addresses[0];
+        Session.set('keystore', ks);
+        Session.set('ptiAddress', addresses[0]);
+        Meteor.users.update(Meteor.userId(), { $set: { 'profile.ptiAddress': addresses[0] } });
 
         ks.passwordProvider = function (callback) {
           var pw = prompt("Please enter password", "Password");
@@ -37,7 +38,7 @@ function createWallet(password) {
         //   host: "http://04.236.65.136:8545",
         //   transaction_signer: keystore
         // });
-        web3.setProvider(web3Provider);
+        // web3.setProvider(web3Provider);
     });
   });
 

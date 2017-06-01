@@ -81,10 +81,12 @@ Template.navigation.helpers({
   isMaximized() {
     return (Template.instance().navState.get() === 'maximized');
   },
-  user() {
-    return Meteor.user();
+  ethNode() {
+    return Session.get('ethNode');
   },
-
+  ethAccount() {
+    return Session.get('ethAccount');
+  },
 });
 
 Template.navigation.events({

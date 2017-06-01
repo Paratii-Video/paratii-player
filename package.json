@@ -62,6 +62,7 @@
       "no-underscore-dangle": "off",
       "prefer-arrow-callback": "off",
       "no-undef": "off",
+      "generator-star-spacing": "off",
       "object-shorthand": [
         "error",
         "always",

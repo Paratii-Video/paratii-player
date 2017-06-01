@@ -9,4 +9,10 @@ Template.debug.helpers({
   ethNode() {
     return Session.get('ethNode');
   },
+  ptiAddress() {
+    return Session.get('ptiAddress');
+  },
+  // user() {
+  //  return Meteor.user();
+  // },
 });

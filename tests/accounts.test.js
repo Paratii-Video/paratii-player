@@ -2,7 +2,14 @@ import { assert } from 'chai';
 
 function resetDb() {
   Meteor.users.remove({ 'profile.name': 'Guildenstern' });
-  Meteor.users.remove({ 'profile.name': 'Guildenster' });
+  Meteor.users.remove({ 'emails.address': 'guildenstern@rosencrantz.com' });
+}
+
+function createUser() {
+  Accounts.createUser({
+    email: 'guildenstern@rosencrantz.com',
+    password: 'a-common-password',
+  });
 }
 
 function logOut() {
@@ -18,8 +25,9 @@ describe('account workflow', function () {
 
   afterEach(function () {
     server.execute(logOut);
+    // server.execute(resetDb);
   });
-  it('register a new user @watch', function () {
+  it('register a new user', function () {
     browser.url('http://localhost:3000/account');
     // we should see the login form, we click on the register link
     browser.waitForExist('#at-signUp');
@@ -40,11 +48,41 @@ describe('account workflow', function () {
     // but somehow, webdriverio thinks it is not visible
     // browser.waitForExist('#btn-show-seed-close');
     // browser.$('#btn-show-seed-close').click();
-    browser.execute('Modal.hide()');
 
     // we now find ourselves on the user profile form
-    browser.waitForExist('[name="field-name"]');
+    browser.waitForExist('[name="field-name"]', 2000);
+    browser.execute('Modal.hide()');
+
     assert.equal(browser.$('[name="field-name"]').getValue(), 'Guildenstern');
     assert.equal(browser.$('[name="field-email"]').getValue(), 'guildenstern@rosencrantz.com');
+
+    // browser.$('#debug a').click();
+  });
+
+  it('login as an existing user', function () {
+    server.execute(createUser);
+    browser.url('http://localhost:3000/account');
+    browser.waitForExist('[name="at-field-email"]');
+    browser
+      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+      .setValue('[name="at-field-password"]', 'a-common-password');
+
+    browser.click('#at-btn');
+  });
+
+  it('wallet needs login @watch', function () {
+    server.execute(createUser);
+    browser.url('http://localhost:3000/wallet');
+    browser.waitForExist('#signin-link');
+    browser.click('#signin-link');
+    browser.waitForExist('[name="at-field-email"]');
+    browser
+      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+      .setValue('[name="at-field-password"]', 'a-common-password');
+
+    browser.$('#at-btn').click();
+    // we are now logged in
+    // we are at the wallet page, but given that our user has no account yet
+    // we are presented with an invitation to create an account
   });
 });

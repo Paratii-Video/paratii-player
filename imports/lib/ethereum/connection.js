@@ -10,6 +10,9 @@ function checkStatus() {
         blockNumber: web3.eth.blockNumber,
         error: null,
       });
+      Session.set('ethAccount', {
+        balance: 123456,
+      })
 
     }
     catch (e) {
@@ -21,6 +24,13 @@ function checkStatus() {
  
     }
 }
+
+// function getBalance() {
+//   Session.set('bal')
+//   return {
+//     balance: 123456789,
+//   } 
+// }
 
 // call the status function every second
 Meteor.setInterval(checkStatus, 1000);
