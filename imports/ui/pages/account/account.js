@@ -10,6 +10,7 @@ Template.account.events({
     Meteor.call('users.update', {
       // 'profile.fullname': target.fullname.value,
       email: target.email.value,
+      name: target.name.value,
     });
   },
 });
