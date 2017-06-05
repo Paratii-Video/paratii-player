@@ -44,19 +44,12 @@ describe('account workflow', function () {
     // submit the form
     browser.$('#at-btn').click();
 
-    // we now should see the modal dialog (and in particular the "close"  button)
-    // but somehow, webdriverio thinks it is not visible
-    // browser.waitForExist('#btn-show-seed-close');
-    // browser.$('#btn-show-seed-close').click();
-
     // we now find ourselves on the user profile form
     browser.waitForExist('[name="field-name"]', 2000);
     browser.execute('Modal.hide()');
 
     assert.equal(browser.$('[name="field-name"]').getValue(), 'Guildenstern');
     assert.equal(browser.$('[name="field-email"]').getValue(), 'guildenstern@rosencrantz.com');
-
-    // browser.$('#debug a').click();
   });
 
   it('login as an existing user', function () {
@@ -70,7 +63,7 @@ describe('account workflow', function () {
     browser.click('#at-btn');
   });
 
-  it('wallet needs login @watch', function () {
+  it('create wallet ad hoc', function () {
     server.execute(createUser);
     browser.url('http://localhost:3000/wallet');
     browser.waitForExist('#signin-link');
@@ -80,9 +73,23 @@ describe('account workflow', function () {
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
       .setValue('[name="at-field-password"]', 'a-common-password');
 
-    browser.$('#at-btn').click();
+    browser.click('#at-btn');
     // we are now logged in
     // we are at the wallet page, but given that our user has no account yet
     // we are presented with an invitation to create an account
+    browser.waitForExist('#create-wallet', 2000);
+    browser.click('#create-wallet');
+    // we should now see an alert that asks us to enter a password
+    browser.waitUntil(browser.alertText);
+    browser.alertText('a-common-password');
+    browser.alertAccept();
+
+    // the password is valid, and we should be presented with a mdoal dialog
+    // showing the mnemonic phrase
+    browser.waitForExist('#show-seed', 2000);
+    // close the modal
+    browser.execute('Modal.hide()');
+    // we are now at the wallet page, and have an address
+    browser.waitForExist('#wallet-title');
   });
 });

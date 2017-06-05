@@ -1,10 +1,10 @@
 <template name="wallet">
     {{#isAuthorized}}
-    <div class="titleContainer">
+    <div class="titleContainer" id="wallet-title">
         Your Wallet
     </div>
     {{# if currentUser.profile.ptiAddress }}
-    <div class= "alert-config">
+    <div class="alert-config">
         This is your address: {{ currentUser.profile.ptiAddress }}
     </div>
     <div class="line"></div> 

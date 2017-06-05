@@ -53,10 +53,6 @@ export function userPrettyName() {
 export async function getPassword() {
   const password = prompt('Please enter password', 'Password');
   const digest = Package.sha.SHA256(password);
-  const result = await Meteor.call('checkPassword', digest);
-  if (result) {
-    return password;
-  }
-  alert('This password is not valid');
-  return false;
+  await Meteor.call('checkPassword', digest);
+  return password;
 }
