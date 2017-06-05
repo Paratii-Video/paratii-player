@@ -9,8 +9,8 @@ Template.account.events({
     const target = event.target;
     Meteor.call('users.update', {
       // 'profile.fullname': target.fullname.value,
-      email: target.email.value,
-      name: target.name.value,
+      email: target['field-email'].value,
+      name: target['field-name'].value,
     });
   },
 });

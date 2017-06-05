@@ -31,7 +31,7 @@ if (Meteor.isServer) {
       //TODO campare with old name, if it's different then update
       if(data.name !== undefined){
         console.log(data.name);
-        Meteor.users.update({_id:this.userId}, {$set:{"profile.name": data.name}});
+        Meteor.users.update({_id:this.userId}, {$set:{"profile.name": data.name}})
       }
       // Meteor.users.update(userId, { $set: data });
     },

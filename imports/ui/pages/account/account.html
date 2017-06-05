@@ -9,11 +9,11 @@
         <form id="form-update-account">
         <div class="row">
         <div class="col-md-8">
-                Your name <input type="text" name="name" placeholder="Your name" value="{{currentUser.profile.name}}" >
+                Your name <input type="text" name="field-name" placeholder="Your name" value="{{currentUser.profile.name}}" >
                 <br>
                 Your email
                 {{#each currentUser.emails}}
-                    <input type="text" name="email" placeholder="Your email" value="{{address}}" >
+                    <input type="text" name="field-email" placeholder="Your email" value="{{address}}" >
                 {{/each}}
         </div>
         <div class="col-md-4">
