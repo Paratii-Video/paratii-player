@@ -14,11 +14,14 @@ if (Meteor.isServer) {
     'users.update'(data) {
       check(data, Object);
       if (data.email !== undefined) {
-        data['emails.0.address'] = data.email;
-        data['emails.s 0.verified'] = false;
-        delete data.email;
+        // data['emails.0.address'] = data.email;
+        // data['emails.s 0.verified'] = false;
+        // delete data.email;
+        const oldEmail = Meteor.users.findOne(this.userId).emails[0].address;
+        Accounts.removeEmail(this.userId, oldEmail);
+        Accounts.addEmail(this.userId, data.email, false);
       }
-      Meteor.users.update(userId, { $set: data });
+      // Meteor.users.update(userId, { $set: data });
     },
     checkPassword(digest) {
       check(digest, String);

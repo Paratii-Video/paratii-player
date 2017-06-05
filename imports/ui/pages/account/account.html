@@ -13,7 +13,7 @@
                 <br>
                 Your email
                 {{#each currentUser.emails}}
-                    <input type="text" name="field-email" placeholder="Your email" value="{{address}}" >
+                    <input type="text" name="email" placeholder="Your email" value="{{address}}" >
                 {{/each}}
         </div>
         <div class="col-md-4">
@@ -36,11 +36,11 @@
     {{else}}
     <div class="container">
         {{> atForm }}
-    </div>   
+    </div>
     {{/if}}
 </template>
 
-<template name="show-seed"> 
+<template name="show-seed">
     <div class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content" id="show-seed">
@@ -65,4 +65,3 @@
         </div>
     </div>
 </template>
-
