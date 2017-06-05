@@ -13,25 +13,24 @@ if (Meteor.isServer) {
     },
     'users.update'(data) {
       check(data, Object);
-      //check if email is defined, if it is -> update.
-      //TODO campare with old email, if it's different then update
+      // check if email is defined, if it is -> update.
+      // TODO campare with old email, if it's different then update
       if (data.email !== undefined) {
         // data['emails.0.address'] = data.email;
         // data['emails.s 0.verified'] = false;
         // delete data.email;
 
-        //save oldEmail address
+        // save oldEmail address
         const oldEmail = Meteor.users.findOne(this.userId).emails[0].address;
-        //remove old email address
+        // remove old email address
         Accounts.removeEmail(this.userId, oldEmail);
-        //add new email address
+        // add new email address
         Accounts.addEmail(this.userId, data.email, false);
       }
-      //check if name is defined, if it is -> update.
-      //TODO campare with old name, if it's different then update
-      if(data.name !== undefined){
-        console.log(data.name);
-        Meteor.users.update({_id:this.userId}, {$set:{"profile.name": data.name}})
+      // check if name is defined, if it is -> update.
+      // TODO campare with old name, if it's different then update
+      if (data.name !== undefined) {
+        Meteor.users.update( { _id : this.userId } , { $set: { 'profile.name': data.name } } );
       }
       // Meteor.users.update(userId, { $set: data });
     },
