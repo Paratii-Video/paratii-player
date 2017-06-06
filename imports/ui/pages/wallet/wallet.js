@@ -35,7 +35,7 @@ Template.wallet.events({
       }
     });
   },
-  'click #restore-wallet'(event) {
+  'click #restore-wallet'() {
     const seedPhrase = prompt('Please enter your 12-word seed phrase', '');
     getPassword().then(function (password) {
       if (password) {
