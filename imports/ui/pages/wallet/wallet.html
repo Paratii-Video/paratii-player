@@ -8,7 +8,7 @@
         This is your address: {{ currentUser.profile.ptiAddress }}
     </div>
     <div class="line"></div> 
-        {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-medium"}}
+        {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-medium"}}
     <ul class="titleContainer"> Your balance is: <b>{{ ethAccount.balance }}</b> PTI</ul>
     <div class="titleContainer">Send Paratii</div>    
     <div class="descriptionContainer">

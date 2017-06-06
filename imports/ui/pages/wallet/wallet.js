@@ -1,4 +1,6 @@
-import { createWallet } from '/imports/lib/ethereum/wallet.js';
+/* eslint-disable no-alert */
+
+import { createWallet, restoreWallet } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getPassword } from '/imports/api/users.js';
 import './wallet.html';
 
@@ -33,6 +35,12 @@ Template.wallet.events({
       }
     });
   },
-  // 'click #restore-wallet'(event, instance) {
-  // },
+  'click #restore-wallet'(event) {
+    const seedPhrase = prompt('Please enter your 12-word seed phrase', '');
+    getPassword().then(function (password) {
+      if (password) {
+        wallet = restoreWallet(password, seedPhrase);
+      }
+    });
+  },
 });
