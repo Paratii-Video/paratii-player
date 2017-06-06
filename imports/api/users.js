@@ -15,6 +15,7 @@ if (Meteor.isServer) {
       check(data, Object);
       // check if email is defined, if it is -> update.
       // TODO campare with old email, if it's different then update
+      
       if (data.email !== undefined) {
         // data['emails.0.address'] = data.email;
         // data['emails.s 0.verified'] = false;
@@ -32,7 +33,15 @@ if (Meteor.isServer) {
       if (data.name !== undefined) {
         Meteor.users.update({ _id: this.userId }, { $set: { 'profile.name': data.name } });
       }
+
+      // TODO campare with old image, if it's different then update
+      if (data.avatar !== undefined) {
+        Meteor.users.update({ _id: this.userId }, { $set: { 'profile.image': data.avatar } });
+      }
       // Meteor.users.update(userId, { $set: data });
+    },
+    'users.removeImage'() {
+      Meteor.users.update({ _id: this.userId }, { $unset: { 'profile.image': '' } });
     },
     checkPassword(digest) {
       check(digest, String);

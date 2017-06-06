@@ -19,10 +19,11 @@
             <div class="col-md-4">
                 {{#if currentUser.profile.image }}
 
-                  <button class="btn btn-default" id="button-upload-image">Remove Image</button>
+                  <span id="avatar" class="dapp-identicon dapp-medium" style="background-image: url( {{ currentUser.profile.image }} )"></span>
+                  <button class="btn btn-default" id="button-remove-image">Remove Image</button>
                 {{else}}
                   {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-medium"}}
-                  <input type="file" name="imageFile">
+                  <input type="file" name="field-avatar-image">
                   <img id="avatar" src="{{ima}}">
                   <button class="btn btn-default" id="button-upload-image">Upload Image</button>
 
