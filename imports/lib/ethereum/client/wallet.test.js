@@ -12,22 +12,23 @@ describe('ethereum wallet', function () {
     done();
   });
 
-  it('restore a wallet (disabled)', async function (done) {
-    // disabled because of it takes too long
-    return;
-    this.timeout(60000);
-    const password = 'mypass';
-    let ks1,
-      ks2;
-    const seedPhrase = lightwallet.keystore.generateRandomSeed();
-    createWallet(password, seedPhrase,
-      function (ks1) {
-        createWallet('another-password', seedPhrase, function (ks2) {
-          assert.isAtLeast(ks1.getAddresses().length, 1);
-          assert.equal(ks1.getAddresses(), ks2.getAddresses());
-          done();
-        });
-      },
-    );
-  });
+  // it('restore a wallet (disabled)', async function (done) {
+  //   // disabled because it takes too long
+  //   done();
+  //   return;
+  //   this.timeout(60000);
+  //   const password = 'mypass';
+  //   let ks1,
+  //     ks2;
+  //   const seedPhrase = lightwallet.keystore.generateRandomSeed();
+  //   createWallet(password, seedPhrase,
+  //     function (ks1) {
+  //       createWallet('another-password', seedPhrase, function (ks2) {
+  //         assert.isAtLeast(ks1.getAddresses().length, 1);
+  //         assert.equal(ks1.getAddresses(), ks2.getAddresses());
+  //         done();
+  //       });
+  //     },
+  //   );
+  // });
 });
