@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import { createWallet } from '../imports/lib/ethereum/wallet.js';
 
 function resetDb() {
   Meteor.users.remove({ 'profile.name': 'Guildenstern' });
@@ -10,6 +11,9 @@ function createUser() {
     email: 'guildenstern@rosencrantz.com',
     password: 'a-common-password',
   });
+}
+function createWalletHelper() {
+  createWallet('a-common-password');
 }
 
 function logOut() {
@@ -67,6 +71,39 @@ describe('account workflow', function () {
     server.execute(createUser);
     browser.url('http://localhost:3000/wallet');
     browser.waitForExist('#signin-link');
+    browser.click('#signin-link');
+    browser.waitForExist('[name="at-field-email"]');
+    browser
+      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+      .setValue('[name="at-field-password"]', 'a-common-password');
+
+    browser.click('#at-btn');
+    // we are now logged in
+    // we are at the wallet page, but given that our user has no account yet
+    // we are presented with an invitation to create an account
+    browser.waitForExist('#create-wallet', 2000);
+    browser.click('#create-wallet');
+    // we should now see an alert that asks us to enter a password
+    browser.waitUntil(browser.alertText);
+    browser.alertText('a-common-password');
+    browser.alertAccept();
+
+    // the password is valid, and we should be presented with a mdoal dialog
+    // showing the mnemonic phrase
+    browser.waitForExist('#show-seed', 2000);
+    // close the modal
+    browser.execute('Modal.hide()');
+    // we are now at the wallet page, and have an address
+    browser.waitForExist('#wallet-title');
+  });
+
+  it('restore the keystore @watch', function () {
+    // browser.url('http://localhost:3000/wallet');
+    // browser.waitForExist('#signin-link');
+    server.execute(createUser);
+    server.execute(createWallet);
+    console.log('xxx')
+    return;
     browser.click('#signin-link');
     browser.waitForExist('[name="at-field-email"]');
     browser
