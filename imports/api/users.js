@@ -15,7 +15,7 @@ if (Meteor.isServer) {
       check(data, Object);
       // check if email is defined, if it is -> update.
       // TODO campare with old email, if it's different then update
-      
+
       if (data.email !== undefined) {
         // data['emails.0.address'] = data.email;
         // data['emails.s 0.verified'] = false;
