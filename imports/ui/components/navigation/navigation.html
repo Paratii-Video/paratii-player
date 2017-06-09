@@ -3,14 +3,17 @@
     {{#if currentUser }}
       <li class="{{isActivePath '/account'}} main">
         <a href="/account" class="textNav">
+          {{#if currentUser.profile.ptiAddress}}
+            {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-tiny"}}
+          {{else}}
+              <img src= "/img/avatar_img.svg" class="svg">
+          {{/if}}
           {{#if isMaximized}}
-          {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-tiny"}}
           <span class="nav-text">
             {{ currentUser.profile.name}}
           </span>
           <span class="nav-text nav-text2">{{ ethNode.balance }} PTI</span>
           {{else}}
-          {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-tiny"}}
           {{/if}}
         </a>
       </li>
