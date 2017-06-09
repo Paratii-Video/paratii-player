@@ -29,8 +29,10 @@ function createWallet(password, seedPhrase, cb) {
       const addresses = ks.getAddresses();
       Session.set('keystore', ks);
       Session.set('ptiAddress', addresses[0]);
-      Meteor.users.update(Meteor.userId(),
-        { $set: { 'profile.ptiAddress': addresses[0] } });
+      Meteor.call('users.update', { 'profile.ptiAddress': addresses[0] })
+    
+      // Meteor.users.update(Meteor.userId(),
+      //   { $set:  });
 
       ks.passwordProvider = function (callback) {
         const pw = prompt('Please enter password', 'Password');
@@ -56,8 +58,11 @@ function restoreWallet(password, seedPhrase) {
   return createWallet(password, seedPhrase);
 }
 
+function sendParatii(amount, recipient) {
+  alert("sending " + amount + " to " + recipient);
+}
 
-export { createWallet, restoreWallet };
+export { createWallet, restoreWallet, sendParatii };
 // ////////////////////
 // / Copies from lightwallet, ignore..
 // //////////////

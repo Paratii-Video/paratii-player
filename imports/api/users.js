@@ -14,7 +14,10 @@ if (Meteor.isServer) {
   Meteor.publish('userData', function () {
     if (this.userId) {
       return Meteor.users.find({ _id: this.userId }, {
-        fields: { stats: 1 },
+        fields: {
+          stats: 1,
+          profile: 1,
+        },
       });
     }
     this.ready();
@@ -49,19 +52,21 @@ Meteor.methods({
       Accounts.addEmail(this.userId, data.email, false);
     }
       // check if name is defined, if it is -> update.
-      // TODO campare with old name, if it's different then update
+      // TODO compare with old name, if it's different then update
     if (data.name !== undefined) {
-      Meteor.users.update({ _id: this.userId }, { $set: { 'profile.name': data.name } });
+      Meteor.users.update(this.userId, { $set: { 'profile.name': data.name } });
     }
 
       // TODO campare with old image, if it's different then update
     if (data.avatar !== undefined) {
-      Meteor.users.update({ _id: this.userId }, { $set: { 'profile.image': data.avatar } });
+      Meteor.users.update(this.userId, { $set: { 'profile.image': data.avatar } });
     }
-      // Meteor.users.update(userId, { $set: data });
+    if (data['profile.ptiAddress']) {
+      Meteor.users.update(this.userId, { $set: { 'profile.ptiAddress': data['profile.ptiAddress'] } });
+    }
   },
   'users.removeImage'() {
-    Meteor.users.update({ _id: this.userId }, { $unset: { 'profile.image': '' } });
+    Meteor.users.update(this.userId, { $unset: { 'profile.image': '' } });
   },
   checkPassword(digest) {
     check(digest, String);

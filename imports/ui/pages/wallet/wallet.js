@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 
-import { createWallet, restoreWallet } from '/imports/lib/ethereum/wallet.js';
+import { createWallet, restoreWallet, sendParatii } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getPassword } from '/imports/api/users.js';
 import './wallet.html';
 
@@ -42,5 +42,14 @@ Template.wallet.events({
         wallet = restoreWallet(password, seedPhrase);
       }
     });
+  },
+  'click #send-pti'(event) {
+    event.preventDefault();
+    const recipient = TemplateVar.getFrom('.dapp-address-input', 'value');
+    const amount = $('send-amount').val();
+    sendParatii(amount, recipient);
+  },
+  'click #show-seed'() {
+    alert('show seed [to be done]');
   },
 });
