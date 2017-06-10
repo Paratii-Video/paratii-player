@@ -4,7 +4,7 @@
 # Installation 
 
 
-Install node (https://nodejs.org/en/download/) and npma. (These are the instructions for a debian based system - please check the download page for instructions for your OS)
+Install node (https://nodejs.org/en/download/) and npm. (These are the instructions for a debian based system - please check the download page for instructions for your OS)
 
     sudo apt-get install -y build-essential
     curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
@@ -22,7 +22,6 @@ Clone this paratii-player repository, either with https or ssh:
 
     git clone git@github.com:Paratii-Video/paratii-player.git
 
-Or anonymou
 Install the package
 
     cd paratii-player
@@ -33,11 +32,33 @@ Now start the application
     npm start
 
 
+# Testing
+
+The application has to kind of tests. 
+
+    meteor test
+
+And end-to-end tetst that can be run by starting up the application in one window:
+
+    meteor run
+
+And running the tests in another window
+
+    meteor run chimp-test
+
+Or, when you are developing:
+
+    meteor run chimp-watch
+
+
 # Contributing
+
+Make sure all tests pass:
 
 Testing
 
     npm test
+    npm run 
 
 Run lint:
 

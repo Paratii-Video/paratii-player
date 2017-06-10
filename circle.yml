@@ -2,9 +2,19 @@ dependencies:
   pre:
     - curl https://install.meteor.com | /bin/sh
 test:
+  pre:
+    - google-chrome --version
+    - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    - sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    - sudo apt-get update
+    - sudo apt-get --only-upgrade install google-chrome-stable
+    - google-chrome --version
   override:
     - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --once --driver-package dispatch:mocha  --port 9999
-  post:
+    - npm run dev:
+        background: true
+    - sleep 120
+    - npm run chimp-test
     - npm run lint
 
 deployment:

@@ -1,27 +1,38 @@
 <template name="wallet">
-	<div class="titleContainer">
-		Your Wallet
-	</div>
-	<div class= "alert-config">
-		This is your address: 0x922a519ac926f69856fcfc1b2b8b846cfb3f6b4e
-	</div>
-	<div class="line"></div> 
-	<ul class="titleContainer"> Your balance is: <b> 314.15 </b>PTI</ul>
-	<div class="titleContainer">Send Paratii</div>    
+    {{#isAuthorized}}
+    <div class="titleContainer" id="wallet-title">
+        Your Wallet
+    </div>
+    {{# if currentUser.profile.ptiAddress }}
+    <div class="alert-config">
+        This is your address: {{ currentUser.profile.ptiAddress }}
+    </div>
+    <div class="line"></div> 
+        {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-medium"}}
+    <ul class="titleContainer"> Your balance is: <b>{{ ethAccount.balance }}</b> PTI</ul>
+    <div class="titleContainer">Send Paratii</div>    
     <div class="descriptionContainer">
-	<form id="form-send-paratii">
-		
-<div class="col-md-6">
-	<div class="input-group">
-		 <span class="input-group-addon" id="sizing-addon3">PTI</span>
-		  <input type="text" class="form-control" placeholder="Amount PTI you wish send" aria-describedby="sizing-addon1">
-		  
-	</div>
-	<div class="input-group">
-	 <span class="input-group-addon" id="sizing-addon3">Friend's Wallet</span>
-	 <input type="text" class="form-control" placeholder="Wallet Friend's Number" aria-describedby="sizing-addon1">	  
-	</div>
-	<input type="submit" class="btn btn-default" value="Send PTI"></div> 
-   	</form>
-	</div>
+        <form id="form-send-paratii">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon3">PTI</span>
+                    <input type="text" class="form-control" placeholder="Amount of PTI you wish send" aria-describedby="sizing-addon1" id="send-amount">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon3">Friend's Wallet</span>
+                    <!-- <input type="text" class="form-control" placeholder="Wallet Friend's Number" aria-describedby="sizing-addon1">    -->
+                    {{> dapp_addressInput placeholder="0x000000.." value=""}}
+                </div>
+                <input type="submit" class="btn btn-default" value="Send PTI" id="send-pti">
+            </div> 
+        </form>
+        <div class="btn btn-default" id="show-seed">Show the seed for this wallet</div> (you need this information to restore your wallet if you want to use it in another browser)
+    </div>
+    {{ else }}
+        It seems you do not have an account to hold your paratii yet.
+
+        You can either <a href="#" id="create-wallet">generate a new address</a> or <a href="#" id="restore-wallet">restore your account</a>.
+    {{/if }}
+    {{/isAuthorized}}
+
 </template>

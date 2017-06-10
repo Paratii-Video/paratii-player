@@ -3,13 +3,16 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "test": "NODE_OPTIONS='--debug' meteor test --driver-package practicalmeteor:mocha --port 8754",
-    "lint": "eslint ."
+    "dev": "meteor run",
+    "test": "meteor test --driver-package practicalmeteor:mocha --port 8754",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
+    "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
+    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=5000"
   },
   "dependencies": {
     "babel-runtime": "^6.20.0",
     "bcrypt": "^1.0.2",
-    "chai": "^3.5.0",
     "eth-lightwallet": "^2.5.4",
     "hooked-web3-provider": "^1.0.0",
     "meteor-node-stubs": "~0.2.4",
@@ -17,6 +20,11 @@
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-meteor": "^6.26.0",
+    "babel-register": "^6.24.1",
+    "chimp": "^0.49.0",
     "chromedriver": "^2.29.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
@@ -25,6 +33,7 @@
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-meteor": "^4.0.1",
     "eslint-plugin-react": "^7.0.1",
+    "mocha": "^3.4.1",
     "nightmare": "^2.10.0",
     "shell-source": "^1.1.0",
     "shelljs": "^0.7.4"
@@ -43,14 +52,16 @@
     ],
     "rules": {
       "func-names": "off",
-      "import/no-absolute-path": "off",
+      "import/no-absolute-path":  "off",
       "import/no-extraneous-dependencies": "off",
       "import/prefer-default-export": "off",
       "import/no-unresolved": "off",
       "import/extensions": "off",
+      "meteor/no-session": "off",
       "no-underscore-dangle": "off",
       "prefer-arrow-callback": "off",
       "no-undef": "off",
+      "generator-star-spacing": "off",
       "object-shorthand": [
         "error",
         "always",

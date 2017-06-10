@@ -1,6 +1,21 @@
+import { createWallet } from '/imports/lib/ethereum/wallet.js';
+import { showSeed } from '/imports/ui/pages/wallet/wallet.js';
+
+const mySubmitFunc = function (error, state) {
+  if (state === 'signUp') {
+    const wallet = Session.get('wallet');
+    // show the seed to the user
+    showSeed(wallet);
+  }
+};
+
+const myPreSignupFunc = function (password) {
+  const wallet = createWallet(password);
+  Session.set('wallet', wallet);
+};
+
 // Options for accounts
 // https://github.com/meteor-useraccounts/core/blob/master/Guide.md#configuration-api
-
 AccountsTemplates.configure({
   // Behavior
   confirmPassword: true,
@@ -31,13 +46,13 @@ AccountsTemplates.configure({
   termsUrl: 'terms-of-use',
 
   // Redirects
-  homeRoutePath: '/account',
+  // homeRoutePath: '/account',
   redirectTimeout: 4000,
 
   // Hookups
   // onLogoutHook: myLogoutFunc,
-  // onSubmitHook: mySubmitFunc,
-  // preSignUpHook: myPreSubmitFunc,
+  onSubmitHook: mySubmitFunc,
+  preSignUpHook: myPreSignupFunc,
   // postSignUpHook: myPostSubmitFunc,
 
   // Texts
@@ -56,27 +71,31 @@ AccountsTemplates.configure({
   },
 });
 
-const email = AccountsTemplates.removeField('email');
-const pwd = AccountsTemplates.removeField('password');
 
-AccountsTemplates.addField(
-  {
-    _id: 'name',
-    displayName: 'Your name',
-    type: 'text',
-    // placeholder: {
-    //     signUp: "At least six characters"
-    // },
-    required: true,
-    minLength: 4,
-    // re: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
-    // errStr: 'At least 1 digit, 1 lowercase and 1 uppercase',
-  },
-);
+function addNameFieldToRegistrationForm() {
+  const email = AccountsTemplates.removeField('email');
+  const pwd = AccountsTemplates.removeField('password');
 
-AccountsTemplates.addField(email);
-AccountsTemplates.addField(pwd);
+  AccountsTemplates.addField(
+    {
+      _id: 'name',
+      displayName: 'Your name',
+      type: 'text',
+      // placeholder: {
+      //     signUp: "At least six characters"
+      // },
+      required: true,
+      minLength: 4,
+      // re: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
+      // errStr: 'At least 1 digit, 1 lowercase and 1 uppercase',
+    },
+  );
 
+  AccountsTemplates.addField(email);
+  AccountsTemplates.addField(pwd);
+}
+
+addNameFieldToRegistrationForm();
 
 // AccountsTemplates.configureRoute('signIn', redirect="/account");
 // AccountsTemplates.configureRoute('enrollAccount');
