@@ -68,4 +68,24 @@ Meteor.methods({
     Videos.update(videoId, { $inc: { 'stats.dislikes': 1 } });
     return true;
   },
+  'videos.create'(video) {
+    check(video, {
+      id: String,
+      title: String,
+      price: Number,
+      src: String,
+      stats: {
+        likes: Number,
+        dislikes: Number,
+      },
+    });
+    Videos.insert({
+      _id: video.id,
+      title: video.title,
+      price: video.price,
+      src: video.src,
+      stats: video.stats,
+    });
+    return video.id;
+  },
 });
