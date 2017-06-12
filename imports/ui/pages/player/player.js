@@ -156,9 +156,6 @@ Template.player.events({
     const dict = instance.templateDict;
 
     // update progress bar
-    const progressBar = instance.find('#progress-bar');
-    const percentage = Math.floor((100 / videoPlayer.duration) * time);
-    progressBar.value = percentage;
     dict.set('playedProgress', time / videoPlayer.duration);
     const barWidth = instance.find('#video-progress').offsetWidth;
     dict.set('scrubberTranslate', barWidth * (time / videoPlayer.duration));
@@ -183,12 +180,6 @@ Template.player.events({
     const barWidth = instance.find('#video-progress').offsetWidth;
     const offset = event.clientX - event.currentTarget.getBoundingClientRect().left;
     videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
-  },
-  'input #progress-bar'(event, instance) {
-    const videoPlayer = instance.find('#video-player');
-    const inputValue = event.target.valueAsNumber;
-    const time = (inputValue / 100.0) * videoPlayer.duration;
-    videoPlayer.currentTime = time;
   },
   'input #vol-control'(event, instance) {
     const videoPlayer = instance.find('#video-player');
