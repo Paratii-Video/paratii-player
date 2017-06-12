@@ -6,6 +6,10 @@
     </video>
     {{/with}}
     <div class="player-controls {{playPause}} {{hideControls}}">
+      <div id="video-progress">
+        <div id="played-bar"></div>
+        <div id="scrubber"></div>
+      </div>
       <input type="range" id="progress-bar" value="0">
       <br />
       <button id="play-pause-button" title="{{playPause}}">
