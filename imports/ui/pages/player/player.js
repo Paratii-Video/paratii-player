@@ -34,7 +34,8 @@ Template.player.onCreated(function () {
   this.templateDict.set('totalTime', 0);
   this.templateDict.set('hideControls', false);
   this.templateDict.set('showVolume', false);
-
+  this.templateDict.set('playedProgress', 0.0);
+  this.templateDict.set('scrubberTranslate', 0);
   Meteor.subscribe('videos');
 });
 
@@ -75,6 +76,12 @@ Template.player.helpers({
   },
   volumeClass() {
     return Template.instance().templateDict.get('showVolume') ? '' : 'closed';
+  },
+  playedProgress() {
+    return Template.instance().templateDict.get('playedProgress');
+  },
+  scrubberTranslate() {
+    return Template.instance().templateDict.get('scrubberTranslate');
   },
 });
 
@@ -146,14 +153,18 @@ Template.player.events({
   'timeupdate'(event, instance) {
     const videoPlayer = instance.find('#video-player');
     const time = videoPlayer.currentTime;
+    const dict = instance.templateDict;
 
     // update progress bar
     const progressBar = instance.find('#progress-bar');
     const percentage = Math.floor((100 / videoPlayer.duration) * time);
     progressBar.value = percentage;
+    dict.set('playedProgress', time / videoPlayer.duration);
+    const barWidth = instance.find('#video-progress').offsetWidth;
+    dict.set('scrubberTranslate', barWidth * (time / videoPlayer.duration));
 
     // update current time
-    instance.templateDict.set('currentTime', time);
+    dict.set('currentTime', time);
   },
   'input #progress-bar'(event, instance) {
     const videoPlayer = instance.find('#video-player');
