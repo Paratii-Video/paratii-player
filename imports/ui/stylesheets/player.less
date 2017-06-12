@@ -213,9 +213,10 @@
   }
 
   #played-bar {
-    background: #cc181e;
+    background: #7d70ff;
     height: 5px;
     width: 100%;
+    border-radius: 10px;
     transform-origin: 0 0;
     -webkit-transform-origin: 0 0;
   }
@@ -229,6 +230,12 @@
     left: 0;
     margin: -8px 0 0 -8px;
 
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+
     &:before,
     &:after {
         content: '';
@@ -238,7 +245,7 @@
     }
 
     &:before {
-        background: #eaeaea;
+        background: #7d70ff;
         width: 15px;
         height: 15px;
     }
