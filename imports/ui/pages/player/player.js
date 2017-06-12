@@ -166,6 +166,18 @@ Template.player.events({
     // update current time
     dict.set('currentTime', time);
   },
+  'mouseup'() {
+    $(document).off('mousemove');
+  },
+  'mousedown #video-progress'(event, instance) {
+    $(document).mousemove((e) => {
+      const videoPlayer = instance.find('#video-player');
+      const progress = instance.find('#video-progress');
+      const barWidth = progress.offsetWidth;
+      const offset = e.clientX - progress.getBoundingClientRect().left;
+      videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
+    });
+  },
   'click #video-progress'(event, instance) {
     const videoPlayer = instance.find('#video-player');
     const barWidth = instance.find('#video-progress').offsetWidth;
