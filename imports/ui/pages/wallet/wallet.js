@@ -1,5 +1,7 @@
+import { Accounts } from 'meteor/accounts-base';
 import { createWallet } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getPassword } from '/imports/api/users.js';
+// import { sendPTI } from '/imports/api/events.js';
 import './wallet.html';
 
 function showSeed(wallet) {
@@ -16,6 +18,9 @@ function showSeed(wallet) {
 
 
 Template.wallet.helpers({
+  events: function (){
+    return Events.find();
+  },
   ethNode() {
     return Session.get('ethNode');
   },
@@ -33,6 +38,28 @@ Template.wallet.events({
       }
     });
   },
+  'submit #form-send-paratii': function(event){
+    // Prevent default browser form submit
+    event.preventDefault();
+    // Get value from form elements
+    let transaction = {};
+    const target = event.target;
+
+    transaction.sender = Meteor.user().profile.ptiAddress;
+    transaction.receiver = target.wallet_friend_number.value;
+    transaction.amount = target.wallet_pti_amount.value;
+    transaction.description = 'send pti';
+
+    // Events have: sender , receiver (these are ethereum accounts), description , transactionId and amount, for now.
+    Meteor.call("events.sendPTI", transaction);
+
+
+    // Clear form
+    target.wallet_pti_amount.value = '';
+    target.wallet_friend_number.value = '';
+  }
+
+
   // 'click #restore-wallet'(event, instance) {
   // },
 });
