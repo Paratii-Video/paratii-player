@@ -96,7 +96,7 @@ describe('account workflow', function () {
     browser.waitForExist('#wallet-title');
   });
 
-  it('restore the keystore @watch', function () {
+  it('restore the keystore', function () {
     server.execute(createUser);
     const session = browser.execute(createWalletHelper);
     const seedPhrase = session.value.seed;
