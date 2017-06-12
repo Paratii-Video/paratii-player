@@ -166,6 +166,12 @@ Template.player.events({
     // update current time
     dict.set('currentTime', time);
   },
+  'click #video-progress'(event, instance) {
+    const videoPlayer = instance.find('#video-player');
+    const barWidth = instance.find('#video-progress').offsetWidth;
+    const offset = event.clientX - event.currentTarget.getBoundingClientRect().left;
+    videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
+  },
   'input #progress-bar'(event, instance) {
     const videoPlayer = instance.find('#video-player');
     const inputValue = event.target.valueAsNumber;
