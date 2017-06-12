@@ -7,6 +7,7 @@
     {{/with}}
     <div class="player-controls {{playPause}} {{hideControls}}">
       <div id="video-progress">
+        <div id="loaded-bar" style="transform: scaleX({{loadedProgress}})"></div>
         <div id="played-bar" style="transform: scaleX({{playedProgress}})"></div>
         <div id="scrubber" style="transform: translateX({{scrubberTranslate}}px)"></div>
       </div>

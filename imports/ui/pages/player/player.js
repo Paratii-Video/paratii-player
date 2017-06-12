@@ -34,6 +34,7 @@ Template.player.onCreated(function () {
   this.templateDict.set('totalTime', 0);
   this.templateDict.set('hideControls', false);
   this.templateDict.set('showVolume', false);
+  this.templateDict.set('loadedProgress', 0.0);
   this.templateDict.set('playedProgress', 0.0);
   this.templateDict.set('scrubberTranslate', 0);
   Meteor.subscribe('videos');
@@ -80,6 +81,9 @@ Template.player.helpers({
   playedProgress() {
     return Template.instance().templateDict.get('playedProgress');
   },
+  loadedProgress() {
+    return Template.instance().templateDict.get('loadedProgress');
+  },
   scrubberTranslate() {
     return Template.instance().templateDict.get('scrubberTranslate');
   },
@@ -115,6 +119,14 @@ const pauseVideo = (instance) => {
   instance.find('#video-player').pause();
   Meteor.clearTimeout(controlsHandler);
   instance.templateDict.set('hideControls', false);
+};
+
+const setLoadedProgress = (instance) => {
+  const videoPlayer = instance.find('#video-player');
+  if (videoPlayer.buffered.length > 0) {
+    const loaded = videoPlayer.buffered.end(0) / videoPlayer.duration;
+    instance.templateDict.set('loadedProgress', loaded);
+  }
 };
 
 Template.player.events({
@@ -162,6 +174,10 @@ Template.player.events({
 
     // update current time
     dict.set('currentTime', time);
+    setLoadedProgress(instance);
+  },
+  'progress #video-player'(event, instance) {
+    setLoadedProgress(instance);
   },
   'mouseup'() {
     $(document).off('mousemove');
@@ -191,6 +207,7 @@ Template.player.events({
     const duration = Math.floor(videoPlayer.duration);
     instance.templateDict.set('totalTime', duration);
     instance.templateDict.set('currentTime', 0);
+    setLoadedProgress(instance);
   },
   'mousemove'(event, instance) {
     const dict = instance.templateDict;
