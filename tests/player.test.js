@@ -35,11 +35,11 @@ describe('player workflow', function () {
     assert.isTrue(browser.getAttribute('.player-overlay', 'class').includes('pause'));
   });
 
-  it('have fun with the progress bar', function () {
+  it('click on the progress bar', function () {
     browser.url('http://localhost:3000/player/12345');
     browser.waitForExist('#video-player');
-    browser.waitForExist('#loaded-bar');
-    browser.click('#loaded-bar');
+    browser.waitForExist('#video-progress');
+    browser.click('#video-progress');
     assert.notEqual(browser.getText('#current-time'), '00:00');
   });
 });
