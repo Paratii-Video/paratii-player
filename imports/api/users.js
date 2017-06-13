@@ -64,6 +64,20 @@ export function userPrettyName() {
   return '';
 }
 
+export function getUserPTIaddress(){
+  const user = Meteor.user();
+  if (user) {
+    if (user.profile) {
+      return user.profile.ptiAddress;
+    }
+    return Meteor.userId();
+  }
+  else{
+    return Meteor.users.findOne({ _id: Meteor.userId });
+  }
+  return '';
+}
+
 export async function getPassword() {
   const password = prompt('Please enter password', 'Password');
   const digest = Package.sha.SHA256(password);

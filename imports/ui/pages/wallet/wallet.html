@@ -13,7 +13,7 @@
     <div class="titleContainer">Send Paratii</div>
     <div class="descriptionContainer">
         <form id="form-send-paratii">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="input-group">
                     <span class="input-group-addon" id="sizing-addon3">PTI</span>
                     <input name="wallet_pti_amount" type="text" class="form-control" placeholder="Amount of PTI you wish send" aria-describedby="sizing-addon1">
@@ -33,4 +33,13 @@
     {{/if }}
     {{/isAuthorized}}
 
+    {{#each events}}
+      {{> transaction}}
+    {{/each}}
+
+</template>
+
+
+<template name="transaction">
+  <h1>Evento</h1>
 </template>

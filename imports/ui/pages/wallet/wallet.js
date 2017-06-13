@@ -1,7 +1,7 @@
 import { Accounts } from 'meteor/accounts-base';
 import { createWallet } from '/imports/lib/ethereum/wallet.js';
-import { userPrettyName, getPassword } from '/imports/api/users.js';
-// import { sendPTI } from '/imports/api/events.js';
+import { userPrettyName, getUserPTIaddress, getPassword } from '/imports/api/users.js';
+import { Events } from '../../../api/events.js';
 import './wallet.html';
 
 function showSeed(wallet) {
@@ -18,15 +18,16 @@ function showSeed(wallet) {
 
 
 Template.wallet.helpers({
-  events: function (){
-    return Events.find();
-  },
   ethNode() {
     return Session.get('ethNode');
   },
   ethAccount() {
     return Session.get('ethAccount');
   },
+  events: function () {
+    // Perform a reactive database query against minimongo
+    return Events.find();
+  }
 });
 
 Template.wallet.events({
@@ -45,7 +46,7 @@ Template.wallet.events({
     let transaction = {};
     const target = event.target;
 
-    transaction.sender = Meteor.user().profile.ptiAddress;
+    transaction.sender = getUserPTIaddress();
     transaction.receiver = target.wallet_friend_number.value;
     transaction.amount = target.wallet_pti_amount.value;
     transaction.description = 'send pti';
@@ -62,4 +63,16 @@ Template.wallet.events({
 
   // 'click #restore-wallet'(event, instance) {
   // },
+});
+
+
+// Meteor.user is not available when the application start,
+// autorun restart the function till user is defined
+Tracker.autorun(() => {
+  let user = Meteor.user();
+  if (user != undefined) {
+    const userPTIaddress = getUserPTIaddress();
+    console.log( getUserPTIaddress() );
+    Meteor.subscribe('userTransactions', userPTIaddress, function(){ console.log("ready"); } );
+  }
 });
