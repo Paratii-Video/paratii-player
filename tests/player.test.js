@@ -35,7 +35,7 @@ describe('player workflow', function () {
     assert.isTrue(browser.getAttribute('.player-overlay', 'class').includes('pause'));
   });
 
-  it('click on the progress bar @watch', function () {
+  it('click on the progress bar', function () {
     browser.url('http://localhost:3000/player/12345');
     browser.waitForExist('#video-player');
     browser.waitForExist('#loaded-bar');
