@@ -38,8 +38,10 @@ describe('player workflow', function () {
   it('click on the progress bar', function () {
     browser.url('http://localhost:3000/player/12345');
     browser.waitForExist('#video-player');
-    browser.waitForExist('#video-progress');
-    browser.click('#video-progress');
+    browser.waitForExist('#loaded-bar');
+    browser.waitUntil(() => browser.getElementSize('#loaded-bar', 'width') > 30, 5000, 'video load timeout');
+    browser.click('#loaded-bar');
+    browser.pause(100);
     assert.notEqual(browser.getText('#current-time'), '00:00');
   });
 });
