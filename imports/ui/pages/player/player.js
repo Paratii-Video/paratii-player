@@ -124,8 +124,9 @@ const pauseVideo = (instance) => {
 const setLoadedProgress = (instance) => {
   const videoPlayer = instance.find('#video-player');
   if (videoPlayer.buffered.length > 0) {
+    const barWidth = instance.find('#video-progress').offsetWidth;
     const loaded = videoPlayer.buffered.end(0) / videoPlayer.duration;
-    instance.templateDict.set('loadedProgress', loaded);
+    instance.templateDict.set('loadedProgress', loaded * barWidth);
   }
 };
 
@@ -168,8 +169,8 @@ Template.player.events({
     const dict = instance.templateDict;
 
     // update progress bar
-    dict.set('playedProgress', time / videoPlayer.duration);
     const barWidth = instance.find('#video-progress').offsetWidth;
+    dict.set('playedProgress', (time / videoPlayer.duration) * barWidth);
     dict.set('scrubberTranslate', barWidth * (time / videoPlayer.duration));
 
     // update current time

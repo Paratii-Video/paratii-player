@@ -7,9 +7,9 @@
     {{/with}}
     <div class="player-controls {{playPause}} {{hideControls}}">
       <div id="video-progress">
-        <div id="loaded-bar" style="transform: scaleX({{loadedProgress}})"></div>
-        <div id="played-bar" style="transform: scaleX({{playedProgress}})"></div>
-        <div id="scrubber" style="transform: translateX({{scrubberTranslate}}px)"></div>
+        <div id="loaded-bar" style="width: {{loadedProgress}}px"></div>
+        <div id="played-bar" style="width: {{playedProgress}}px"></div>
+        <div id="scrubber" style="left: {{scrubberTranslate}}px"></div>
       </div>
       <br />
       <button id="play-pause-button" title="{{playPause}}">
