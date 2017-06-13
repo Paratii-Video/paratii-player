@@ -1,4 +1,3 @@
-import { Accounts } from 'meteor/accounts-base';
 import { createWallet } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '../../../api/events.js';
@@ -24,10 +23,10 @@ Template.wallet.helpers({
   ethAccount() {
     return Session.get('ethAccount');
   },
-  events: function () {
+  events() {
     // Perform a reactive database query against minimongo
     return Events.find();
-  }
+  },
 });
 
 Template.wallet.events({
@@ -39,11 +38,11 @@ Template.wallet.events({
       }
     });
   },
-  'submit #form-send-paratii': function(event){
+  'submit #form-send-paratii'(event) {
     // Prevent default browser form submit
     event.preventDefault();
     // Get value from form elements
-    let transaction = {};
+    const transaction = {};
     const target = event.target;
 
     transaction.sender = getUserPTIaddress();
@@ -51,14 +50,20 @@ Template.wallet.events({
     transaction.amount = target.wallet_pti_amount.value;
     transaction.description = 'send pti';
 
-    // Events have: sender , receiver (these are ethereum accounts), description , transactionId and amount, for now.
-    Meteor.call("events.sendPTI", transaction);
-
-
-    // Clear form
-    target.wallet_pti_amount.value = '';
-    target.wallet_friend_number.value = '';
-  }
+    // Events have
+    // sender , receiver, description , transactionId and amount
+    Meteor.call('events.sendPTI', transaction, function (error, result) {
+      if (error) {
+        // TODO notify error
+        return;
+      }
+      if (result) {
+        // Clear form
+        target.wallet_pti_amount.value = '';
+        target.wallet_friend_number.value = '';
+      }
+    });
+  },
 
 
   // 'click #restore-wallet'(event, instance) {
@@ -69,10 +74,9 @@ Template.wallet.events({
 // Meteor.user is not available when the application start,
 // autorun restart the function till user is defined
 Tracker.autorun(() => {
-  let user = Meteor.user();
-  if (user != undefined) {
+  const user = Meteor.user();
+  if (user !== undefined) {
     const userPTIaddress = getUserPTIaddress();
-    console.log( getUserPTIaddress() );
-    Meteor.subscribe('userTransactions', userPTIaddress, function(){ console.log("ready"); } );
+    Meteor.subscribe('userTransactions', userPTIaddress);
   }
 });

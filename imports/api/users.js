@@ -64,7 +64,7 @@ export function userPrettyName() {
   return '';
 }
 
-export function getUserPTIaddress(){
+export function getUserPTIaddress() {
   const user = Meteor.user();
   if (user) {
     if (user.profile) {
@@ -72,10 +72,7 @@ export function getUserPTIaddress(){
     }
     return Meteor.userId();
   }
-  else{
-    return Meteor.users.findOne({ _id: Meteor.userId });
-  }
-  return '';
+  return Meteor.users.findOne({ _id: Meteor.userId });
 }
 
 export async function getPassword() {
