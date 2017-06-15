@@ -9,7 +9,7 @@
     </div>
     <div class="line"></div>
         {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-medium"}}
-    <ul class="titleContainer"> Your balance is: <b>{{ ethAccount.balance }}</b> PTI</ul>
+    <ul class="titleContainer"> Your balance is: <b> {{ balance }}</b> PTI</ul>
     <div class="titleContainer">Send Paratii</div>
     <div class="descriptionContainer">
         <form id="form-send-paratii">
@@ -44,6 +44,7 @@
 <template name="transaction">
   <tr class="transition_row {{#if sendCheck}} sent {{/if}}">
     <td><div>{{ sender }}</div><div>{{ receiver }}</div></td>
+    <td><div>{{ senderBalance }}</div><div>{{ receiverBalance }}</div></td>
     <td>{{ amount }}</td>
     <td>{{ createdAt }}</td>
     <td>{{ description }}</td>

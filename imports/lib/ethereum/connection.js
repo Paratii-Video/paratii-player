@@ -10,9 +10,9 @@ function checkStatus() {
         blockNumber: web3.eth.blockNumber,
         error: null,
       });
-      Session.set('ethAccount', {
-        balance: 123456,
-      })
+      // Session.set('ethAccount', {
+      //   balance: 123456,
+      // })
 
     }
     catch (e) {
@@ -21,15 +21,14 @@ function checkStatus() {
         isConnected: null,
         error: e,
       })
- 
+
     }
 }
 
-// function getBalance() {
-//   Session.set('bal')
-//   return {
-//     balance: 123456789,
-//   } 
+// function setInitBalance() {
+//   Session.set('ethAccount',{
+//     balance: 100,
+//   })
 // }
 
 // call the status function every second
@@ -42,7 +41,7 @@ const connect = function () {
     // (or the eth_syncing property doesn't exists)
   	EthAccounts.init();
   	EthBlocks.init();
-  } 
+  }
 
 };
 
