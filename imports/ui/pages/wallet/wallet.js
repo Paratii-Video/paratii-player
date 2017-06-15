@@ -70,6 +70,15 @@ Template.wallet.events({
   // },
 });
 
+Template.transaction.helpers({
+  sendCheck() {
+    if (this.sender === getUserPTIaddress()) {
+      return true;
+    }
+    return false;
+  },
+});
+
 
 // Meteor.user is not available when the application start,
 // autorun restart the function till user is defined

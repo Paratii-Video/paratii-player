@@ -70,9 +70,8 @@ export function getUserPTIaddress() {
     if (user.profile) {
       return user.profile.ptiAddress;
     }
-    return Meteor.userId();
   }
-  return Meteor.users.findOne({ _id: Meteor.userId });
+  return '';
 }
 
 export async function getPassword() {

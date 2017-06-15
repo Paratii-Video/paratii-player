@@ -33,13 +33,19 @@
     {{/if }}
     {{/isAuthorized}}
 
-    {{#each events}}
-      {{> transaction}}
-    {{/each}}
-
+    <table class="table table-striped all_transactions">
+      {{#each events}}
+        {{> transaction}}
+      {{/each}}
+    </table>
 </template>
 
 
 <template name="transaction">
-  <h1>Evento</h1>
+  <tr class="transition_row {{#if sendCheck}} sent {{/if}}">
+    <td><div>{{ sender }}</div><div>{{ receiver }}</div></td>
+    <td>{{ amount }}</td>
+    <td>{{ createdAt }}</td>
+    <td>{{ description }}</td>
+  </tr>
 </template>
