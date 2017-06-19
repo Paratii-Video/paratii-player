@@ -1,8 +1,7 @@
 <template name="account">
     {{#if currentUser }}
-    <div class="container">
         <div class="titleContainer">Profile
-            <a href="{{pathFor route='wallet' }}" class="btn btn-default">Go to wallet</a>
+            <a href="{{pathFor route='wallet' }}" class="btn btn-default float-right aqua-button">Go to wallet</a>
         </div>
         <div class="line"></div>
         <div class="container">
@@ -36,7 +35,6 @@
             </div>
           </form>
         </div>
-    </div>
     {{else}}
     <div class="container">
         {{> atForm }}
