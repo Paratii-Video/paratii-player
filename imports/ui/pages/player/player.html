@@ -1,10 +1,11 @@
 <template name="player">
   <div id="player-container">
-    {{#with video}}
+   <!--  {{#with video}}
     <video id="video-player">
       <source src="{{ src }}" type="video/mp4" />
     </video>
-    {{/with}}
+   {{/with}}
+     -->
     <div class="player-controls {{playPause}} {{hideControls}}">
       <div id="video-progress">
         <div id="loaded-bar" style="width: {{loadedProgress}}px"></div>
@@ -20,8 +21,10 @@
       </button>
       <input id="vol-control" class="{{ volumeClass }}" value=100 type="range" min="0" max="100" step="1"/>
       <span id="current-time">{{formatTime currentTime}}</span>
+
       <span class="slash">/</span>
       <span id="total-time">{{formatTime totalTime}}</span>
+      <span id="status"><tt>STATUS: {{ status }}</tt></span>
       <button id="fullscreen-button" title="{{fullscreen}}">
         <img src= "/img/fullscreen-icon.svg">
       </button>
