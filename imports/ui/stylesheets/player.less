@@ -108,7 +108,7 @@
 
 .player-controls {
   width: 100%;
-  padding: 10px 10px 10px 70px;
+  padding: 10px 20px 20px 80px;
   z-index: 100;
   position: absolute;
   left: 0;
@@ -131,11 +131,6 @@
   }
   #vol-control {
     width: 10%;
-    height: 20px;
-  }
-  #progress-bar {
-    margin: auto;
-    border: none;
     height: 20px;
   }
 
@@ -200,6 +195,64 @@
   }
   #total-time, .slash {
     color: #aaa;
+  }
+
+  #video-progress {
+    background: rgba(255, 255, 255, 0.2);
+    position: relative;
+    width: 100%;
+    height: 5px;
+    margin: 10px auto 30px;
+    border-radius: 10px;
+  }
+
+  #played-bar {
+    background: #7d70ff;
+    height: 5px;
+    width: 100%;
+    margin: -5px 0;
+    border-radius: 10px;
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+  }
+
+  #loaded-bar {
+    background: rgba(255, 255, 255, 0.5);
+    height: 5px;
+    width: 100%;
+    border-radius: 10px;
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+  }
+
+  #scrubber {
+    background: rgba(0,0,0,0);
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 3px;
+    left: 0;
+    margin: -8px 0 0 -8px;
+
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+
+    &:before,
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        border-radius: 50%;
+    }
+
+    &:before {
+        background: #7d70ff;
+        width: 15px;
+        height: 15px;
+    }
   }
 }
 

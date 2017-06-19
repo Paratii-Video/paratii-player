@@ -10,9 +10,10 @@ test:
     - sudo apt-get --only-upgrade install google-chrome-stable
     - google-chrome --version
   override:
+    - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --once --driver-package dispatch:mocha  --port 9999
     - npm run dev:
         background: true
-    - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --once --driver-package dispatch:mocha  --port 9999
+    - sleep 120
     - npm run chimp-test
     - npm run lint
 

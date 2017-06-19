@@ -1,4 +1,4 @@
-import './web3.js'
+import './web3.js';
 
 const DEFAULT_PROVIDER = 'http://paratii-chain.gerbrandy.com';
 
@@ -25,27 +25,22 @@ function checkStatus() {
     }
 }
 
-// function setInitBalance() {
-//   Session.set('ethAccount',{
-//     balance: 100,
-//   })
+
 // }
 
 // call the status function every second
 Meteor.setInterval(checkStatus, 1000);
 
 const connect = function () {
-  console.log('Connecting....')
   if (web3.isConnected()) {
     // only start app operation, when the node is not syncing
     // (or the eth_syncing property doesn't exists)
   	EthAccounts.init();
   	EthBlocks.init();
   }
-
 };
 
-const init = function(){
+const init = function () {
   web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
-	connect();
+  connect();
 };

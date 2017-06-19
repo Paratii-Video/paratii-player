@@ -57,8 +57,8 @@ describe('player page', function () {
   });
 
   it('the formatTime() helper returns the number formatted correctly', function () {
-    const value = Template.player.__helpers[' formatTime'](140);
-    assert.equal(value, '02:20');
+    const value = Template.player.__helpers[' formatTime'](130);
+    assert.equal(value, '02:10');
   });
 
   it('renders correctly with simple data', function () {
@@ -67,15 +67,6 @@ describe('player page', function () {
     withRenderedTemplate('player', data, (el) => {
       assert.equal($(el).find('#video-player').length, 1);
     });
-  });
-
-  it('playpause helper is working', function () {
-    const el = document.createElement('div');
-    document.body.appendChild(el);
-    const view = Blaze.render(Template.player, el);
-    // force Template.instance() to return view.templateInstance
-    Template._currentTemplateInstanceFunc = view.templateInstance;
-    assert.equal(Template.player.__helpers[' playPause'](), 'play');
   });
 
   it('increments the likes counter when clicked', function () {
@@ -103,4 +94,76 @@ describe('player page', function () {
     //   assert.equal($(el).find('#button-dislike').text(), '2.719');
     // });
   });
+});
+
+describe('player helpers', function () {
+  beforeEach(function () {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const view = Blaze.render(Template.player, el);
+    Template._currentTemplateInstanceFunc = view.templateInstance;
+  });
+
+  it('playpause helper is working', function () {
+    assert.equal(Template.player.__helpers[' playPause'](), 'play');
+  });
+
+  it('playPauseIcon returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' playPauseIcon'](), '/img/play-icon.svg');
+  });
+
+  it('currentTime returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' currentTime'](), 0);
+  });
+
+  it('totalTime returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' totalTime'](), 0);
+  });
+
+  it('hideControls returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' hideControls'](), '');
+  });
+
+  it('volumeClass returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' volumeClass'](), 'closed');
+  });
+
+  it('playedProgress returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' playedProgress'](), 0);
+  });
+
+  it('loadedProgress returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' loadedProgress'](), 0);
+  });
+
+  it('scrubberTranslate returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' scrubberTranslate'](), 0);
+  });
+});
+
+describe('player events', function () {
+  beforeEach(function () {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const view = Blaze.render(Template.player, el);
+    Template._currentTemplateInstanceFunc = view.templateInstance;
+  });
+
+  // it('video ended changes playing state', function () {
+  //   const el = document.createElement('div');
+  //   document.body.appendChild(el);
+  //   const view = Blaze.render(Template.player, el);
+  //   Template._currentTemplateInstanceFunc = view.templateInstance;
+  //   Template.player.fireEvent('ended #video-player',
+  //      { templateInstance: view.templateInstance });
+  //   assert(Template.player.__helpers[' playPause'](), 'play');
+  //   assert(Template.player.__helpers[' playPauseIcon'](), '/img/play-icon.svg');
+  // });
+  //
+  // it('playing state changes when play button is clicked', function () {
+  //   Template.player.fireEvent('click #play-pause-button');
+  //   assert(Template.player.__helpers[' playPause'](), 'pause');
+  //   assert(Template.player.__helpers[' hideControls'](), 'toggleFade');
+  //   assert(Template.player.__helpers[' playPauseIcon'](), '/img/pause-icon.svg');
+  // });
 });

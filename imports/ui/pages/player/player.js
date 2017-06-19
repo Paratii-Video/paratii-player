@@ -34,7 +34,9 @@ Template.player.onCreated(function () {
   this.templateDict.set('totalTime', 0);
   this.templateDict.set('hideControls', false);
   this.templateDict.set('showVolume', false);
-
+  this.templateDict.set('loadedProgress', 0.0);
+  this.templateDict.set('playedProgress', 0.0);
+  this.templateDict.set('scrubberTranslate', 0);
   Meteor.subscribe('videos');
 });
 
@@ -76,6 +78,15 @@ Template.player.helpers({
   volumeClass() {
     return Template.instance().templateDict.get('showVolume') ? '' : 'closed';
   },
+  playedProgress() {
+    return Template.instance().templateDict.get('playedProgress');
+  },
+  loadedProgress() {
+    return Template.instance().templateDict.get('loadedProgress');
+  },
+  scrubberTranslate() {
+    return Template.instance().templateDict.get('scrubberTranslate');
+  },
 });
 
 const requestFullscreen = (element) => {
@@ -108,6 +119,15 @@ const pauseVideo = (instance) => {
   instance.find('#video-player').pause();
   Meteor.clearTimeout(controlsHandler);
   instance.templateDict.set('hideControls', false);
+};
+
+const setLoadedProgress = (instance) => {
+  const videoPlayer = instance.find('#video-player');
+  if (videoPlayer.buffered.length > 0) {
+    const barWidth = instance.find('#video-progress').offsetWidth;
+    const loaded = videoPlayer.buffered.end(0) / videoPlayer.duration;
+    instance.templateDict.set('loadedProgress', loaded * barWidth);
+  }
 };
 
 Template.player.events({
@@ -146,20 +166,37 @@ Template.player.events({
   'timeupdate'(event, instance) {
     const videoPlayer = instance.find('#video-player');
     const time = videoPlayer.currentTime;
+    const dict = instance.templateDict;
 
     // update progress bar
-    const progressBar = instance.find('#progress-bar');
-    const percentage = Math.floor((100 / videoPlayer.duration) * time);
-    progressBar.value = percentage;
+    const barWidth = instance.find('#video-progress').offsetWidth;
+    dict.set('playedProgress', (time / videoPlayer.duration) * barWidth);
+    dict.set('scrubberTranslate', barWidth * (time / videoPlayer.duration));
 
     // update current time
-    instance.templateDict.set('currentTime', time);
+    dict.set('currentTime', time);
+    setLoadedProgress(instance);
   },
-  'input #progress-bar'(event, instance) {
+  'progress #video-player'(event, instance) {
+    setLoadedProgress(instance);
+  },
+  'mouseup'() {
+    $(document).off('mousemove');
+  },
+  'mousedown #video-progress'(event, instance) {
+    $(document).mousemove((e) => {
+      const videoPlayer = instance.find('#video-player');
+      const progress = instance.find('#video-progress');
+      const barWidth = progress.offsetWidth;
+      const offset = e.clientX - progress.getBoundingClientRect().left;
+      videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
+    });
+  },
+  'click #video-progress'(event, instance) {
     const videoPlayer = instance.find('#video-player');
-    const inputValue = event.target.valueAsNumber;
-    const time = (inputValue / 100.0) * videoPlayer.duration;
-    videoPlayer.currentTime = time;
+    const barWidth = instance.find('#video-progress').offsetWidth;
+    const offset = event.clientX - event.currentTarget.getBoundingClientRect().left;
+    videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
   },
   'input #vol-control'(event, instance) {
     const videoPlayer = instance.find('#video-player');
@@ -171,6 +208,7 @@ Template.player.events({
     const duration = Math.floor(videoPlayer.duration);
     instance.templateDict.set('totalTime', duration);
     instance.templateDict.set('currentTime', 0);
+    setLoadedProgress(instance);
   },
   'mousemove'(event, instance) {
     const dict = instance.templateDict;

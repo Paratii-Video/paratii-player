@@ -1,54 +1,71 @@
-import lightwallet from "eth-lightwallet/dist/lightwallet.js";
+import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
 
-var global_keystore;
+let globalKeystore;
 
-function createWallet(password) {
-    let seedPhrase = lightwallet.keystore.generateRandomSeed();
-    lightwallet.keystore.createVault({
-      password: password,
-      seedPhrase: seedPhrase, // Optionally provide a 12-word seed phrase
-      // salt: fixture.salt,     // Optionally provide a salt.
-                                 // A unique salt will be generated otherwise.
-      // hdPathString: hdPath    // Optional custom HD Path String
-    }, function (err, ks) {
-      console.log('callback createVault was called');
-      global_keystore = ks;
-      // Some methods will require providing the `pwDerivedKey`,
-      // Allowing you to only decrypt private keys on an as-needed basis.
-      // You can generate that value with this convenient method:
-      ks.keyFromPassword(password, function (err, pwDerivedKey) {
-        console.log('callback keyFrompassword was called');
-        if (err) throw err;
+function createWallet(password, seedPhrase, cb) {
+  const wallet = {};
+  if (seedPhrase) {
+  } else {
+    seedPhrase = lightwallet.keystore.generateRandomSeed();
+  }
+  lightwallet.keystore.createVault({
+    password,
+    seedPhrase, // Optionally provide a 12-word seed phrase
+    // salt: fixture.salt,     // Optionally provide a salt.
+                               // A unique salt will be generated otherwise.
+    // hdPathString: hdPath    // Optional custom HD Path String
+  }, function (err, ks) {
+    if (err) throw err;
+    globalKeystore = ks;
+    // Some methods will require providing the `pwDerivedKey`,
+    // Allowing you to only decrypt private keys on an as-needed basis.
+    // You can generate that value with this convenient method:
+    ks.keyFromPassword(password, function (err, pwDerivedKey) {
+      if (err) throw err;
 
         // generate five new address/private key pairs
         // the corresponding private keys are also encrypted
-        ks.generateNewAddress(pwDerivedKey, 5);
-        var addresses = ks.getAddresses();
-        Session.set('keystore', ks);
-        Session.set('ptiAddress', addresses[0]);
-        Meteor.users.update(Meteor.userId(), { $set: { 'profile.ptiAddress': addresses[0] } });
+      ks.generateNewAddress(pwDerivedKey, 5);
+      const addresses = ks.getAddresses();
+      Session.set('keystore', ks);
+      Session.set('ptiAddress', addresses[0]);
+      Meteor.call('users.update', { 'profile.ptiAddress': addresses[0] })
+    
+      // Meteor.users.update(Meteor.userId(),
+      //   { $set:  });
 
-        ks.passwordProvider = function (callback) {
-          var pw = prompt("Please enter password", "Password");
-          callback(null, pw);
-        };
-    // Now set ks as transaction_signer in the hooked web3 provider
-    // and you can start using web3 using the keys/addresses in ks!
-        // var web3Provider = new HookedWeb3Provider({
-        //   host: "http://04.236.65.136:8545",
-        //   transaction_signer: keystore
-        // });
-        // web3.setProvider(web3Provider);
+      ks.passwordProvider = function (callback) {
+        const pw = prompt('Please enter password', 'Password');
+        callback(null, pw);
+      };
+      // Now set ks as transaction_signer in the hooked web3 provider
+      // and you can start using web3 using the keys/addresses in ks!
+      // var web3Provider = new HookedWeb3Provider({
+      //   host: "http://04.236.65.136:8545",
+      //   transaction_signer: keystore
+      // });
+      // web3.setProvider(web3Provider);
+      if (cb) {
+        cb(ks);
+      }
     });
   });
-
-        return { seed: seedPhrase };
+  wallet.seed = seedPhrase;
+  return wallet;
 }
 
-export {createWallet}
-//////////////////////
-/// Copies from lightwallet, ignore..
-////////////////
+function restoreWallet(password, seedPhrase) {
+  return createWallet(password, seedPhrase);
+}
+
+function sendParatii(amount, recipient) {
+  alert("sending " + amount + " to " + recipient);
+}
+
+export { createWallet, restoreWallet, sendParatii };
+// ////////////////////
+// / Copies from lightwallet, ignore..
+// //////////////
 
 // import Web3 from 'web3';
 //      var web3 = new Web3();
@@ -64,7 +81,7 @@ export {createWallet}
 //       }
 
 //       function newAddresses(password) {
-        
+
 //         if (password == '') {
 //           password = prompt('Enter password to retrieve addresses', 'Password');
 //         }
@@ -97,7 +114,7 @@ export {createWallet}
 //       }
 
 //       function newAddresses(password) {
-        
+
 //         if (password == '') {
 //           password = prompt('Enter password to retrieve addresses', 'Password');
 //         }
@@ -111,13 +128,12 @@ export {createWallet}
 //         var addresses = global_keystore.getAddresses();
 
 
-
 //         getBalances();
 //       })
 //       }
 
 //       function getBalances() {
-        
+
 //         var addresses = global_keystore.getAddresses();
 //         document.getElementById('addr').innerHTML = 'Retrieving addresses...'
 
@@ -134,18 +150,18 @@ export {createWallet}
 
 //       function setSeed() {
 //         var password = prompt('Enter Password to encrypt your seed', 'Password');
-                                              
+
 //         lightwallet.keystore.deriveKeyFromPassword(password, function(err, pwDerivedKey) {
 
 //         global_keystore = new lightwallet.keystore(
-//           document.getElementById('seed').value, 
+//           document.getElementById('seed').value,
 //           pwDerivedKey);
 
 //         document.getElementById('seed').value = ''
-        
+
 //         newAddresses(password);
 //         setWeb3Provider(global_keystore);
-        
+
 //         getBalances();
 //         })
 //       }
@@ -155,7 +171,7 @@ export {createWallet}
 //         document.getElementById('userEntropy').value = '';
 //         var randomSeed = lightwallet.keystore.generateRandomSeed(extraEntropy);
 
-//         var infoString = 'Your new wallet seed is: "' + randomSeed + 
+//         var infoString = 'Your new wallet seed is: "' + randomSeed +
 //           '". Please write it down on paper or in a password manager, you will need it to access your wallet. Do not let anyone see this seed or they can take your Ether. ' +
 //           'Please enter a password to encrypt your seed while in the browser.'
 //         var password = prompt(infoString, 'Password');
@@ -165,7 +181,7 @@ export {createWallet}
 //         global_keystore = new lightwallet.keystore(
 //           randomSeed,
 //           pwDerivedKey);
-                
+
 //         newAddresses(password);
 //         setWeb3Provider(global_keystore);
 //         getBalances();

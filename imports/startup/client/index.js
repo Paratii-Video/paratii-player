@@ -6,6 +6,7 @@ import './routes.js';
 import './at_config.js';
 import '../../lib/ethereum/connection.js';
 
+
 AccountsTemplates.configure();
 Meteor.startup(function () {
   // delay so we make sure the data is already loaded from the indexedDB

@@ -1,5 +1,11 @@
 [![CircleCI](https://circleci.com/gh/Paratii-Video/paratii-player.svg?style=svg)](https://circleci.com/gh/Paratii-Video/paratii-player)
 
+# Paratii Player
+
+This is the repository for developing the Paratii Media Player.
+
+More information on [paratii.video](http://paratii.video/). Join the discussion on [gitter](https://gitter.im/Paratii-Video).
+
 
 # Installation 
 

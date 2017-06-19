@@ -1,4 +1,6 @@
-import { createWallet } from '/imports/lib/ethereum/wallet.js';
+/* eslint-disable no-alert */
+
+import { createWallet, restoreWallet, sendParatii } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import './wallet.html';
@@ -70,8 +72,18 @@ Template.wallet.events({
   },
 
 
-  // 'click #restore-wallet'(event, instance) {
-  // },
+  'click #restore-wallet'() {
+    const seedPhrase = prompt('Please enter your 12-word seed phrase', '');
+    getPassword().then(function (password) {
+      if (password) {
+        wallet = restoreWallet(password, seedPhrase);
+      }
+    });
+  },
+
+  'click #show-seed'() {
+    alert('show seed [to be done]');
+  },
 });
 
 Template.transaction.helpers({
