@@ -24,7 +24,6 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-meteor": "^6.26.0",
     "babel-register": "^6.24.1",
-    "chai": "^4.0.2",
     "chimp": "^0.49.0",
     "chromedriver": "^2.29.0",
     "eslint": "^3.19.0",
