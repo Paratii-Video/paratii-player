@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 
-import { createWallet, restoreWallet, sendParatii } from '/imports/lib/ethereum/wallet.js';
+import { createWallet, restoreWallet } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import './wallet.html';
