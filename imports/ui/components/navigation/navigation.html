@@ -24,17 +24,20 @@
         <a href="/account" class="textNav">
           <img src= "/img/avatar_img.svg" class="svg">
           {{#if isMaximized}}
-          <span class="nav-text  nav-text3">Sign up or login</span>
+          <span class="nav-text nav-text3">Sign up or login</span>
           {{/if}}
         </a>
       </li>
     {{/if}}
     {{#each navLinks}}
-      <li class="{{isActivePath path }}" id="{{ id }}">
-        <a href="{{path}}" class="textNav">
+      <li class="{{isActivePath path}}" id="{{ id }}">
+        <a href="{{path}}" class="textNav {{#if locked}}locked{{/if}}">
           <img src= "{{icon}}" class="svg">
           {{#if isMaximized}}
-          <span class="nav-text">{{text}}</span>
+            <span class="nav-text">{{text}}</span>
+            {{#if locked}}
+              <img src="img/lock_icon.svg" class="locked-nav" />
+            {{/if}}
           {{/if}}
         </a>
       </li>
