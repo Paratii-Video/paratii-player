@@ -41,7 +41,7 @@ describe('account workflow', function () {
   });
 
 
-  it('send some paratii @watch', function () {
+  it('send some paratii', function () {
     server.execute(createUser);
     // now log in
     login(browser);

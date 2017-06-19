@@ -127,6 +127,18 @@ describe('player helpers', function () {
   it('volumeClass returns the expected initial value', function () {
     assert.equal(Template.player.__helpers[' volumeClass'](), 'closed');
   });
+
+  it('playedProgress returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' playedProgress'](), 0);
+  });
+
+  it('loadedProgress returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' loadedProgress'](), 0);
+  });
+
+  it('scrubberTranslate returns the expected initial value', function () {
+    assert.equal(Template.player.__helpers[' scrubberTranslate'](), 0);
+  });
 });
 
 describe('player events', function () {
