@@ -6,6 +6,9 @@ Template.account.helpers({
   ima() {
     return Session.get('dataUrl');
   },
+  userEmail() {
+    return Meteor.user().emails[0].address;
+  },
 });
 
 
