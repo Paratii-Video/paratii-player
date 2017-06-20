@@ -1,11 +1,12 @@
 /* eslint global-require: "off" */
 
 import { assert } from 'chai';
+import { Videos } from '/imports/api/videos';
 
-const createVideo = () => {
+function createVideo () {
   const video = {
     id: '12345',
-    title: 'Rosencrants and Guildenstern are dead',
+    title: 'Rosencrantz and Guildenstern are dead',
     price: 10,
     src: 'https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4',
     stats: {
@@ -13,18 +14,39 @@ const createVideo = () => {
       dislikes: 10,
     },
   };
-  const { Videos } = require('/imports/api/videos');
-  const v = Videos.findOne({ _id: video.id });
-  if (v) {
-    Videos.remove({ _id: v._id });
-  }
+  // const v = Videos.findOne({ _id: video.id });
+  // if (v) {
+  //   Videos.remove({ _id: v._id });
+  // }
   Meteor.call('videos.create', video);
+  video = {
+    id: '12346',
+    title: 'Rosencrantz and Guildenstern are dead',
+    price: 10,
+    src: 'https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4',
+    stats: {
+      likes: 150,
+      dislikes: 10,
+    },
+  };
+  Meteor.call('videos.create', video);
+ 
 };
+
+function removeVideo() {
+    Videos.remove({ _id: '12345' });
+    Videos.remove({ _id: '12346' });
+
+}
 
 describe('player workflow', function () {
   beforeEach(function () {
     server.execute(createVideo);
   });
+  afterEach(function () {
+    server.execute(removeVideo);
+
+  })
 
   it('play the video', function () {
     browser.url('http://localhost:3000/player/12345');

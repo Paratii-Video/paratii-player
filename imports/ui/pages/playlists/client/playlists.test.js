@@ -18,7 +18,7 @@ describe('playlists page', function () {
   it('the hasPrice() helper returns the expected value', function () {
     const video = Factory.build('video', {
       _id: '12345',
-      title: 'Rosencrants and Guildenstern are dead',
+      title: 'Rosencrantz and Guildenstern are dead',
       price: -10,
       stats: {
         likes: 3141,
