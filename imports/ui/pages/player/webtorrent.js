@@ -43,7 +43,6 @@ export function createWebtorrentPlayer(templateInstance, currentVideo) {
 
       // show some information to the user
       function updateStatus() {
-        counter += 1;
         const numpeers = torrent.numPeers + (client.numPeers === 1 ? ' peer' : ' peers');
 
         // Progress
