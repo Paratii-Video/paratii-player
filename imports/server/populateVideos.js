@@ -3,27 +3,28 @@ import { Videos } from '/imports/api/videos.js';
 
 export const populateVideos = () => {
   // we repopulate the video list on each restart
-  if (Videos.find().count() === 0) {
+
+  const v1 = {
+    id: 1,
+    title: 'Nature Power - Surf Nature Power',
+    description: 'A video about nature, power, surfing and lots of natural power...',
+    thumb: '/img/thumb1-img.png',
+    duration: '15:30',
+    price: '22',
+    uploader: 'Pole Pole Channel',
+    stats: {
+      likes_percentage: 84,
+      views: 15524,
+      likes: 2345555,
+      dislikes: 7,
+    },
+    tags: ['NATURE'],
+    src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
+  };
+  if (Videos.find().count() === 0 || Videos.find({ src: v1.src }).count() === 0) {
+    Videos.remove({});
     console.log('|'); console.log('|');
     console.log('--> populate video collection');
-
-    const v1 = {
-      id: 1,
-      title: 'Nature Power - Surf Nature Power',
-      description: 'A video about nature, power, surfing and lots of natural power...',
-      thumb: '/img/thumb1-img.png',
-      duration: '15:30',
-      price: '22',
-      uploader: 'Pole Pole Channel',
-      stats: {
-        likes_percentage: 84,
-        views: 15524,
-        likes: 2345555,
-        dislikes: 7,
-      },
-      tags: ['NATURE'],
-      src: 'https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4',
-    };
     const v2 = {
       id: 1,
       title: 'Longboard Northern California Jorney',
@@ -39,7 +40,7 @@ export const populateVideos = () => {
         dislikes: 7,
       },
       tags: ['NATURE', 'LONGBOARDING'],
-      src: 'https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4',
+      src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
     };
     videoList = [v1, v2, v1, v2, v1, v2, v1, v2, v1, v2, v1, v2, v1, v2, v1, v2,
       v1, v2, v1, v2, v1, v2, v1, v2, v1, v2, v1, v2];
