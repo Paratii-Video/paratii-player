@@ -74,6 +74,7 @@ Meteor.methods({
       title: String,
       price: Number,
       src: String,
+      mimetype: String,
       stats: {
         likes: Number,
         dislikes: Number,
@@ -85,6 +86,7 @@ Meteor.methods({
       price: video.price,
       src: video.src,
       stats: video.stats,
+      mimetype: video.mimetype,
     });
     return video.id;
   },

@@ -2,10 +2,9 @@ import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import { sprintf } from 'meteor/sgi:sprintfjs';
 
-// const WebTorrentlient = require('webtorrent');
-
 import { formatNumber } from '/imports/lib/utils.js';
 import { Videos } from '../../../api/videos.js';
+import { createWebtorrentPlayer } from './webtorrent.js';
 
 import './player.html';
 
@@ -24,17 +23,31 @@ const video = () => {
 };
 
 
-Template.player.onCreated(function () {
-  Meteor.subscribe('videos');
-  const bodyView = Blaze.getView('Template.App_body');
-  const that = this;
+function renderVideoElement(instance) {
+  // adds the source to the vidoe element on this page
   const currentVideo = video();
-  console.log(currentVideo);
-  const videoId = FlowRouter.getParam('_id');
- 
-  console.log(videoId);
-  console.log(Videos.findOne({ _id: videoId }))
-  // this makes the test works
+
+  if (currentVideo.src.startsWith('magnet:')) {
+    createWebtorrentPlayer(instance, currentVideo);
+  } else {
+    const videoElement = $('#video-player');
+    const sourceElement = document.createElement('source');
+    sourceElement.src = currentVideo.src;
+    sourceElement.type = currentVideo.mimetype;
+    videoElement.append(sourceElement);
+  }
+}
+
+Template.player.onCreated(function () {
+  const instance = Template.instance();
+  // TODO: do not subscribe to all vidoes, just to the one we need
+  Meteor.subscribe('videos', function () {
+    // video subscription is ready
+    renderVideoElement(instance);
+  });
+  const bodyView = Blaze.getView('Template.App_body');
+
+  // this makes the tests work
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized');
 
   this.templateDict = new ReactiveDict();
@@ -46,12 +59,6 @@ Template.player.onCreated(function () {
   this.templateDict.set('loadedProgress', 0.0);
   this.templateDict.set('playedProgress', 0.0);
   this.templateDict.set('scrubberTranslate', 0);
-
-  // if (currentVideo.src.startsWith('magnet:')) {
-  //   createWebtorrentPlayer(this);
-  // }
-
-  
 });
 
 Template.player.onDestroyed(function () {
@@ -103,8 +110,7 @@ Template.player.helpers({
   },
   status() {
     return Template.instance().templateDict.get('status');
-
-  }
+  },
 });
 
 const requestFullscreen = (element) => {
@@ -274,77 +280,3 @@ Template.player.events({
   },
 });
 
-
-function createWebtorrentPlayer(templateInstance) {
-
-  const templateDict = templateInstance.templateDict;
-
-  // must brutally do $.getScript because meteors package.json is slightly broken
-  // cf. https://github.com/meteor/meteor/issues/7067
-  templateDict.set('status', 'loading webtorrent...');
-  $.getScript('https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js', function(){
-    var client = new WebTorrent()
-    // Sintel, a free, Creative Commons movie
-    var magnet_uri = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
-
-    templateDict.set('status', 'adding magnet_uri')
-    client.add(magnet_uri, function (torrent) {
-      // Got torrent metadata!
-      // console.log('Torrent info hash:', torrent.infoHash)
-
-      // find an .mp4 file in the torrent
-      var file = torrent.files.find(function (file) {
-        return file.name.endsWith('.mp4')
-      })
-
-      // a bit hackishly removing the old element and adding the new one; 
-      $('#video-player').remove()
-      templateDict.set('status', 'creating video player..')
-      file.appendTo('#player-container', { controls: false, autoplay: true }, function(error, element) {
-        templateDict.set('status', 'video player created');
-        element.setAttribute('id', 'video-player');
-      });
-      let counter = 0;
-
-      function updateStatus() {
-        // templateDict.set('status', 'updating status' + counter);
-        counter += 1;
-        var numpeers = torrent.numPeers + (client.numPeers === 1 ? ' peer' : ' peers')
-
-        // Progress
-        var percent = Math.round(torrent.progress * 100 * 100) / 100
-        // $progressBar.style.width = percent + '%'
-        // $downloaded.innerHTML = prettyBytes(client.downloaded)
-        // $total.innerHTML = prettyBytes(client.length)
-
-        // Remaining time
-        var remaining
-        if (torrent.done) {
-          remaining = 'Done.'
-        } else {
-          // remaining = moment.duration(client.timeRemaining / 1000, 'seconds').humanize()
-          // remaining = remaining[0].toUpperCase() + remaining.substring(1) + ' remaining.'
-          remaining = (torrent.timeRemaining / 1000) + ' seconds remaining'
-        }
-        // $remaining.innerHTML = remaining
-
-        // Speed rates
-        // $downloadSpeed.innerHTML = prettyBytes(client.downloadSpeed) + '/s'
-        // $uploadSpeed.innerHTML = prettyBytes(client.uploadSpeed) + '/s'
-        templateDict.set('status', numpeers + '; ' + percent + ' percent' + ' ' + remaining)
-       
-
-      };
-      setInterval(updateStatus, 500)
-      // next lines do not have desired effect; why??
-      // var url = file.getBlobURL()
-      // console.log('setting url of player to ' + url);
-      // $('#video-player').attr('src', url);
-
-      // while this does not work either:
-      // Stream the video into the video tag
-      // let video = $('video')
-      // file.createReadStream().pipe(video)
-    })
-  }); 
-}
