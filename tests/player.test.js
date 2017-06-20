@@ -60,7 +60,7 @@ describe('player workflow', function () {
     browser.waitForExist('#loaded-bar');
     browser.waitUntil(() => browser.getElementSize('#loaded-bar', 'width') > 30, 5000, 'video load timeout');
     browser.click('#loaded-bar');
-    browser.pause(100);
+    browser.pause(200);
     assert.notEqual(browser.getText('#current-time'), '00:00');
     assert.isAbove(browser.getElementSize('#played-bar', 'width'), 0);
     assert.isAbove(browser.getLocation('#scrubber', 'x'), 0);
