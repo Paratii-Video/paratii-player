@@ -130,8 +130,6 @@ describe('webtorrent player', function () {
       assert.equal($(el).find('#video-player').length, 1);
     });
   });
-
- 
 });
 
 describe('player helpers', function () {
