@@ -1,3 +1,6 @@
+import prettyBytes from 'pretty-bytes';
+
+
 export function createWebtorrentPlayer(templateInstance, currentVideo) {
   const templateDict = templateInstance.templateDict;
 
@@ -31,7 +34,7 @@ export function createWebtorrentPlayer(templateInstance, currentVideo) {
       });
 
       // next lines do not have desired effect; why??
-      // var url = fileToPlay.getBlobURL()
+      // var url = fileToPlay.getBlobURL() // returns null
       // console.log('setting url of player to ' + url);
       // $('#video-player').attr('src', url);
 
@@ -56,16 +59,16 @@ export function createWebtorrentPlayer(templateInstance, currentVideo) {
         if (torrent.done) {
           remaining = 'Done.';
         } else {
-          // remaining = moment.duration(client.timeRemaining / 1000, 'seconds').humanize()
-          // remaining = remaining[0].toUpperCase() + remaining.substring(1) + ' remaining.'
-          remaining = `${torrent.timeRemaining / 1000} seconds remaining`;
+          remaining = Math.round(torrent.timeRemaining / 10) / 100;
+          remaining = `${remaining} seconds remaining`;
         }
-        // $remaining.innerHTML = remaining
 
         // Speed rates
-        // $downloadSpeed.innerHTML = prettyBytes(client.downloadSpeed) + '/s'
-        // $uploadSpeed.innerHTML = prettyBytes(client.uploadSpeed) + '/s'
-        templateDict.set('status', `${numpeers}; ${percent} percent; ${remaining}`);
+        const downloadSpeed = `${prettyBytes(client.downloadSpeed)}/s`;
+        const uploadSpeed = `${prettyBytes(client.uploadSpeed)}/s`;
+        const downloaded = prettyBytes(torrent.downloaded);
+        const uploaded = prettyBytes(torrent.uploaded);
+        templateDict.set('status', `${numpeers}; ${percent} percent; ${remaining}; download: ${downloaded} - ${downloadSpeed}; upload: ${uploaded}: ${uploadSpeed};`);
       }
       setInterval(updateStatus, 500);
     });
