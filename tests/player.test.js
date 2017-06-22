@@ -4,22 +4,9 @@ import { assert } from 'chai';
 
 
 function createVideo() {
-  let video;
-  video = {
+  const video = {
     id: '12345',
     title: 'Rosencrantz and Guildenstern are dead',
-    price: 10,
-    src: 'https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4',
-    mimetype: 'video/mp4',
-    stats: {
-      likes: 150,
-      dislikes: 10,
-    },
-  };
-  Meteor.call('videos.create', video);
-  video = {
-    id: '12346',
-    title: 'Rosencrantz and Guildenstern are dead II',
     price: 10,
     src: 'https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4',
     mimetype: 'video/mp4',
@@ -34,7 +21,6 @@ function createVideo() {
 function removeVideo() {
   const { Videos } = require('/imports/api/videos');
   Videos.remove({ _id: '12345' });
-  Videos.remove({ _id: '12346' });
 }
 
 describe('player workflow', function () {
