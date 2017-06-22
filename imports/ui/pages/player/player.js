@@ -22,7 +22,6 @@ const video = () => {
   return _video;
 };
 
-
 function renderVideoElement(instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = video();
@@ -156,7 +155,7 @@ const setLoadedProgress = (instance) => {
     let loaded = 0.0;
     // get the nearst end
     for (i = 0; i < videoPlayer.buffered.length; i += 1) {
-      if (loaded < played) {
+      if (loaded <= played) {
         loaded = videoPlayer.buffered.end(i) / videoPlayer.duration;
       }
     }
