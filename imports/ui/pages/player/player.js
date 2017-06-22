@@ -153,7 +153,6 @@ const setLoadedProgress = (instance) => {
   const torrent = instance.templateDict.get('torrent');
   if (videoPlayer.buffered.length > 0 && !torrent) {
     const played = instance.templateDict.get('playedProgress');
-    const barWidth = instance.find('#video-progress').offsetWidth;
     let loaded = 0.0;
     // get the nearst end
     for (i = 0; i < videoPlayer.buffered.length; i += 1) {
@@ -161,7 +160,7 @@ const setLoadedProgress = (instance) => {
         loaded = videoPlayer.buffered.end(i) / videoPlayer.duration;
       }
     }
-    instance.templateDict.set('loadedProgress', loaded * barWidth);
+    instance.templateDict.set('loadedProgress', loaded * 100);
   }
 };
 
@@ -204,9 +203,8 @@ Template.player.events({
     const dict = instance.templateDict;
 
     // update progress bar
-    const barWidth = instance.find('#video-progress').offsetWidth;
-    dict.set('playedProgress', (time / videoPlayer.duration) * barWidth);
-    dict.set('scrubberTranslate', barWidth * (time / videoPlayer.duration));
+    dict.set('playedProgress', (time / videoPlayer.duration) * 100);
+    dict.set('scrubberTranslate', 100 * (time / videoPlayer.duration));
 
     // update current time
     dict.set('currentTime', time);

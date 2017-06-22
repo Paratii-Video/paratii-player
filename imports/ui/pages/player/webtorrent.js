@@ -38,8 +38,7 @@ export function createWebtorrentPlayer(templateInstance, currentVideo) {
 
         // Progress
         const percent = Math.round(torrent.progress * 100 * 100) / 100;
-        const barWidth = templateInstance.find('#video-progress').offsetWidth;
-        templateDict.set('loadedProgress', (percent / 100) * barWidth);
+        templateDict.set('loadedProgress', percent);
         // $progressBar.style.width = percent + '%'
         // $downloaded.innerHTML = prettyBytes(client.downloaded)
         // $total.innerHTML = prettyBytes(client.length)
