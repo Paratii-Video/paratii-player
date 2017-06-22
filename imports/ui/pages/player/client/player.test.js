@@ -122,6 +122,14 @@ describe('webtorrent player', function () {
     StubCollections.restore();
     FlowRouter.getParam.restore();
   });
+
+  it('renders correctly with simple data', function () {
+    const data = {
+    };
+    withRenderedTemplate('player', data, (el) => {
+      assert.equal($(el).find('#video-player').length, 1);
+    });
+  });
 });
 
 describe('player helpers', function () {
