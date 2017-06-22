@@ -2,10 +2,10 @@
 	<tt>
 	<h1>Debug information and general play area</h1>
 		   <ul>
-    <li>Connection to ethereum node: {{ ethNode.host }} 
+    <li>Connection to ethereum node: {{ eth_host }} 
     </li>
     <li>Connection status: <b>
-    {{#if ethNode.isConnected }}
+    {{#if eth_isConnected }}
         Connected :-)
     {{else}}
         Not connected :-(
@@ -13,16 +13,15 @@
     </b>
     </li>
     <!-- <li>Accounts: {{ .web3.eth.accounts }}</li> -->
-    <li>blocknumber: {{ ethNode.blockNumber }}</li>
-    {{#if ethNode.error }}
-    <li>error: {{ ethNode.error }}</li>
-    {{/if }}
+    <li>blocknumber: {{ eth_blockNumber }}</li>
+
     <li>Accounts:{{ accounts }}</li>
     <li>Your account (from the keystore): {{ ptiAddress }}</li>
     <li>Your account (from the user profile): {{ currentUser.profile.ptiAddress }}
     {{# if currentUser.profile.ptiAddress }}
         {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-small"}}
     {{/if }}
+    <li>Your Ether balance (in wei): {{ eth_balance }}</li>
     </li>
     </ul>
 

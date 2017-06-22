@@ -37,7 +37,7 @@ if (Meteor.isServer) {
       }
       if (senderBal < amountVal) {
         // TODO Error Notification
-        throw new Meteor.Error('low-amount', 'The personal amount is too low for thi operation');
+        throw new Meteor.Error('low-amount', 'The personal amount is too low for the operation');
       }
 
       Events.insert({
