@@ -23,26 +23,14 @@ export function createWebtorrentPlayer(templateInstance, currentVideo) {
         return file.name.endsWith('.mp4');
       });
 
-      // a bit hackishly removing the old element and adding the new one;
-      // TODO: there should be better ways of doing this (see below)
-
-      $('#video-player').remove();
-      templateDict.set('status', 'creating video player..');
-      fileToPlay.appendTo('#player-container', { controls: false, autoplay: true }, function (error, element) {
-        templateDict.set('status', 'video player created');
-        element.setAttribute('id', 'video-player');
+      // Render the video on the video tag defined in player.html
+      fileToPlay.renderTo('video#video-player', { controls: false, autoplay: false }, (error) => {
+        if (error) {
+          templateDict.set('status', `error: ${error}`);
+        } else {
+          templateDict.set('status', 'video player created');
+        }
       });
-
-      // next lines do not have desired effect; why??
-      // var url = fileToPlay.getBlobURL() // returns null
-      // console.log('setting url of player to ' + url);
-      // $('#video-player').attr('src', url);
-
-      // while this does not work either:
-      // Stream the video into the video tag
-      // let video = $('video')
-      // fileToPlay.createReadStream().pipe(video)
-
 
       // show some information to the user
       function updateStatus() {
