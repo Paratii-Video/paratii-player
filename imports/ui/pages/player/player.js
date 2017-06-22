@@ -29,6 +29,7 @@ function renderVideoElement(instance) {
 
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo);
+    instance.templateDict.set('torrent', true);
   } else {
     const videoElement = $('#video-player');
     const sourceElement = document.createElement('source');
@@ -40,11 +41,6 @@ function renderVideoElement(instance) {
 
 Template.player.onCreated(function () {
   const instance = Template.instance();
-  // TODO: do not subscribe to all vidoes, just to the one we need
-  Meteor.subscribe('videos', function () {
-    // video subscription is ready
-    renderVideoElement(instance);
-  });
   const bodyView = Blaze.getView('Template.App_body');
 
   // this makes the tests work
@@ -59,6 +55,13 @@ Template.player.onCreated(function () {
   this.templateDict.set('loadedProgress', 0.0);
   this.templateDict.set('playedProgress', 0.0);
   this.templateDict.set('scrubberTranslate', 0);
+  this.templateDict.set('torrent', false);
+
+  // TODO: do not subscribe to all vidoes, just to the one we need
+  Meteor.subscribe('videos', function () {
+    // video subscription is ready
+    renderVideoElement(instance);
+  });
 });
 
 Template.player.onDestroyed(function () {
@@ -147,9 +150,17 @@ const pauseVideo = (instance) => {
 
 const setLoadedProgress = (instance) => {
   const videoPlayer = instance.find('#video-player');
-  if (videoPlayer.buffered.length > 0) {
+  const torrent = instance.templateDict.get('torrent');
+  if (videoPlayer.buffered.length > 0 && !torrent) {
+    const played = instance.templateDict.get('playedProgress');
     const barWidth = instance.find('#video-progress').offsetWidth;
-    const loaded = videoPlayer.buffered.end(0) / videoPlayer.duration;
+    let loaded = 0.0;
+    // get the nearst end
+    for (i = 0; i < videoPlayer.buffered.length; i += 1) {
+      if (loaded < played) {
+        loaded = videoPlayer.buffered.end(i) / videoPlayer.duration;
+      }
+    }
     instance.templateDict.set('loadedProgress', loaded * barWidth);
   }
 };
@@ -279,4 +290,3 @@ Template.player.events({
     Meteor.call('videos.dislike', videoId);
   },
 });
-
