@@ -23,6 +23,8 @@ function checkStatus() {
   }
 }
 
+  };
+}
 
 const connect = function () {
   if (web3.isConnected()) {
