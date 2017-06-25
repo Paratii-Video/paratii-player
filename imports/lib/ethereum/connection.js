@@ -23,9 +23,6 @@ function checkStatus() {
   }
 }
 
-  };
-}
-
 const connect = function () {
   if (web3.isConnected()) {
     // only start app operation, when the node is not syncing
