@@ -30,8 +30,9 @@ Template.editProfile.events({
       Modal.hide('editProfile');
     });
   },
-  'click #button-remove-image'(event) {
+  'click #button-remove-image, click #use-identicon'(event) {
     event.preventDefault();
+    Session.set('dataUrl', null);
     Meteor.call('users.removeImage');
   },
   'change input[name="field-avatar-image"]'(event) {

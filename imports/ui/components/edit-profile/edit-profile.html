@@ -32,7 +32,11 @@
                     {{else}}
                       <tr>
                         <td rowspan="2">
-                          {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-large"}}
+                          {{#if ima}}
+                            <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url({{ima}})"></span>
+                          {{else}}
+                            <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url('/img/avatar_img.svg')"></span>
+                          {{/if}}
                         </td>
                         <td>
                           <!-- TODO: plese move this style rule to css  -->
@@ -44,11 +48,11 @@
                           <label class="btn btn-default white-button">
                               Upload Picture <input type="file" name="field-avatar-image" hidden>
                           </label>
-                          <img id="avatar" src="{{ima}}">
+
                         </td>
                       </tr>
                       <tr>
-                        <td><button class="btn btn-default white-button" id="button-upload-image">Use Identicon</button></td>
+                        <td><button class="btn btn-default white-button" id="use-identicon">Use Identicon</button></td>
                       </tr>
                     {{/if}}
                   </table>
