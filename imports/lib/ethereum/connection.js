@@ -12,7 +12,10 @@ function checkStatus() {
     const ptiAddress = getUserPTIaddress();
     if (ptiAddress) {
       web3.eth.getBalance(ptiAddress, function(err, result) {
-        Session.set('eth_balance', result.toNumber());
+          if (result !== undefined) {
+            Session.set('eth_balance', result.toNumber());
+          }
+
       })
     }
   } else {

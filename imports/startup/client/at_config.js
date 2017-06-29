@@ -1,5 +1,5 @@
 import { createWallet } from '/imports/lib/ethereum/wallet.js';
-import { showSeed } from '/imports/ui/pages/wallet/wallet.js';
+import { showSeed } from '/imports/ui/pages/profile/profile.js';
 
 const mySubmitFunc = function (error, state) {
   if (state === 'signUp') {

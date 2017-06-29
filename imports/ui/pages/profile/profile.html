@@ -1,4 +1,4 @@
-<template name="wallet">
+<template name="profile">
     {{#isAuthorized}}
     <div class="titleContainer" id="wallet-title">
         Your Wallet
@@ -10,7 +10,7 @@
       <div class="line"></div>
       <div class="walletContainer">
         <div class="centerIcon">{{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-large"}}</div>
-        <div class="profile-label"> Name:</div> 
+        <div class="profile-label"> Name:</div>
         <div class="profile-info">{{currentUser.profile.name}} </div>
         <div class="profile-label"> Email:</div>
         <div class="profile-info"> {{currentUser.profile.email}} </div>

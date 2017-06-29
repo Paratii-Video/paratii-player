@@ -5,7 +5,7 @@ import { assert } from 'chai';
 import { $ } from 'meteor/jquery';
 
 import { withRenderedTemplate } from '../../../test-helpers.js';
-import '../wallet.js';
+import '../profile.js';
 
 describe('wallet', function () {
   it('renders signin form when user is not logged in', function () {

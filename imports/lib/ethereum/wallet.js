@@ -30,7 +30,7 @@ function createWallet(password, seedPhrase, cb) {
       Session.set('keystore', ks);
       Session.set('ptiAddress', addresses[0]);
       Meteor.call('users.update', { 'profile.ptiAddress': addresses[0] })
-    
+
       // Meteor.users.update(Meteor.userId(),
       //   { $set:  });
 

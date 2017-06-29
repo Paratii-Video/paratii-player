@@ -3,7 +3,7 @@
 import { createWallet, restoreWallet } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
-import './wallet.html';
+import './profile.html';
 
 function showSeed(wallet) {
   // do not close when user clicks outside of the window
@@ -18,7 +18,7 @@ function showSeed(wallet) {
 }
 
 
-Template.wallet.helpers({
+Template.profile.helpers({
   ethNode() {
     return Session.get('ethNode');
   },
@@ -34,7 +34,7 @@ Template.wallet.helpers({
   },
 });
 
-Template.wallet.events({
+Template.profile.events({
   'click #create-wallet'() {
     getPassword().then(function (password) {
       if (password) {

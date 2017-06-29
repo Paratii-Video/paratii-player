@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import { createWallet, getUserAddress } from '../wallet.js';
+import { createWallet, getUserAddress } from '../profile.js';
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
 
 describe('ethereum wallet', function () {

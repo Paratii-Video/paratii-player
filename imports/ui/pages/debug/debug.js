@@ -19,7 +19,11 @@ Template.debug.helpers({
     return Session.get('ptiAddress');
   },
   eth_balance() {
-    return Session.get('eth_balance');
+    const balance = Session.get('eth_balance');
+    if (balance !== undefined) {
+      return web3.fromWei(balance, 'ether');
+    }
+    return '';
   },
   // user() {
   //  return Meteor.user();
