@@ -42,7 +42,7 @@ Now start the application
 
 The application has to kind of tests. 
 
-    meteor test
+    npm test
 
 And end-to-end tetst that can be run by starting up the application in one window:
 
