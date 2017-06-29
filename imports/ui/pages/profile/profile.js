@@ -1,20 +1,25 @@
 /* eslint-disable no-alert */
 
-import { createWallet, restoreWallet } from '/imports/lib/ethereum/wallet.js';
+import { createWallet, restoreWallet, getSeed } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import './profile.html';
 
-function showSeed(wallet) {
+function showSeed() {
   // do not close when user clicks outside of the window
-  const modalOptions = {
-    backdrop: 'static',
-    keyboard: false,
-  };
-  Modal.show('show-seed', {
-    seed: wallet.seed,
-    username: userPrettyName(),
-  }, modalOptions);
+
+  getSeed(
+    function (err, seed) {
+      const modalOptions = {
+        backdrop: 'static',
+        keyboard: false,
+      };
+      Modal.show('show-seed', {
+        seed,
+        username: userPrettyName(),
+      }, modalOptions);
+    },
+  );
 }
 
 
@@ -82,7 +87,7 @@ Template.profile.events({
   },
 
   'click #show-seed'() {
-    alert('show seed [to be done]');
+    showSeed();
   },
 });
 

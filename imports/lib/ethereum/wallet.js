@@ -2,6 +2,55 @@ import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
 
 let globalKeystore;
 
+
+function getKeystore(callback){
+  if(globalKeystore !== undefined){
+    callback(null, globalKeystore);
+  } else {
+
+    const password = prompt('Enter password to show your seed. Do not let anyone else see your seed.', 'password');
+
+    lightwallet.keystore.createVault(
+      {
+        password
+      },
+      function(err, ks){
+        callback(err, ks, password);
+      }
+
+    );
+  }
+
+}
+
+
+
+function getSeed(callback) {
+
+  getKeystore(function(err, ks, password){
+      console.log(password);
+      console.log(err);
+      ks.deriveKeyFromPassword(password, function (err, pwDerivedKey) {
+        if (err) throw err;
+        console.log(pwDerivedKey);
+        var seed = ks.getSeed(pwDerivedKey);
+        callback(err, seed);
+
+
+      });
+
+
+  });
+
+}
+
+
+
+
+
+
+
+
 function createWallet(password, seedPhrase, cb) {
   const wallet = {};
   if (seedPhrase) {
@@ -62,7 +111,7 @@ function sendParatii(amount, recipient) {
   alert("sending " + amount + " to " + recipient);
 }
 
-export { createWallet, restoreWallet, sendParatii };
+export { createWallet, restoreWallet, sendParatii, getSeed };
 // ////////////////////
 // / Copies from lightwallet, ignore..
 // //////////////

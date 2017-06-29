@@ -7,7 +7,7 @@ import { $ } from 'meteor/jquery';
 import { withRenderedTemplate } from '../../../test-helpers.js';
 import '../profile.js';
 
-describe('wallet', function () {
+describe('profile', function () {
   it('renders signin form when user is not logged in', function () {
     const data = {};
     withRenderedTemplate('account', data, el => {

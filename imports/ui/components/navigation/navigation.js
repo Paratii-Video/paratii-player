@@ -16,6 +16,13 @@ Template.navigation.onRendered(function () {
 });
 
 Template.navigation.helpers({
+  eth_balance() {
+    const balance = Session.get('eth_balance');
+    if (balance !== undefined) {
+      return web3.fromWei(balance, 'ether');
+    }
+    return '';
+  },
   navState() {
     return Template.instance().navState.get();
   },
