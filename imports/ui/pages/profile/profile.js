@@ -3,7 +3,7 @@
 import { createWallet, restoreWallet, getSeed } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
-import '/imports/ui/components/modals/edit-profile/edit-profile.html';
+import '/imports/ui/components/edit-profile/edit-profile.js';
 import './profile.html';
 
 
@@ -37,6 +37,9 @@ Template.profile.helpers({
   events() {
     // Perform a reactive database query against minimongo
     return Events.find();
+  },
+  userEmail() {
+    return Meteor.user().emails[0].address;
   },
 });
 
