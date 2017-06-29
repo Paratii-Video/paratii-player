@@ -15,12 +15,12 @@
             </div>
             <div class="input-group">
               <span class="input-group-addon">E-mail:</span>
-              <input type="text" name="field-name" class="form-control textbox" placeholder="Your email" value="{{userEmail}}" >
+              <input type="text" name="field-email" class="form-control textbox" placeholder="Your email" value="{{userEmail}}" >
             </div>
           </div>
           <div class="profile-image-container">
             <table class="profile-image-table">
-              
+
               {{#if currentUser.profile.image }}
                 <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url( {{ currentUser.profile.image }} )"></span>
                 <button class="btn btn-default" id="button-remove-image">Remove Image</button>
