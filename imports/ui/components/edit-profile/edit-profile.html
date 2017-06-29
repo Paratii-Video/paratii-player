@@ -8,10 +8,7 @@
         </div>
         <div class="modal-body">
         {{#if currentUser }}
-          <div class="titleContainer clearfix">
-            <span style="display: inline-block; vertical-align: middle;">Profile</span>
-            <a href="{{pathFor route='wallet' }}" class="btn btn-default float-right aqua-button">Go to wallet</a>
-          </div>
+
           <div class="line"></div>
           <div>
 
@@ -37,10 +34,17 @@
                         <td rowspan="2">
                           {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-large"}}
                         </td>
-                        <!--<input type="file" name="field-avatar-image">
-                        <img id="avatar" src="{{ima}}">-->
                         <td>
-                          <button class="btn btn-default white-button" id="button-upload-image">Upload Picture</button>
+                          <!-- TODO: plese move this style rule to css  -->
+                          <style>
+                          [hidden] {
+                            display: none !important;
+                          }
+                          </style>
+                          <label class="btn btn-default white-button">
+                              Upload Picture <input type="file" name="field-avatar-image" hidden>
+                          </label>
+                          <img id="avatar" src="{{ima}}">
                         </td>
                       </tr>
                       <tr>
