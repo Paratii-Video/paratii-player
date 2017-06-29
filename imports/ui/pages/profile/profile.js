@@ -3,11 +3,12 @@
 import { createWallet, restoreWallet, getSeed } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
+import '/imports/ui/components/modals/edit-profile/edit-profile.html';
 import './profile.html';
+
 
 function showSeed() {
   // do not close when user clicks outside of the window
-
   getSeed(
     function (err, seed) {
       const modalOptions = {
@@ -85,9 +86,14 @@ Template.profile.events({
       }
     });
   },
-
   'click #show-seed'() {
     showSeed();
+  },
+  'click #edit-profile'() {
+    const modalOptions = {
+    };
+    Modal.show('editProfile', {
+    }, modalOptions);
   },
 });
 
