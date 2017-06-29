@@ -55,6 +55,8 @@ Template.player.onCreated(function () {
   this.templateDict.set('playedProgress', 0.0);
   this.templateDict.set('scrubberTranslate', 0);
   this.templateDict.set('torrent', false);
+  this.templateDict.set('volumeValue', 100);
+  this.templateDict.set('volScrubberTranslate', 100);
 
   // TODO: do not subscribe to all vidoes, just to the one we need
   Meteor.subscribe('videos', function () {
@@ -112,6 +114,12 @@ Template.player.helpers({
   },
   status() {
     return Template.instance().templateDict.get('status');
+  },
+  volumeValue() {
+    return Template.instance().templateDict.get('volumeValue');
+  },
+  volScrubberTranslate() {
+    return Template.instance().templateDict.get('volScrubberTranslate');
   },
 });
 
@@ -215,7 +223,7 @@ Template.player.events({
   'mouseup'() {
     $(document).off('mousemove');
   },
-  'mousedown #video-progress'(event, instance) {
+  'mousedown #scrubber'(event, instance) {
     $(document).mousemove((e) => {
       const videoPlayer = instance.find('#video-player');
       const progress = instance.find('#video-progress');
@@ -230,10 +238,26 @@ Template.player.events({
     const offset = event.clientX - event.currentTarget.getBoundingClientRect().left;
     videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
   },
-  'input #vol-control'(event, instance) {
+  'click #vol-control'(event, instance) {
     const videoPlayer = instance.find('#video-player');
-    const inputValue = event.target.valueAsNumber;
-    videoPlayer.volume = inputValue / 100.0;
+    const barWidth = instance.find('#vol-control').offsetWidth;
+    const offset = event.clientX - event.currentTarget.getBoundingClientRect().left;
+    videoPlayer.volume = offset / barWidth;
+    const percent = (offset / barWidth) * 100;
+    instance.templateDict.set('volumeValue', percent);
+    instance.templateDict.set('volScrubberTranslate', percent);
+  },
+  'mousedown #vol-scrubber'(event, instance) {
+    $(document).mousemove((e) => {
+      const videoPlayer = instance.find('#video-player');
+      const volume = instance.find('#vol-control');
+      const barWidth = volume.offsetWidth;
+      const offset = e.clientX - volume.getBoundingClientRect().left;
+      videoPlayer.volume = offset / barWidth;
+      const percent = (offset / barWidth) * 100;
+      instance.templateDict.set('volumeValue', percent);
+      instance.templateDict.set('volScrubberTranslate', percent);
+    });
   },
   'loadedmetadata'(event, instance) {
     const videoPlayer = instance.find('#video-player');

@@ -16,9 +16,11 @@
       <button id="volume-button" title="volume">
         <img src="/img/volume-icon.svg" />
       </button>
-      <input id="vol-control" class="{{ volumeClass }}" value=100 type="range" min="0" max="100" step="1"/>
+      <div id="vol-control" class="{{ volumeClass }}">
+        <div id="volume-value" style="width: {{ volumeValue }}%"></div>
+        <div id="vol-scrubber" style="left: {{volScrubberTranslate}}%"></div>
+      </div>
       <span id="current-time">{{formatTime currentTime}}</span>
-
       <span class="slash">/</span>
       <span id="total-time">{{formatTime totalTime}}</span>
       <span id="status"><tt>STATUS: {{ status }}</tt></span>

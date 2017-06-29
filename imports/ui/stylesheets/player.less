@@ -129,10 +129,6 @@
     margin: 0 10px;
     transition: 0.5s;
   }
-  #vol-control {
-    width: 10%;
-    height: 20px;
-  }
 
   /* Firefox */
   /* remove dotted outline form input FF */
@@ -226,6 +222,55 @@
   }
 
   #scrubber {
+    background: rgba(0,0,0,0);
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 3px;
+    left: 0;
+    margin: -8px 0 0 -8px;
+
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+
+    &:before,
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        border-radius: 50%;
+    }
+
+    &:before {
+        background: #7d70ff;
+        width: 15px;
+        height: 15px;
+    }
+  }
+
+  #vol-control {
+    background: rgba(255, 255, 255, 0.7);
+    position: relative;
+    float: left;
+    width: 10%;
+    height: 5px;
+    margin: 0px 10px;
+    border-radius: 10px;
+  }
+
+  #volume-value {
+    background: #7d70ff;
+    height: 5px;
+    margin: 0;
+    border-radius: 10px;
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+  }
+
+  #vol-scrubber {
     background: rgba(0,0,0,0);
     width: 15px;
     height: 15px;
