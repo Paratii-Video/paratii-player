@@ -1,0 +1,69 @@
+.wallet-button(@color) {
+  text-transform: uppercase;
+  color: white;
+  background-color: @color;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 12px;
+  border: none;
+
+  &:hover {
+    background-color: rgb(150, 150, 150);
+  }
+
+}
+
+.aqua-button {
+  .wallet-button(rgb(80, 227, 194));
+}
+
+.red-button {
+  .wallet-button(rgb(255, 92, 71));
+}
+
+.blue-button {
+  .wallet-button(rgb(125, 112, 255));
+}
+
+
+.white-button {
+  .wallet-button(rgb(255, 255, 255));
+  color: rgb(150, 150, 150);
+  border: 1px solid #ccc;
+  width: 150px;
+  margin-left: 20px;
+}
+
+.profile-image-table {
+  margin: 20px;
+
+  tr{
+    td{
+      padding-top:10px
+    }
+
+    &:first-child td{
+      padding-top:0px
+    }
+  } 
+}
+
+.profile-image-container {
+  .rounded-border;
+  margin-left: 20px;
+}
+
+#form-update-account {
+  margin: 20px;
+}
+
+.update-account-confirm {
+  .float-right;
+  margin-top: 20px;
+}
+
+
+.rounded-border {
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}

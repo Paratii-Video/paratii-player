@@ -1,73 +1,84 @@
 <template name="account">
-    {{#if currentUser }}
-    <div class="container">
-        <div class="titleContainer">Profile
-            <a href="{{pathFor route='wallet' }}" class="btn btn-default">Go to wallet</a>
-        </div>
-        <div class="line"></div>
-        <div class="container">
-          <form id="form-update-account">
-            <div class="row">
-            <div class="col-md-8">
-                    Your name <input type="text" name="field-name" placeholder="Your name" value="{{currentUser.profile.name}}" >
-                    <br>
-                    Your email
-                    {{#each currentUser.emails}}
-                        <input type="text" name="field-email" placeholder="Your email" value="{{address}}" >
-                    {{/each}}
-            </div>
-            <div class="col-md-4">
-                {{#if currentUser.profile.image }}
-
-                  <span id="avatar" class="dapp-identicon dapp-medium" style="background-image: url( {{ currentUser.profile.image }} )"></span>
-                  <button class="btn btn-default" id="button-remove-image">Remove Image</button>
-                {{else}}
-                  {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-medium"}}
-                  <input type="file" name="field-avatar-image">
-                  <img id="avatar" src="{{ima}}">
-                  <button class="btn btn-default" id="button-upload-image">Upload Image</button>
-
-                {{/if}}
-            </div>
-            </div>
-            <div class="row">
-                <button class="btn btn-default" id="button-change-password">Change password</button>
-                <input type="submit" class="btn btn-default" value="Save changes"/>
-            </div>
-          </form>
-        </div>
+  {{#if currentUser }}
+    <div class="titleContainer clearfix">
+      <span style="display: inline-block; vertical-align: middle;">Profile</span>
+      <a href="{{pathFor route='wallet' }}" class="btn btn-default float-right aqua-button">Go to wallet</a>
     </div>
-    {{else}}
-    <div class="container">
-        {{> atForm }}
+    <div class="line"></div>
+    <div>
+      <form id="form-update-account">
+        <div class="flex-container-row">
+          <div class="flex-grow">
+            <div class="input-group">
+              <span class="input-group-addon">Name:</span>
+              <input type="text" name="field-name" class="form-control textbox" placeholder="Your name" value="{{currentUser.profile.name}}" >
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon">E-mail:</span>
+              <input type="text" name="field-name" class="form-control textbox" placeholder="Your email" value="{{userEmail}}" >
+            </div>
+          </div>
+          <div class="profile-image-container">
+            <table class="profile-image-table">
+              
+              {{#if currentUser.profile.image }}
+                <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url( {{ currentUser.profile.image }} )"></span>
+                <button class="btn btn-default" id="button-remove-image">Remove Image</button>
+              {{else}}
+                <tr>
+                  <td rowspan="2">
+                    {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-large"}}
+                  </td>
+                  <!--<input type="file" name="field-avatar-image">
+                  <img id="avatar" src="{{ima}}">-->
+                  <td>
+                    <button class="btn btn-default white-button" id="button-upload-image">Upload Picture</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><button class="btn btn-default white-button" id="button-upload-image">Use Identicon</button></td>
+                </tr>
+              {{/if}}
+            </table>
+          </div>
+        </div>
+        <div class="update-account-confirm">
+          <button class="btn btn-default red-button" id="button-change-password">Change password</button>
+          <input type="submit" class="btn btn-default blue-button" value="Save changes"/>
+        </div>
+      </form>
     </div>
-    {{/if}}
+  {{else}}
+    <div class="container">
+      {{> atForm }}
+    </div>
+  {{/if}}
 </template>
 
 
 
 <template name="show-seed">
-    <div class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content" id="show-seed">
-                <div class="modal-header">
-                    <h4 class="modal-title">Confirmation</h4>
-                </div>
-                <div class="modal-body">
-                <p>
-                Dear {{ username }},
-                </p>
+<div class="modal fade">
+<div class="modal-dialog">
+<div class="modal-content" id="show-seed">
+<div class="modal-header">
+<h4 class="modal-title">Confirmation</h4>
+</div>
+<div class="modal-body">
+<p>
+Dear {{ username }},
+</p>
 
-                <p>
-                Please write down the following phrase. It is important, as it is the only way to restore your account.
-                <br>
-                    <b> {{ seed }} </b>
-                </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-show-seed-close">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<p>
+Please write down the following phrase. It is important, as it is the only way to restore your account.
+<br>
+<b> {{ seed }} </b>
+</p>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-default" data-dismiss="modal" id="btn-show-seed-close">Close</button>
+</div>
+</div>
+</div>
+</div>
 </template>
