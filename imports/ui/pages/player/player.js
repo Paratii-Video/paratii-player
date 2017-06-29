@@ -230,6 +230,8 @@ Template.player.events({
       const barWidth = progress.offsetWidth;
       const offset = e.clientX - progress.getBoundingClientRect().left;
       videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
+      instance.templateDict.set('playedProgress', (offset / barWidth) * 100);
+      instance.templateDict.set('scrubberTranslate', (offset / barWidth) * 100);
     });
   },
   'click #video-progress'(event, instance) {
@@ -237,6 +239,8 @@ Template.player.events({
     const barWidth = instance.find('#video-progress').offsetWidth;
     const offset = event.clientX - event.currentTarget.getBoundingClientRect().left;
     videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
+    instance.templateDict.set('playedProgress', (offset / barWidth) * 100);
+    instance.templateDict.set('scrubberTranslate', (offset / barWidth) * 100);
   },
   'click #vol-control'(event, instance) {
     const videoPlayer = instance.find('#video-player');
