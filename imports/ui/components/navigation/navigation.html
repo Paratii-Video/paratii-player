@@ -1,8 +1,8 @@
 <template name="navigation">
   <div id="nav" class="nav {{navState}}">
     {{#if currentUser }}
-      <li class="{{isActivePath '/account'}} main">
-        <a href="/account" class="textNav">
+      <li class="{{isActivePath '/profile'}} main">
+        <a href="/profile" class="textNav">
 
           {{#if currentUser.profile.image }}
             <span id="avatar" class="dapp-identicon dapp-tiny" style="background-image: url( {{ currentUser.profile.image }} )"></span>
