@@ -5,9 +5,9 @@
     </video>
     <div class="player-controls {{playPause}} {{hideControls}}">
       <div id="video-progress">
-        <div id="loaded-bar" style="width: {{loadedProgress}}px"></div>
-        <div id="played-bar" style="width: {{playedProgress}}px"></div>
-        <div id="scrubber" style="left: {{scrubberTranslate}}px"></div>
+        <div id="loaded-bar" style="width: {{loadedProgress}}%"></div>
+        <div id="played-bar" style="width: {{playedProgress}}%"></div>
+        <div id="scrubber" style="left: {{scrubberTranslate}}%"></div>
       </div>
       <br />
       <button id="play-pause-button" title="{{playPause}}">
@@ -16,9 +16,11 @@
       <button id="volume-button" title="volume">
         <img src="/img/volume-icon.svg" />
       </button>
-      <input id="vol-control" class="{{ volumeClass }}" value=100 type="range" min="0" max="100" step="1"/>
+      <div id="vol-control" class="{{ volumeClass }}">
+        <div id="volume-value" style="width: {{ volumeValue }}%"></div>
+        <div id="vol-scrubber" style="left: {{volScrubberTranslate}}%"></div>
+      </div>
       <span id="current-time">{{formatTime currentTime}}</span>
-
       <span class="slash">/</span>
       <span id="total-time">{{formatTime totalTime}}</span>
       <span id="status"><tt>STATUS: {{ status }}</tt></span>

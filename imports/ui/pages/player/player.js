@@ -22,13 +22,13 @@ const video = () => {
   return _video;
 };
 
-
 function renderVideoElement(instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = video();
 
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo);
+    instance.templateDict.set('torrent', true);
   } else {
     const videoElement = $('#video-player');
     const sourceElement = document.createElement('source');
@@ -40,11 +40,6 @@ function renderVideoElement(instance) {
 
 Template.player.onCreated(function () {
   const instance = Template.instance();
-  // TODO: do not subscribe to all vidoes, just to the one we need
-  Meteor.subscribe('videos', function () {
-    // video subscription is ready
-    renderVideoElement(instance);
-  });
   const bodyView = Blaze.getView('Template.App_body');
 
   // this makes the tests work
@@ -59,6 +54,15 @@ Template.player.onCreated(function () {
   this.templateDict.set('loadedProgress', 0.0);
   this.templateDict.set('playedProgress', 0.0);
   this.templateDict.set('scrubberTranslate', 0);
+  this.templateDict.set('torrent', false);
+  this.templateDict.set('volumeValue', 100);
+  this.templateDict.set('volScrubberTranslate', 100);
+
+  // TODO: do not subscribe to all vidoes, just to the one we need
+  Meteor.subscribe('videos', function () {
+    // video subscription is ready
+    renderVideoElement(instance);
+  });
 });
 
 Template.player.onDestroyed(function () {
@@ -111,6 +115,12 @@ Template.player.helpers({
   status() {
     return Template.instance().templateDict.get('status');
   },
+  volumeValue() {
+    return Template.instance().templateDict.get('volumeValue');
+  },
+  volScrubberTranslate() {
+    return Template.instance().templateDict.get('volScrubberTranslate');
+  },
 });
 
 const requestFullscreen = (element) => {
@@ -147,10 +157,17 @@ const pauseVideo = (instance) => {
 
 const setLoadedProgress = (instance) => {
   const videoPlayer = instance.find('#video-player');
-  if (videoPlayer.buffered.length > 0) {
-    const barWidth = instance.find('#video-progress').offsetWidth;
-    const loaded = videoPlayer.buffered.end(0) / videoPlayer.duration;
-    instance.templateDict.set('loadedProgress', loaded * barWidth);
+  const torrent = instance.templateDict.get('torrent');
+  if (videoPlayer.buffered.length > 0 && !torrent) {
+    const played = instance.templateDict.get('playedProgress');
+    let loaded = 0.0;
+    // get the nearst end
+    for (i = 0; i < videoPlayer.buffered.length; i += 1) {
+      if (loaded <= played) {
+        loaded = videoPlayer.buffered.end(i) / videoPlayer.duration;
+      }
+    }
+    instance.templateDict.set('loadedProgress', loaded * 100);
   }
 };
 
@@ -193,9 +210,8 @@ Template.player.events({
     const dict = instance.templateDict;
 
     // update progress bar
-    const barWidth = instance.find('#video-progress').offsetWidth;
-    dict.set('playedProgress', (time / videoPlayer.duration) * barWidth);
-    dict.set('scrubberTranslate', barWidth * (time / videoPlayer.duration));
+    dict.set('playedProgress', (time / videoPlayer.duration) * 100);
+    dict.set('scrubberTranslate', 100 * (time / videoPlayer.duration));
 
     // update current time
     dict.set('currentTime', time);
@@ -207,13 +223,15 @@ Template.player.events({
   'mouseup'() {
     $(document).off('mousemove');
   },
-  'mousedown #video-progress'(event, instance) {
+  'mousedown #scrubber'(event, instance) {
     $(document).mousemove((e) => {
       const videoPlayer = instance.find('#video-player');
       const progress = instance.find('#video-progress');
       const barWidth = progress.offsetWidth;
       const offset = e.clientX - progress.getBoundingClientRect().left;
       videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
+      instance.templateDict.set('playedProgress', (offset / barWidth) * 100);
+      instance.templateDict.set('scrubberTranslate', (offset / barWidth) * 100);
     });
   },
   'click #video-progress'(event, instance) {
@@ -221,11 +239,29 @@ Template.player.events({
     const barWidth = instance.find('#video-progress').offsetWidth;
     const offset = event.clientX - event.currentTarget.getBoundingClientRect().left;
     videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
+    instance.templateDict.set('playedProgress', (offset / barWidth) * 100);
+    instance.templateDict.set('scrubberTranslate', (offset / barWidth) * 100);
   },
-  'input #vol-control'(event, instance) {
+  'click #vol-control'(event, instance) {
     const videoPlayer = instance.find('#video-player');
-    const inputValue = event.target.valueAsNumber;
-    videoPlayer.volume = inputValue / 100.0;
+    const barWidth = instance.find('#vol-control').offsetWidth;
+    const offset = event.clientX - event.currentTarget.getBoundingClientRect().left;
+    videoPlayer.volume = offset / barWidth;
+    const percent = (offset / barWidth) * 100;
+    instance.templateDict.set('volumeValue', percent);
+    instance.templateDict.set('volScrubberTranslate', percent);
+  },
+  'mousedown #vol-scrubber'(event, instance) {
+    $(document).mousemove((e) => {
+      const videoPlayer = instance.find('#video-player');
+      const volume = instance.find('#vol-control');
+      const barWidth = volume.offsetWidth;
+      const offset = e.clientX - volume.getBoundingClientRect().left;
+      videoPlayer.volume = offset / barWidth;
+      const percent = (offset / barWidth) * 100;
+      instance.templateDict.set('volumeValue', percent);
+      instance.templateDict.set('volScrubberTranslate', percent);
+    });
   },
   'loadedmetadata'(event, instance) {
     const videoPlayer = instance.find('#video-player');
@@ -279,4 +315,3 @@ Template.player.events({
     Meteor.call('videos.dislike', videoId);
   },
 });
-
