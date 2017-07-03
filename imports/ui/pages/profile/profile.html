@@ -1,4 +1,5 @@
 <template name="profile">
+ {{#if currentUser }}
     {{#isAuthorized}}
     <div class="titleContainer" id="wallet-title">
         My Profile
@@ -84,6 +85,13 @@
         {{> transaction}}
       {{/each}}
     </table>
+
+
+  {{else}}
+    <div class="container">
+      {{> atForm }}
+    </div>
+  {{/if}}
 </template>
 
 

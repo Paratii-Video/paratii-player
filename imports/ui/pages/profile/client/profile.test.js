@@ -10,7 +10,7 @@ import '../profile.js';
 describe('profile', function () {
   it('renders signin form when user is not logged in', function () {
     const data = {};
-    withRenderedTemplate('account', data, el => {
+    withRenderedTemplate('profile', data, el => {
       assert.equal($(el).find('#at-pwd-form').length, 1);
     });
   });

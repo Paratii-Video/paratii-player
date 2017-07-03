@@ -19,7 +19,7 @@ function createWalletHelper() {
 }
 
 function login(browser) {
-  browser.url('http://localhost:3000/account');
+  browser.url('http://localhost:3000/profile');
   browser.waitForExist('[name="at-field-email"]', 2000);
     // browser.click('#signin-link');
   browser
@@ -47,6 +47,6 @@ describe('account workflow', function () {
     login(browser);
     browser.execute(createWalletHelper);
     // brow
-    browser.url('http://localhost:3000/wallet');
+    browser.url('http://localhost:3000/profile');
   });
 });

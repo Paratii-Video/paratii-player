@@ -6,7 +6,6 @@ import '/imports/ui/layouts/body/body.js';
 import '/imports/ui/pages/home/home.js';
 import '/imports/ui/pages/not-found/not-found.js';
 import '/imports/ui/pages/about/about.js';
-import '/imports/ui/pages/account/account.js';
 import '/imports/ui/pages/debug/debug.js';
 import '/imports/ui/pages/playlists/playlists.js';
 import '/imports/ui/pages/player/player.js';
@@ -21,23 +20,10 @@ import '/imports/ui/pages/wanderlust/wanderlust.js';
 FlowRouter.route('/', {
   name: 'App.home',
   action() {
-    BlazeLayout.render('App_body', { main: 'account' });
+    BlazeLayout.render('App_body', { main: 'profile' });
   },
 });
 
-FlowRouter.route('/debug', {
-  name: 'debug',
-  action() {
-    BlazeLayout.render('App_body', { main: 'debug' });
-  },
-});
-
-FlowRouter.route('/account', {
-  name: 'account',
-  action() {
-    BlazeLayout.render('App_body', { main: 'account' });
-  },
-});
 
 FlowRouter.route('/profile', {
   name: 'profile',
@@ -53,14 +39,12 @@ FlowRouter.route('/playlists', {
   },
 });
 
-
 FlowRouter.route('/myvideos', {
   name: 'myvideos',
   action() {
     BlazeLayout.render('App_body', { main: 'myvideos' });
   },
 });
-
 
 FlowRouter.route('/upload', {
   name: 'upload',
@@ -69,14 +53,12 @@ FlowRouter.route('/upload', {
   },
 });
 
-
 FlowRouter.route('/trendingCauses', {
   name: 'trendingCauses',
   action() {
     BlazeLayout.render('App_body', { main: 'trendingCauses' });
   },
 });
-
 
 FlowRouter.route('/wanderlust', {
   name: 'wanderlust',
@@ -96,6 +78,13 @@ FlowRouter.route('/about', {
   name: 'about',
   action() {
     BlazeLayout.render('App_body', { main: 'about' });
+  },
+});
+
+FlowRouter.route('/debug', {
+  name: 'debug',
+  action() {
+    BlazeLayout.render('App_body', { main: 'debug' });
   },
 });
 
