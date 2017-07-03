@@ -9,20 +9,19 @@ import '/imports/ui/components/modals/sendPti.js';
 import './profile.html';
 
 
-function showSeed() {
+async function showSeed() {
   // do not close when user clicks outside of the window
-  getSeed(
-    function (err, seed) {
-      const modalOptions = {
-        backdrop: 'static',
-        keyboard: false,
-      };
-      Modal.show('show-seed', {
-        seed,
-        username: userPrettyName(),
-      }, modalOptions);
-    },
-  );
+  const password = prompt('GIVE ME YR PASSWORD:', 'password');
+  const seed = await getSeed(password);
+
+  const modalOptions = {
+    backdrop: 'static',
+    keyboard: false,
+  };
+  Modal.show('show-seed', {
+    seed,
+    username: userPrettyName(),
+  }, modalOptions);
 }
 
 

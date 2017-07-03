@@ -5,92 +5,59 @@
 /* eslint no-param-reassign: "off" */
 
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
+import { promisify } from 'promisify-node';
 import { getUserPTIaddress } from '/imports/api/users.js';
 import { web3 } from './connection.js';
-
+// const promisify = require('promisify-node');
 let globalKeystore;
 
-
-function getKeystore(callback) {
+// getKeystore loads the keystore from localstorage
+// if such a keystore does not exist, returns undefined
+async function getKeystore(password) {
   if (globalKeystore !== undefined) {
-    callback(null, globalKeystore);
-  } else {
-    const password = prompt('Enter password to show your seed. Do not let anyone else see your seed.', 'password');
-
-    lightwallet.keystore.createVault(
-      {
-        password,
-      },
-      function (err, ks) {
-        callback(err, ks, password);
-      },
-    );
+    return globalKeystore;
   }
+
+  // const ks = await promisify(lightwallet.keystore.createVault)({ password });
+  return null;
 }
 
-function getSeed(callback) {
-  getKeystore(function (err, ks, password) {
-    console.log(password);
-    console.log(err);
-    ks.deriveKeyFromPassword(password, function (err2, pwDerivedKey) {
-      if (err2) {
-        throw err2;
-      }
-      console.log(pwDerivedKey);
-      const seed = ks.getSeed(pwDerivedKey);
-      callback(err2, seed);
-    });
-  });
+// returns the seed of the keystore
+async function getSeed(password) {
+  const keystore = await getKeystore(password);
+  const pwDerivedKey = await promisify(keystore.deriveKeyFromPassword)(password);
+  const seed = keystore.getSeed(pwDerivedKey);
+  return seed;
 }
 
-function createWallet(password, seedPhrase, cb) {
+
+async function createWallet(password, seedPhrase) {
   const wallet = {};
 
   if (seedPhrase === undefined) {
     seedPhrase = lightwallet.keystore.generateRandomSeed();
   }
-  lightwallet.keystore.createVault({
+  const ks = await promisify(lightwallet.keystore.createVault)({
     password,
     seedPhrase,
     // salt: fixture.salt,     // Optionally provide a salt.
                                // A unique salt will be generated otherwise.
     // hdPathString: hdPath    // Optional custom HD Path String
-  }, function (err, ks) {
-    if (err) throw err;
-    globalKeystore = ks;
-    // Some methods will require providing the `pwDerivedKey`,
-    // Allowing you to only decrypt private keys on an as-needed basis.
-    // You can generate that value with this convenient method:
-    ks.keyFromPassword(password, function (err2, pwDerivedKey) {
-      if (err2) throw err2;
-
-        // generate five new address/private key pairs
-        // the corresponding private keys are also encrypted
-      ks.generateNewAddress(pwDerivedKey, 5);
-      const addresses = ks.getAddresses();
-      Session.set('keystore', ks);
-      Session.set('ptiAddress', addresses[0]);
-      Meteor.call('users.update', { 'profile.ptiAddress': addresses[0] });
-
-      // Meteor.users.update(Meteor.userId(),
-      //   { $set:  });
-
-      ks.passwordProvider = function (callback) {
-        const pw = prompt('Please enter password', 'Password');
-        callback(null, pw);
-      };
-      // Now set ks as transaction_signer in the hooked web3 provider
-      // and you can start using web3 using the keys/addresses in ks!
-      // var web3Provider = new HookedWeb3Provider({
-      //   host: "http://04.236.65.136:8545",
-      //   transaction_signer: keystore
-      // });
-      // web3.setProvider(web3Provider);
-      if (cb) {
-        cb(ks);
-      }
-    });
   });
+
+  globalKeystore = ks;
+  // Some methods will require providing the `pwDerivedKey`,
+  // Allowing you to only decrypt private keys on an as-needed basis.
+  // You can generate that value with this convenient method:
+  const pwDerivedKey = await promisify(ks.keyFromPassword)(password);
+
+  // generate five new address/private key pairs
+  // the corresponding private keys are also encrypted
+  ks.generateNewAddress(pwDerivedKey, 1);
+  const addresses = ks.getAddresses();
+  Session.set('keystore', ks);
+  Session.set('ptiAddress', addresses[0]);
+  Meteor.call('users.update', { 'profile.ptiAddress': addresses[0] });
   wallet.seed = seedPhrase;
   return wallet;
 }
