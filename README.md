@@ -42,7 +42,7 @@ Now start the application
 
 The application has to kind of tests. 
 
-    meteor test
+    npm test
 
 And end-to-end tetst that can be run by starting up the application in one window:
 
@@ -50,11 +50,11 @@ And end-to-end tetst that can be run by starting up the application in one windo
 
 And running the tests in another window
 
-    meteor run chimp-test
+    npm run chimp-test
 
 Or, when you are developing:
 
-    meteor run chimp-watch
+    npm run chimp-watch
 
 
 # Contributing
