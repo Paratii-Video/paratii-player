@@ -3,6 +3,7 @@
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';
 import { Session } from 'meteor/session';
+import { createWallet } from '/imports/lib/ethereum/wallet.js';
 
 
 // Deny all client-side updates to user documents
@@ -32,6 +33,8 @@ if (Meteor.isClient) {
 Meteor.methods({
   'users.create'(options) {
     check(options, Object);
+    // here new wallet is create using user password for keystore encryption
+    createWallet(options.password);
     return Accounts.createUser(options);
   },
   'users.update'(data) {

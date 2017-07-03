@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 
-import { createWallet, restoreWallet, getSeed } from '/imports/lib/ethereum/wallet.js';
-import { userPrettyName, getUserPTIaddress, getPassword } from '/imports/api/users.js';
+import { createWallet, restoreWallet } from '/imports/lib/ethereum/wallet.js';
+import { getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import '/imports/ui/components/modals/editProfile.js';
 import '/imports/ui/components/modals/sendEth.js';
@@ -9,20 +9,20 @@ import '/imports/ui/components/modals/sendPti.js';
 import './profile.html';
 
 
-async function showSeed() {
-  // do not close when user clicks outside of the window
-  const password = prompt('GIVE ME YR PASSWORD:', 'password');
-  const seed = await getSeed(password);
-
-  const modalOptions = {
-    backdrop: 'static',
-    keyboard: false,
-  };
-  Modal.show('show-seed', {
-    seed,
-    username: userPrettyName(),
-  }, modalOptions);
-}
+// function showSeed() {
+//   // do not close when user clicks outside of the window
+//   const password = prompt('GIVE ME YR PASSWORD:', 'password');
+//   const seed = await getSeed(password);
+//
+//   const modalOptions = {
+//     backdrop: 'static',
+//     keyboard: false,
+//   };
+//   Modal.show('show-seed', {
+//     seed,
+//     username: userPrettyName(),
+//   }, modalOptions);
+// }
 
 
 Template.profile.helpers({
@@ -49,7 +49,8 @@ Template.profile.events({
     getPassword().then(function (password) {
       if (password) {
         wallet = createWallet(password);
-        showSeed(wallet);
+        // TODO: comment showSeed due error, to fix
+        // showSeed(wallet);
       }
     });
   },
@@ -68,7 +69,8 @@ Template.profile.events({
     });
   },
   'click #show-seed'() {
-    showSeed();
+    // TODO: comment showSeed due error, to fix
+    // showSeed();
   },
   'click #edit-profile'() {
     const modalOptions = {

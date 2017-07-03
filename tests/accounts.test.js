@@ -52,6 +52,7 @@ describe('account workflow', function () {
     // the user is now asked to create a new wallet or restore a previous one
     // we create a new wallet
     browser.waitForExist('#create-wallet');
+    // browser.execute(createWalletHelper);
     // browser.$('#create-wallet').click();
     // // TODO: continue tot test the wallet generation
     // browser.waitUntil(browser.alertText);

@@ -9,55 +9,59 @@ import { promisify } from 'promisify-node';
 import { getUserPTIaddress } from '/imports/api/users.js';
 import { web3 } from './connection.js';
 // const promisify = require('promisify-node');
-let globalKeystore;
 
 // getKeystore loads the keystore from localstorage
 // if such a keystore does not exist, returns undefined
-async function getKeystore(password) {
-  if (globalKeystore !== undefined) {
-    return globalKeystore;
+function getKeystore() {
+  keystore = JSON.parse(localStorage.getItem('keystore'));
+  if (keystore !== undefined) {
+    return keystore;
   }
 
   // const ks = await promisify(lightwallet.keystore.createVault)({ password });
-  return null;
+  return undefined;
 }
 
 // returns the seed of the keystore
 async function getSeed(password) {
   const keystore = await getKeystore(password);
-  const pwDerivedKey = await promisify(keystore.deriveKeyFromPassword)(password);
+  const pwDerivedKey = await promisify(keystore.deriveKeyFromPassword(password));
   const seed = keystore.getSeed(pwDerivedKey);
   return seed;
 }
 
 
 async function createWallet(password, seedPhrase) {
+  // TODO: seed have to be generate randomly and returned to the user
   const wallet = {};
-
-  if (seedPhrase === undefined) {
+  if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed();
   }
-  const ks = await promisify(lightwallet.keystore.createVault)({
+
+  const opts = {
     password,
     seedPhrase,
-    // salt: fixture.salt,     // Optionally provide a salt.
-                               // A unique salt will be generated otherwise.
-    // hdPathString: hdPath    // Optional custom HD Path String
+  };
+  console.log(password);
+  console.log(seedPhrase);
+  lightwallet.keystore.createVault(opts, function (err, keystore) {
+    keystore.keyFromPassword(password, function (error, pwDerivedKey) {
+      if (error) throw error;
+      console.log(keystore);
+
+      // generate five new address/private key pairs
+      // the corresponding private keys are also encrypted
+      keystore.generateNewAddress(pwDerivedKey, 5);
+      localStorage.setItem('keystore', JSON.stringify(keystore));
+      const addr = keystore.getAddresses();
+      Meteor.call('users.update', { 'profile.ptiAddress': addr[0] });
+      // Now set ks as transaction_signer in the hooked web3 provider
+      // and you can start using web3 using the keys/addresses in ks!
+    });
   });
+  // Session.set('keystore', ks);
+  // Session.set('ptiAddress', addresses[0]);
 
-  globalKeystore = ks;
-  // Some methods will require providing the `pwDerivedKey`,
-  // Allowing you to only decrypt private keys on an as-needed basis.
-  // You can generate that value with this convenient method:
-  const pwDerivedKey = await promisify(ks.keyFromPassword)(password);
-
-  // generate five new address/private key pairs
-  // the corresponding private keys are also encrypted
-  ks.generateNewAddress(pwDerivedKey, 1);
-  const addresses = ks.getAddresses();
-  Session.set('keystore', ks);
-  Session.set('ptiAddress', addresses[0]);
-  Meteor.call('users.update', { 'profile.ptiAddress': addresses[0] });
   wallet.seed = seedPhrase;
   return wallet;
 }
