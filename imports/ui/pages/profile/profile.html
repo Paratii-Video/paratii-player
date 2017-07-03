@@ -28,8 +28,7 @@
         <button class="btn btn-default blue-button" id="show-seed">Show the seed for this wallet</button>
       </div>
       <div class="walletContainer">
-        <ul class="titleContainer"> Your balance is: <b> {{ balance }}</b> PTI</ul>
-        <div class="titleContainer"> Send Paratii </div>
+        <ul class="titleContainer"></ul>
         <div class="descriptionContainer">
           <div class="navbar">
             <ul class="nav nav-tabs">
@@ -41,36 +40,20 @@
 
             </ul>
           </div>
-
-
-
             <div class="tab-content ">
               <div class="tab-pane active" id="eth">
-                <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+                <h3> You own <b>{{ balance }}</b> Ether</h3>
+                <button class="btn btn-default blue-button" id="send-eth">Send Ether</button>
               </div>
               <div class="tab-pane" id="pti">
-                <h3>Notice the gap between the content and tab after applying a background color</h3>
+                <h3> You own <b>{{ balance }}</b> PTI</h3>
+                <button class="btn btn-default blue-button" id="send-pti">Send PTI</button>
               </div>
-              
+                <button class="btn btn-default blue-button" id="transaction-history">Transaction History</button> 
             </div>
-
         </div>
-            <!-- <form id="form-send-paratii">
-                <div class="col-md-12">
-                    <div class="input-group">
-                        <span class="input-group-addon" id="sizing-addon3">PTI</span>
-                        <input name="wallet_pti_amount" type="text" class="form-control" placeholder="Amount of PTI you wish to send" aria-describedby="sizing-addon1">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon wallet-textfield" id="sizing-addon3">Friend's Wallet</span>
-                        <input name="wallet_friend_number" type="text" class="form-control" placeholder="Friend's Wallet" aria-describedby="sizing-addon1">
-                        {{> dapp_addressInput placeholder="0x000000.." value="" name="wallet_friend_number"}}
-                    </div>
-                    <input id="send_pti_btn" type="submit" class="btn btn-default" value="Send PTI">
-                </div>
-            </form> -->
-            <button class="btn btn-default blue-button" id="">Send PTI</button>
-            <button class="btn btn-default blue-button" id="">Transaction History</button>
+
+
         </div>
 
     {{ else }}
@@ -93,6 +76,7 @@
     </div>
   {{/if}}
 </template>
+
 
 
 <template name="transaction">

@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating';
 import '/imports/api/users.js';
-import './edit-profile.html';
+import './editProfile.html';
 
 Template.editProfile.helpers({
   ima() {

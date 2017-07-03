@@ -3,7 +3,9 @@
 import { createWallet, restoreWallet, getSeed } from '/imports/lib/ethereum/wallet.js';
 import { userPrettyName, getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
-import '/imports/ui/components/edit-profile/edit-profile.js';
+import '/imports/ui/components/modals/editProfile.js';
+import '/imports/ui/components/modals/sendEth.js';
+import '/imports/ui/components/modals/sendPti.js';
 import './profile.html';
 
 
@@ -52,35 +54,12 @@ Template.profile.events({
       }
     });
   },
-  'submit #form-send-paratii'(event) {
-    // Prevent default browser form submit
-    event.preventDefault();
-    // Get value from form elements
-    const transaction = {};
-    const target = event.target;
-
-    transaction.sender = getUserPTIaddress();
-    transaction.receiver = target.wallet_friend_number.value;
-    transaction.amount = target.wallet_pti_amount.value;
-    transaction.description = 'send pti';
-
-    // Events have
-    // sender , receiver, description , transactionId and amount
-    Meteor.call('events.sendPTI', transaction, function (error) {
-      if (error) {
-        // TODO notify error
-        return;
-      }
-      // Clear form
-      target.wallet_pti_amount.value = '';
-      target.wallet_friend_number.value = '';
-    });
-    Meteor.call('events.balance', getUserPTIaddress(), function (error, result) {
-      Session.set('balance', result);
-    });
+  'click #send-eth'() {
+    Modal.show('sendEth', {});
   },
-
-
+  'click #send-pti'() {
+    Modal.show('sendPti', {});
+  },
   'click #restore-wallet'() {
     const seedPhrase = prompt('Please enter your 12-word seed phrase', '');
     getPassword().then(function (password) {
