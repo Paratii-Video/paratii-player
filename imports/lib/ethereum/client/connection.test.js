@@ -1,8 +1,9 @@
 /* eslint-env mocha */
 
-import { connection } from '../connection.js';
+import { initConnection } from '../connection.js';
 
 describe('connection', function () {
-  	it('create a connection', function () {
-  	});
+  it('create a connection', function () {
+    initConnection();
+  });
 });
