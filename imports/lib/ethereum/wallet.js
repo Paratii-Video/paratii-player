@@ -1,65 +1,57 @@
+/* eslint no-console: "off" */
+/* eslint no-prompt: "off" */
+/* eslint no-alert: "off" */
+/* eslint max-len: "off" */
+/* eslint no-param-reassign: "off" */
+
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
+import { getUserPTIaddress } from '/imports/api/users.js';
+import { web3 } from './connection.js';
 
 let globalKeystore;
 
 
-function getKeystore(callback){
-  if(globalKeystore !== undefined){
+function getKeystore(callback) {
+  if (globalKeystore !== undefined) {
     callback(null, globalKeystore);
   } else {
-
     const password = prompt('Enter password to show your seed. Do not let anyone else see your seed.', 'password');
 
     lightwallet.keystore.createVault(
       {
-        password
+        password,
       },
-      function(err, ks){
+      function (err, ks) {
         callback(err, ks, password);
-      }
-
+      },
     );
   }
-
 }
-
-
 
 function getSeed(callback) {
-
-  getKeystore(function(err, ks, password){
-      console.log(password);
-      console.log(err);
-      ks.deriveKeyFromPassword(password, function (err, pwDerivedKey) {
-        if (err) throw err;
-        console.log(pwDerivedKey);
-        var seed = ks.getSeed(pwDerivedKey);
-        callback(err, seed);
-
-
-      });
-
-
+  getKeystore(function (err, ks, password) {
+    console.log(password);
+    console.log(err);
+    ks.deriveKeyFromPassword(password, function (err2, pwDerivedKey) {
+      if (err2) {
+        throw err2;
+      }
+      console.log(pwDerivedKey);
+      const seed = ks.getSeed(pwDerivedKey);
+      callback(err2, seed);
+    });
   });
-
 }
-
-
-
-
-
-
-
 
 function createWallet(password, seedPhrase, cb) {
   const wallet = {};
-  if (seedPhrase) {
-  } else {
+
+  if (seedPhrase === undefined) {
     seedPhrase = lightwallet.keystore.generateRandomSeed();
   }
   lightwallet.keystore.createVault({
     password,
-    seedPhrase, // Optionally provide a 12-word seed phrase
+    seedPhrase,
     // salt: fixture.salt,     // Optionally provide a salt.
                                // A unique salt will be generated otherwise.
     // hdPathString: hdPath    // Optional custom HD Path String
@@ -69,8 +61,8 @@ function createWallet(password, seedPhrase, cb) {
     // Some methods will require providing the `pwDerivedKey`,
     // Allowing you to only decrypt private keys on an as-needed basis.
     // You can generate that value with this convenient method:
-    ks.keyFromPassword(password, function (err, pwDerivedKey) {
-      if (err) throw err;
+    ks.keyFromPassword(password, function (err2, pwDerivedKey) {
+      if (err2) throw err2;
 
         // generate five new address/private key pairs
         // the corresponding private keys are also encrypted
@@ -78,7 +70,7 @@ function createWallet(password, seedPhrase, cb) {
       const addresses = ks.getAddresses();
       Session.set('keystore', ks);
       Session.set('ptiAddress', addresses[0]);
-      Meteor.call('users.update', { 'profile.ptiAddress': addresses[0] })
+      Meteor.call('users.update', { 'profile.ptiAddress': addresses[0] });
 
       // Meteor.users.update(Meteor.userId(),
       //   { $set:  });
@@ -108,10 +100,33 @@ function restoreWallet(password, seedPhrase) {
 }
 
 function sendParatii(amount, recipient) {
-  alert("sending " + amount + " to " + recipient);
+  alert(`sending ${amount} Paratii to ${recipient}`);
 }
 
-export { createWallet, restoreWallet, sendParatii, getSeed };
+function sendEther(amountInEth, recipient) {
+  const fromAddr = getUserPTIaddress();
+  const value = parseFloat(amountInEth) * 1.0e18;
+  // TODO: set these values in global constansts
+  const gasPrice = 50000000000; // cost in wei
+  // const gas = 50000;
+  // create a tx
+  const rawTx = lightwallet.txUtils.valueTx({
+    to: recipient,
+    // gasLimit
+    gasPrice,
+    value,
+    // nonce
+  });
+
+  // sign the transaction
+  const signedRawTx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
+
+  // send the transaction
+  web3.eth.sendRawTransaction(signedRawTx);
+}
+
+export { createWallet, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance };
+
 // ////////////////////
 // / Copies from lightwallet, ignore..
 // //////////////
@@ -121,7 +136,7 @@ export { createWallet, restoreWallet, sendParatii, getSeed };
 //       var global_keystore;
 
 //       function setWeb3Provider(keystore) {
-//         // TODO: HookedWeb3Provider is deprecated: https://github.com/ConsenSys/hooked-web3-provider
+//   // TODO: HookedWeb3Provider is deprecated: https://github.com/ConsenSys/hooked-web3-provider
 //         var web3Provider = new HookedWeb3Provider({
 //           host: "http://104.236.65.136:8545",
 //           transaction_signer: keystore

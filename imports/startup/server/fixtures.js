@@ -1,5 +1,4 @@
 /* eslint no-console: "off" */
-/* eslint no-console: "off" */
 
 // Fill the DB with example data on startup
 
