@@ -72,7 +72,7 @@ Template.navigation.helpers({
         {
           icon: '/img/avatar_img.svg',
           text: 'Log out',
-          path: 'account',
+          path: '/',
           id: 'logout',
         },
       ]);
