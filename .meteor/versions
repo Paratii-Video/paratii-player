@@ -103,6 +103,7 @@ service-configuration@1.0.11
 session@1.1.7
 sgi:sprintfjs@0.0.2
 sha@1.0.9
+simply:reactive-local-storage@2.1.0
 softwarerero:accounts-t9n@1.3.9
 spacebars@1.0.15
 spacebars-compiler@1.1.2

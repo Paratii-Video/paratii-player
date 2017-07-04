@@ -3,17 +3,18 @@
 /* eslint no-alert: "off" */
 /* eslint max-len: "off" */
 /* eslint no-param-reassign: "off" */
-
+import * as RLocalStorage from 'meteor/simply:reactive-local-storage';
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
 import { promisify } from 'promisify-node';
 import { getUserPTIaddress } from '/imports/api/users.js';
 import { web3 } from './connection.js';
+
 // const promisify = require('promisify-node');
 
 // getKeystore loads the keystore from localstorage
 // if such a keystore does not exist, returns undefined
 export function getKeystore() {
-  keystore = JSON.parse(localStorage.getItem('keystore'));
+  keystore = JSON.parse(RLocalStorage.getItem('keystore'));
   if (keystore !== undefined) {
     return keystore;
   }
@@ -50,7 +51,7 @@ function createWallet(password, seedPhrase) {
       // generate five new address/private key pairs
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 5);
-      localStorage.setItem('keystore', JSON.stringify(keystore));
+      RLocalStorage.setItem('keystore', JSON.stringify(keystore));
       const addr = keystore.getAddresses();
       Meteor.call('users.update', { 'profile.ptiAddress': addr[0] });
       Session.set('seed', seedPhrase);

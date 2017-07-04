@@ -47,6 +47,15 @@ Template.profile.helpers({
   hasKeystore() {
     return (getKeystore() !== undefined) ? getKeystore() : false;
   },
+  ptiAddress() {
+    if (getKeystore() !== undefined) {
+      const keystore = getKeystore();
+      const address = keystore.ksData[keystore.defaultHdPathString].addresses[0];
+      return address;
+    }
+
+    return null;
+  },
 });
 
 
@@ -116,8 +125,6 @@ Tracker.autorun(() => {
 Tracker.autorun(() => {
   const seed = Session.get('seed');
   if (seed != null) {
-    console.log('changed');
-    console.log(seed);
     const modalOptions = {
       seed,
     };

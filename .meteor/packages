@@ -53,3 +53,4 @@ check
 xolvio:template-isolator
 xolvio:backdoor
 peppelg:bootstrap-3-modal
+simply:reactive-local-storage
