@@ -12,7 +12,7 @@ import { web3 } from './connection.js';
 
 // getKeystore loads the keystore from localstorage
 // if such a keystore does not exist, returns undefined
-function getKeystore() {
+export function getKeystore() {
   keystore = JSON.parse(localStorage.getItem('keystore'));
   if (keystore !== undefined) {
     return keystore;
@@ -31,7 +31,7 @@ async function getSeed(password) {
 }
 
 
-async function createWallet(password, seedPhrase) {
+function createWallet(password, seedPhrase) {
   // TODO: seed have to be generate randomly and returned to the user
   const wallet = {};
   if (seedPhrase == null) {
@@ -47,14 +47,13 @@ async function createWallet(password, seedPhrase) {
   lightwallet.keystore.createVault(opts, function (err, keystore) {
     keystore.keyFromPassword(password, function (error, pwDerivedKey) {
       if (error) throw error;
-      console.log(keystore);
-
       // generate five new address/private key pairs
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 5);
       localStorage.setItem('keystore', JSON.stringify(keystore));
       const addr = keystore.getAddresses();
       Meteor.call('users.update', { 'profile.ptiAddress': addr[0] });
+      Session.set('seed', seedPhrase);
       // Now set ks as transaction_signer in the hooked web3 provider
       // and you can start using web3 using the keys/addresses in ks!
     });

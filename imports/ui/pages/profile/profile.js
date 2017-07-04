@@ -1,11 +1,13 @@
 /* eslint-disable no-alert */
 
-import { createWallet, restoreWallet } from '/imports/lib/ethereum/wallet.js';
+import { createWallet, restoreWallet, getKeystore } from '/imports/lib/ethereum/wallet.js';
 import { getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import '/imports/ui/components/modals/editProfile.js';
 import '/imports/ui/components/modals/sendEth.js';
 import '/imports/ui/components/modals/sendPti.js';
+import '/imports/ui/components/modals/restoreKeystore.js';
+import '/imports/ui/components/modals/showSeed.js';
 import './profile.html';
 
 
@@ -42,7 +44,11 @@ Template.profile.helpers({
   userEmail() {
     return Meteor.user().emails[0].address;
   },
+  hasKeystore() {
+    return (getKeystore() !== undefined) ? getKeystore() : false;
+  },
 });
+
 
 Template.profile.events({
   'click #create-wallet'() {
@@ -59,6 +65,9 @@ Template.profile.events({
   },
   'click #send-pti'() {
     Modal.show('sendPti', {});
+  },
+  'click #restore-keystore'() {
+    Modal.show('restoreKeystore', {});
   },
   'click #restore-wallet'() {
     const seedPhrase = prompt('Please enter your 12-word seed phrase', '');
@@ -100,5 +109,19 @@ Tracker.autorun(() => {
     Meteor.call('events.balance', userPTIaddress, function (error, result) {
       Session.set('balance', result);
     });
+  }
+});
+
+
+Tracker.autorun(() => {
+  const seed = Session.get('seed');
+  if (seed != null) {
+    console.log('changed');
+    console.log(seed);
+    const modalOptions = {
+      seed,
+    };
+    Modal.show('showSeed', modalOptions);
+    Session.set('seed', null);
   }
 });

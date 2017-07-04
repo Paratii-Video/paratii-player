@@ -34,7 +34,6 @@ Meteor.methods({
   'users.create'(options) {
     check(options, Object);
     // here new wallet is create using user password for keystore encryption
-    createWallet(options.password);
     return Accounts.createUser(options);
   },
   'users.update'(data) {

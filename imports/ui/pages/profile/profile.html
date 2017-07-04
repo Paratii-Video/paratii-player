@@ -24,7 +24,9 @@
         <div class="profile-info"> {{userEmail}}</div>
         <!-- Action Buttons -->
         <button class="btn btn-default blue-button" id="edit-profile">Edit Profile</button>
-        <button class="btn btn-default blue-button" id="reset-password">Reset Password</button>
+        {{#unless hasKeystore}}
+          <button class="btn btn-default blue-button" id="restore-keystore">Restore Keystore</button>
+        {{/unless}}
         <button class="btn btn-default blue-button" id="show-seed">Show the seed for this wallet</button>
       </div>
       <div class="walletContainer">
@@ -49,7 +51,7 @@
                 <h3> You own <b>{{ balance }}</b> PTI</h3>
                 <button class="btn btn-default blue-button" id="send-pti">Send PTI</button>
               </div>
-                <button class="btn btn-default blue-button" id="transaction-history">Transaction History</button> 
+                <button class="btn btn-default blue-button" id="transaction-history">Transaction History</button>
             </div>
         </div>
 
