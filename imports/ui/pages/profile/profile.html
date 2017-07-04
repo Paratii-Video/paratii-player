@@ -24,9 +24,9 @@
         <div class="profile-info"> {{userEmail}}</div>
         <!-- Action Buttons -->
         <button class="btn btn-default blue-button" id="edit-profile">Edit Profile</button>
-        {{#unless hasKeystore}}
+        <!-- {{#unless hasKeystore}}
           <button class="btn btn-default blue-button" id="restore-keystore">Restore Keystore</button>
-        {{/unless}}
+        {{/unless}} -->
         <button class="btn btn-default blue-button" id="show-seed">Show the seed for this wallet</button>
       </div>
       <div class="walletContainer">
@@ -61,7 +61,7 @@
     {{ else }}
           It seems you do not have an account to hold your paratii yet.
 
-          You can either <a href="#" id="create-wallet">generate a new address</a> or <a href="#" id="restore-wallet">restore your account</a>.
+          You can either <a href="#" id="create-wallet">generate a new address</a> or <a href="#" id="restore-keystore">restore your account</a>.
     {{/if }}
     {{/isAuthorized}}
 

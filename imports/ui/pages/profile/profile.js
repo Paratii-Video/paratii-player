@@ -48,13 +48,14 @@ Template.profile.helpers({
     return (getKeystore() !== undefined) ? getKeystore() : false;
   },
   ptiAddress() {
+    let keystore;
+    let address;
     if (getKeystore() !== undefined) {
-      const keystore = getKeystore();
-      const address = keystore.ksData[keystore.defaultHdPathString].addresses[0];
-      return address;
+      keystore = getKeystore();
+      address = keystore.ksData[keystore.defaultHdPathString].addresses[0];
+      Modal.hide('restoreKeystore'); // Close restore modal if keystore is found in the localSTorage
     }
-
-    return null;
+    return address;
   },
 });
 
