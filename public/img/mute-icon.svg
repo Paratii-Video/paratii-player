@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="19px" viewBox="0 0 20 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>mute-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="player_v01" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="mvp-paused-ad" transform="translate(-246.000000, -372.000000)" fill="#FFFFFF">
+            <g id="player-control" transform="translate(93.000000, 324.000000)">
+                <g id="slide">
+                    <g id="mute-icon" transform="translate(152.000000, 47.000000)">
+                        <path d="M2,8 L2,14 L6,14 L11,19 L11,3 L6,8 L2,8 L2,8 Z M15.5,11 C15.5,9.23 14.48,7.71 13,6.97 L13,15.02 C14.48,14.29 15.5,12.77 15.5,11 L15.5,11 Z M13,2.23 L13,4.29 C15.89,5.15 18,7.83 18,11 C18,14.17 15.89,16.85 13,17.71 L13,19.77 C17.01,18.86 20,15.28 20,11 C20,6.72 17.01,3.14 13,2.23 L13,2.23 Z" id="volume-icon"></path>
+                        <rect id="Rectangle-10" transform="translate(11.000000, 10.500000) rotate(-44.000000) translate(-11.000000, -10.500000) " x="-2" y="9" width="26" height="3" rx="1.5"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
