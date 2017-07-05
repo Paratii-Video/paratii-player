@@ -57,6 +57,7 @@ Template.player.onCreated(function () {
   this.templateDict.set('torrent', false);
   this.templateDict.set('volumeValue', 100);
   this.templateDict.set('volScrubberTranslate', 100);
+  this.templateDict.set('muted', false);
 
   // TODO: do not subscribe to all vidoes, just to the one we need
   Meteor.subscribe('videos', function () {
@@ -120,6 +121,10 @@ Template.player.helpers({
   },
   volScrubberTranslate() {
     return Template.instance().templateDict.get('volScrubberTranslate');
+  },
+  volumeIcon() {
+    const state = Template.instance().templateDict.get('muted');
+    return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg';
   },
 });
 
@@ -250,6 +255,7 @@ Template.player.events({
     const percent = (offset / barWidth) * 100;
     instance.templateDict.set('volumeValue', percent);
     instance.templateDict.set('volScrubberTranslate', percent);
+    instance.templateDict.set('muted', false);
   },
   'mousedown #vol-scrubber'(event, instance) {
     $(document).mousemove((e) => {
@@ -261,6 +267,7 @@ Template.player.events({
       const percent = (offset / barWidth) * 100;
       instance.templateDict.set('volumeValue', percent);
       instance.templateDict.set('volScrubberTranslate', percent);
+      instance.templateDict.set('muted', false);
     });
   },
   'loadedmetadata'(event, instance) {
@@ -295,14 +302,17 @@ Template.player.events({
   },
   'click #volume-button'(event, instance) {
     const videoPlayer = instance.find('#video-player');
-    const volumeBar = instance.find('#vol-control');
     if (videoPlayer.volume > 0) {
       previousVolume = videoPlayer.volume;
       videoPlayer.volume = 0;
-      volumeBar.value = 0;
+      instance.templateDict.set('volumeValue', 0);
+      instance.templateDict.set('volScrubberTranslate', 0);
+      instance.templateDict.set('muted', true);
     } else {
       videoPlayer.volume = previousVolume;
-      volumeBar.value = previousVolume * 100;
+      instance.templateDict.set('volumeValue', previousVolume * 100);
+      instance.templateDict.set('volScrubberTranslate', previousVolume * 100);
+      instance.templateDict.set('muted', false);
     }
   },
   'click #button-like'() {
