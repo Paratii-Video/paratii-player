@@ -7,9 +7,6 @@ const PARATII_TOKEN_ADDRESS = '0x385b2E03433C816DeF636278Fb600ecd056B0e8d';
 
 web3 = new Web3();
 
-export default web3;
-
-
 function checkStatus() {
   if (web3.isConnected()) {
     Session.set('eth_isConnected', true);
@@ -48,3 +45,5 @@ export const initConnection = function () {
   // call the status function every second
   Meteor.setInterval(checkStatus, 1000);
 };
+
+export { web3 };

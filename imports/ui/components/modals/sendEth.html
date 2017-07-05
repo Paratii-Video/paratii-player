@@ -4,22 +4,38 @@
     <form id="form-send-ether">
       <div class="modal-dialog">
         <div class="modal-content">
+          <!-- Header -->
           <div class="modal-header">
+            <h4 class="modal-title">Send ETH</h4>
           </div>
+          <!-- Body -->
           <div class="modal-body">
             <div class="input-group">
                 <span class="input-group-addon" id="sizing-addon3">ETH</span>
                 <input name="wallet_pti_amount" type="text" class="form-control" placeholder="Amount of PTI you wish to send" aria-describedby="sizing-addon1">
             </div>
+            <br>
             <div class="input-group">
                 <span class="input-group-addon wallet-textfield" id="sizing-addon3">Friend's Account</span>
                 <input name="wallet_friend_number" type="text" class="form-control" placeholder="Friend's Wallet" aria-describedby="sizing-addon1">
                 {{> dapp_addressInput placeholder="0x000000.." value="" name="wallet_friend_number"}}
             </div>
-            <input id="send_pti_btn" type="submit" class="btn btn-default" value="Send Ether">
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon" id="sizing-addon3">Password</span>
+                <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
+            </div>
           </div>
+          <!-- Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-eth-close">Close</button>
+            <input type="submit" id="send_eth_btn" class="btn btn-default blue-button" value="Send Ether"/>
+          </div>
+
         </div>
       </div>
+
+
     </form>
   </div>
 </template>

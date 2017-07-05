@@ -14,7 +14,7 @@ import { web3 } from './connection.js';
 // getKeystore loads the keystore from localstorage
 // if such a keystore does not exist, returns undefined
 export function getKeystore() {
-  keystore = JSON.parse(RLocalStorage.getItem('keystore'));
+  keystore = lightwallet.keystore.deserialize(RLocalStorage.getItem('keystore'));
   if (keystore !== undefined) {
     return keystore;
   }
@@ -51,7 +51,7 @@ function createWallet(password, seedPhrase) {
       // generate five new address/private key pairs
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 5);
-      RLocalStorage.setItem('keystore', JSON.stringify(keystore));
+      RLocalStorage.setItem('keystore', keystore.serialize());
       const addr = keystore.getAddresses();
       Meteor.call('users.update', { 'profile.ptiAddress': addr[0] });
       Session.set('seed', seedPhrase);
@@ -74,26 +74,31 @@ function sendParatii(amount, recipient) {
   alert(`sending ${amount} Paratii to ${recipient}`);
 }
 
-function sendEther(amountInEth, recipient) {
+function sendEther(amountInEth, recipient, password) {
   const fromAddr = getUserPTIaddress();
   const value = parseFloat(amountInEth) * 1.0e18;
   // TODO: set these values in global constansts
-  const gasPrice = 50000000000; // cost in wei
+  const gasPrice = `0x${50000000000}`; // cost in wei
   // const gas = 50000;
   // create a tx
-  const rawTx = lightwallet.txUtils.valueTx({
-    to: recipient,
+  const rawTx = lightwallet.txutils.valueTx({
+    to: `0x${recipient}`,
     // gasLimit
     gasPrice,
-    value,
+    value: `0x${value}`,
     // nonce
   });
-
-  // sign the transaction
-  const signedRawTx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
-
-  // send the transaction
-  web3.eth.sendRawTransaction(signedRawTx);
+  const keystore = getKeystore();
+  keystore.keyFromPassword(password, function (error, pwDerivedKey) {
+    if (error) throw error;
+    // sign the transaction
+    const signedRawTx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
+    // send the transaction
+    web3.eth.sendRawTransaction(signedRawTx, function (err, hash) {
+      console.log(err);
+      console.log(hash);
+    });
+  });
 }
 
 export { createWallet, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance };

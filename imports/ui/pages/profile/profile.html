@@ -6,7 +6,8 @@
     </div>
     {{# if ptiAddress }}
       <div class="alert-config">
-          This is your address: {{ ptiAddress }}
+        {{> dapp_identicon identity=currentUser.profile.ptiAddress class="dapp-tiny"}}
+        This is your address: {{ ptiAddress }}
       </div>
       <div class="line"></div>
       <div class="walletContainer">
