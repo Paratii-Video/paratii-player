@@ -52,7 +52,7 @@ Template.profile.helpers({
     let address;
     if (getKeystore() !== undefined) {
       keystore = getKeystore();
-      address = `0x${keystore.ksData[keystore.defaultHdPathString].addresses[0]}!`;
+      address = `${keystore.ksData[keystore.defaultHdPathString].addresses[0]}`;
       Modal.hide('restoreKeystore'); // Close restore modal if keystore is found in the localSTorage
     }
     return address;

@@ -1,7 +1,6 @@
 import { Template } from 'meteor/templating';
 import '/imports/api/users.js';
 import { sendEther } from '/imports/lib/ethereum/wallet.js';
-import { web3 } from '/imports/lib/ethereum/connection.js';
 import './sendEth.html';
 
 Template.sendEth.helpers({

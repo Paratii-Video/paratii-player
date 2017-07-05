@@ -9,6 +9,7 @@ import { promisify } from 'promisify-node';
 import { getUserPTIaddress } from '/imports/api/users.js';
 import { web3 } from './connection.js';
 
+
 // const promisify = require('promisify-node');
 
 // getKeystore loads the keystore from localstorage
@@ -76,27 +77,38 @@ function sendParatii(amount, recipient) {
 
 function sendEther(amountInEth, recipient, password) {
   const fromAddr = getUserPTIaddress();
-  const value = parseFloat(amountInEth) * 1.0e18;
+  let value = parseInt(web3.toWei(amountInEth, 'ether'));
+  value = value.toString(16);
   // TODO: set these values in global constansts
-  const gasPrice = `0x${50000000000}`; // cost in wei
+  // let gasPrice = 50000000000;
+  // gasPrice = gasPrice.toString('hex');
+  // gasPrice = `0x${gasPrice}`;
   // const gas = 50000;
   // create a tx
-  const rawTx = lightwallet.txutils.valueTx({
-    to: `0x${recipient}`,
-    // gasLimit
-    gasPrice,
-    value: `0x${value}`,
-    // nonce
-  });
   const keystore = getKeystore();
   keystore.keyFromPassword(password, function (error, pwDerivedKey) {
     if (error) throw error;
     // sign the transaction
-    const signedRawTx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
-    // send the transaction
-    web3.eth.sendRawTransaction(signedRawTx, function (err, hash) {
-      console.log(err);
-      console.log(hash);
+    // let privateKey = keystore.exportPrivateKey(fromAddr, pwDerivedKey);
+    // privateKey = new Buffer(privateKey, 'hex');
+    let rawTx = {
+      nonce: '0x1',
+      to: `0x${recipient}`,
+      value: `0x${value}`,
+      gasPrice: '0xba43b7400',
+      gasLimit: '0xc350',
+    };
+    rawTx = lightwallet.txutils.valueTx(rawTx);
+    // const tx = new Tx(rawTx);
+    // tx.sign(privateKey);
+    // const serializedTx = tx.serialize();
+    const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
+    web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
+      if (!err) {
+        console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
+      } else {
+        console.log(err);
+      }
     });
   });
 }
