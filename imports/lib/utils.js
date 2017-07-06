@@ -9,27 +9,23 @@ function formatNumber(number) {
 
 
 function strip0x(input) {
-  if (typeof(input) !== 'string') {
+  if (typeof (input) !== 'string') {
     return input;
-  }
-  else if (input.length >= 2 && input.slice(0,2) === '0x') {
+  } else if (input.length >= 2 && input.slice(0, 2) === '0x') {
     return input.slice(2);
   }
-  else {
-    return input;
-  }
+
+  return input;
 }
 
 function add0x(input) {
-  if (typeof(input) !== 'string') {
+  if (typeof (input) !== 'string') {
     return input;
+  } else if (input.length < 2 || input.slice(0, 2) !== '0x') {
+    return `0x${input}`;
   }
-  else if (input.length < 2 || input.slice(0,2) !== '0x') {
-    return '0x' + input;
-  }
-  else {
-    return input;
-  }
+
+  return input;
 }
 
 export { formatNumber, add0x, strip0x };

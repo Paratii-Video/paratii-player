@@ -89,12 +89,6 @@ Template.navigation.helpers({
   isMaximized() {
     return (Template.instance().navState.get() === 'maximized');
   },
-  ethNode() {
-    return Session.get('ethNode');
-  },
-  ethAccount() {
-    return Session.get('ethAccount');
-  },
 });
 
 Template.navigation.events({

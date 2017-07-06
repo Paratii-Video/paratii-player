@@ -11,32 +11,9 @@ import '/imports/ui/components/modals/showSeed.js';
 import './profile.html';
 
 
-// function showSeed() {
-//   // do not close when user clicks outside of the window
-//   const password = prompt('GIVE ME YR PASSWORD:', 'password');
-//   const seed = await getSeed(password);
-//
-//   const modalOptions = {
-//     backdrop: 'static',
-//     keyboard: false,
-//   };
-//   Modal.show('show-seed', {
-//     seed,
-//     username: userPrettyName(),
-//   }, modalOptions);
-// }
 
 
 Template.profile.helpers({
-  ethNode() {
-    return Session.get('ethNode');
-  },
-  ethAccount() {
-    return Session.get('ethAccount');
-  },
-  balance() {
-    return Session.get('balance');
-  },
   events() {
     // Perform a reactive database query against minimongo
     return Events.find();
