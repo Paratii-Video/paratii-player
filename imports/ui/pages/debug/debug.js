@@ -12,8 +12,8 @@ Template.debug.helpers({
   eth_isConnected() {
     return Session.get('eth_isConnected');
   },
-  eth_blockNumber() {
-    return Session.get('eth_blockNumber');
+  eth_currentBlock() {
+    return Session.get('eth_currentBlock');
   },
   ptiAddress() {
     return Session.get('ptiAddress');
