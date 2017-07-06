@@ -91,6 +91,7 @@ function sendEther(amountInEth, recipient, password) {
     // sign the transaction
     // let privateKey = keystore.exportPrivateKey(fromAddr, pwDerivedKey);
     // privateKey = new Buffer(privateKey, 'hex');
+
     let rawTx = {
       nonce: '0x1',
       to: `0x${recipient}`,
