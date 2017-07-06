@@ -3,7 +3,7 @@ import { createWallet } from '/imports/lib/ethereum/wallet.js';
 
 const mySubmitFunc = function (error, state) {
   if (state === 'signUp') {
-    const wallet = Session.get('wallet');
+    // const wallet = Session.get('wallet');
     // show the seed to the user
     // TODO: comment showSeed due error, to fix
     // showSeed(wallet);

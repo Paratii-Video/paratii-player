@@ -94,8 +94,8 @@ export function userPrettyName() {
 }
 
 export function getUserPTIaddress() {
-  if (getKeystore() !== undefined) {
-    keystore = getKeystore();
+  const keystore = getKeystore();
+  if (keystore !== null) {
     address = add0x(keystore.ksData[keystore.defaultHdPathString].addresses[0]);
     return address;
   }
