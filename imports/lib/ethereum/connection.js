@@ -29,30 +29,7 @@ function updateSession(error, sync) {
     Session.set('eth_highestBlock', null);
     Session.set('eth_balance', null);
   }
-};
-
-// function checkStatus() {
-//   if (web3.isConnected()) {
-//     Session.set('eth_isConnected', true);
-//     Session.set('eth_host', web3.currentProvider.host);
-//     // web3.eth.getBlockNumber(function (err, result) {
-//     //   Session.set('eth_currentblock', result);
-//     // });
-//     const ptiAddress = getUserPTIaddress();
-//     if (ptiAddress) {
-//       web3.eth.getBalance(ptiAddress, function (err, result) {
-//         if (result !== undefined) {
-//           Session.set('eth_balance', result.toNumber());
-//         }
-//       });
-//     }
-//   } else {
-//     Session.set('eth_host', web3.currentProvider.host);
-//     Session.set('eth_isConnected', false);
-//     Session.set('eth_blockNumber', '');
-//     Session.set('eth_balance', '');
-//   }
-// }
+}
 
 const connect = function () {
   if (web3.isConnected()) {

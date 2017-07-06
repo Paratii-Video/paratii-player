@@ -82,14 +82,6 @@ Meteor.methods({
   },
 });
 
-if (Meteor.isClient) {
-  Accounts.onLogout(function () {
-    // remove the information on the current Account from the session
-    Session.set('ethAccount', { });
-  });
-}
-
-
 export function userPrettyName() {
   const user = Meteor.user();
   if (user) {
