@@ -9,9 +9,6 @@ import { promisify } from 'promisify-node';
 import { getUserPTIaddress } from '/imports/api/users.js';
 import { web3 } from './connection.js';
 
-
-// const promisify = require('promisify-node');
-
 // getKeystore loads the keystore from localstorage
 // if such a keystore does not exist, returns undefined
 export function getKeystore() {
@@ -19,8 +16,6 @@ export function getKeystore() {
   if (keystore !== undefined) {
     return keystore;
   }
-
-  // const ks = await promisify(lightwallet.keystore.createVault)({ password });
   return undefined;
 }
 
@@ -60,8 +55,7 @@ function createWallet(password, seedPhrase) {
       // and you can start using web3 using the keys/addresses in ks!
     });
   });
-  // Session.set('keystore', ks);
-  // Session.set('ptiAddress', addresses[0]);
+
 
   wallet.seed = seedPhrase;
   return wallet;
@@ -77,8 +71,10 @@ function sendParatii(amount, recipient) {
 
 function sendEther(amountInEth, recipient, password) {
   const fromAddr = getUserPTIaddress();
-  let value = parseInt(web3.toWei(amountInEth, 'ether'));
-  value = value.toString(16);
+  const nonce = web3.eth.getTransactionCount(fromAddr) + 1;
+  const value = parseInt(web3.toWei(amountInEth, 'ether'), 10);
+  const gasPrice = 50000000000;
+  const gasLimit = 5000;
   // TODO: set these values in global constansts
   // let gasPrice = 50000000000;
   // gasPrice = gasPrice.toString('hex');
@@ -89,20 +85,14 @@ function sendEther(amountInEth, recipient, password) {
   keystore.keyFromPassword(password, function (error, pwDerivedKey) {
     if (error) throw error;
     // sign the transaction
-    // let privateKey = keystore.exportPrivateKey(fromAddr, pwDerivedKey);
-    // privateKey = new Buffer(privateKey, 'hex');
-
     let rawTx = {
-      nonce: '0x1',
-      to: `0x${recipient}`,
-      value: `0x${value}`,
-      gasPrice: '0xba43b7400',
-      gasLimit: '0xc350',
+      nonce,
+      to: recipient,
+      value: web3.toHex(value),
+      gasPrice: web3.toHex(gasPrice),
+      gasLimit: web3.toHex(gasLimit),
     };
     rawTx = lightwallet.txutils.valueTx(rawTx);
-    // const tx = new Tx(rawTx);
-    // tx.sign(privateKey);
-    // const serializedTx = tx.serialize();
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
       if (!err) {
