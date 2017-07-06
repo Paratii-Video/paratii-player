@@ -82,10 +82,12 @@ Meteor.methods({
   },
 });
 
-Accounts.onLogout(function () {
-  // remove the information on the current Account from the session
-  Session.set('ethAccount', { });
-});
+if (Meteor.isClient) {
+  Accounts.onLogout(function () {
+    // remove the information on the current Account from the session
+    Session.set('ethAccount', { });
+  });
+}
 
 
 export function userPrettyName() {
