@@ -57,6 +57,7 @@ Template.player.onCreated(function () {
   this.templateDict.set('torrent', false);
   this.templateDict.set('volumeValue', 100);
   this.templateDict.set('volScrubberTranslate', 100);
+  this.templateDict.set('muted', false);
 
   // TODO: do not subscribe to all vidoes, just to the one we need
   Meteor.subscribe('videos', function () {
@@ -121,6 +122,10 @@ Template.player.helpers({
   volScrubberTranslate() {
     return Template.instance().templateDict.get('volScrubberTranslate');
   },
+  volumeIcon() {
+    const state = Template.instance().templateDict.get('muted');
+    return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg';
+  },
 });
 
 const requestFullscreen = (element) => {
@@ -153,6 +158,19 @@ const pauseVideo = (instance) => {
   instance.find('#video-player').pause();
   Meteor.clearTimeout(controlsHandler);
   instance.templateDict.set('hideControls', false);
+};
+
+// Set a value (0 ~ 1) to the player volume and volume UX
+const setVolume = (instance, value) => {
+  const videoPlayer = instance.find('#video-player');
+  videoPlayer.volume = value;
+  instance.templateDict.set('volumeValue', value * 100);
+  instance.templateDict.set('volScrubberTranslate', value * 100);
+  if (value > 0) {
+    instance.templateDict.set('muted', false);
+  } else {
+    instance.templateDict.set('muted', true);
+  }
 };
 
 const setLoadedProgress = (instance) => {
@@ -243,24 +261,16 @@ Template.player.events({
     instance.templateDict.set('scrubberTranslate', (offset / barWidth) * 100);
   },
   'click #vol-control'(event, instance) {
-    const videoPlayer = instance.find('#video-player');
     const barWidth = instance.find('#vol-control').offsetWidth;
     const offset = event.clientX - event.currentTarget.getBoundingClientRect().left;
-    videoPlayer.volume = offset / barWidth;
-    const percent = (offset / barWidth) * 100;
-    instance.templateDict.set('volumeValue', percent);
-    instance.templateDict.set('volScrubberTranslate', percent);
+    setVolume(instance, offset / barWidth);
   },
   'mousedown #vol-scrubber'(event, instance) {
     $(document).mousemove((e) => {
-      const videoPlayer = instance.find('#video-player');
       const volume = instance.find('#vol-control');
       const barWidth = volume.offsetWidth;
       const offset = e.clientX - volume.getBoundingClientRect().left;
-      videoPlayer.volume = offset / barWidth;
-      const percent = (offset / barWidth) * 100;
-      instance.templateDict.set('volumeValue', percent);
-      instance.templateDict.set('volScrubberTranslate', percent);
+      setVolume(instance, offset / barWidth);
     });
   },
   'loadedmetadata'(event, instance) {
@@ -295,14 +305,11 @@ Template.player.events({
   },
   'click #volume-button'(event, instance) {
     const videoPlayer = instance.find('#video-player');
-    const volumeBar = instance.find('#vol-control');
     if (videoPlayer.volume > 0) {
       previousVolume = videoPlayer.volume;
-      videoPlayer.volume = 0;
-      volumeBar.value = 0;
+      setVolume(instance, 0);
     } else {
-      videoPlayer.volume = previousVolume;
-      volumeBar.value = previousVolume * 100;
+      setVolume(instance, previousVolume);
     }
   },
   'click #button-like'() {
