@@ -87,7 +87,7 @@ function sendEther(amountInEth, recipient, password) {
     if (error) throw error;
     // sign the transaction
     let rawTx = {
-      nonce,
+      nonce: web3.toHex(nonce),
       to: add0x(recipient),
       value: web3.toHex(value),
       gasPrice: web3.toHex(gasPrice),
