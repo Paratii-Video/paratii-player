@@ -119,13 +119,14 @@ describe('account workflow', function () {
     browser.click('#at-btn');
     // we are now logged in
     // we are at the wallet page, and try to restore the account
-    browser.waitForExist('#restore-wallet', 2000);
-    browser.click('#restore-wallet');
-    browser.waitUntil(browser.alertText);
-    browser.alertText(seedPhrase);
-    browser.alertAccept();
-    browser.waitUntil(browser.alertText);
-    browser.alertText('a-common-password');
-    browser.alertAccept();
+    browser.waitForExist('#restore-keystore', 2000);
+    browser.click('#restore-keystore');
+    browser.waitForExist('#form-restore-keystore', 2000);
+    browser.waitForVisible('#form-restore-keystore', 2000);
+    browser.waitForExist('[name="field-seed"]', 2000);
+    browser
+      .setValue('[name="field-seed"]', seedPhrase)
+      .setValue('[name="field-password"]', 'a-common-password');
+    browser.click('#btn-restorekeystore-restore');
   });
 });
