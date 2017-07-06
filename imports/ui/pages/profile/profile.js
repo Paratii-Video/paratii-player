@@ -23,7 +23,6 @@ Template.profile.helpers({
     return (getKeystore() !== undefined) ? getKeystore() : false;
   },
   ptiAddress() {
-    let keystore;
     const address = getUserPTIaddress();
     if (address !== undefined) {
       Modal.hide('restoreKeystore'); // Close restore modal if keystore is found in the localSTorage
