@@ -5,6 +5,7 @@
 /* eslint no-param-reassign: "off" */
 import * as RLocalStorage from 'meteor/simply:reactive-local-storage';
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
+import { add0x } from '/imports/lib/utils.js';
 import { promisify } from 'promisify-node';
 import { getUserPTIaddress } from '/imports/api/users.js';
 import { web3 } from './connection.js';
@@ -74,7 +75,7 @@ function sendEther(amountInEth, recipient, password) {
   const nonce = web3.eth.getTransactionCount(fromAddr) + 1;
   const value = parseInt(web3.toWei(amountInEth, 'ether'), 10);
   const gasPrice = 50000000000;
-  const gasLimit = 5000;
+  const gasLimit = 50000;
   // TODO: set these values in global constansts
   // let gasPrice = 50000000000;
   // gasPrice = gasPrice.toString('hex');
@@ -87,7 +88,7 @@ function sendEther(amountInEth, recipient, password) {
     // sign the transaction
     let rawTx = {
       nonce,
-      to: recipient,
+      to: add0x(recipient),
       value: web3.toHex(value),
       gasPrice: web3.toHex(gasPrice),
       gasLimit: web3.toHex(gasLimit),

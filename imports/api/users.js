@@ -2,8 +2,8 @@
 
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';
-import { Session } from 'meteor/session';
-import { createWallet } from '/imports/lib/ethereum/wallet.js';
+import { getKeystore } from '/imports/lib/ethereum/wallet.js';
+import { add0x } from '/imports/lib/utils.js';
 
 
 // Deny all client-side updates to user documents
@@ -94,13 +94,12 @@ export function userPrettyName() {
 }
 
 export function getUserPTIaddress() {
-  const user = Meteor.user();
-  if (user) {
-    if (user.profile) {
-      return user.profile.ptiAddress;
-    }
+  if (getKeystore() !== undefined) {
+    keystore = getKeystore();
+    address = add0x(keystore.ksData[keystore.defaultHdPathString].addresses[0]);
+    return address;
   }
-  return '';
+  return undefined;
 }
 
 export async function getPassword() {

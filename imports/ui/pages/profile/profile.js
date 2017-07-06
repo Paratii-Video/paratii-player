@@ -11,8 +11,6 @@ import '/imports/ui/components/modals/showSeed.js';
 import './profile.html';
 
 
-
-
 Template.profile.helpers({
   events() {
     // Perform a reactive database query against minimongo
@@ -26,10 +24,8 @@ Template.profile.helpers({
   },
   ptiAddress() {
     let keystore;
-    let address;
-    if (getKeystore() !== undefined) {
-      keystore = getKeystore();
-      address = `${keystore.ksData[keystore.defaultHdPathString].addresses[0]}`;
+    const address = getUserPTIaddress();
+    if (address !== undefined) {
       Modal.hide('restoreKeystore'); // Close restore modal if keystore is found in the localSTorage
     }
     return address;
