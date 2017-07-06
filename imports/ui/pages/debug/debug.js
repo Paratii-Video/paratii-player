@@ -1,4 +1,5 @@
 import { Template } from 'meteor/templating';
+import { getUserPTIaddress } from '/imports/api/users.js';
 import './debug.html';
 
 
@@ -16,7 +17,7 @@ Template.debug.helpers({
     return Session.get('eth_currentBlock');
   },
   ptiAddress() {
-    return Session.get('ptiAddress');
+    return getUserPTIaddress();
   },
   eth_balance() {
     const balance = Session.get('eth_balance');
