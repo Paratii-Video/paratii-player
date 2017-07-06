@@ -72,7 +72,7 @@ function sendParatii(amount, recipient) {
 
 function sendEther(amountInEth, recipient, password) {
   const fromAddr = getUserPTIaddress();
-  const nonce = web3.eth.getTransactionCount(fromAddr) + 1;
+  const nonce = web3.eth.getTransactionCount(fromAddr);
   const value = parseInt(web3.toWei(amountInEth, 'ether'), 10);
   const gasPrice = 50000000000;
   const gasLimit = 50000;
