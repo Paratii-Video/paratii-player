@@ -7,4 +7,29 @@ function formatNumber(number) {
   return parts.join('.');
 }
 
-export { formatNumber };
+
+function strip0x(input) {
+  if (typeof(input) !== 'string') {
+    return input;
+  }
+  else if (input.length >= 2 && input.slice(0,2) === '0x') {
+    return input.slice(2);
+  }
+  else {
+    return input;
+  }
+}
+
+function add0x(input) {
+  if (typeof(input) !== 'string') {
+    return input;
+  }
+  else if (input.length < 2 || input.slice(0,2) !== '0x') {
+    return '0x' + input;
+  }
+  else {
+    return input;
+  }
+}
+
+export { formatNumber, add0x, strip0x };
