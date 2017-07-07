@@ -4,7 +4,6 @@
     <div class="titleContainer" id="wallet-title">
         My Profile
     </div>
-    {{# if ptiAddress }}
       <div class="alert-config">
         {{> dapp_identicon identity=ptiAddress class="dapp-tiny"}}
         This is your address: {{ ptiAddress }}
@@ -30,40 +29,37 @@
         {{/unless}} -->
         <button class="btn btn-default blue-button" id="show-seed">Show the seed for this wallet</button>
       </div>
-      <div class="walletContainer">
-        <ul class="titleContainer"></ul>
-        <div class="descriptionContainer">
-          <div class="navbar">
-            <ul class="nav nav-tabs">
-              <li class="active">
-                <a  href="#eth" data-toggle="tab">ETH</a>
-              </li>
-              <li><a href="#pti" data-toggle="tab">PTI</a>
-              </li>
+      {{# if ptiAddress }}
 
-            </ul>
-          </div>
-            <div class="tab-content ">
-              <div class="tab-pane active" id="eth">
-                <h3> You own <b>{{ eth_balance }}</b> Ether</h3>
-                <button class="btn btn-default blue-button" id="send-eth">Send Ether</button>
-              </div>
-              <div class="tab-pane" id="pti">
-                <h3> You own <b>{{ pti_balance }}</b> PTI</h3>
-                <button class="btn btn-default blue-button" id="send-pti">Send PTI</button>
-              </div>
-                <button class="btn btn-default blue-button" id="transaction-history">Transaction History</button>
+        <div class="walletContainer">
+          <ul class="titleContainer"></ul>
+          <div class="descriptionContainer">
+            <div class="navbar">
+              <ul class="nav nav-tabs">
+                <li class="active">
+                  <a  href="#eth" data-toggle="tab">ETH</a>
+                </li>
+                <li><a href="#pti" data-toggle="tab">PTI</a>
+                </li>
+
+              </ul>
             </div>
-        </div>
+              <div class="tab-content ">
+                <div class="tab-pane active" id="eth">
+                  <h3> You own <b>{{ eth_balance }}</b> Ether</h3>
+                  <button class="btn btn-default blue-button" id="send-eth">Send Ether</button>
+                </div>
+                <div class="tab-pane" id="pti">
+                  <h3> You own <b>{{ pti_balance }}</b> PTI</h3>
+                  <button class="btn btn-default blue-button" id="send-pti">Send PTI</button>
+                </div>
+                  <button class="btn btn-default blue-button" id="transaction-history">Transaction History</button>
+              </div>
+          </div>
 
 
         </div>
-
-    {{ else }}
-          It seems you do not have an account to hold your paratii yet.
-
-          You can either <a href="#" id="create-wallet">generate a new address</a> or <a href="#" id="restore-keystore">restore your account</a>.
-    {{/if }}
+      {{/if}}
     {{/isAuthorized}}
 
     <table class="table table-striped all_transactions">
