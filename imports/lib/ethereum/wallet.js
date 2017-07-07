@@ -13,11 +13,12 @@ import { web3 } from './connection.js';
 // getKeystore loads the keystore from localstorage
 // if such a keystore does not exist, returns undefined
 export function getKeystore() {
-  keystore = lightwallet.keystore.deserialize(RLocalStorage.getItem('keystore'));
-  if (keystore !== undefined) {
+  const keystoreLS = RLocalStorage.getItem('keystore');
+  if (keystoreLS !== null) {
+    const keystore = lightwallet.keystore.deserialize(keystoreLS);
     return keystore;
   }
-  return undefined;
+  return null;
 }
 
 // returns the seed of the keystore

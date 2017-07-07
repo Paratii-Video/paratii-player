@@ -93,11 +93,9 @@ Template.transaction.helpers({
 Tracker.autorun(() => {
   const user = Meteor.user();
   if (user !== undefined) {
-    const userPTIaddress = getUserPTIaddress();
-    Meteor.subscribe('userTransactions', userPTIaddress);
-    Meteor.call('events.balance', userPTIaddress, function (error, result) {
-      Session.set('balance', result);
-    });
+    // TODO: old implementation of events instead of BC
+    // const userPTIaddress = getUserPTIaddress();
+    // Meteor.subscribe('userTransactions', userPTIaddress);
   }
 });
 
