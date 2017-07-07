@@ -6,7 +6,6 @@
 import * as RLocalStorage from 'meteor/simply:reactive-local-storage';
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
 import { add0x } from '/imports/lib/utils.js';
-import { promisify } from 'promisify-node';
 import { getUserPTIaddress } from '/imports/api/users.js';
 import { web3 } from './connection.js';
 
@@ -22,11 +21,13 @@ export function getKeystore() {
 }
 
 // returns the seed of the keystore
-async function getSeed(password) {
-  const keystore = await getKeystore(password);
-  const pwDerivedKey = await promisify(keystore.deriveKeyFromPassword(password));
-  const seed = keystore.getSeed(pwDerivedKey);
-  return seed;
+function getSeed(password) {
+  const keystore = getKeystore();
+
+  keystore.keyFromPassword(password, function (err, pwDerivedKey) {
+    const seed = keystore.getSeed(pwDerivedKey);
+    Session.set('seed', seed);
+  });
 }
 
 

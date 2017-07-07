@@ -5,6 +5,7 @@ import { getUserPTIaddress } from '../../api/users.js';
 const DEFAULT_PROVIDER = 'http://paratii-chain.gerbrandy.com';
 const PARATII_TOKEN_ADDRESS = '0x385b2E03433C816DeF636278Fb600ecd056B0e8d';
 
+
 web3 = new Web3();
 
 
