@@ -1,78 +1,77 @@
 <template name="profile">
- {{#if currentUser }}
-    {{#isAuthorized}}
-    <div class="titleContainer" id="wallet-title">
-        My Profile
+  {{#if currentUser }} {{#isAuthorized}}
+  <div class="titleContainer" id="wallet-title">
+    My Profile
+  </div>
+  <div class="alert-config">
+    {{> dapp_identicon identity=ptiAddress class="dapp-tiny"}} This is your address: {{ ptiAddress }}
+  </div>
+  <div class="line"></div>
+  <div class="walletContainer">
+    <div class="centerIcon">
+      <!-- {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-large"}} -->
+      {{#if currentUser.profile.image }}
+      <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url( {{ currentUser.profile.image }} )"></span>
+      {{else}}
+      <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url('/img/avatar_img.svg')"></span>
+      {{/if}}
     </div>
-      <div class="alert-config">
-        {{> dapp_identicon identity=ptiAddress class="dapp-tiny"}}
-        This is your address: {{ ptiAddress }}
-      </div>
-      <div class="line"></div>
-      <div class="walletContainer">
-        <div class="centerIcon">
-          <!-- {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-large"}} -->
-          {{#if currentUser.profile.image }}
-            <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url( {{ currentUser.profile.image }} )"></span>
-          {{else}}
-            <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url('/img/avatar_img.svg')"></span>
-          {{/if}}
-        </div>
-        <div class="profile-label"> Name:</div>
-        <div class="profile-info">{{currentUser.profile.name}} </div>
-        <div class="profile-label"> Email:</div>
-        <div class="profile-info"> {{userEmail}}</div>
-        <!-- Action Buttons -->
-        <button class="btn btn-default blue-button" id="edit-profile">Edit Profile</button>
-        <!-- {{#unless hasKeystore}}
+    <div class="profile-label"> Name:</div>
+    <div class="profile-info">{{currentUser.profile.name}} </div>
+    <div class="profile-label"> Email:</div>
+    <div class="profile-info"> {{userEmail}}</div>
+    <!-- Action Buttons -->
+    <button class="btn btn-default blue-button" id="edit-profile">Edit Profile</button>
+    <!-- {{#unless hasKeystore}}
           <button class="btn btn-default blue-button" id="restore-keystore">Restore Keystore</button>
         {{/unless}} -->
-        <button class="btn btn-default blue-button" id="show-seed">Show the seed for this wallet</button>
+    {{# if ptiAddress }}
+    <button class="btn btn-default blue-button" id="show-seed">Show the seed for this wallet</button>
+    {{else}}
+    <button class="btn btn-default blue-button" id="restore-keystore">Restore wallet</button>
+    {{/if}}
+  </div>
+  {{# if ptiAddress }}
+
+  <div class="walletContainer">
+    <ul class="titleContainer"></ul>
+    <div class="descriptionContainer">
+      <div class="navbar">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#eth" data-toggle="tab">ETH</a>
+          </li>
+          <li><a href="#pti" data-toggle="tab">PTI</a>
+          </li>
+
+        </ul>
       </div>
-      {{# if ptiAddress }}
-
-        <div class="walletContainer">
-          <ul class="titleContainer"></ul>
-          <div class="descriptionContainer">
-            <div class="navbar">
-              <ul class="nav nav-tabs">
-                <li class="active">
-                  <a  href="#eth" data-toggle="tab">ETH</a>
-                </li>
-                <li><a href="#pti" data-toggle="tab">PTI</a>
-                </li>
-
-              </ul>
-            </div>
-              <div class="tab-content ">
-                <div class="tab-pane active" id="eth">
-                  <h3> You own <b>{{ eth_balance }}</b> Ether</h3>
-                  <button class="btn btn-default blue-button" id="send-eth">Send Ether</button>
-                </div>
-                <div class="tab-pane" id="pti">
-                  <h3> You own <b>{{ pti_balance }}</b> PTI</h3>
-                  <button class="btn btn-default blue-button" id="send-pti">Send PTI</button>
-                </div>
-                  <button class="btn btn-default blue-button" id="transaction-history">Transaction History</button>
-              </div>
-          </div>
-
-
+      <div class="tab-content ">
+        <div class="tab-pane active" id="eth">
+          <h3> You own <b>{{ eth_balance }}</b> Ether</h3>
+          <button class="btn btn-default blue-button" id="send-eth">Send Ether</button>
         </div>
-      {{/if}}
-    {{/isAuthorized}}
+        <div class="tab-pane" id="pti">
+          <h3> You own <b>{{ pti_balance }}</b> PTI</h3>
+          <button class="btn btn-default blue-button" id="send-pti">Send PTI</button>
+        </div>
+        <button class="btn btn-default blue-button" id="transaction-history">Transaction History</button>
+      </div>
+    </div>
 
-    <table class="table table-striped all_transactions">
-      {{#each events}}
-        {{> transaction}}
-      {{/each}}
-    </table>
+
+  </div>
+  {{/if}} {{/isAuthorized}}
+
+  <table class="table table-striped all_transactions">
+    {{#each events}} {{> transaction}} {{/each}}
+  </table>
 
 
   {{else}}
-    <div class="container">
-      {{> atForm }}
-    </div>
+  <div class="container">
+    {{> atForm }}
+  </div>
   {{/if}}
 </template>
 
@@ -80,8 +79,14 @@
 
 <template name="transaction">
   <tr class="transition_row {{#if sendCheck}} sent {{/if}}">
-    <td><div>{{ sender }}</div><div>{{ receiver }}</div></td>
-    <td><div>{{ senderBalance }}</div><div>{{ receiverBalance }}</div></td>
+    <td>
+      <div>{{ sender }}</div>
+      <div>{{ receiver }}</div>
+    </td>
+    <td>
+      <div>{{ senderBalance }}</div>
+      <div>{{ receiverBalance }}</div>
+    </td>
     <td>{{ amount }}</td>
     <td>{{ createdAt }}</td>
     <td>{{ description }}</td>
