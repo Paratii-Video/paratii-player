@@ -98,6 +98,7 @@ function sendEther(amountInEth, recipient, password) {
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
       if (!err) {
+        Modal.hide('sendEth');
         console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
       } else {
         console.log(err);
