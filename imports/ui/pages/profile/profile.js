@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 
-import { createWallet, restoreWallet, getKeystore } from '/imports/lib/ethereum/wallet.js';
+import { createWallet, getKeystore } from '/imports/lib/ethereum/wallet.js';
 import { getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import '/imports/ui/components/modals/editProfile.js';
@@ -58,15 +58,8 @@ Template.profile.events({
   'click #restore-keystore'() {
     Modal.show('restoreKeystore', {});
   },
-  'click #restore-wallet'() {
-    const seedPhrase = prompt('Please enter your 12-word seed phrase', '');
-    getPassword().then(function (password) {
-      if (password) {
-        wallet = restoreWallet(password, seedPhrase);
-      }
-    });
-  },
   'click #show-seed'() {
+    Modal.show('showSeed', {});
     // TODO: comment showSeed due error, to fix
     // showSeed();
   },
@@ -101,12 +94,8 @@ Tracker.autorun(() => {
 
 
 Tracker.autorun(() => {
-  const seed = Session.get('seed');
-  if (seed != null) {
-    const modalOptions = {
-      seed,
-    };
-    Modal.show('showSeed', modalOptions);
-    Session.set('seed', null);
-  }
+  // const seed = Session.get('seed');
+  // if (seed != null) {
+  //   Modal.show('showSeed');
+  // }
 });

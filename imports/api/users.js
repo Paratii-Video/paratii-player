@@ -29,58 +29,59 @@ if (Meteor.isServer) {
 if (Meteor.isClient) {
   Meteor.subscribe('userData');
 }
+if (Meteor.isServer) {
+  Meteor.methods({
+    'users.create'(options) {
+      check(options, Object);
+      // here new wallet is create using user password for keystore encryption
+      return Accounts.createUser(options);
+    },
+    'users.update'(data) {
+      check(data, Object);
+        // check if email is defined, if it is -> update.
+        // TODO campare with old email, if it's different then update
 
-Meteor.methods({
-  'users.create'(options) {
-    check(options, Object);
-    // here new wallet is create using user password for keystore encryption
-    return Accounts.createUser(options);
-  },
-  'users.update'(data) {
-    check(data, Object);
-      // check if email is defined, if it is -> update.
-      // TODO campare with old email, if it's different then update
+      if (data.email !== undefined) {
+          // data['emails.0.address'] = data.email;
+          // data['emails.s 0.verified'] = false;
+          // delete data.email;
 
-    if (data.email !== undefined) {
-        // data['emails.0.address'] = data.email;
-        // data['emails.s 0.verified'] = false;
-        // delete data.email;
+          // save oldEmail address
+        const oldEmail = Meteor.users.findOne(this.userId).emails[0].address;
+          // remove old email address
+        Accounts.removeEmail(this.userId, oldEmail);
+          // add new email address
+        Accounts.addEmail(this.userId, data.email, false);
+      }
+        // check if name is defined, if it is -> update.
+        // TODO compare with old name, if it's different then update
+      if (data.name !== undefined) {
+        Meteor.users.update(this.userId, { $set: { 'profile.name': data.name } });
+      }
 
-        // save oldEmail address
-      const oldEmail = Meteor.users.findOne(this.userId).emails[0].address;
-        // remove old email address
-      Accounts.removeEmail(this.userId, oldEmail);
-        // add new email address
-      Accounts.addEmail(this.userId, data.email, false);
-    }
-      // check if name is defined, if it is -> update.
-      // TODO compare with old name, if it's different then update
-    if (data.name !== undefined) {
-      Meteor.users.update(this.userId, { $set: { 'profile.name': data.name } });
-    }
-
-      // TODO campare with old image, if it's different then update
-    if (data.avatar !== undefined) {
-      Meteor.users.update(this.userId, { $set: { 'profile.image': data.avatar } });
-    }
-    if (data['profile.ptiAddress']) {
-      Meteor.users.update(this.userId, { $set: { 'profile.ptiAddress': data['profile.ptiAddress'] } });
-    }
-  },
-  'users.removeImage'() {
-    Meteor.users.update(this.userId, { $unset: { 'profile.image': '' } });
-  },
-  checkPassword(digest) {
-    check(digest, String);
-    if (this.userId) {
-      const user = Meteor.user();
-      const password = { digest, algorithm: 'sha-256' };
-      const result = Accounts._checkPassword(user, password);
-      return result.error == null;
-    }
-    return false;
-  },
-});
+        // TODO campare with old image, if it's different then update
+      if (data.avatar !== undefined) {
+        Meteor.users.update(this.userId, { $set: { 'profile.image': data.avatar } });
+      }
+      if (data['profile.ptiAddress']) {
+        Meteor.users.update(this.userId, { $set: { 'profile.ptiAddress': data['profile.ptiAddress'] } });
+      }
+    },
+    'users.removeImage'() {
+      Meteor.users.update(this.userId, { $unset: { 'profile.image': '' } });
+    },
+    checkPassword(digest) {
+      check(digest, String);
+      if (this.userId) {
+        const user = Meteor.user();
+        const password = { digest, algorithm: 'sha-256' };
+        const result = Accounts._checkPassword(user, password);
+        return result.error == null;
+      }
+      return false;
+    },
+  });
+}
 
 export function userPrettyName() {
   const user = Meteor.user();
