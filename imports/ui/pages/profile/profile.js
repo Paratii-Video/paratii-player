@@ -58,14 +58,6 @@ Template.profile.events({
   'click #restore-keystore'() {
     Modal.show('restoreKeystore', {});
   },
-  'click #restore-wallet'() {
-    const seedPhrase = prompt('Please enter your 12-word seed phrase', '');
-    getPassword().then(function (password) {
-      if (password) {
-        wallet = restoreWallet(password, seedPhrase);
-      }
-    });
-  },
   'click #show-seed'() {
     // TODO: comment showSeed due error, to fix
     // showSeed();
