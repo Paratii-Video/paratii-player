@@ -1,13 +1,13 @@
 <template name="profile">
-  {{#if currentUser }}
-  {{#isAuthorized}}
-  <div class="titleContainer" id="wallet-title">
-    My Profile
-  </div>
-  <div class="alert-config">
-    {{#if ptiAddress}}
-      {{> dapp_identicon identity=ptiAddress class="dapp-tiny"}} This is your address: {{ ptiAddress }}
-    {{/if}}
+  {{#if currentUser }} {{#isAuthorized}}
+  <div class="clearfix">
+    <div class="titleContainer" id="wallet-title">
+      <span>My Profile</span>
+    </div>
+    <div class="float-right address-container">
+      <div class="address-identicon">{{> dapp_identicon identity=ptiAddress class="dapp-tiny"}}</div>
+      <span class="address">This is your address: {{ ptiAddress }}</span>
+    </div>
   </div>
   <div class="line"></div>
   <div class="walletContainer">
