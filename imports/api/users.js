@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign, no-alert */
+/* eslint-disable no-param-reassign */
 
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';

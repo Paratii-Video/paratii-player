@@ -4,13 +4,19 @@
     <div class="modal-dialog">
       <div class="modal-content" id="show-seed">
         <div class="modal-header">
-          <h4 class="modal-title">Insert your keystore password.</h4>
+          <h4 class="modal-title">The seed of your wallet</h4>
         </div>
         <form id="form-show-seed">
-          <div class="modal-body">
+            <div class="modal-body">
             <div class="flex-container-row">
               <div class="flex-grow">
-                {{#if seed}} {{seed}} {{else}}
+                {{#if seed}}
+                  <div>Write down or save the following 12 words. You will need them to restore your wallet.
+                  </div>
+                  <div class="highlight">
+                    <tt>{{seed}}</tt>
+                  </div>
+                {{else}}
                 <div class="input-group">
                   <span class="input-group-addon" id="sizing-addon3">Password</span>
                   <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
@@ -18,7 +24,6 @@
                 {{/if}}
 
               </div>
-
             </div>
             <div class="update-account-confirm">
               <!-- <button class="btn btn-default red-button" id="button-change-password">Change password</button>
@@ -29,7 +34,6 @@
             <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-eth-close">Close</button>
             {{#unless seed}}
             <input type="submit" id="get_seed" class="btn btn-default blue-button" value="Get seed" /> {{/unless}}
-
           </div>
         </form>
       </div>

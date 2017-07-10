@@ -32,7 +32,6 @@ function getSeed(password) {
 
 
 function createWallet(password, seedPhrase) {
-  // TODO: seed have to be generate randomly and returned to the user
   const wallet = {};
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed();
