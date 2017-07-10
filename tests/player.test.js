@@ -8,7 +8,7 @@ function createVideo() {
     id: '12345',
     title: 'Rosencrantz and Guildenstern are dead',
     price: 10,
-    src: 'https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4',
+    src: '/test/files/SampleVideo_1280x720_1mb.mp4',
     mimetype: 'video/mp4',
     stats: {
       likes: 150,

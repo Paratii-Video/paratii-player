@@ -14,21 +14,22 @@ function createUser() {
   });
 }
 
-function createWalletHelper() {
-  const wallet = require('./imports/lib/ethereum/wallet.js');
-  return wallet.createWallet('a-common-password');
+function clearLocalStorage() {
+  localStorage.clear();
 }
 
+function createKeystoreHelper() {
+  const wallet = require('./imports/lib/ethereum/wallet.js');
+  return wallet.createKeystore('a-common-password');
+}
 
 describe('account workflow', function () {
   beforeEach(function () {
-    browser.url('http://localhost:3000');
     server.execute(resetDb);
   });
 
   afterEach(function () {
-    // server.execute(logOut);
-    // server.execute(resetDb);
+    browser.execute(clearLocalStorage);
   });
 
   it('register a new user', function () {
@@ -44,25 +45,16 @@ describe('account workflow', function () {
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
       .setValue('[name="at-field-password"]', 'a-common-password')
       .setValue('[name="at-field-password_again"]', 'a-common-password');
-
     // submit the form
     browser.$('#at-btn').click();
-    browser.execute('Modal.hide()');
-
-    // the user is now asked to create a new wallet or restore a previous one
-    // we create a new wallet
-    // browser.waitForExist('#create-wallet');
-    // browser.execute(createWalletHelper);
-    // browser.$('#create-wallet').click();
-    // // TODO: continue to test the wallet generation
-    // browser.waitUntil(browser.alertText);
-    // browser.alertText('a-common-password');
-    // browser.alertAccept();
+    // now a modal should be opend with the seed
+    // (we wait a long time, because the wallet needs to be generated)
+    browser.waitForVisible('#seed', 10000);
   });
 
   it('login as an existing user', function () {
     server.execute(createUser);
-    browser.execute(createWalletHelper);
+    browser.execute(createKeystoreHelper);
 
     browser.url('http://localhost:3000/profile');
     browser.waitForExist('[name="at-field-email"]');
@@ -75,7 +67,7 @@ describe('account workflow', function () {
 
   it('restore the keystore', function () {
     server.execute(createUser);
-    const session = browser.execute(createWalletHelper);
+    const session = browser.execute(createKeystoreHelper);
     const seedPhrase = session.value.seed;
 
     // now log in
@@ -88,7 +80,7 @@ describe('account workflow', function () {
     browser.click('#at-btn');
     // we are now logged in
     // we are at the wallet page, and try to restore the account
-    browser.waitForExist('#restore-keystore', 2000);
+    browser.waitForExist('#restore-keystore', 20000);
     browser.click('#restore-keystore');
     browser.waitForVisible('[name="field-seed"]', 2000);
     browser

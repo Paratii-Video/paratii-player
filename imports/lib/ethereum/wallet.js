@@ -13,12 +13,12 @@ import { web3 } from './connection.js';
 // from localstorage. If no keystore can be found, it returns undefined.
 export function getKeystore() {
   let keystore;
-  keystore = Session.get('keystore')
+  keystore = Session.get('keystore');
   if (keystore === undefined) {
     const keystoreLS = RLocalStorage.getItem('keystore');
     if (keystoreLS !== null) {
       keystore = lightwallet.keystore.deserialize(keystoreLS);
-      Session.set('keystore', keystore)
+      Session.set('keystore', keystore);
     }
   }
   return keystore;
@@ -35,7 +35,7 @@ function getSeed(password) {
 }
 
 
-function createWallet(password, seedPhrase) {
+function createKeystore(password, seedPhrase) {
   const wallet = {};
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed();
@@ -67,7 +67,7 @@ function createWallet(password, seedPhrase) {
 }
 
 function restoreWallet(password, seedPhrase) {
-  return createWallet(password, seedPhrase);
+  return createKeystore(password, seedPhrase);
 }
 
 function sendParatii(amount, recipient) {
@@ -110,7 +110,7 @@ function sendEther(amountInEth, recipient, password) {
   });
 }
 
-export { createWallet, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance };
+export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance };
 
 // ////////////////////
 // / Copies from lightwallet, ignore..
