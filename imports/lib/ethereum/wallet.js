@@ -42,8 +42,7 @@ function createWallet(password, seedPhrase) {
     password,
     seedPhrase,
   };
-  console.log(password);
-  console.log(seedPhrase);
+
   lightwallet.keystore.createVault(opts, function (err, keystore) {
     keystore.keyFromPassword(password, function (error, pwDerivedKey) {
       if (error) throw error;
