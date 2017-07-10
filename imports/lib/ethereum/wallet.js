@@ -9,15 +9,19 @@ import { add0x } from '/imports/lib/utils.js';
 import { getUserPTIaddress } from '/imports/api/users.js';
 import { web3 } from './connection.js';
 
-// getKeystore loads the keystore from localstorage
-// if such a keystore does not exist, returns undefined
+// getKeystore tries to load the keystore from the Session, or, if it is not found there
+// from localstorage. If no keystore can be found, it returns undefined.
 export function getKeystore() {
-  const keystoreLS = RLocalStorage.getItem('keystore');
-  if (keystoreLS !== null) {
-    const keystore = lightwallet.keystore.deserialize(keystoreLS);
-    return keystore;
+  let keystore;
+  keystore = Session.get('keystore')
+  if (keystore === undefined) {
+    const keystoreLS = RLocalStorage.getItem('keystore');
+    if (keystoreLS !== null) {
+      keystore = lightwallet.keystore.deserialize(keystoreLS);
+      Session.set('keystore', keystore)
+    }
   }
-  return null;
+  return keystore;
 }
 
 // returns the seed of the keystore
