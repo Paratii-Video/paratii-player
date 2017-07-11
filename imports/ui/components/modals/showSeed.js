@@ -22,7 +22,10 @@ Template.showSeed.events({
         getSeed(password);
       }
     });
-
     return false;
   },
 });
+
+export function showSeed() {
+  Modal.show('showSeed', {});
+}

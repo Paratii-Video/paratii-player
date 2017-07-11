@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 
-import { createWallet, getKeystore } from '/imports/lib/ethereum/wallet.js';
+import { createKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js';
 import { getUserPTIaddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import '/imports/ui/components/modals/editProfile.js';
@@ -43,9 +43,8 @@ Template.profile.events({
   'click #create-wallet'() {
     getPassword().then(function (password) {
       if (password) {
-        wallet = createWallet(password);
-        // TODO: comment showSeed due error, to fix
-        // showSeed(wallet);
+        wallet = createKeystore(password);
+        Modal.show('showSeed', {});
       }
     });
   },
@@ -60,8 +59,6 @@ Template.profile.events({
   },
   'click #show-seed'() {
     Modal.show('showSeed', {});
-    // TODO: comment showSeed due error, to fix
-    // showSeed();
   },
   'click #edit-profile'() {
     const modalOptions = {

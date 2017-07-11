@@ -1,10 +1,13 @@
 <template name="profile">
   {{#if currentUser }} {{#isAuthorized}}
-  <div class="titleContainer" id="wallet-title">
-    My Profile
-  </div>
-  <div class="alert-config">
-    {{> dapp_identicon identity=ptiAddress class="dapp-tiny"}} This is your address: {{ ptiAddress }}
+  <div class="clearfix">
+    <div class="titleContainer" id="wallet-title">
+      <span>My Profile</span>
+    </div>
+    <div class="float-right address-container">
+      <div class="address-identicon">{{> dapp_identicon identity=ptiAddress class="dapp-tiny"}}</div>
+      <span class="address">This is your address: {{ ptiAddress }}</span>
+    </div>
   </div>
   <div class="line"></div>
   <div class="walletContainer">
@@ -25,11 +28,7 @@
     <!-- {{#unless hasKeystore}}
           <button class="btn btn-default blue-button" id="restore-keystore">Restore Keystore</button>
         {{/unless}} -->
-    {{#if ptiAddress }}
-      <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button>
-    {{else}}
-      <button class="btn btn-default blue-button" id="restore-keystore">Restore wallet</button>
-    {{/if}}
+
   </div>
   {{#if ptiAddress }}
     <div class="walletContainer">
@@ -55,15 +54,33 @@
             <button class="btn btn-default blue-button btn-block" id="send-pti">Send PTI</button>
           </div>
           <button class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</button>
+          <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button>
         </div>
       </div>
     </div>
-  {{/if}} {{/isAuthorized}}
+  {{else}}
+    <div class="walletContainer">
+      <ul class="titleContainer"></ul>
+      <div class="descriptionContainer">
+        <p>
+        We could not find a wallet stored on this device. If you remember the 12-word seed, you can restore your wallet:
+      </p>
+        <button class="btn btn-default blue-button" id="restore-keystore">Restore wallet</button>
+        <p>
+          Otherwise, you can generate a new wallet (but you will not have access to any funds you might have)
+        </p>
+        <p>
+          <button class="btn btn-default blue-button" id="create-wallet">Generate a new wallet</button>
+        </p>
+      </div>
+    </div>
+  {{/if}}
+
+  {{/isAuthorized}}
 
   <table class="table table-striped all_transactions">
     {{#each events}} {{> transaction}} {{/each}}
   </table>
-
 
   {{else}}
   <div class="container">
