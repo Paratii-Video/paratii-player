@@ -7,7 +7,7 @@ import * as RLocalStorage from 'meteor/simply:reactive-local-storage';
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
 import { add0x } from '/imports/lib/utils.js';
 import { getUserPTIaddress } from '/imports/api/users.js';
-import { web3 } from './connection.js';
+import { web3, GAS_PRICE, GAS_LIMIT } from './connection.js';
 
 // getKeystore tries to load the keystore from the Session, or, if it is not found there
 // from localstorage. If no keystore can be found, it returns undefined.
@@ -17,11 +17,12 @@ export function getKeystore() {
   if (keystore === undefined) {
     const keystoreLS = RLocalStorage.getItem('keystore');
     if (keystoreLS !== null) {
-      keystore = lightwallet.keystore.deserialize(keystoreLS);
-      Session.set('keystore', keystore);
+      keystore = keystoreLS;
+      Session.set('keystore', keystoreLS);
     }
   }
-  return keystore;
+  // using lightwallet because keystore is not a Keystore Object, but just a serialized simple object.
+  return lightwallet.keystore.deserialize(keystore);
 }
 
 // returns the seed of the keystore
@@ -52,6 +53,7 @@ function createKeystore(password, seedPhrase) {
       // generate five new address/private key pairs
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 5);
+      debugger;
       RLocalStorage.setItem('keystore', keystore.serialize());
       const addr = keystore.getAddresses();
       Meteor.call('users.update', { 'profile.ptiAddress': addr[0] });
@@ -78,14 +80,7 @@ function sendEther(amountInEth, recipient, password) {
   const fromAddr = getUserPTIaddress();
   const nonce = web3.eth.getTransactionCount(fromAddr);
   const value = parseInt(web3.toWei(amountInEth, 'ether'), 10);
-  const gasPrice = 50000000000;
-  const gasLimit = 50000;
-  // TODO: set these values in global constansts
-  // let gasPrice = 50000000000;
-  // gasPrice = gasPrice.toString('hex');
-  // gasPrice = `0x${gasPrice}`;
-  // const gas = 50000;
-  // create a tx
+
   const keystore = getKeystore();
   keystore.keyFromPassword(password, function (error, pwDerivedKey) {
     if (error) throw error;
@@ -94,8 +89,8 @@ function sendEther(amountInEth, recipient, password) {
       nonce: web3.toHex(nonce),
       to: add0x(recipient),
       value: web3.toHex(value),
-      gasPrice: web3.toHex(gasPrice),
-      gasLimit: web3.toHex(gasLimit),
+      gasPrice: web3.toHex(GAS_PRICE),
+      gasLimit: web3.toHex(GAS_LIMIT),
     };
     rawTx = lightwallet.txutils.valueTx(rawTx);
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);

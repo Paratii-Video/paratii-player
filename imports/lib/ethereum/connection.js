@@ -4,7 +4,8 @@ import { getUserPTIaddress } from '../../api/users.js';
 
 const DEFAULT_PROVIDER = 'http://paratii-chain.gerbrandy.com';
 const PARATII_TOKEN_ADDRESS = '0x385b2E03433C816DeF636278Fb600ecd056B0e8d';
-
+const GAS_PRICE = 50000000000;
+const GAS_LIMIT = 50000;
 
 web3 = new Web3();
 
@@ -49,4 +50,4 @@ export const initConnection = function () {
   web3.eth.isSyncing(updateSession);
 };
 
-export { web3 };
+export { web3, GAS_PRICE, GAS_LIMIT };

@@ -5,14 +5,15 @@
       <div class="modal-content" id="show-seed">
         <div class="modal-header">
           <h4 class="modal-title">The seed of your wallet</h4>
+          <p>Write down or save the following 12 words. You will need them to restore your wallet.
+          </p>
         </div>
         <form id="form-show-seed">
             <div class="modal-body">
             <div class="flex-container-row">
               <div class="flex-grow">
                 {{#if seed}}
-                  <div>Write down or save the following 12 words. You will need them to restore your wallet.
-                  </div>
+
                   <div class="highlight" id="seed">
                     <tt>{{seed}}</tt>
                   </div>

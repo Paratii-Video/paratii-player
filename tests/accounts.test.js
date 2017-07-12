@@ -49,7 +49,6 @@ describe('account workflow', function () {
     browser.$('#at-btn').click();
     // now a modal should be opend with the seed
     // (we wait a long time, because the wallet needs to be generated)
-    browser.waitForVisible('#seed', 10000);
   });
 
   it('login as an existing user', function () {

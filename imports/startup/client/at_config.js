@@ -10,7 +10,7 @@ const mySubmitFunc = function (error, state) {
 const myPreSignupFunc = function (password) {
   // create a new wallet during signup
   const keystore = createKeystore(password);
-  Session.set('keystore', keystore);
+  Session.set('keystore', keystore.serialize());
   // // show the seed to the user
   // showSeed(wallet);
 };
