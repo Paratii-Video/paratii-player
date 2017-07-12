@@ -4,12 +4,23 @@ import { assert } from 'chai';
 import { createKeystore } from '../wallet.js';
 
 describe('ethereum wallet', function () {
-  it('create a wallet', function (done) {
+  it('create a wallet with a random seedPhrase', function (done) {
     const password = 'mypass';
-    const keystore = createKeystore(password);
     // createKeystore returns a seed
-    assert.equal(keystore.seed.split(' ').length, 12);
-    done();
+    createKeystore(password, null, function(error, seed){
+      assert.equal(seed.split(' ').length, 12);
+      done();
+    });
+  });
+
+  it('create a wallet with a given seedPhrase', function (done) {
+    const password = 'mypass';
+    const seedPhrase = 'spotting unclog dusk grant affiliate hardness molasses halogen kleenex sprout tulip kinswoman'
+    // createKeystore returns a seed
+    createKeystore(password, seedPhrase, function(error, seed){
+      assert.equal(seed.split(' ').length, 12);
+      done();
+    });
   });
 
   // it('restore a wallet (disabled)', async function (done) {

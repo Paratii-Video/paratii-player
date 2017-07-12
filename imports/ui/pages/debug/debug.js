@@ -1,6 +1,6 @@
 import { web3 } from '/imports/lib/ethereum/connection.js';
 import { Template } from 'meteor/templating';
-import { getUserPTIaddress } from '/imports/api/users.js';
+import { getUserPTIAddress } from '/imports/api/users.js';
 import './debug.html';
 
 
@@ -21,7 +21,7 @@ export function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNu
 
 Template.debug.events({
   'click #get-transaction-console'() {
-    getTransactionsByAccount(getUserPTIaddress(), 0, 55);
+    getTransactionsByAccount(getUserPTIAddress(), 0, 55);
   },
 });
 Template.debug.helpers({
@@ -38,7 +38,7 @@ Template.debug.helpers({
     return Session.get('eth_currentBlock');
   },
   ptiAddress() {
-    return getUserPTIaddress();
+    return getUserPTIAddress();
   },
   eth_balance() {
     const balance = Session.get('eth_balance');

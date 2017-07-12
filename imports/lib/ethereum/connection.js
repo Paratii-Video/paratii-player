@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: "off" */
 import Web3 from 'web3';
-import { getUserPTIaddress } from '../../api/users.js';
+import { getUserPTIAddress } from '../../api/users.js';
 
 const DEFAULT_PROVIDER = 'http://paratii-chain.gerbrandy.com';
 const PARATII_TOKEN_ADDRESS = '0x385b2E03433C816DeF636278Fb600ecd056B0e8d';
@@ -17,7 +17,7 @@ function updateSession(error, sync) {
     Session.set('eth_isConnected', true);
     Session.set('eth_currentBlock', sync.currentBlock);
     Session.set('eth_highestBlock', sync.highestBlock);
-    const ptiAddress = getUserPTIaddress();
+    const ptiAddress = getUserPTIAddress();
     if (ptiAddress) {
       web3.eth.getBalance(ptiAddress, function (err, result) {
         if (result !== undefined) {

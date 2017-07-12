@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 
 import { createKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js';
-import { getUserPTIaddress, getPassword } from '/imports/api/users.js';
+import { getUserPTIAddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import '/imports/ui/components/modals/editProfile.js';
 import '/imports/ui/components/modals/sendEth.js';
@@ -22,12 +22,14 @@ Template.profile.helpers({
   hasKeystore() {
     return (getKeystore() !== undefined) ? getKeystore() : false;
   },
-  ptiAddress() {
-    const address = getUserPTIaddress();
-    if (address !== undefined) {
-      Modal.hide('restoreKeystore'); // Close restore modal if keystore is found in the localSTorage
-    }
-    return address;
+  userPTIAddress() {
+    return getUserPTIAddress();
+    return Session.get('userPTIAddress');
+    // const address = getUserPTIAddress();
+    // // if (address !== undefined) {
+    // //   Modal.hide('restoreKeystore'); // Close restore modal if keystore is found in the localSTorage
+    // // }
+    // return address;
   },
   eth_balance() {
     const balance = Session.get('eth_balance');
@@ -36,6 +38,9 @@ Template.profile.helpers({
     }
     return '';
   },
+  wallet_is_generating() {
+    return Session.get('wallet-state') === 'generating';
+  },
 });
 
 
@@ -43,8 +48,11 @@ Template.profile.events({
   'click #create-wallet'() {
     getPassword().then(function (password) {
       if (password) {
-        wallet = createKeystore(password);
-        Modal.show('showSeed', {});
+        createKeystore(password).then(function (wallet, err) {
+          // set the seed in the Session, so that showSeed will shwo it immediately
+          Session.set('seed', wallet.seed);
+          Modal.show('showSeed', {});
+        });
       }
     });
   },
@@ -70,7 +78,7 @@ Template.profile.events({
 
 Template.transaction.helpers({
   sendCheck() {
-    if (this.sender === getUserPTIaddress()) {
+    if (this.sender === getUserPTIAddress()) {
       return true;
     }
     return false;
@@ -84,8 +92,8 @@ Tracker.autorun(() => {
   const user = Meteor.user();
   if (user !== undefined) {
     // TODO: old implementation of events instead of BC
-    // const userPTIaddress = getUserPTIaddress();
-    // Meteor.subscribe('userTransactions', userPTIaddress);
+    // const userPTIAddress = getUserPTIAddress();
+    // Meteor.subscribe('userTransactions', userPTIAddress);
   }
 });
 

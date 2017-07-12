@@ -1,4 +1,5 @@
 import { getSeed } from '/imports/lib/ethereum/wallet.js';
+import { checkPassword } from '/imports/api/users.js';
 import './showSeed.html';
 
 Template.showSeed.helpers({
@@ -16,13 +17,15 @@ Template.showSeed.events({
   'submit #form-show-seed'(event) {
     event.preventDefault();
     const password = event.target.user_password.value;
-    const digest = Package.sha.SHA256(password);
-    Meteor.call('checkPassword', digest, function (err, result) {
-      if (result) {
-        getSeed(password);
-      }
-    });
-    return false;
+    checkPassword(password)
+      .then(function (isValid) {
+        if (isValid) {
+          getSeed(password);
+        } else {
+          console.log('PASSWORD INVALID');
+        }
+      });
+    // return false;
   },
 });
 
