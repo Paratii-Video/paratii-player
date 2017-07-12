@@ -13,9 +13,9 @@ function createUser() {
     password: 'a-common-password',
   });
 }
-function createWalletHelper() {
+function createKeystoreHelper() {
   const wallet = require('./imports/lib/ethereum/wallet.js');
-  return wallet.createWallet('a-common-password');
+  return wallet.createKeystore('a-common-password');
 }
 
 function login(browser) {
@@ -45,7 +45,7 @@ describe('account workflow', function () {
     server.execute(createUser);
     // now log in
     login(browser);
-    browser.execute(createWalletHelper);
+    browser.execute(createKeystoreHelper);
     // brow
     browser.url('http://localhost:3000/profile');
   });

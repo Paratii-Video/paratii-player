@@ -1,5 +1,5 @@
-/* eslint-disable no-param-reassign, no-alert */
-
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-alert */
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';
 import { getKeystore } from '/imports/lib/ethereum/wallet.js';
@@ -96,7 +96,7 @@ export function userPrettyName() {
 
 export function getUserPTIaddress() {
   const keystore = getKeystore();
-  if (keystore !== null) {
+  if (keystore !== undefined) {
     address = add0x(keystore.ksData[keystore.defaultHdPathString].addresses[0]);
     return address;
   }
@@ -104,6 +104,7 @@ export function getUserPTIaddress() {
 }
 
 export async function getPassword() {
+  // TODO: use a Modal!
   const password = prompt('Please enter password', 'Password');
   const digest = Package.sha.SHA256(password);
   await Meteor.call('checkPassword', digest);
