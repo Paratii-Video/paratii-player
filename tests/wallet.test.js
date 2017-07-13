@@ -1,11 +1,11 @@
 /* eslint global-require: "off" */
 // import { assert } from 'chai';
-import { createUserAndLogin } from './helpers.js';
+import { resetDb, createUserAndLogin } from './helpers.js';
 
 describe('wallet', function () {
   beforeEach(function () {
-    browser.url('http://localhost:3000');
     server.execute(resetDb);
+    browser.url('http://localhost:3000');
   });
 
   afterEach(function () {
