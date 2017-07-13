@@ -102,7 +102,7 @@ export function getUserPTIAddress() {
     const keystore = getKeystore();
     if (keystore !== null) {
       const addresses = keystore.getAddresses();
-      if (addresses.length() > 0) {
+      if (addresses.length > 0) {
         return addresses[0];
       }
     }

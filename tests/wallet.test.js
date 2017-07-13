@@ -2,7 +2,7 @@
 // import { assert } from 'chai';
 import { login, createUser, resetDb, createKeystore, createUserAndLogin } from './helpers.js';
 
-describe('account workflow', function () {
+describe('wallet', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000');
     server.execute(resetDb);
@@ -13,9 +13,9 @@ describe('account workflow', function () {
     // server.execute(resetDb);
   });
 
-  it('send some paratii', function () {
-    createUserAndLogin();
-    // brow
+  it('should be able to send some PTI', function () {
+    createUserAndLogin(browser);
     browser.url('http://localhost:3000/profile');
+    browser.pause(10000);
   });
 });
