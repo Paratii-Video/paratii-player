@@ -1,35 +1,24 @@
 import { Template } from 'meteor/templating';
+import '/imports/api/users.js';
+import { sendParatii } from '/imports/lib/ethereum/wallet.js';
 import './sendPti.html';
+
+Template.sendPti.helpers({
+  ima() {
+    return Session.get('dataUrl');
+  },
+  userEmail() {
+    return Meteor.user().emails[0].address;
+  },
+});
 
 
 Template.sendPti.events({
-
   'submit #form-send-paratii'(event) {
-    // Prevent default browser form submit
     event.preventDefault();
-    // Get value from form elements
-    const transaction = {};
-    const target = event.target;
-
-    transaction.sender = getUserPTIAddress();
-    transaction.receiver = target.receiver_account.value;
-    transaction.amount = target.wallet_pti_amount.value;
-    transaction.description = 'send pti';
-
-    // Events have
-    // sender , receiver, description , transactionId and amount
-    Meteor.call('events.sendPTI', transaction, function (error) {
-      if (error) {
-        // TODO notify error
-        return;
-      }
-      // Clear form
-      target.wallet_pti_amount.value = '';
-      target.receiver_account.value = '';
-    });
-    Meteor.call('events.balance', getUserPTIAddress(), function (error, result) {
-      Session.set('balance', result);
-    });
+    const amountInPti = event.target.wallet_pti_amount.value;
+    const recipient = event.target.wallet_friend_number.value;
+    const password = event.target.user_password.value;
+    sendParatii(amountInPti, recipient, password);
   },
-
 });
