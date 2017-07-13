@@ -5,8 +5,8 @@
       <span>My Profile</span>
     </div>
     <div class="float-right address-container">
-      <div class="address-identicon">{{> dapp_identicon identity=ptiAddress class="dapp-tiny"}}</div>
-      <span class="address">This is your address: {{ ptiAddress }}</span>
+      <div class="address-identicon">{{> dapp_identicon identity=userPTIAddress class="dapp-tiny"}}</div>
+      <span class="address">This is your address: {{ userPTIAddress }}</span>
     </div>
   </div>
   <div class="line"></div>
@@ -25,12 +25,9 @@
     <div class="profile-info"> {{userEmail}}</div>
     <!-- Action Buttons -->
     <button class="btn btn-default blue-button btn-block" id="edit-profile">Edit Profile</button>
-    <!-- {{#unless hasKeystore}}
-          <button class="btn btn-default blue-button" id="restore-keystore">Restore Keystore</button>
-        {{/unless}} -->
-
   </div>
-  {{#if ptiAddress }}
+  {{#if userPTIAddress }}
+
     <div class="walletContainer">
       <ul class="titleContainer"></ul>
       <div class="descriptionContainer">
@@ -58,13 +55,17 @@
         </div>
       </div>
     </div>
+
   {{else}}
     <div class="walletContainer">
       <ul class="titleContainer"></ul>
       <div class="descriptionContainer">
+        {{# if wallet_is_generating }}
+        Please be patient, we are generating your wallet file.....
+        {{ else }}
         <p>
         We could not find a wallet stored on this device. If you remember the 12-word seed, you can restore your wallet:
-      </p>
+        </p>
         <button class="btn btn-default blue-button" id="restore-keystore">Restore wallet</button>
         <p>
           Otherwise, you can generate a new wallet (but you will not have access to any funds you might have)
@@ -72,6 +73,7 @@
         <p>
           <button class="btn btn-default blue-button" id="create-wallet">Generate a new wallet</button>
         </p>
+        {{/if}}
       </div>
     </div>
   {{/if}}

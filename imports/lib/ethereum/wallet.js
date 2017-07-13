@@ -6,65 +6,89 @@
 import * as RLocalStorage from 'meteor/simply:reactive-local-storage';
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
 import { add0x } from '/imports/lib/utils.js';
-import { getUserPTIaddress } from '/imports/api/users.js';
-import { web3 } from './connection.js';
+import { getUserPTIAddress } from '/imports/api/users.js';
+import { web3, GAS_PRICE, GAS_LIMIT } from './connection.js';
 
-// getKeystore tries to load the keystore from the Session, or, if it is not found there
-// from localstorage. If no keystore can be found, it returns undefined.
+// createKeystore will create a new keystore
+// save it in the sesion object and in local storage
+// generate an address, and save that in the sesssion too
+
+function createKeystore(password, seedPhrase, cb) {
+  // create a new seedPhrase if we have none
+  Session.set('generating-keystore', true);
+  if (seedPhrase == null) {
+    seedPhrase = lightwallet.keystore.generateRandomSeed();
+  }
+  Session.set('seed', seedPhrase);
+
+  // create a new keystore with the given password and seedPhrase
+  const opts = {
+    password,
+    seedPhrase,
+  };
+  lightwallet.keystore.createVault(opts, function (err, keystore) {
+    if (err) {
+      throw err;
+    }
+    RLocalStorage.setItem('keystore', keystore.serialize());
+    Session.set('keystore', keystore.serialize());
+
+    // while we are at it, also generate an address for our user
+    keystore.keyFromPassword(password, function (error, pwDerivedKey) {
+      if (error) {
+        throw error;
+      }
+      // generate one new address/private key pairs
+      // the corresponding private keys are also encrypted
+      keystore.generateNewAddress(pwDerivedKey, 1);
+      const address = keystore.getAddresses()[0];
+      Session.set('userPTIAddress', address);
+      // TODO: we do not seem to be using this anymore...
+      Meteor.call('users.update', { 'profile.ptiAddress': address });
+      Session.set('generating-keystore', false);
+      if (cb) {
+        cb(error, seedPhrase);
+      }
+    });
+  });
+}
+
+// getKeystore tries to load the keystore from the Session,
+// or, if it is not found there, restore it from localstorage.
+// If no keystore can be found, it returns undefined.
 export function getKeystore() {
-  let keystore;
-  keystore = Session.get('keystore');
-  if (keystore === undefined) {
-    const keystoreLS = RLocalStorage.getItem('keystore');
-    if (keystoreLS !== null) {
-      keystore = lightwallet.keystore.deserialize(keystoreLS);
-      Session.set('keystore', keystore);
+  let serializedKeystore;
+  serializedKeystore = Session.get('keystore');
+  if (serializedKeystore === undefined) {
+    serializedKeystore = RLocalStorage.getItem('keystore');
+    if (serializedKeystore !== null) {
+      Session.set('keystore', serializedKeystore);
     }
   }
-  return keystore;
+  // using lightwallet to deserialize the keystore
+  if (serializedKeystore !== null) {
+    const keystore = lightwallet.keystore.deserialize(serializedKeystore);
+    const address = keystore.getAddresses()[0];
+    Session.set('userPTIAddress', address);
+    return keystore;
+  }
+  return null;
 }
 
 // returns the seed of the keystore
 function getSeed(password) {
   const keystore = getKeystore();
-
-  keystore.keyFromPassword(password, function (err, pwDerivedKey) {
-    const seed = keystore.getSeed(pwDerivedKey);
-    Session.set('seed', seed);
-  });
-}
-
-
-function createKeystore(password, seedPhrase) {
-  const wallet = {};
-  if (seedPhrase == null) {
-    seedPhrase = lightwallet.keystore.generateRandomSeed();
-  }
-
-  const opts = {
-    password,
-    seedPhrase,
-  };
-
-  lightwallet.keystore.createVault(opts, function (err, keystore) {
-    keystore.keyFromPassword(password, function (error, pwDerivedKey) {
-      if (error) throw error;
-      // generate five new address/private key pairs
-      // the corresponding private keys are also encrypted
-      keystore.generateNewAddress(pwDerivedKey, 5);
-      RLocalStorage.setItem('keystore', keystore.serialize());
-      const addr = keystore.getAddresses();
-      Meteor.call('users.update', { 'profile.ptiAddress': addr[0] });
-      Session.set('seed', seedPhrase);
-      // Now set ks as transaction_signer in the hooked web3 provider
-      // and you can start using web3 using the keys/addresses in ks!
+  if (keystore !== null) {
+    keystore.keyFromPassword(password, function (err, pwDerivedKey) {
+      if (err) {
+        throw err;
+      }
+      const seed = keystore.getSeed(pwDerivedKey);
+      Session.set('seed', seed);
     });
-  });
-
-
-  wallet.seed = seedPhrase;
-  return wallet;
+  }
 }
+
 
 function restoreWallet(password, seedPhrase) {
   return createKeystore(password, seedPhrase);
@@ -75,17 +99,10 @@ function sendParatii(amount, recipient) {
 }
 
 function sendEther(amountInEth, recipient, password) {
-  const fromAddr = getUserPTIaddress();
+  const fromAddr = getUserPTIAddress();
   const nonce = web3.eth.getTransactionCount(fromAddr);
   const value = parseInt(web3.toWei(amountInEth, 'ether'), 10);
-  const gasPrice = 50000000000;
-  const gasLimit = 50000;
-  // TODO: set these values in global constansts
-  // let gasPrice = 50000000000;
-  // gasPrice = gasPrice.toString('hex');
-  // gasPrice = `0x${gasPrice}`;
-  // const gas = 50000;
-  // create a tx
+
   const keystore = getKeystore();
   keystore.keyFromPassword(password, function (error, pwDerivedKey) {
     if (error) throw error;
@@ -94,8 +111,8 @@ function sendEther(amountInEth, recipient, password) {
       nonce: web3.toHex(nonce),
       to: add0x(recipient),
       value: web3.toHex(value),
-      gasPrice: web3.toHex(gasPrice),
-      gasLimit: web3.toHex(gasLimit),
+      gasPrice: web3.toHex(GAS_PRICE),
+      gasLimit: web3.toHex(GAS_LIMIT),
     };
     rawTx = lightwallet.txutils.valueTx(rawTx);
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);

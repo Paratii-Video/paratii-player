@@ -3,7 +3,6 @@
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';
 import { getKeystore } from '/imports/lib/ethereum/wallet.js';
-import { add0x } from '/imports/lib/utils.js';
 
 
 // Deny all client-side updates to user documents
@@ -94,13 +93,26 @@ export function userPrettyName() {
   return '';
 }
 
-export function getUserPTIaddress() {
-  const keystore = getKeystore();
-  if (keystore !== undefined) {
-    address = add0x(keystore.ksData[keystore.defaultHdPathString].addresses[0]);
-    return address;
+export function getUserPTIAddress() {
+  if (Session.get('generating-keystore')) {
+    return null;
   }
-  return undefined;
+  const address = Session.get('userPTIAddress');
+  if (address === undefined) {
+    const keystore = getKeystore();
+    if (keystore !== null) {
+      const addresses = keystore.getAddresses();
+      if (addresses.length > 0) {
+        return addresses[0];
+      }
+    }
+  }
+  return address;
+  // if (keystore !== undefined) {
+  //   address = add0x(keystore.ksData[keystore.defaultHdPathString].addresses[0]);
+  //   return address;
+  // }
+  // return undefined;
 }
 
 export async function getPassword() {
@@ -109,4 +121,11 @@ export async function getPassword() {
   const digest = Package.sha.SHA256(password);
   await Meteor.call('checkPassword', digest);
   return password;
+}
+
+export async function checkPassword(password) {
+    // check the password, return True if it valid, false otherwise
+  const digest = Package.sha.SHA256(password);
+  const isValid = await Meteor.call('checkPassword', digest);
+  return isValid;
 }

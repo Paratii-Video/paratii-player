@@ -3,17 +3,21 @@ import { showSeed } from '/imports/ui/components/modals/showSeed.js';
 
 const mySubmitFunc = function (error, state) {
   if (state === 'signUp') {
-    showSeed();
+    //
   }
 };
 
 const myPreSignupFunc = function (password) {
   // create a new wallet during signup
-  const keystore = createKeystore(password);
-  Session.set('keystore', keystore);
-  // // show the seed to the user
-  // showSeed(wallet);
+    // alert('myPreSignupFunc')
+  Session.set('wallet-state', 'generating');
+  createKeystore(password, undefined, function () {
+    Session.set('wallet-state', '');
+    showSeed();
+  });
 };
+
+AccountsTemplates.avoidRedirect = true;
 
 // Options for accounts
 // https://github.com/meteor-useraccounts/core/blob/master/Guide.md#configuration-api

@@ -1,15 +1,27 @@
+
 import { assert } from 'chai';
 
 // import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
 import { createKeystore } from '../wallet.js';
 
 describe('ethereum wallet', function () {
-  it('create a wallet', function (done) {
+  it('create a wallet with a random seedPhrase', function (done) {
     const password = 'mypass';
-    const keystore = createKeystore(password);
     // createKeystore returns a seed
-    assert.equal(keystore.seed.split(' ').length, 12);
-    done();
+    createKeystore(password, null, function (error, seed) {
+      assert.equal(seed.split(' ').length, 12);
+      done();
+    });
+  });
+
+  it('create a wallet with a given seedPhrase', function (done) {
+    const password = 'mypass';
+    const seedPhrase = 'fire child menu visa cupboard audit reason announce output hungry bulk vessel';
+    // createKeystore returns a seed
+    createKeystore(password, seedPhrase, function (error, seed) {
+      assert.equal(seed.split(' ').length, 12);
+      done();
+    });
   });
 
   // it('restore a wallet (disabled)', async function (done) {

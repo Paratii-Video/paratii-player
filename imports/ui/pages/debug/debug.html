@@ -21,6 +21,11 @@
        {{/if }}
        <li>Your Ether balance (in ether): {{ eth_balance }}</li>
        <li>Your Paratii  balance (in PTI): {{ pti_balance }} (not yet implemented)</li>
+       <li>
+         {{#if eth_isConnected }}
+          <button id="get-transaction-console" class="btn">Fetch your transactions - look at console</button>
+        {{/if }}
+       </li>
        </li>
      </ul>
     </div>

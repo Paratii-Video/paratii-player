@@ -11,7 +11,7 @@ Template.sendPti.events({
     const transaction = {};
     const target = event.target;
 
-    transaction.sender = getUserPTIaddress();
+    transaction.sender = getUserPTIAddress();
     transaction.receiver = target.receiver_account.value;
     transaction.amount = target.wallet_pti_amount.value;
     transaction.description = 'send pti';
@@ -27,7 +27,7 @@ Template.sendPti.events({
       target.wallet_pti_amount.value = '';
       target.receiver_account.value = '';
     });
-    Meteor.call('events.balance', getUserPTIaddress(), function (error, result) {
+    Meteor.call('events.balance', getUserPTIAddress(), function (error, result) {
       Session.set('balance', result);
     });
   },
