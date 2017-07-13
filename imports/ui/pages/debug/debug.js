@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { web3 } from '/imports/lib/ethereum/connection.js';
 import { Template } from 'meteor/templating';
 import { getUserPTIAddress } from '/imports/api/users.js';

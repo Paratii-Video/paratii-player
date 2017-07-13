@@ -22,7 +22,7 @@ export function createUser() {
 
 export function createKeystore() {
   const wallet = require('./imports/lib/ethereum/wallet.js');
-  wallet.createKeystore('password', null, function() {
+  wallet.createKeystore('password', null, function () {
     // remove the seed from the Session to simulate the situation
     // where the user has seen and dismissed the dialog
     Session.set('seed', null);

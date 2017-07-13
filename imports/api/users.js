@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
+/* eslint-disable no-alert */
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';
 import { getKeystore } from '/imports/lib/ethereum/wallet.js';
-import { add0x } from '/imports/lib/utils.js';
 
 
 // Deny all client-side updates to user documents

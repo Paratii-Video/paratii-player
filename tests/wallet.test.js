@@ -1,6 +1,6 @@
 /* eslint global-require: "off" */
 // import { assert } from 'chai';
-import { login, createUser, resetDb, createKeystore, createUserAndLogin } from './helpers.js';
+import { createUserAndLogin } from './helpers.js';
 
 describe('wallet', function () {
   beforeEach(function () {

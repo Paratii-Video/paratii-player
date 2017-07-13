@@ -1,5 +1,4 @@
 import { getSeed } from '/imports/lib/ethereum/wallet.js';
-import { checkPassword } from '/imports/api/users.js';
 import './showSeed.html';
 
 Template.showSeed.helpers({

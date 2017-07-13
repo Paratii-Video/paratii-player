@@ -24,12 +24,6 @@ Template.profile.helpers({
   },
   userPTIAddress() {
     return getUserPTIAddress();
-    return Session.get('userPTIAddress');
-    // const address = getUserPTIAddress();
-    // // if (address !== undefined) {
-    // //   Modal.hide('restoreKeystore'); // Close restore modal if keystore is found in the localSTorage
-    // // }
-    // return address;
   },
   eth_balance() {
     const balance = Session.get('eth_balance');
@@ -49,6 +43,9 @@ Template.profile.events({
     getPassword().then(function (password) {
       if (password) {
         createKeystore(password).then(function (wallet, err) {
+          if (err) {
+            throw err;
+          }
           // set the seed in the Session, so that showSeed will shwo it immediately
           Session.set('seed', wallet.seed);
           Modal.show('showSeed', {});

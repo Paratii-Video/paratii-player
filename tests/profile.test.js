@@ -1,6 +1,6 @@
 /* eslint-disable: global-require, no-alert */
 /* eslint global-require: "off" */
-import { login, createUser, resetDb, createKeystore, createUserAndLogin } from './helpers.js';
+import { createUser, resetDb, createKeystore, createUserAndLogin } from './helpers.js';
 
 function clearLocalStorage() {
   localStorage.clear();
@@ -31,11 +31,9 @@ describe('account workflow', function () {
       .setValue('[name="at-field-password_again"]', 'password');
     // submit the form
     browser.$('#at-btn').click();
-    // TODO: the test seems to get confused by the asyncness of the whoel thing
-    // please make next lines work..
-    // now a modal should be opend with the seed
-    // (we wait a long time, because the wallet needs to be generated)
 
+    // now a modal should be opened with the seed
+    // (we wait a long time, because the wallet needs to be generated)
     browser.waitForVisible('#seed', 10000);
     browser.waitForVisible('#btn-eth-close');
     browser.click('#btn-eth-close');
@@ -79,7 +77,7 @@ describe('account workflow', function () {
     createUserAndLogin(browser);
     // we are now logged in
     // we are at the wallet page, and try to restore the account
-    const seedPhrase = 'lsdkjfsladkj'
+    const seedPhrase = 'lsdkjfsladkj';
     browser.waitForExist('#restore-keystore', 20000);
     browser.click('#restore-keystore');
     browser.waitForVisible('[name="field-seed"]', 2000);
