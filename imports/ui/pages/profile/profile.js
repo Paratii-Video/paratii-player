@@ -32,19 +32,17 @@ Template.profile.helpers({
     }
     return '';
   },
-<<<<<<< HEAD
-  wallet_is_generating() {
-    return Session.get('wallet-state') === 'generating';
-=======
   pti_balance() {
     const balance = Session.get('pti_balance');
     if (balance !== undefined) {
       return web3.fromWei(balance, 'ether');
-      // return balance;
     }
     return '';
->>>>>>> 680f6a124161779092895f69bde215c26bae8362
   },
+  wallet_is_generating() {
+    return Session.get('wallet-state') === 'generating';
+  },
+
 });
 
 

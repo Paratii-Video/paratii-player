@@ -1,8 +1,7 @@
 /* eslint no-unused-vars: "off" */
 import Web3 from 'web3';
-import { getUserPTIaddress } from '../../api/users.js';
+import { getUserPTIAddress } from '/imports/api/users.js';
 import { abidefinition } from './abidefinition.js';
-
 
 const DEFAULT_PROVIDER = 'http://paratii-chain.gerbrandy.com';
 const PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d';

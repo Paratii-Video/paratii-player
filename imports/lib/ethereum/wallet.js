@@ -6,7 +6,9 @@
 import * as RLocalStorage from 'meteor/simply:reactive-local-storage';
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
 import { add0x } from '/imports/lib/utils.js';
-import { web3, GAS_PRICE, GAS_LIMIT } from './connection.js';
+import { getUserPTIAddress } from '/imports/api/users.js';
+import { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS } from './connection.js';
+import { abidefinition } from './abidefinition.js';
 
 // createKeystore will create a new keystore
 // save it in the sesion object and in local storage
@@ -29,8 +31,6 @@ function createKeystore(password, seedPhrase, cb) {
     if (err) {
       throw err;
     }
-    RLocalStorage.setItem('keystore', keystore.serialize());
-    Session.set('keystore', keystore.serialize());
 
     // while we are at it, also generate an address for our user
     keystore.keyFromPassword(password, function (error, pwDerivedKey) {
@@ -40,6 +40,10 @@ function createKeystore(password, seedPhrase, cb) {
       // generate one new address/private key pairs
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 1);
+
+      RLocalStorage.setItem('keystore', keystore.serialize());
+      Session.set('keystore', keystore.serialize());
+
       const address = keystore.getAddresses()[0];
       Session.set('userPTIAddress', add0x(address));
       // TODO: we do not seem to be using this anymore...
@@ -94,7 +98,7 @@ function restoreWallet(password, seedPhrase) {
 }
 
 function doTx(amount, recipient, password, type) {
-  const fromAddr = getUserPTIaddress();
+  const fromAddr = getUserPTIAddress();
   const nonce = web3.eth.getTransactionCount(fromAddr);
   const value = parseInt(web3.toWei(amount, 'ether'), 10);
 
@@ -115,8 +119,8 @@ function doTx(amount, recipient, password, type) {
         rawTx = lightwallet.txutils.valueTx(txOptions);
         break;
       case 'pti':
-        // txOptions.to = PARATII_TOKEN_ADDRESS;
-        // rawTx = lightwallet.txutils.functionTx(abidefinition, 'transfer', [recipient, value], txOptions);
+        txOptions.to = PARATII_TOKEN_ADDRESS;
+        rawTx = lightwallet.txutils.functionTx(abidefinition, 'transfer', [recipient, value], txOptions);
         // const result = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS).balanceOf(recipient);
         // const result = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS).transfer(recipient);
 
@@ -126,7 +130,7 @@ function doTx(amount, recipient, password, type) {
       default:
 
     }
-    // const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
+    const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
     // web3.eth.sign(address, dataToSign, [, callback])
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
       if (!err) {
