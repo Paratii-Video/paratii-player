@@ -110,20 +110,18 @@ function doTx(amount, recipient, password, type) {
       nonce: web3.toHex(nonce),
       gasPrice: web3.toHex(GAS_PRICE),
       gasLimit: web3.toHex(GAS_LIMIT),
-      value: web3.toHex(value),
     };
 
     switch (type) {
       case 'eth':
         txOptions.to = add0x(recipient);
+        txOptions.value = web3.toHex(value);
         rawTx = lightwallet.txutils.valueTx(txOptions);
         break;
       case 'pti':
         txOptions.to = PARATII_TOKEN_ADDRESS;
         rawTx = lightwallet.txutils.functionTx(abidefinition, 'transfer', [recipient, value], txOptions);
-        // const result = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS).balanceOf(recipient);
-        // const result = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS).transfer(recipient);
-
+        // const result = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS).transfer(recipient, value);
         // console.log(result);
         // rawTx = lightwallet.txutils.functionTx(abidefinition, 'symbol', [], txOptions);
         break;
@@ -133,14 +131,13 @@ function doTx(amount, recipient, password, type) {
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
     // web3.eth.sign(address, dataToSign, [, callback])
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
-      if (!err) {
-        Modal.hide('sendEth');
-        console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
-        const receipt = web3.eth.getTransactionReceipt(hash);
-        console.log(receipt);
-      } else {
-        console.log(err);
+      if (err) {
+        throw err;
       }
+      Modal.hide('sendPti');
+      console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
+      const receipt = web3.eth.getTransactionReceipt(hash);
+      console.log(receipt);
     });
   });
 }

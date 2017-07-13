@@ -6,7 +6,7 @@ import { abidefinition } from './abidefinition.js';
 const DEFAULT_PROVIDER = 'http://paratii-chain.gerbrandy.com';
 const PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d';
 const GAS_PRICE = 50000000000;
-const GAS_LIMIT = 60000;
+const GAS_LIMIT = 4e6;
 
 web3 = new Web3();
 

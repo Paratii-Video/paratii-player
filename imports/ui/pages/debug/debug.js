@@ -22,7 +22,7 @@ export function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNu
 
 Template.debug.events({
   'click #get-transaction-console'() {
-    getTransactionsByAccount(getUserPTIaddress(), 55, 99);
+    getTransactionsByAccount(getUserPTIAddress(), 55, 104);
   },
 });
 Template.debug.helpers({
