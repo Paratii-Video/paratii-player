@@ -1,3 +1,4 @@
+
 import { assert } from 'chai';
 
 // import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
@@ -15,7 +16,7 @@ describe('ethereum wallet', function () {
 
   it('create a wallet with a given seedPhrase', function (done) {
     const password = 'mypass';
-    const seedPhrase = 'spotting unclog dusk grant affiliate hardness molasses halogen kleenex sprout tulip kinswoman'
+    const seedPhrase = 'fire child menu visa cupboard audit reason announce output hungry bulk vessel';
     // createKeystore returns a seed
     createKeystore(password, seedPhrase, function(error, seed){
       assert.equal(seed.split(' ').length, 12);
