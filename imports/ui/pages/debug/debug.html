@@ -15,12 +15,15 @@
        </li>
        <!-- <li>Accounts: {{ .web3.eth.accounts }}</li> -->
        <li>blocknumber: {{ eth_currentBlock }}</li>
-       <li>Your account (from the user profile): {{ ptiAddress }}
+       <li>
+         Your public address (from the user profile): {{ ptiAddress }}
+         <br>
+         Your private key (just for debug!): {{ privateKey }}
        {{# if currentUser.profile.ptiAddress }}
            {{> dapp_identicon identity=ptiAddress class="dapp-small"}}
        {{/if }}
        <li>Your Ether balance (in ether): {{ eth_balance }}</li>
-       <li>Your Paratii  balance (in PTI): {{ pti_balance }} (not yet implemented)</li>
+       <li>Your Paratii  balance (in PTI): {{ pti_balance }} </li>
        <li>
          {{#if eth_isConnected }}
           <button id="get-transaction-console" class="btn">Fetch your transactions - look at console</button>

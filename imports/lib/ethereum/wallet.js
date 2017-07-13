@@ -149,7 +149,22 @@ function sendEther(amountInEth, recipient, password) {
   doTx(amountInEth, recipient, password, 'eth');
 }
 
-export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance };
+function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
+  for (let i = startBlockNumber; i <= endBlockNumber; i += 1) {
+    console.log(`Searching block ${i}`);
+    const block = web3.eth.getBlock(i);
+    if (block != null && block.transactions != null) {
+      block.transactions.forEach(function (e) {
+        const transaction = web3.eth.getTransaction(e);
+        if (myaccount === '*' || myaccount === transaction.from || myaccount === transaction.to) {
+          console.log(transaction);
+        }
+      });
+    }
+  }
+}
+
+export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance, getTransactionsByAccount };
 
 // ////////////////////
 // / Copies from lightwallet, ignore..
