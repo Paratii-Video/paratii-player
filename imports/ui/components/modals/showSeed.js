@@ -17,15 +17,7 @@ Template.showSeed.events({
   'submit #form-show-seed'(event) {
     event.preventDefault();
     const password = event.target.user_password.value;
-    checkPassword(password)
-      .then(function (isValid) {
-        if (isValid) {
-          getSeed(password);
-        } else {
-          console.log('PASSWORD INVALID');
-        }
-      });
-    // return false;
+    getSeed(password);
   },
 });
 

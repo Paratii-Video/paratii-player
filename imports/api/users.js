@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-alert */
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';
 import { getKeystore } from '/imports/lib/ethereum/wallet.js';
