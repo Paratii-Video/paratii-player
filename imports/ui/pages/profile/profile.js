@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 
-import { createWallet, restoreWallet, getKeystore } from '/imports/lib/ethereum/wallet.js';
-import { getUserPTIaddress, getPassword } from '/imports/api/users.js';
+import { createKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js';
+import { getUserPTIAddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import '/imports/ui/components/modals/editProfile.js';
 import '/imports/ui/components/modals/sendEth.js';
@@ -22,12 +22,8 @@ Template.profile.helpers({
   hasKeystore() {
     return (getKeystore() !== undefined) ? getKeystore() : false;
   },
-  ptiAddress() {
-    const address = getUserPTIaddress();
-    if (address !== undefined) {
-      Modal.hide('restoreKeystore'); // Close restore modal if keystore is found in the localSTorage
-    }
-    return address;
+  userPTIAddress() {
+    return getUserPTIAddress();
   },
   eth_balance() {
     const balance = Session.get('eth_balance');
@@ -36,6 +32,9 @@ Template.profile.helpers({
     }
     return '';
   },
+  wallet_is_generating() {
+    return Session.get('wallet-state') === 'generating';
+  },
 });
 
 
@@ -43,9 +42,14 @@ Template.profile.events({
   'click #create-wallet'() {
     getPassword().then(function (password) {
       if (password) {
-        wallet = createWallet(password);
-        // TODO: comment showSeed due error, to fix
-        // showSeed(wallet);
+        createKeystore(password).then(function (wallet, err) {
+          if (err) {
+            throw err;
+          }
+          // set the seed in the Session, so that showSeed will shwo it immediately
+          Session.set('seed', wallet.seed);
+          Modal.show('showSeed', {});
+        });
       }
     });
   },
@@ -58,17 +62,8 @@ Template.profile.events({
   'click #restore-keystore'() {
     Modal.show('restoreKeystore', {});
   },
-  'click #restore-wallet'() {
-    const seedPhrase = prompt('Please enter your 12-word seed phrase', '');
-    getPassword().then(function (password) {
-      if (password) {
-        wallet = restoreWallet(password, seedPhrase);
-      }
-    });
-  },
   'click #show-seed'() {
-    // TODO: comment showSeed due error, to fix
-    // showSeed();
+    Modal.show('showSeed', {});
   },
   'click #edit-profile'() {
     const modalOptions = {
@@ -80,7 +75,7 @@ Template.profile.events({
 
 Template.transaction.helpers({
   sendCheck() {
-    if (this.sender === getUserPTIaddress()) {
+    if (this.sender === getUserPTIAddress()) {
       return true;
     }
     return false;
@@ -94,19 +89,15 @@ Tracker.autorun(() => {
   const user = Meteor.user();
   if (user !== undefined) {
     // TODO: old implementation of events instead of BC
-    // const userPTIaddress = getUserPTIaddress();
-    // Meteor.subscribe('userTransactions', userPTIaddress);
+    // const userPTIAddress = getUserPTIAddress();
+    // Meteor.subscribe('userTransactions', userPTIAddress);
   }
 });
 
 
 Tracker.autorun(() => {
-  const seed = Session.get('seed');
-  if (seed != null) {
-    const modalOptions = {
-      seed,
-    };
-    Modal.show('showSeed', modalOptions);
-    Session.set('seed', null);
-  }
+  // const seed = Session.get('seed');
+  // if (seed != null) {
+  //   Modal.show('showSeed');
+  // }
 });

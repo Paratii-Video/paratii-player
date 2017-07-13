@@ -1,19 +1,23 @@
-import { createWallet } from '/imports/lib/ethereum/wallet.js';
-// import { showSeed } from '/imports/ui/pages/profile/profile.js';
+import { createKeystore } from '/imports/lib/ethereum/wallet.js';
+import { showSeed } from '/imports/ui/components/modals/showSeed.js';
 
 const mySubmitFunc = function (error, state) {
   if (state === 'signUp') {
-    // const wallet = Session.get('wallet');
-    // show the seed to the user
-    // TODO: comment showSeed due error, to fix
-    // showSeed(wallet);
+    //
   }
 };
 
 const myPreSignupFunc = function (password) {
-  const wallet = createWallet(password);
-  Session.set('wallet', wallet);
+  // create a new wallet during signup
+    // alert('myPreSignupFunc')
+  Session.set('wallet-state', 'generating');
+  createKeystore(password, undefined, function () {
+    Session.set('wallet-state', '');
+    showSeed();
+  });
 };
+
+AccountsTemplates.avoidRedirect = true;
 
 // Options for accounts
 // https://github.com/meteor-useraccounts/core/blob/master/Guide.md#configuration-api

@@ -3,16 +3,16 @@ import { check } from 'meteor/check';
 
 export const Events = new Mongo.Collection('events');
 
-export function getBalance(userPTIaddress) {
+export function getBalance(userPTIAddress) {
   let lastTransaction = {};
   let balance;
-  const query = { $or: [{ sender: userPTIaddress }, { receiver: userPTIaddress }] };
+  const query = { $or: [{ sender: userPTIAddress }, { receiver: userPTIAddress }] };
   const args = { sort: { $natural: -1 } };
   lastTransaction = Events.find(query, args).fetch()[0];
   if (lastTransaction === undefined) {
     return 0;
   }
-  if (lastTransaction.sender === userPTIaddress) {
+  if (lastTransaction.sender === userPTIAddress) {
     balance = lastTransaction.senderBalance;
   } else {
     balance = lastTransaction.receiverBalance;
@@ -51,16 +51,16 @@ if (Meteor.isServer) {
       });
       // TODO success insert notification
     },
-    'events.balance'(userPTIaddress) {
-      check(userPTIaddress, String);
-      return getBalance(userPTIaddress);
+    'events.balance'(userPTIAddress) {
+      check(userPTIAddress, String);
+      return getBalance(userPTIAddress);
     },
   });
 
-  Meteor.publish('userTransactions', function (userPTIaddress) {
-    check(userPTIaddress, String);
+  Meteor.publish('userTransactions', function (userPTIAddress) {
+    check(userPTIAddress, String);
     // Publish all transactions where I find userPTIAddress
-    const query = { $or: [{ sender: userPTIaddress }, { receiver: userPTIaddress }] };
+    const query = { $or: [{ sender: userPTIAddress }, { receiver: userPTIAddress }] };
     const args = { sort: { $natural: -1 } };
     return Events.find(query, args);
   });
