@@ -36,6 +36,14 @@ Template.profile.helpers({
     }
     return '';
   },
+  pti_balance() {
+    const balance = Session.get('pti_balance');
+    if (balance !== undefined) {
+      // return web3.fromWei(balance, 'ether');
+      return balance;
+    }
+    return '';
+  },
 });
 
 
