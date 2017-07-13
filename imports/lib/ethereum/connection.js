@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import { getUserPTIAddress } from '/imports/api/users.js';
 import { abidefinition } from './abidefinition.js';
 
-const DEFAULT_PROVIDER = 'http://paratii-chain.gerbrandy.com';
+const DEFAULT_PROVIDER = 'http://localhost:8545';
 const PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d';
 const GAS_PRICE = 50000000000;
 const GAS_LIMIT = 4e6;
@@ -21,6 +21,7 @@ function updateSession(error, sync) {
     const ptiAddress = getUserPTIAddress();
     if (ptiAddress) {
       // SET PTI BALANCE
+
       const contract = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS);
       const ptiBalance = contract.balanceOf(ptiAddress);
       Session.set('pti_balance', ptiBalance.toNumber());
@@ -54,8 +55,8 @@ export const initConnection = function () {
   web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
   // connect();
   // call the status function every second
-  // Meteor.setInterval(checkStatus, 1000);
-  web3.eth.isSyncing(updateSession);
+  Meteor.setInterval(function () { updateSession(null, true); }, 1000);
+  // web3.eth.isSyncing(updateSession);
 };
 
 export { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS };
