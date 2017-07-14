@@ -10,7 +10,10 @@ test:
     - sudo apt-get --only-upgrade install google-chrome-stable
     - google-chrome --version
   override:
-    - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --once --driver-package dispatch:mocha  --port 9999
+    - testrpc:
+        background: true
+    - sleep 10
+    - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999
     - npm run dev:
         background: true
     - sleep 120
@@ -27,4 +30,4 @@ notify:
   webhooks:
     # A list of hook hashes, containing the url field
     # gitter hook
-    - url: https://webhooks.gitter.im/e/9facb9efda66adc53234 
+    - url: https://webhooks.gitter.im/e/9facb9efda66adc53234

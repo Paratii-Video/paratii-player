@@ -11,13 +11,14 @@ const GAS_LIMIT = 4e6;
 web3 = new Web3();
 
 
-function updateSession(error, sync) {
+function updateSession() {
   /* update Session variables with altest information from the blockchain */
   Session.set('eth_host', web3.currentProvider.host);
-  if (sync) {
+  debugger;
+  if (web3.isConnected()) {
     Session.set('eth_isConnected', true);
-    Session.set('eth_currentBlock', sync.currentBlock);
-    Session.set('eth_highestBlock', sync.highestBlock);
+    Session.set('eth_currentBlock', web3.eth.blockNumber);
+    // Session.set('eth_highestBlock', sync.highestBlock);
     const ptiAddress = getUserPTIAddress();
     if (ptiAddress) {
       // SET PTI BALANCE
@@ -55,8 +56,15 @@ export const initConnection = function () {
   web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
   // connect();
   // call the status function every second
-  Meteor.setInterval(function () { updateSession(null, true); }, 1000);
+
   // web3.eth.isSyncing(updateSession);
+  const filter = web3.eth.filter('latest');
+
+  filter.watch(function (error, result) {
+    if (!error) {
+      updateSession();
+    }
+  });
 };
 
 export { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS };
