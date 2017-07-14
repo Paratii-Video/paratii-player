@@ -46,7 +46,11 @@ The application has to kind of tests.
 
 And end-to-end tetst that can be run by starting up the application in one window:
 
-    meteor run
+    meteor --settings settings-prod.json
+
+or
+
+    meteor --settings settings-dev.json
 
 And running the tests in another window
 
