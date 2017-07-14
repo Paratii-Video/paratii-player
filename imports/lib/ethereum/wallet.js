@@ -79,15 +79,23 @@ export function getKeystore() {
 }
 
 // returns the seed of the keystore
-function getSeed(password) {
+function getSeed(password, callback) {
   const keystore = getKeystore();
   if (keystore !== null) {
     keystore.keyFromPassword(password, function (err, pwDerivedKey) {
       if (err) {
-        throw err;
+        Session.set('errorMessage', 'Incorrect password');
+        if (callback) {
+          callback(err, null);
+        }
+        return;
       }
+      Session.set('errorMessage', null);
       const seed = keystore.getSeed(pwDerivedKey);
       Session.set('seed', seed);
+      if (callback) {
+        callback(err, seed);
+      }
     });
   }
 }
@@ -113,12 +121,12 @@ function doTx(amount, recipient, password, type) {
     };
 
     switch (type) {
-      case 'eth':
+      case 'Eth':
         txOptions.to = add0x(recipient);
         txOptions.value = web3.toHex(value);
         rawTx = lightwallet.txutils.valueTx(txOptions);
         break;
-      case 'pti':
+      case 'Pti':
         txOptions.to = PARATII_TOKEN_ADDRESS;
         rawTx = lightwallet.txutils.functionTx(abidefinition, 'transfer', [recipient, value], txOptions);
         // const result = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS).transfer(recipient, value);
@@ -134,7 +142,8 @@ function doTx(amount, recipient, password, type) {
       if (err) {
         throw err;
       }
-      Modal.hide('sendPti');
+      const modalName = `send${type}`;
+      Modal.hide(modalName);
       console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
       const receipt = web3.eth.getTransactionReceipt(hash);
       console.log(receipt);
@@ -143,10 +152,10 @@ function doTx(amount, recipient, password, type) {
 }
 
 function sendParatii(amountInPti, recipient, password) {
-  doTx(amountInPti, recipient, password, 'pti');
+  doTx(amountInPti, recipient, password, 'Pti');
 }
 function sendEther(amountInEth, recipient, password) {
-  doTx(amountInEth, recipient, password, 'eth');
+  doTx(amountInEth, recipient, password, 'Eth');
 }
 
 function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
