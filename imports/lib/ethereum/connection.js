@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import { getUserPTIAddress } from '/imports/api/users.js';
 import { abidefinition } from './abidefinition.js';
 
-const DEFAULT_PROVIDER = 'http://localhost:8545';
+const DEFAULT_PROVIDER = Meteor.settings.public.http_provider;
 const PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d';
 const GAS_PRICE = 50000000000;
 const GAS_LIMIT = 4e6;
