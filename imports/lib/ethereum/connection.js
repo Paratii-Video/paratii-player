@@ -14,7 +14,6 @@ web3 = new Web3();
 function updateSession() {
   /* update Session variables with altest information from the blockchain */
   Session.set('eth_host', web3.currentProvider.host);
-  debugger;
   if (web3.isConnected()) {
     Session.set('eth_isConnected', true);
     Session.set('eth_currentBlock', web3.eth.blockNumber);
