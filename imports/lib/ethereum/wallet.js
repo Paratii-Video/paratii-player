@@ -79,15 +79,23 @@ export function getKeystore() {
 }
 
 // returns the seed of the keystore
-function getSeed(password) {
+function getSeed(password, callback) {
   const keystore = getKeystore();
   if (keystore !== null) {
     keystore.keyFromPassword(password, function (err, pwDerivedKey) {
       if (err) {
-        throw err;
+        Session.set('errorMessage', 'Incorrect password');
+        if (callback) {
+          callback(err, null);
+        }
+        return;
       }
+      Session.set('errorMessage', null);
       const seed = keystore.getSeed(pwDerivedKey);
       Session.set('seed', seed);
+      if (callback) {
+        callback(err, seed);
+      }
     });
   }
 }
