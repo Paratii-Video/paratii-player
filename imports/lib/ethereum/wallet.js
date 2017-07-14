@@ -82,13 +82,17 @@ function getSeed(password, callback) {
     keystore.keyFromPassword(password, function (err, pwDerivedKey) {
       if (err) {
         Session.set('errorMessage', 'Incorrect password');
-        if(callback != null) callback();
+        if (callback) {
+          callback(err, null);
+        }
         return;
       }
       Session.set('errorMessage', null);
       const seed = keystore.getSeed(pwDerivedKey);
       Session.set('seed', seed);
-      if(callback != null)  callback();
+      if (callback) {
+        callback(err, seed);
+      }
     });
   }
 }

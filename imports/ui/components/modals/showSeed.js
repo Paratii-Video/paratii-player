@@ -6,10 +6,10 @@ Template.showSeed.helpers({
     const seed = Session.get('seed');
     return seed;
   },
-  errorMessage(){
+  errorMessage() {
     const errorMessage = Session.get('errorMessage');
     return errorMessage;
-  }
+  },
 });
 
 Template.showSeed.onDestroyed(function () {
@@ -24,7 +24,7 @@ Template.showSeed.events({
 
     const button = $('#btn-show-seed');
     button.button('loading');
-    getSeed(password, function(){
+    getSeed(password, function () {
       button.button('reset');
     });
   },
