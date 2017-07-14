@@ -13,9 +13,9 @@ describe('wallet', function () {
     // server.execute(resetDb);
   });
 
-  it('should be able to send some PTI', function () {
-    createUserAndLogin(browser);
-    browser.url('http://localhost:3000/profile');
-    browser.pause(10000);
-  });
+  // it('should be able to send some PTI', function () {
+  //   createUserAndLogin(browser);
+  //   browser.url('http://localhost:3000/profile');
+  //   browser.pause(10000);
+  // });
 });
