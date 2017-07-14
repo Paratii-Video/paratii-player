@@ -1,31 +1,26 @@
 /* eslint-disable no-console */
 import { web3 } from '/imports/lib/ethereum/connection.js';
+import { getTransactionsByAccount, getKeystore } from '/imports/lib/ethereum/wallet.js';
 import { Template } from 'meteor/templating';
 import { getUserPTIAddress } from '/imports/api/users.js';
 import './debug.html';
 
 
-export function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
-  for (let i = startBlockNumber; i <= endBlockNumber; i += 1) {
-    console.log(`Searching block ${i}`);
-    const block = web3.eth.getBlock(i);
-    if (block != null && block.transactions != null) {
-      block.transactions.forEach(function (e) {
-        const transaction = web3.eth.getTransaction(e);
-        if (myaccount === '*' || myaccount === transaction.from || myaccount === transaction.to) {
-          console.log(transaction);
-        }
-      });
-    }
-  }
-}
-
 Template.debug.events({
   'click #get-transaction-console'() {
-    getTransactionsByAccount(getUserPTIAddress(), 0, 55);
+    getTransactionsByAccount(getUserPTIAddress(), 55, 104);
   },
 });
 Template.debug.helpers({
+  privateKey() {
+    // not included in wallet because is unsafe
+    const keystore = getKeystore();
+    keystore.keyFromPassword('password', function (err, pwDerivedKey) {
+      Session.set('privateKey', keystore.exportPrivateKey(getUserPTIAddress(), pwDerivedKey));
+    });
+
+    return Session.get('privateKey');
+  },
   accounts() {
     return EthAccounts.find();
   },
@@ -43,6 +38,13 @@ Template.debug.helpers({
   },
   eth_balance() {
     const balance = Session.get('eth_balance');
+    if (balance !== undefined) {
+      return web3.fromWei(balance, 'ether');
+    }
+    return '';
+  },
+  pti_balance() {
+    const balance = Session.get('pti_balance');
     if (balance !== undefined) {
       return web3.fromWei(balance, 'ether');
     }

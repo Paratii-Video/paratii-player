@@ -1,11 +1,12 @@
 /* eslint no-unused-vars: "off" */
 import Web3 from 'web3';
-import { getUserPTIAddress } from '../../api/users.js';
+import { getUserPTIAddress } from '/imports/api/users.js';
+import { abidefinition } from './abidefinition.js';
 
 const DEFAULT_PROVIDER = 'http://paratii-chain.gerbrandy.com';
-const PARATII_TOKEN_ADDRESS = '0x385b2E03433C816DeF636278Fb600ecd056B0e8d';
+const PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d';
 const GAS_PRICE = 50000000000;
-const GAS_LIMIT = 50000;
+const GAS_LIMIT = 4e6;
 
 web3 = new Web3();
 
@@ -19,6 +20,12 @@ function updateSession(error, sync) {
     Session.set('eth_highestBlock', sync.highestBlock);
     const ptiAddress = getUserPTIAddress();
     if (ptiAddress) {
+      // SET PTI BALANCE
+      const contract = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS);
+      const ptiBalance = contract.balanceOf(ptiAddress);
+      Session.set('pti_balance', ptiBalance.toNumber());
+
+      // SET ETH BALANCE
       web3.eth.getBalance(ptiAddress, function (err, result) {
         if (result !== undefined) {
           Session.set('eth_balance', result.toNumber());
@@ -30,6 +37,7 @@ function updateSession(error, sync) {
     Session.set('eth_currentBlock', null);
     Session.set('eth_highestBlock', null);
     Session.set('eth_balance', null);
+    Session.set('pti_balance', null);
   }
 }
 
@@ -50,4 +58,4 @@ export const initConnection = function () {
   web3.eth.isSyncing(updateSession);
 };
 
-export { web3, GAS_PRICE, GAS_LIMIT };
+export { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS };
