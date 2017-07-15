@@ -58,8 +58,11 @@ export const initConnection = function () {
 
   // web3.eth.isSyncing(updateSession);
   const filter = web3.eth.filter('latest');
-
+  console.log('filter');
+  updateSession();
   filter.watch(function (error, result) {
+    console.log(error);
+    console.log(result);
     if (!error) {
       updateSession();
     }

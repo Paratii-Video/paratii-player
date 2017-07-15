@@ -3,7 +3,7 @@
 import { createUser, resetDb, createKeystore, createUserAndLogin } from './helpers.js';
 
 function clearLocalStorage() {
-  localStorage.clear();
+  localStorage.removeItem('keystore');
 }
 
 describe('account workflow', function () {
@@ -73,19 +73,29 @@ describe('account workflow', function () {
     browser.click('#btn-eth-close');
   });
 
-  it('restore the keystore', function () {
+  it('restore the keystore @watch', function () {
     createUserAndLogin(browser);
-    // we are now logged in
-    // we are at the wallet page, and try to restore the account
-    const seedPhrase = 'lsdkjfsladkj';
-    browser.waitForExist('#restore-keystore', 20000);
+    browser.waitForExist('#show-seed', 5000);
+    browser.click('#show-seed');
+    browser.waitForVisible('[name="user_password"]');
+    browser.setValue('[name="user_password"]', 'password');
+    browser.click('#btn-show-seed');
+    browser.pause(1000);
+    browser.waitForVisible('#seed');
+    const seed = browser.getHTML('#seed tt', false);
+    const publicAddress = browser.getHTML('#public_address', false);
+    browser.click('#btn-eth-close');
+    browser.execute(clearLocalStorage);
+    browser.refresh();
+    browser.waitForVisible('#restore-keystore');
     browser.click('#restore-keystore');
-    browser.waitForVisible('[name="field-seed"]', 2000);
-    browser
-      .setValue('[name="field-seed"]', seedPhrase)
-      .setValue('[name="field-password"]', 'password');
+    browser.waitForVisible('[name="field-seed"]');
+    browser.setValue('[name="field-seed"]', seed);
+    browser.setValue('[name="field-password"]', 'password');
     browser.click('#btn-restorekeystore-restore');
-    // TODO: check if it was indeed restored...
-    // TODO: check error handling if invalid phrase was given
+    browser.pause(1000);
+    browser.waitForVisible('#public_address');
+    const newPublicAddress = browser.getHTML('#public_address', false);
+    assert.equal(publicAddress, newPublicAddress);
   });
 });

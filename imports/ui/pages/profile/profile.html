@@ -4,10 +4,12 @@
     <div class="titleContainer" id="wallet-title">
       <span>My Profile</span>
     </div>
-    <div class="float-right address-container">
-      <div class="address-identicon">{{> dapp_identicon identity=userPTIAddress class="dapp-tiny"}}</div>
-      <span class="address">This is your address: {{ userPTIAddress }}</span>
-    </div>
+    {{#if userPTIAddress}}
+      <div class="float-right address-container">
+        <div class="address-identicon">{{> dapp_identicon identity=userPTIAddress class="dapp-tiny"}}</div>
+        <span class="address">This is your address: <span id="public_address">{{ userPTIAddress }}</span></span>
+      </div>
+    {{/if}}
   </div>
   <div class="line"></div>
   <div class="walletContainer">
