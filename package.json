@@ -4,7 +4,7 @@
   "scripts": {
     "start": "meteor run",
     "dev": "meteor run",
-    "test": "meteor test --driver-package practicalmeteor:mocha --port 8754",
+    "test": "meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",

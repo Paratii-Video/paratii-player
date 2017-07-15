@@ -10,6 +10,7 @@ test:
     - sudo apt-get --only-upgrade install google-chrome-stable
     - google-chrome --version
   override:
+    - timeout: 1020
     - testrpc:
         background: true
     - sleep 10
