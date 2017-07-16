@@ -1,6 +1,15 @@
 dependencies:
-  pre:
-    - curl https://install.meteor.com | /bin/sh
+  # pre:
+    # - curl https://install.meteor.com | /bin/sh
+  override:
+    - if [ ! -f ~/.meteor/meteor ]; then curl https://install.meteor.com | /bin/sh; fi
+    # - touch ~/.meteor/packages/meteor-tool/1\.4\.3_1
+    - npm install
+    # if any project packages were updated, this will download and install them
+    - meteor list
+  cache_directories:
+    - "~/.meteor"
+    - "~/project/node_modules"
 test:
   pre:
     - google-chrome --version
