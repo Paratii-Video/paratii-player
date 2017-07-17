@@ -6,9 +6,9 @@ dependencies:
     - npm install
     # if any project packages were updated, this will download and install them
     - meteor list
-  cache_directories:
-    - "~/.meteor"
-    - "~/paratii-player/node_modules"
+  # cache_directories:
+    # - "~/.meteor"
+    # - "~/paratii-player/node_modules"
 test:
   pre:
     - google-chrome --version
@@ -28,6 +28,8 @@ test:
     - sleep 120
     - npm run chimp-test
     - npm run lint
+  post:
+    - pkill -f meteor
 
 deployment:
   staging:
