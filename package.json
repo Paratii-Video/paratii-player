@@ -2,8 +2,8 @@
   "name": "paratii-player",
   "private": true,
   "scripts": {
-    "start": "meteor run",
-    "dev": "meteor run",
+    "start": "meteor run --settings settings.json",
+    "dev": "meteor run --settings settings-dev.json",
     "test": "meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
