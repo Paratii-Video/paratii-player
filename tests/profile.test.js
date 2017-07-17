@@ -1,10 +1,7 @@
 /* eslint-disable: global-require, no-alert */
 /* eslint global-require: "off" */
-import { createUser, resetDb, createKeystore, createUserAndLogin } from './helpers.js';
+import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage } from './helpers.js';
 
-function clearLocalStorage() {
-  localStorage.removeItem('keystore');
-}
 
 describe('account workflow', function () {
   beforeEach(function () {
@@ -73,7 +70,7 @@ describe('account workflow', function () {
     browser.click('#btn-eth-close');
   });
 
-  it('restore the keystore @watch', function () {
+  it('restore the keystore', function () {
     createUserAndLogin(browser);
     browser.waitForExist('#show-seed', 5000);
     browser.click('#show-seed');

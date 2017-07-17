@@ -35,3 +35,7 @@ export function createUserAndLogin(browser) {
   login(browser);
   browser.execute(createKeystore);
 }
+
+export function clearLocalStorage() {
+  localStorage.removeItem('keystore');
+}

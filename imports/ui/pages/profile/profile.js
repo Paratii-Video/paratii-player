@@ -45,7 +45,6 @@ Template.profile.helpers({
 
 });
 
-
 Template.profile.events({
   'click #create-wallet'() {
     getPassword().then(function (password) {
@@ -78,6 +77,9 @@ Template.profile.events({
     };
     Modal.show('editProfile', {
     }, modalOptions);
+  },
+  'click #transaction-history'() {
+    FlowRouter.go('transactions');
   },
 });
 

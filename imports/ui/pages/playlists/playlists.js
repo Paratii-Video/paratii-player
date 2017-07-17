@@ -1,8 +1,8 @@
 import { Template } from 'meteor/templating';
 import { formatNumber } from '/imports/lib/utils.js';
 import { Videos } from '../../../../imports/api/videos.js';
-
 import './playlists.html';
+
 
 Template.playlists.onCreated(function () {
   Meteor.subscribe('videos');
