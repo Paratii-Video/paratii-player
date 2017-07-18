@@ -70,7 +70,7 @@ describe('account workflow', function () {
     browser.click('#btn-eth-close');
   });
 
-  it('restore the keystore', function () {
+  it('restore the keystore @watch', function () {
     createUserAndLogin(browser);
     browser.waitForExist('#show-seed', 5000);
     browser.click('#show-seed');
@@ -90,8 +90,7 @@ describe('account workflow', function () {
     browser.setValue('[name="field-seed"]', seed);
     browser.setValue('[name="field-password"]', 'password');
     browser.click('#btn-restorekeystore-restore');
-    browser.pause(1000);
-    browser.waitForVisible('#public_address');
+    browser.waitForExist('#public_address', 2000);
     const newPublicAddress = browser.getHTML('#public_address', false);
     assert.equal(publicAddress, newPublicAddress);
   });

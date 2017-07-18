@@ -37,5 +37,5 @@ export function createUserAndLogin(browser) {
 }
 
 export function clearLocalStorage() {
-  localStorage.removeItem('keystore');
+  localStorage.removeItem(`keystore-${Accounts.userId()}`);
 }

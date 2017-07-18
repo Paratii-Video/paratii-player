@@ -5,6 +5,7 @@
 /* eslint no-param-reassign: "off" */
 import * as RLocalStorage from 'meteor/simply:reactive-local-storage';
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
+import { Accounts } from 'meteor/accounts-base';
 import { add0x } from '/imports/lib/utils.js';
 import { getUserPTIAddress } from '/imports/api/users.js';
 import { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS } from './connection.js';
@@ -41,8 +42,8 @@ function createKeystore(password, seedPhrase, cb) {
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 1);
 
-      RLocalStorage.setItem('keystore', keystore.serialize());
-      Session.set('keystore', keystore.serialize());
+      RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore.serialize());
+      Session.set(`keystore-${Accounts.userId()}`, keystore.serialize());
 
       const address = keystore.getAddresses()[0];
       Session.set('userPTIAddress', add0x(address));
@@ -61,11 +62,11 @@ function createKeystore(password, seedPhrase, cb) {
 // If no keystore can be found, it returns undefined.
 export function getKeystore() {
   let serializedKeystore;
-  serializedKeystore = Session.get('keystore');
+  serializedKeystore = Session.get(`keystore-${Accounts.userId()}`);
   if (serializedKeystore === undefined) {
-    serializedKeystore = RLocalStorage.getItem('keystore');
+    serializedKeystore = RLocalStorage.getItem(`keystore-${Accounts.userId()}`);
     if (serializedKeystore !== null) {
-      Session.set('keystore', serializedKeystore);
+      Session.set(`keystore-${Accounts.userId()}`, serializedKeystore);
     }
   }
   // using lightwallet to deserialize the keystore
