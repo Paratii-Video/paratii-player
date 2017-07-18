@@ -1,15 +1,24 @@
 /* eslint no-unused-vars: "off" */
 import Web3 from 'web3';
 import { getUserPTIAddress } from '/imports/api/users.js';
+import { getPTITransactionsFromChain, getTransactionsByAccount } from '/imports/api/transactions.js';
 import { abidefinition } from './abidefinition.js';
 
+// TODO: store all this information in a settings.json object
 const DEFAULT_PROVIDER = Meteor.settings.public.http_provider;
 const PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d';
 const GAS_PRICE = 50000000000;
 const GAS_LIMIT = 4e6;
+const FIRST_BLOCK = 100; // First block we consider when searching for transaction history etc.
+Meteor.settings.public.first_block = FIRST_BLOCK;
 
 web3 = new Web3();
 
+export function PTIContract() {
+  // return a web3.eth.contract instance for the PTI Contract
+  const contract = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS);
+  return contract;
+}
 
 function updateSession() {
   /* update Session variables with altest information from the blockchain */
@@ -21,8 +30,7 @@ function updateSession() {
     const ptiAddress = getUserPTIAddress();
     if (ptiAddress) {
       // SET PTI BALANCE
-
-      const contract = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS);
+      const contract = PTIContract();
       const ptiBalance = contract.balanceOf(ptiAddress);
       Session.set('pti_balance', ptiBalance.toNumber());
 
@@ -42,20 +50,11 @@ function updateSession() {
   }
 }
 
-const connect = function () {
-  if (web3.isConnected()) {
-    // only start app operation, when the node is not syncing
-    // (or the eth_syncing property doesn't exists)
-    EthAccounts.init();
-    EthBlocks.init();
-  }
-};
+web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
 
 export const initConnection = function () {
   web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
-  // connect();
   // call the status function every second
-
   // web3.eth.isSyncing(updateSession);
   const filter = web3.eth.filter('latest');
   updateSession();
@@ -64,6 +63,8 @@ export const initConnection = function () {
       updateSession();
     }
   });
+  getPTITransactionsFromChain();
+  getTransactionsByAccount('*');
 };
 
 export { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS };

@@ -3,7 +3,7 @@
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';
 import { getKeystore } from '/imports/lib/ethereum/wallet.js';
-
+import { add0x } from '/imports/lib/utils.js';
 
 // Deny all client-side updates to user documents
 Meteor.users.deny({
@@ -95,6 +95,7 @@ export function userPrettyName() {
 
 export function getUserPTIAddress() {
   if (Session.get('generating-keystore')) {
+    // keystore is not available yet
     return null;
   }
   const address = Session.get('userPTIAddress');
@@ -103,7 +104,8 @@ export function getUserPTIAddress() {
     if (keystore !== null) {
       const addresses = keystore.getAddresses();
       if (addresses.length > 0) {
-        return addresses[0];
+        Session.set('userPTIAddress', add0x(addresses[0]));
+        return add0x(addresses[0]);
       }
     }
   }

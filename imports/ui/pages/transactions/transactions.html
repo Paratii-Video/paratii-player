@@ -1,24 +1,38 @@
 <template name="transactions">
-  <div class="titleContainer" >
-    <span>Transaction History</span>
+  <div class="clearfix">
+    <div class="titleContainer" id="wallet-title">
+      <span>Transaction History</span>
+    </div>
+    {{#if userPTIAddress}}
+      <div class="float-right address-container">
+        <div class="address-identicon">{{> dapp_identicon identity=userPTIAddress class="dapp-tiny"}}</div>
+        <span class="address">This is your address: <span id="public_address">{{ userPTIAddress }}</span></span>
+      </div>
+    {{/if}}
   </div>
   <div class="line"></div>
   <div class="container">
     <table class="table table-striped">
       <tr>
         <!-- <th>Id</th> -->
-        <th>Date</th>
+        <!-- <th>Date</th> -->
+        <th>Blocknumer</th>
         <th>Description</th>
+        <th>from</th>
+        <th>to</th>
         <th>ETH</th>
         <th>PTI</th>
       </tr>
       {{#each transactions}}
       <tr>
         <!-- <td>{{ id }}</td> -->
-        <td>{{formatDate datetime }}</td>
+        <!-- <td>{{formatDate datetime }}</td> -->
+        <td>{{ blockNumber}}</td>
         <td>{{ description }}</td>
-        <td>{{ amount_eth }}</td>
-        <td>{{ amount_pti }}</td>
+        <td>{{ from }}</td>
+        <td>{{ to }}</td>
+        <td>{{ ethValue }}</td>
+        <td>{{ ptiValue }}</td>
       </tr>
       {{/each}}
     </table>
