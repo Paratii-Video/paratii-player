@@ -10,11 +10,12 @@ import { add0x } from '/imports/lib/utils.js';
 import { getUserPTIAddress } from '/imports/api/users.js';
 import { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS } from './connection.js';
 import { abidefinition } from './abidefinition.js';
+import { paratiiContract } from './paratiiContract.js';
+
 
 // createKeystore will create a new keystore
 // save it in the sesion object and in local storage
 // generate an address, and save that in the sesssion too
-
 function createKeystore(password, seedPhrase, cb) {
   // create a new seedPhrase if we have none
   Session.set('generating-keystore', true);
@@ -168,6 +169,34 @@ function sendEther(amountInEth, recipient, password) {
   doTx(amountInEth, recipient, password, 'Eth');
 }
 
+function deployTestContract(owner) {
+  const MyContract = web3.eth.contract(paratiiContract.abi);
+  MyContract.new(
+    {
+      from: add0x(owner),
+      data: paratiiContract.unlinked_binary,
+      gas: web3.toHex(GAS_LIMIT),
+    }, function (err, myContract) {
+    console.log(err);
+    if (!err) {
+       // NOTE: The callback will fire twice!
+       // Once the contract has the transactionHash property set and once its deployed on an address.
+
+       // e.g. check tx hash on the first call (transaction send)
+      if (!myContract.address) {
+        console.log(myContract.transactionHash); // The hash of the transaction, which deploys the contract
+
+       // check address on the second call (contract deployed)
+      } else {
+        console.log(myContract.address); // the contract address
+      }
+
+       // Note that the returned "myContractReturned" === "myContract",
+       // so the returned "myContractReturned" object will also get the address set.
+    }
+  });
+}
+
 function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
   for (let i = startBlockNumber; i <= endBlockNumber; i += 1) {
     console.log(`Searching block ${i}`);
@@ -183,7 +212,7 @@ function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
   }
 }
 
-export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, getAccounts, sendUnSignedTransaction };
+export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, getAccounts, sendUnSignedTransaction, deployTestContract };
 
 // ////////////////////
 // / Copies from lightwallet, ignore..

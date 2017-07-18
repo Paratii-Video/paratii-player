@@ -1,6 +1,6 @@
 /* eslint global-require: "off" */
 // import { assert } from 'chai';
-import { resetDb, createUserAndLogin, getSomeEth } from './helpers.js';
+import { resetDb, createUserAndLogin, getSomeEth, getSomePTI } from './helpers.js';
 
 describe('wallet', function () {
   beforeEach(function () {
@@ -20,14 +20,9 @@ describe('wallet', function () {
     assert.equal(amount, 100);
   });
 
-  it('should be able to send some PTI', function () {
+  it('should be able to send some PTI @watch', function () {
     createUserAndLogin(browser);
-
-
     browser.waitForExist('#public_address', 3000);
-    browser.execute(getSomeEth, 100);
-    browser.waitForExist('#eth_amount', 3000);
-    const amount = browser.getHTML('#eth_amount', false);
-    assert.equal(amount, 100);
+    browser.execute(getSomePTI);
   });
 });

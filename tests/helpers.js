@@ -11,8 +11,15 @@ export function login(browser) {
 
 export function getSomeEth(amount) {
   const wallet = require('./imports/lib/ethereum/wallet.js');
-  const accunts = wallet.getAccounts();
-  wallet.sendUnSignedTransaction(accunts[0], amount);
+  const accounts = wallet.getAccounts();
+  wallet.sendUnSignedTransaction(accounts[0], amount);
+}
+
+export function getSomePTI() {
+  const wallet = require('./imports/lib/ethereum/wallet.js');
+  const accounts = wallet.getAccounts();
+  wallet.deployTestContract(accounts[0]);
+  // wallet.sendUnSignedTransaction(accunts[0], amount);
 }
 
 export function resetDb() {
