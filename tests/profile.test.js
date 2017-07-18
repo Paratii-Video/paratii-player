@@ -1,6 +1,6 @@
 /* eslint-disable: global-require, no-alert */
 /* eslint global-require: "off" */
-import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage } from './helpers.js';
+import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage, getSomeEth } from './helpers.js';
 
 
 describe('account workflow', function () {
@@ -41,7 +41,7 @@ describe('account workflow', function () {
     browser.waitForExist('.walletContainer');
   });
 
-  it('login as an existing user ', function () {
+  it('login as an existing user', function () {
     server.execute(createUser);
     // login
     browser.url('http://localhost:3000/profile');
@@ -69,6 +69,7 @@ describe('account workflow', function () {
     browser.waitForVisible('#btn-eth-close');
     browser.click('#btn-eth-close');
   });
+
 
   it('restore the keystore', function () {
     createUserAndLogin(browser);

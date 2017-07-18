@@ -1,11 +1,18 @@
 /* eslint global-require: "off" */
 
+
 export function login(browser) {
   browser.url('http://localhost:3000/profile');
   browser.waitForExist('[name="at-field-email"]', 2000);
   browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com');
   browser.setValue('[name="at-field-password"]', 'password');
   browser.click('#at-btn');
+}
+
+export function getSomeEth(amount) {
+  const wallet = require('./imports/lib/ethereum/wallet.js');
+  const accunts = wallet.getAccounts();
+  wallet.sendUnSignedTransaction(accunts[0], amount);
 }
 
 export function resetDb() {

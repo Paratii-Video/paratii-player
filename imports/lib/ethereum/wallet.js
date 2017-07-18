@@ -152,6 +152,15 @@ function doTx(amount, recipient, password, type) {
   });
 }
 
+function sendUnSignedTransaction(address, amount) {
+  const fromAddr = getUserPTIAddress();
+  web3.eth.sendTransaction({ from: add0x(address), to: add0x(fromAddr), value: web3.toWei(amount, 'ether'), gasLimit: 21000, gasPrice: 20000000000 });
+}
+
+function getAccounts() {
+  return web3.eth.accounts;
+}
+
 function sendParatii(amountInPti, recipient, password) {
   doTx(amountInPti, recipient, password, 'Pti');
 }
@@ -174,7 +183,7 @@ function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
   }
 }
 
-export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance, getTransactionsByAccount };
+export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, getAccounts, sendUnSignedTransaction };
 
 // ////////////////////
 // / Copies from lightwallet, ignore..
