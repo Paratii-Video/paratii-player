@@ -1,6 +1,6 @@
 /* eslint-disable: global-require, no-alert */
 /* eslint global-require: "off" */
-import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage, getSomeEth } from './helpers.js';
+import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage } from './helpers.js';
 
 
 describe('account workflow', function () {

@@ -19,4 +19,15 @@ describe('wallet', function () {
     const amount = browser.getHTML('#eth_amount', false);
     assert.equal(amount, 100);
   });
+
+  it('should be able to send some PTI', function () {
+    createUserAndLogin(browser);
+
+
+    browser.waitForExist('#public_address', 3000);
+    browser.execute(getSomeEth, 100);
+    browser.waitForExist('#eth_amount', 3000);
+    const amount = browser.getHTML('#eth_amount', false);
+    assert.equal(amount, 100);
+  });
 });
