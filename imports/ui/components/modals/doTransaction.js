@@ -2,7 +2,6 @@ import { Template } from 'meteor/templating';
 import { doTx } from '/imports/lib/ethereum/wallet.js';
 import { checkPassword } from '/imports/api/users.js';
 import '/imports/lib/validate.js';
-
 import './doTransaction.html';
 
 Template.doTransaction.helpers({
@@ -20,7 +19,7 @@ Template.doTransaction.helpers({
 
 
 Template.doTransaction.events({
-  'submit #form-doTransaction'(event) {
+  async 'submit #form-doTransaction'(event) {
     event.preventDefault();
     const type = this.type;  // Get the context from Template
     const amount = event.target.wallet_amount.value;
@@ -39,16 +38,19 @@ Template.doTransaction.events({
       default:
     }
 
-    if (parseFloat(amount) > parseFloat(balance)) {
-      check.wallet_amount = 'You don\'t have enough' + this.label;
+    if (parseFloat(amount) <= 0 || isNaN(parseFloat(amount)) === true) {
+      check.wallet_amount = 'This value is not allowed';
+    } else if (parseFloat(amount) > parseFloat(balance)) {
+      check.wallet_amount = 'You don\'t have enough #{this.label}';
     } else {
       check.wallet_amount = null;
     }
 
-    if (checkPassword(password) === false) {
-      check.user_password = 'Wrong password';
-    } else {
+    const isvalid = await checkPassword(password);
+    if (isvalid === true) {
       check.user_password = null;
+    } else {
+      check.user_password = 'Wrong password';
     }
     const errors = _.find(check, function (value) {
       return value != null;

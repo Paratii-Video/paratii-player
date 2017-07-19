@@ -9,7 +9,7 @@
           </div>
           <!-- Body -->
           <div class="modal-body">
-            <div class="form-group {{#if getErrors 'wallet_pti_amount'}}has-error{{/if}}">
+            <div class="form-group {{#if getErrors 'wallet_amount'}}has-error{{/if}}">
               {{#if getErrors 'wallet_amount'}}<label class="control-label">{{ getErrors 'wallet_amount' }}</label>{{/if}}
               <div class="input-group">
                 <span class="input-group-addon" id="sizing-addon3">{{ type }}</span>
@@ -32,8 +32,8 @@
           </div>
           <!-- Footer -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-ptii-close">Close</button>
-            <input type="submit" id="send_ptii_btn" class="btn btn-default blue-button" value="Send {{ type }}"/>
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-trans-close">Close</button>
+            <input type="submit" id="send_trans_btn" class="btn btn-default blue-button" value="Send {{ type }}"/>
           </div>
 
         </div>
