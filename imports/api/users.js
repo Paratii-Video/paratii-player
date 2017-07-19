@@ -75,7 +75,7 @@ if (Meteor.isServer) {
         const user = Meteor.user();
         const password = { digest, algorithm: 'sha-256' };
         const result = Accounts._checkPassword(user, password);
-        return result.error == null;
+        return result.error == null; // If no error return true
       }
       return false;
     },
@@ -123,9 +123,13 @@ export async function getPassword() {
   return password;
 }
 
-export async function checkPassword(password) {
+export function checkPassword(password) {
     // check the password, return True if it valid, false otherwise
   const digest = Package.sha.SHA256(password);
-  const isValid = await Meteor.call('checkPassword', digest);
-  return isValid;
+  Meteor.call('checkPassword', digest, function (error, result) {
+    if (error) {
+      throw error;
+    }
+    return result;
+  });
 }
