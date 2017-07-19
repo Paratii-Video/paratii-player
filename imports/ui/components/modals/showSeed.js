@@ -6,17 +6,27 @@ Template.showSeed.helpers({
     const seed = Session.get('seed');
     return seed;
   },
+  errorMessage() {
+    const errorMessage = Session.get('errorMessage');
+    return errorMessage;
+  },
 });
 
 Template.showSeed.onDestroyed(function () {
   Session.set('seed', null);
+  Session.set('errorMessage', null);
 });
 
 Template.showSeed.events({
   'submit #form-show-seed'(event) {
     event.preventDefault();
     const password = event.target.user_password.value;
-    getSeed(password);
+
+    const button = $('#btn-show-seed');
+    button.button('loading');
+    getSeed(password, function () {
+      button.button('reset');
+    });
   },
 });
 
