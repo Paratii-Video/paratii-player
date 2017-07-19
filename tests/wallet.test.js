@@ -15,7 +15,7 @@ describe('wallet', function () {
     createUserAndLogin(browser);
     browser.waitForExist('#public_address', 3000);
     browser.execute(getSomeEth, 50);
-    browser.waitForExist('#eth_amount', 3000);
+    browser.waitForExist('#eth_amount', 5000);
     const amount = browser.getHTML('#eth_amount', false);
     assert.equal(amount, 50);
   });
