@@ -14,10 +14,10 @@ describe('wallet', function () {
   it('should be able to send some ETH', function () {
     createUserAndLogin(browser);
     browser.waitForExist('#public_address', 3000);
-    browser.execute(getSomeEth, 100);
+    browser.execute(getSomeEth, 50);
     browser.waitForExist('#eth_amount', 3000);
     const amount = browser.getHTML('#eth_amount', false);
-    assert.equal(amount, 100);
+    assert.equal(amount, 50);
   });
 
   it('should be able to send some PTI @watch', function () {
