@@ -44,11 +44,15 @@
         </div>
         <div class="tab-content ">
           <div class="tab-pane active" id="eth">
-            <h3> You own <b>{{ eth_balance }}</b> Ether</h3>
+            {{#if eth_balance }}
+              <h3> You own <b id="eth_amount">{{ eth_balance }}</b> Ether</h3>
+            {{else}}
+              <h3> You don't own Ether</h3>
+            {{/if}}
             <button class="btn btn-default blue-button btn-block" id="send-eth">Send Ether</button>
           </div>
           <div class="tab-pane" id="pti">
-            <h3> You own <b>{{ pti_balance }}</b> PTI</h3>
+            <h3> You own <b id="pti_amount">{{ pti_balance }}</b> PTI</h3>
             <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button>
           </div>
           <button class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</button>

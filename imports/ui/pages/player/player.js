@@ -158,6 +158,7 @@ const pauseVideo = (instance) => {
   instance.find('#video-player').pause();
   Meteor.clearTimeout(controlsHandler);
   instance.templateDict.set('hideControls', false);
+  $('#app-container').removeClass('playing');
 };
 
 // Set a value (0 ~ 1) to the player volume and volume UX
@@ -205,6 +206,7 @@ Template.player.events({
       dict.set('playing', true);
       navState.set('closed');
       videoPlayer.play();
+      $('#app-container').addClass('playing');
       controlsHandler = Meteor.setTimeout(() => {
         if (!videoPlayer.paused) {
           dict.set('hideControls', true);
