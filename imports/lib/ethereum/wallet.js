@@ -197,11 +197,8 @@ function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
   }
 }
 
-<<<<<<< HEAD
-export { createKeystore, restoreWallet, doTx, sendPTI, getSeed, sendEther, getPTIBalance, getTransactionsByAccount };
-=======
-export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, getAccounts, sendUnSignedTransaction, deployTestContract };
->>>>>>> dev
+export { createKeystore, restoreWallet, doTx, sendPTI, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, deployTestContract };
+
 
 // ////////////////////
 // / Copies from lightwallet, ignore..
