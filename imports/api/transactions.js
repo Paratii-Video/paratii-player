@@ -1,9 +1,48 @@
 /* eslint-disable: no-param-reassign */
 import { web3, PTIContract } from '/imports/lib/ethereum/connection.js';
 
+export const Transactions = new Mongo.Collection('transactions');
+
+if (Meteor.isServer) {
+  Meteor.methods({
+    'transactions.addOrUpdate'(data) {
+      check(data, {
+        description: String,
+        from: String,
+        to: String,
+        ptiValue: Match.Maybe(Number),
+        ethValue: Match.Maybe(Number),
+        blockNumber: Number,
+        transactionHash: String,
+      }); // Check the type of the data
+      // we track the transactions by transactionHash
+      const prevTx = Transactions.findOne({ transactionHash: data.transactionHash });
+      if (prevTx) {
+        Transactions.update(prevTx._id, { $set: data });
+      } else {
+        Transactions.insert(data);
+      }
+    },
+    // 'events.balance'(userPTIAddress) {
+    //   check(userPTIAddress, String);
+    //   return getBalance(userPTIAddress);
+    // },
+  });
+
+  Meteor.publish('userTransactions', function (userPTIAddress) {
+    check(userPTIAddress, String);
+    // Publish all transactions where I find userPTIAddress
+    const query = { $or: [{ to: userPTIAddress }, { from: userPTIAddress }] };
+    return Transactions.find(query, { sort: { blockNumber: 1 } });
+  });
+}
+
+//
 function addOrUpdateTransaction(transaction) {
   // add (or update) a transaction in the collection
   // TODO: write to collection instead of Session
+  // not that this is blocking without a feedback
+  Meteor.call('transactions.addOrUpdate', transaction);
   transactions = Session.get('transactions') || [];
   transactions.push(transaction);
   Session.set('transactions', transactions);

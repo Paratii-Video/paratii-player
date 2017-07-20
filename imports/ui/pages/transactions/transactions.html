@@ -18,8 +18,6 @@
         <!-- <th>Date</th> -->
         <th>Blocknumer</th>
         <th>Description</th>
-        <th>from</th>
-        <th>to</th>
         <th>ETH</th>
         <th>PTI</th>
       </tr>
@@ -28,9 +26,12 @@
         <!-- <td>{{ id }}</td> -->
         <!-- <td>{{formatDate datetime }}</td> -->
         <td>{{ blockNumber}}</td>
-        <td>{{ description }}</td>
-        <td>{{ from }}</td>
-        <td>{{ to }}</td>
+        <td>
+          <b>{{ description }}</b>
+          <br>from: {{ from }}
+          <br>to: {{ to }}
+          <br>transactionHash: {{ transactionHash}}
+        </td>
         <td>{{ ethValue }}</td>
         <td>{{ ptiValue }}</td>
       </tr>
