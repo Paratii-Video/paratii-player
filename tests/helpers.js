@@ -1,11 +1,25 @@
 /* eslint global-require: "off" */
 
+
 export function login(browser) {
   browser.url('http://localhost:3000/profile');
   browser.waitForExist('[name="at-field-email"]', 2000);
   browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com');
   browser.setValue('[name="at-field-password"]', 'password');
   browser.click('#at-btn');
+}
+
+export function getSomeEth(amount) {
+  const wallet = require('./imports/lib/ethereum/wallet.js');
+  const accounts = wallet.getAccounts();
+  wallet.sendUnSignedTransaction(accounts[0], amount);
+}
+
+export function getSomePTI() {
+  const wallet = require('./imports/lib/ethereum/wallet.js');
+  const accounts = wallet.getAccounts();
+  wallet.deployTestContract(accounts[0]);
+  // wallet.sendUnSignedTransaction(accunts[0], amount);
 }
 
 export function resetDb() {
@@ -37,5 +51,5 @@ export function createUserAndLogin(browser) {
 }
 
 export function clearLocalStorage() {
-  localStorage.removeItem('keystore');
+  localStorage.removeItem(`keystore-${Accounts.userId()}`);
 }

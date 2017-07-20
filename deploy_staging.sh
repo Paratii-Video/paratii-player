@@ -1,7 +1,7 @@
 #!/bin/bash
-export TOOL_NODE_FLAGS="--max-old-space-size=4096" 
+export TOOL_NODE_FLAGS="--max-old-space-size=4096"
 
-meteor build .
+# meteor build .
 
 rsync -az paratii-player.tar.gz paratii@paratii.gerbrandy.com:/home/paratii/
 ssh paratii@paratii.gerbrandy.com <<'ENDSSH'
@@ -14,7 +14,7 @@ export PWD=/home/paratii
 export HOME=/home/paratii
 # leave as 127.0.0.1 for security
 export BIND_IP=127.0.0.1
-# the port 
+# the port
 export PORT=3000
 # this allows Meteor to figure out correct IP address of visitors
 export HTTP_FORWARDED_COUNT=1
@@ -36,8 +36,6 @@ export ROOT_URL=https://paratii.gerbrandy.com
 
 # a bit rigorous but we have a dedicated machine
 forever stopall
-cd 
+cd
 forever start bundle/main.js
 ENDSSH
-
-
