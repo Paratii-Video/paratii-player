@@ -1,103 +1,103 @@
 <template name="profile">
-  {{#if currentUser }} {{#isAuthorized}}
-  <div class="clearfix">
-    <div class="titleContainer" id="wallet-title">
-      <span>My Profile</span>
-    </div>
-    {{#if userPTIAddress}}
-      <div class="float-right address-container">
-        <div class="address-identicon">{{> dapp_identicon identity=userPTIAddress class="dapp-tiny"}}</div>
-        <span class="address">This is your address: <span id="public_address">{{ userPTIAddress }}</span></span>
+  <div class="scrollable-y">
+    {{#if currentUser }} {{#isAuthorized}}
+    <div class="clearfix">
+      <div class="titleContainer" id="wallet-title">
+        <span>My Profile</span>
       </div>
-    {{/if}}
-  </div>
-  <div class="line"></div>
-  <div class="walletContainer">
-    <div class="centerIcon">
-      <!-- {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-large"}} -->
-      {{#if currentUser.profile.image }}
-        <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url( {{ currentUser.profile.image }} )"></span>
-      {{else}}
-        <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url('/img/avatar_img.svg')"></span>
+      {{#if userPTIAddress}}
+        <div class="float-right address-container">
+          <div class="address-identicon">{{> dapp_identicon identity=userPTIAddress class="dapp-tiny"}}</div>
+          <span class="address">This is your address: <span id="public_address">{{ userPTIAddress }}</span></span>
+        </div>
       {{/if}}
     </div>
-    <div class="profile-label"> Name:</div>
-    <div class="profile-info">{{currentUser.profile.name}} </div>
-    <div class="profile-label"> Email:</div>
-    <div class="profile-info"> {{userEmail}}</div>
-    <!-- Action Buttons -->
-    <button class="btn btn-default blue-button btn-block" id="edit-profile">Edit Profile</button>
-  </div>
-  {{#if userPTIAddress }}
-
+    <div class="line"></div>
     <div class="walletContainer">
-      <ul class="titleContainer"></ul>
-      <div class="descriptionContainer">
-        <div class="navbar">
-          <ul class="nav nav-tabs">
-            <li class="active">
-              <a href="#eth" data-toggle="tab">ETH</a>
-            </li>
-            <li>
-              <a href="#pti" data-toggle="tab">PTI</a>
-            </li>
-          </ul>
-        </div>
-        <div class="tab-content ">
-          <div class="tab-pane active" id="eth">
-            {{#if eth_balance }}
-              <h3> You own <b id="eth_amount">{{ eth_balance }}</b> Ether</h3>
-            {{else}}
-              <h3> You don't own Ether</h3>
-            {{/if}}
-            <button class="btn btn-default blue-button btn-block" id="send-eth">Send Ether</button>
-          </div>
-          <div class="tab-pane" id="pti">
-            <h3> You own <b id="pti_amount">{{ pti_balance }}</b> PTI</h3>
-            <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button>
-          </div>
-          <button class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</button>
-          <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button>
-        </div>
-      </div>
-    </div>
-
-  {{else}}
-    <div class="walletContainer">
-      <ul class="titleContainer"></ul>
-      <div class="descriptionContainer">
-        {{# if wallet_is_generating }}
-        Please be patient, we are generating your wallet file.....
-        {{ else }}
-        <p>
-        We could not find a wallet stored on this device. If you remember the 12-word seed, you can restore your wallet:
-        </p>
-        <button class="btn btn-default blue-button" id="restore-keystore">Restore wallet</button>
-        <p>
-          Otherwise, you can generate a new wallet (but you will not have access to any funds you might have)
-        </p>
-        <p>
-          <button class="btn btn-default blue-button" id="create-wallet">Generate a new wallet</button>
-        </p>
+      <div class="centerIcon">
+        <!-- {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-large"}} -->
+        {{#if currentUser.profile.image }}
+          <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url( {{ currentUser.profile.image }} )"></span>
+        {{else}}
+          <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url('/img/avatar_img.svg')"></span>
         {{/if}}
       </div>
+      <div class="profile-label"> Name:</div>
+      <div class="profile-info">{{currentUser.profile.name}} </div>
+      <div class="profile-label"> Email:</div>
+      <div class="profile-info"> {{userEmail}}</div>
+      <!-- Action Buttons -->
+      <button class="btn btn-default blue-button btn-block" id="edit-profile">Edit Profile</button>
     </div>
-  {{/if}}
+    {{#if userPTIAddress }}
 
-  {{/isAuthorized}}
+      <div class="walletContainer">
+        <ul class="titleContainer"></ul>
+        <div class="descriptionContainer">
+          <div class="navbar">
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a href="#eth" data-toggle="tab">ETH</a>
+              </li>
+              <li>
+                <a href="#pti" data-toggle="tab">PTI</a>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-content ">
+            <div class="tab-pane active" id="eth">
+              {{#if eth_balance }}
+                <h3> You own <b id="eth_amount">{{ eth_balance }}</b> Ether</h3>
+              {{else}}
+                <h3> You don't own Ether</h3>
+              {{/if}}
+              <button class="btn btn-default blue-button btn-block" id="send-eth">Send Ether</button>
+            </div>
+            <div class="tab-pane" id="pti">
+              <h3> You own <b id="pti_amount">{{ pti_balance }}</b> PTI</h3>
+              <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button>
+            </div>
+            <button class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</button>
+            <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button>
+          </div>
+        </div>
+      </div>
 
-  <table class="table table-striped all_transactions">
-    {{#each events}} {{> transaction}} {{/each}}
-  </table>
+    {{else}}
+      <div class="walletContainer">
+        <ul class="titleContainer"></ul>
+        <div class="descriptionContainer">
+          {{# if wallet_is_generating }}
+          Please be patient, we are generating your wallet file.....
+          {{ else }}
+          <p>
+          We could not find a wallet stored on this device. If you remember the 12-word seed, you can restore your wallet:
+          </p>
+          <button class="btn btn-default blue-button" id="restore-keystore">Restore wallet</button>
+          <p>
+            Otherwise, you can generate a new wallet (but you will not have access to any funds you might have)
+          </p>
+          <p>
+            <button class="btn btn-default blue-button" id="create-wallet">Generate a new wallet</button>
+          </p>
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
 
-  {{else}}
-  <div class="container">
-    {{> atForm }}
+    {{/isAuthorized}}
+
+    <table class="table table-striped all_transactions">
+      {{#each events}} {{> transaction}} {{/each}}
+    </table>
+
+    {{else}}
+    <div class="container">
+      {{> atForm }}
+    </div>
+    {{/if}}
   </div>
-  {{/if}}
 </template>
-
-
 
 <template name="transaction">
   <tr class="transition_row {{#if sendCheck}} sent {{/if}}">
