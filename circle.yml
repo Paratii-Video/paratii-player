@@ -12,7 +12,7 @@ dependencies:
     - meteor list
   cache_directories:
     - "~/.meteor"
-    - "~/paratii-player/node_modules"
+    # - "~/paratii-player/node_modules"
 test:
   pre:
     - google-chrome --version
@@ -32,6 +32,8 @@ test:
     - sleep 120
     - npm run chimp-test
     - npm run lint
+  post:
+    - pkill -f meteor
 
 deployment:
   staging:

@@ -41,8 +41,8 @@ function updateSession() {
     const ptiAddress = getUserPTIAddress();
     if (ptiAddress) {
       // SET PTI BALANCE
-      setContractAddress(getContractAddress());
-      const contract = web3.eth.contract(paratiiContract.abi).at(getContractAddress());
+      setContractAddress(PARATII_TOKEN_ADDRESS);
+      const contract = web3.eth.contract(paratiiContract.abi).at(PARATII_TOKEN_ADDRESS);
       const ptiBalance = contract.balanceOf(ptiAddress);
       Session.set('pti_balance', ptiBalance.toNumber());
 
@@ -80,6 +80,7 @@ export const initConnection = function () {
   // web3.eth.isSyncing(updateSession);
   const filter = web3.eth.filter('latest');
   updateSession();
+
   filter.watch(function (error, result) {
     if (!error) {
       updateSession();

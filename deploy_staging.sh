@@ -1,5 +1,5 @@
 #!/bin/bash
-export TOOL_NODE_FLAGS="--max-old-space-size=4096" 
+export TOOL_NODE_FLAGS="--max-old-space-size=4096"
 
 meteor build .
 
@@ -14,7 +14,7 @@ export PWD=/home/paratii
 export HOME=/home/paratii
 # leave as 127.0.0.1 for security
 export BIND_IP=127.0.0.1
-# the port 
+# the port
 export PORT=3000
 # this allows Meteor to figure out correct IP address of visitors
 export HTTP_FORWARDED_COUNT=1
@@ -25,6 +25,7 @@ export ROOT_URL=https://paratii.gerbrandy.com
 
 # optional JSON config - the contents of file specified by passing "--settings" parameter to meteor command in development mode
 # export METEOR_SETTINGS='{ "somesetting": "someval", "public": { "othersetting": "anothervalue" } }'
+export METEOR_SETTINGS=$(cat settings-proc.json)
 
 # this is optional: http://docs.meteor.com/#email
 # commented out will default to no email being sent
@@ -36,8 +37,6 @@ export ROOT_URL=https://paratii.gerbrandy.com
 
 # a bit rigorous but we have a dedicated machine
 forever stopall
-cd 
+cd
 forever start bundle/main.js
 ENDSSH
-
-
