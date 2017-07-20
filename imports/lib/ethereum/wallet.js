@@ -8,8 +8,7 @@ import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
 import { Accounts } from 'meteor/accounts-base';
 import { add0x } from '/imports/lib/utils.js';
 import { getUserPTIAddress } from '/imports/api/users.js';
-import { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS } from './connection.js';
-import { abidefinition } from './abidefinition.js';
+import { web3, GAS_PRICE, GAS_LIMIT, getContractAddress, setContractAddress } from './connection.js';
 import { paratiiContract } from './paratiiContract.js';
 
 
@@ -129,8 +128,8 @@ function doTx(amount, recipient, password, type) {
         rawTx = lightwallet.txutils.valueTx(txOptions);
         break;
       case 'Pti':
-        txOptions.to = PARATII_TOKEN_ADDRESS;
-        rawTx = lightwallet.txutils.functionTx(abidefinition, 'transfer', [recipient, value], txOptions);
+        txOptions.to = getContractAddress();
+        rawTx = lightwallet.txutils.functionTx(paratiiContract.abi, 'transfer', [recipient, value], txOptions);
         // const result = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS).transfer(recipient, value);
         // console.log(result);
         // rawTx = lightwallet.txutils.functionTx(abidefinition, 'symbol', [], txOptions);
@@ -154,13 +153,22 @@ function doTx(amount, recipient, password, type) {
 }
 
 function sendUnSignedTransaction(address, amount) {
-  const fromAddr = getUserPTIAddress();
-  web3.eth.sendTransaction({ from: add0x(address), to: add0x(fromAddr), value: web3.toWei(amount, 'ether'), gasLimit: 21000, gasPrice: 20000000000 });
+  const toAddr = getUserPTIAddress();
+  web3.eth.sendTransaction({ from: add0x(address), to: add0x(toAddr), value: web3.toWei(amount, 'ether'), gasLimit: 21000, gasPrice: 20000000000 });
+}
+
+function sendUnSignedContractTransaction(address, value) {
+  const contractAddress = getContractAddress();
+  const toAddr = getUserPTIAddress();
+  const contract = web3.eth.contract(paratiiContract.abi).at(contractAddress);
+  const result = contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: address });
+  console.log(result);
 }
 
 function getAccounts() {
   return web3.eth.accounts;
 }
+
 
 function sendParatii(amountInPti, recipient, password) {
   doTx(amountInPti, recipient, password, 'Pti');
@@ -169,11 +177,11 @@ function sendEther(amountInEth, recipient, password) {
   doTx(amountInEth, recipient, password, 'Eth');
 }
 
-function deployTestContract(owner) {
+function deployTestContract() {
   const MyContract = web3.eth.contract(paratiiContract.abi);
   MyContract.new(
     {
-      from: add0x(owner),
+      from: add0x(web3.eth.accounts[0]),
       data: paratiiContract.unlinked_binary,
       gas: web3.toHex(GAS_LIMIT),
     }, function (err, myContract) {
@@ -188,6 +196,7 @@ function deployTestContract(owner) {
 
        // check address on the second call (contract deployed)
       } else {
+        setContractAddress(myContract.address);
         console.log(myContract.address); // the contract address
       }
 
@@ -212,7 +221,7 @@ function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
   }
 }
 
-export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, getAccounts, sendUnSignedTransaction, deployTestContract };
+export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction };
 
 // ////////////////////
 // / Copies from lightwallet, ignore..
