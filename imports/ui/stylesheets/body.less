@@ -6,7 +6,7 @@
   background-color: lightgray;
 }
 
-.app-container {
+#app-container {
   position: absolute;
   height: 100%;
   width: ~"calc(100% - 60px)";
@@ -19,6 +19,10 @@
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   overflow-y: auto;
+
+  &.playing {
+    overflow-y: visible;
+  }
 }
 
 .nav-overlay {

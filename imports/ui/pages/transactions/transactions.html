@@ -1,0 +1,26 @@
+<template name="transactions">
+  <div class="titleContainer" >
+    <span>Transaction History</span>
+  </div>
+  <div class="line"></div>
+  <div class="container">
+    <table class="table table-striped">
+      <tr>
+        <!-- <th>Id</th> -->
+        <th>Date</th>
+        <th>Description</th>
+        <th>ETH</th>
+        <th>PTI</th>
+      </tr>
+      {{#each transactions}}
+      <tr>
+        <!-- <td>{{ id }}</td> -->
+        <td>{{formatDate datetime }}</td>
+        <td>{{ description }}</td>
+        <td>{{ amount_eth }}</td>
+        <td>{{ amount_pti }}</td>
+      </tr>
+      {{/each}}
+    </table>
+  </div>
+</template>

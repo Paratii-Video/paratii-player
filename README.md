@@ -7,7 +7,7 @@ This is the repository for developing the Paratii Media Player.
 More information on [paratii.video](http://paratii.video/). Join the discussion on [gitter](https://gitter.im/Paratii-Video).
 
 
-# Installation 
+# Installation
 
 
 Install node (https://nodejs.org/en/download/) and npm. (These are the instructions for a debian based system - please check the download page for instructions for your OS)
@@ -40,13 +40,13 @@ Now start the application
 
 # Testing
 
-The application has to kind of tests. 
+The application has to kind of tests.
 
     npm test
 
-And end-to-end tetst that can be run by starting up the application in one window:
+And end-to-end tests that can be run by starting up the application in one window:
 
-    meteor run
+    meteor --settings settings-dev.json
 
 And running the tests in another window
 
@@ -64,7 +64,7 @@ Make sure all tests pass:
 Testing
 
     npm test
-    npm run 
+    npm run
 
 Run lint:
 
