@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { web3 } from '/imports/lib/ethereum/connection.js';
-import { getTransactionsByAccount, getKeystore } from '/imports/lib/ethereum/wallet.js';
+import { getTransactionsByAccount, getKeystore, deployTestContract } from '/imports/lib/ethereum/wallet.js';
 import { Template } from 'meteor/templating';
 import { getUserPTIAddress } from '/imports/api/users.js';
 import './debug.html';
@@ -9,6 +9,9 @@ import './debug.html';
 Template.debug.events({
   'click #get-transaction-console'() {
     getTransactionsByAccount(getUserPTIAddress(), 55, 104);
+  },
+  'click #deploy-parati-test-contract'() {
+    deployTestContract();
   },
 });
 Template.debug.helpers({
@@ -20,6 +23,12 @@ Template.debug.helpers({
     });
 
     return Session.get('privateKey');
+  },
+  contractAddress() {
+    return Session.get('pti_contract_address');
+  },
+  isTestRPC() {
+    return Session.get('isTestRPC');
   },
   accounts() {
     return EthAccounts.find();

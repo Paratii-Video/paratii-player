@@ -22,8 +22,6 @@ test:
     - sudo apt-get --only-upgrade install google-chrome-stable
     - google-chrome --version
   override:
-    - npm run testrpc:
-        background: true
     - sleep 10
     - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
         timeout: 1020

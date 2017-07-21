@@ -5,7 +5,6 @@ import { getUserPTIAddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import '/imports/ui/components/modals/editProfile.js';
 import '/imports/ui/components/modals/doTransaction.js';
-// import '/imports/ui/components/modals/sendPti.js';
 import '/imports/ui/components/modals/restoreKeystore.js';
 import '/imports/ui/components/modals/showSeed.js';
 import './profile.html';
@@ -27,17 +26,17 @@ Template.profile.helpers({
   },
   eth_balance() {
     const balance = Session.get('eth_balance');
-    if (balance !== undefined) {
+    if (balance !== undefined && balance > 0) {
       return web3.fromWei(balance, 'ether');
     }
-    return '';
+    return false;
   },
   pti_balance() {
     const balance = Session.get('pti_balance');
-    if (balance !== undefined) {
+    if (balance !== undefined && balance > 0) {
       return web3.fromWei(balance, 'ether');
     }
-    return '';
+    return false;
   },
   wallet_is_generating() {
     return Session.get('wallet-state') === 'generating';
@@ -66,7 +65,6 @@ Template.profile.events({
   },
   'click #send-pti'() {
     Modal.show('doTransaction', { type: 'PTI', label: 'Paratii' });
-    // Modal.show('sendPti', {});
   },
   'click #restore-keystore'() {
     Modal.show('restoreKeystore', {});
