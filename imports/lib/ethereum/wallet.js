@@ -128,24 +128,18 @@ function doTx(amount, recipient, password, type) {
         txOptions.value = web3.toHex(value);
         rawTx = lightwallet.txutils.valueTx(txOptions);
         break;
-      case 'Pti':
+      case 'PTI':
         txOptions.to = PARATII_TOKEN_ADDRESS;
         rawTx = lightwallet.txutils.functionTx(abidefinition, 'transfer', [recipient, value], txOptions);
-        // const result = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS).transfer(recipient, value);
-        // console.log(result);
-        // rawTx = lightwallet.txutils.functionTx(abidefinition, 'symbol', [], txOptions);
         break;
       default:
 
     }
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr);
-    // web3.eth.sign(address, dataToSign, [, callback])
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
       if (err) {
         throw err;
       }
-      const modalName = `send${type}`;
-      Modal.hide(modalName);
       console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
       const receipt = web3.eth.getTransactionReceipt(hash);
       console.log(receipt);
@@ -153,17 +147,8 @@ function doTx(amount, recipient, password, type) {
   });
 }
 
-function sendUnSignedTransaction(address, amount) {
-  const fromAddr = getUserPTIAddress();
-  web3.eth.sendTransaction({ from: add0x(address), to: add0x(fromAddr), value: web3.toWei(amount, 'ether'), gasLimit: 21000, gasPrice: 20000000000 });
-}
-
-function getAccounts() {
-  return web3.eth.accounts;
-}
-
-function sendParatii(amountInPti, recipient, password) {
-  doTx(amountInPti, recipient, password, 'Pti');
+function sendPTI(amountInPti, recipient, password) {
+  doTx(amountInPti, recipient, password, 'PTI');
 }
 function sendEther(amountInEth, recipient, password) {
   doTx(amountInEth, recipient, password, 'Eth');
@@ -212,7 +197,12 @@ function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
   }
 }
 
+<<<<<<< HEAD
 export { createKeystore, restoreWallet, sendParatii, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, getAccounts, sendUnSignedTransaction, deployTestContract };
+=======
+export { createKeystore, restoreWallet, doTx, sendPTI, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, deployTestContract };
+
+>>>>>>> a116e82824a521948c1711a401ecda3ccc5180a6
 
 // ////////////////////
 // / Copies from lightwallet, ignore..

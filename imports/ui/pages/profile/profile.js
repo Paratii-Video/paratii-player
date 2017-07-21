@@ -4,8 +4,8 @@ import { createKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js';
 import { getUserPTIAddress, getPassword } from '/imports/api/users.js';
 import { Events } from '/imports/api/events.js';
 import '/imports/ui/components/modals/editProfile.js';
-import '/imports/ui/components/modals/sendEth.js';
-import '/imports/ui/components/modals/sendPti.js';
+import '/imports/ui/components/modals/doTransaction.js';
+// import '/imports/ui/components/modals/sendPti.js';
 import '/imports/ui/components/modals/restoreKeystore.js';
 import '/imports/ui/components/modals/showSeed.js';
 import './profile.html';
@@ -45,6 +45,7 @@ Template.profile.helpers({
 
 });
 
+
 Template.profile.events({
   'click #create-wallet'() {
     getPassword().then(function (password) {
@@ -61,10 +62,11 @@ Template.profile.events({
     });
   },
   'click #send-eth'() {
-    Modal.show('sendEth', {});
+    Modal.show('doTransaction', { type: 'Eth', label: 'Ethereum' });
   },
   'click #send-pti'() {
-    Modal.show('sendPti', {});
+    Modal.show('doTransaction', { type: 'PTI', label: 'Paratii' });
+    // Modal.show('sendPti', {});
   },
   'click #restore-keystore'() {
     Modal.show('restoreKeystore', {});
@@ -77,9 +79,6 @@ Template.profile.events({
     };
     Modal.show('editProfile', {
     }, modalOptions);
-  },
-  'click #transaction-history'() {
-    FlowRouter.go('transactions');
   },
 });
 
