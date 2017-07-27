@@ -16,8 +16,8 @@ Template.navigation.onRendered(function () {
 });
 
 Template.navigation.helpers({
-  eth_balance() {
-    const balance = Session.get('eth_balance');
+  pti_balance() {
+    const balance = Session.get('pti_balance');
     if (balance !== undefined) {
       return web3.fromWei(balance, 'ether');
     }

@@ -1,7 +1,7 @@
 #!/bin/bash
 export TOOL_NODE_FLAGS="--max-old-space-size=4096"
 
-# meteor build .
+meteor build .
 
 rsync -az paratii-player.tar.gz paratii@paratii.gerbrandy.com:/home/paratii/
 ssh paratii@paratii.gerbrandy.com <<'ENDSSH'
@@ -24,6 +24,7 @@ export ROOT_URL=https://paratii.gerbrandy.com
 
 # optional JSON config - the contents of file specified by passing "--settings" parameter to meteor command in development mode
 # export METEOR_SETTINGS='{ "somesetting": "someval", "public": { "othersetting": "anothervalue" } }'
+export METEOR_SETTINGS=$(cat settings-proc.json)
 
 # this is optional: http://docs.meteor.com/#email
 # commented out will default to no email being sent

@@ -2,11 +2,13 @@
 import Web3 from 'web3';
 import { getUserPTIAddress } from '/imports/api/users.js';
 import { getPTITransactionsFromChain, getTransactionsByAccount } from '/imports/api/transactions.js';
+import { deployTestContract } from '/imports/lib/ethereum/wallet.js';
 import { abidefinition } from './abidefinition.js';
+import { paratiiContract } from './paratiiContract.js';
 
 // TODO: store all this information in a settings.json object
 const DEFAULT_PROVIDER = Meteor.settings.public.http_provider;
-const PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d';
+let PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d';
 const GAS_PRICE = 50000000000;
 const GAS_LIMIT = 4e6;
 const FIRST_BLOCK = 100; // First block we consider when searching for transaction history etc.
@@ -19,10 +21,27 @@ export function PTIContract() {
   const contract = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS);
   return contract;
 }
+function getContractAddress() {
+  return PARATII_TOKEN_ADDRESS;
+}
+
+function setContractAddress(address) {
+  PARATII_TOKEN_ADDRESS = address;
+  Session.set('pti_contract_address', PARATII_TOKEN_ADDRESS);
+}
 
 function updateSession() {
   /* update Session variables with altest information from the blockchain */
   Session.set('eth_host', web3.currentProvider.host);
+
+  /* if Web3 is running over testrpc test contract is deployed
+  and PARATII_TOKEN_ADDRESS ovverride */
+  if (web3.currentProvider.host.indexOf('localhost') !== -1) {
+    Session.set('isTestRPC', true);
+  } else {
+    Session.set('isTestRPC', false);
+  }
+
   if (web3.isConnected()) {
     Session.set('eth_isConnected', true);
     Session.set('eth_currentBlock', web3.eth.blockNumber);
@@ -53,11 +72,10 @@ function updateSession() {
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
 
 export const initConnection = function () {
+  Session.set('eth_testContractDeployed', false);
   web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
-  // call the status function every second
-  // web3.eth.isSyncing(updateSession);
+
   const filter = web3.eth.filter('latest');
-  updateSession();
   filter.watch(function (error, result) {
     if (!error) {
       updateSession();
@@ -67,4 +85,4 @@ export const initConnection = function () {
   getTransactionsByAccount('*');
 };
 
-export { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS };
+export { web3, GAS_PRICE, GAS_LIMIT, getContractAddress, setContractAddress };

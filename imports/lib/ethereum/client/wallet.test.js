@@ -5,6 +5,7 @@ import { assert } from 'chai';
 import { createKeystore } from '../wallet.js';
 
 describe('ethereum wallet', function () {
+  this.timeout(10000);
   it('create a wallet with a random seedPhrase', function (done) {
     const password = 'mypass';
     // createKeystore returns a seed

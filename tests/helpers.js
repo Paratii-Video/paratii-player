@@ -15,11 +15,23 @@ export function getSomeEth(amount) {
   wallet.sendUnSignedTransaction(accounts[0], amount);
 }
 
-export function getSomePTI() {
+export function getSomePTI(amount) {
+  const wallet = require('./imports/lib/ethereum/wallet.js');
+  const accounts = wallet.getAccounts();
+  wallet.sendUnSignedContractTransaction(accounts[0], amount);
+}
+
+export function getContractAddress() {
+  const connection = require('./imports/lib/ethereum/connection.js');
+
+  return connection.getContractAddress();
+}
+
+export function deployContract() {
   const wallet = require('./imports/lib/ethereum/wallet.js');
   const accounts = wallet.getAccounts();
   wallet.deployTestContract(accounts[0]);
-  // wallet.sendUnSignedTransaction(accunts[0], amount);
+  //
 }
 
 export function resetDb() {
