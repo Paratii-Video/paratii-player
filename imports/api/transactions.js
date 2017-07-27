@@ -33,7 +33,7 @@ if (Meteor.isServer) {
     check(userPTIAddress, String);
     // Publish all transactions where I find userPTIAddress
     const query = { $or: [{ to: userPTIAddress }, { from: userPTIAddress }] };
-    return Transactions.find(query, { sort: { blockNumber: 1 } });
+    return Transactions.find(query);
   });
 }
 

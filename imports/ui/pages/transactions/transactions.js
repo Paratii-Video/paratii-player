@@ -18,7 +18,7 @@ Template.registerHelper('formatDate', function (timestamp) {
 
 Template.transactions.helpers({
   transactions() {
-    return Transactions.find();
+    return Transactions.find({}, { sort: { blockNumber: -1 } });
     // return Session.get('transactions') || [];
   },
   userPTIAddress() {
