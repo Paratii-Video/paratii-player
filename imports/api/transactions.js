@@ -37,10 +37,11 @@ if (Meteor.isServer) {
       transactionHash: String,
     }); // Check the type of the data
     // we track the transactions by transactionHash
-    
+
     const prevTx = await Transactions.findOne({ transactionHash: transaction.transactionHash });
     if (prevTx) {
-      Transactions.update(prevTx._id, { $set: transaction });
+      // Transactions.update(prevTx._id, { $set: transaction });
+      
     } else {
       Transactions.insert(transaction);
     }
