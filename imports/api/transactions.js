@@ -1,11 +1,18 @@
 /* eslint-disable: no-param-reassign */
-import { web3, PTIContract } from '/imports/lib/ethereum/connection.js';
+import { web3, PTIContract, setContractAddress } from '/imports/lib/ethereum/connection.js';
 
 
 if (Meteor.isServer) {
   const Transactions = new Mongo.Collection('transactions');
+  let PTIFilter;
 
-
+  Meteor.methods({
+    'resetFilter'(data) {
+      check(data, Object);
+      console.log('resettingFilter');
+      resetPTIFilter(data.contract);
+    }
+  });
 
   Meteor.publish('userTransactions', function (userPTIAddress) {
     check(userPTIAddress, String);
@@ -32,7 +39,7 @@ if (Meteor.isServer) {
       // we track the transactions by transactionHash
       const prevTx = await Transactions.findOne({ transactionHash: transaction.transactionHash });
       if (prevTx) {
-        Transactions.update(prevTx._id, { $set: transaction });
+        // Transactions.update(prevTx._id, { $set: transaction });
       } else {
         Transactions.insert(transaction);
       }
@@ -51,15 +58,21 @@ if (Meteor.isServer) {
     addOrUpdateTransaction(transaction);
   }
 
+  export function resetPTIFilter(contract){
 
+    PTIFilter.stopWatching();
+    setContractAddress(contract);
+    getPTITransactionsFromChain();
+  }
   export function getPTITransactionsFromChain() {
     // set a filter for ALL PTI transactions
-    filter = PTIContract().Transfer({}, { fromBlock: 0, toBlock: 'latest' });
+    PTIFilter = PTIContract().Transfer({}, { fromBlock: 0, toBlock: 'latest' });
 
-    filter.watch(function (error, log) {
+    PTIFilter.watch(function (error, log) {
       if (error) {
         throw error;
       }
+      console.log(log);
       addTransferEventToTransactionCollection(log);
     });
   }
@@ -97,7 +110,6 @@ if (Meteor.isServer) {
     } else {
       fromBlock = startBlockNumber;
     }
-    console.log(myaccount, fromBlock, toBlock);
 
     for (let i = fromBlock; i <= toBlock; i += 1) {
       web3.eth.getBlock(i, true, function (error, block) {
@@ -105,6 +117,7 @@ if (Meteor.isServer) {
           block.transactions.forEach(function (e) {
             if (myaccount === '*' || myaccount === e.from || myaccount === e.to) {
               addETHTransactionToCollection(e);
+              console.log(e);
             }
           });
         }

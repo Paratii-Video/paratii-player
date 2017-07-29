@@ -10,6 +10,7 @@ import { add0x } from '/imports/lib/utils.js';
 import { getUserPTIAddress } from '/imports/api/users.js';
 import { web3, GAS_PRICE, GAS_LIMIT, getContractAddress, setContractAddress } from './connection.js';
 import { paratiiContract } from './paratiiContract.js';
+import { resetPTIFilter } from '/imports/api/transactions.js';
 
 
 // createKeystore will create a new keystore
@@ -189,6 +190,9 @@ function deployTestContract(owner) {
        // check address on the second call (contract deployed)
       } else {
         setContractAddress(myContract.address);
+        Meteor.call('resetFilter', {
+          contract: myContract.address
+        });
         console.log(myContract.address); // the contract address
       }
 

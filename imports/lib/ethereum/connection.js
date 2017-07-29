@@ -1,7 +1,6 @@
 /* eslint no-unused-vars: "off" */
 import Web3 from 'web3';
 import { getUserPTIAddress } from '/imports/api/users.js';
-import { getPTITransactionsFromChain, getTransactionsByAccount } from '/imports/api/transactions.js';
 import { deployTestContract } from '/imports/lib/ethereum/wallet.js';
 import { abidefinition } from './abidefinition.js';
 import { paratiiContract } from './paratiiContract.js';
@@ -26,7 +25,9 @@ function getContractAddress() {
 
 function setContractAddress(address) {
   PARATII_TOKEN_ADDRESS = address;
-  Session.set('pti_contract_address', PARATII_TOKEN_ADDRESS);
+  if(Meteor.isClient){
+    Session.set('pti_contract_address', PARATII_TOKEN_ADDRESS);
+  }
 }
 
 function updateSession() {
