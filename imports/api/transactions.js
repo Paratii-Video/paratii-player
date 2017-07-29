@@ -24,26 +24,27 @@ if (Meteor.isServer) {
 
   //
   async function addOrUpdateTransaction(transaction) {
-      // add (or update) a transaction in the collection
-      // TODO: write to collection instead of Session
-      // not that this is blocking without a feedback
-      check(transaction, {
-        description: String,
-        from: String,
-        to: String,
-        ptiValue: Match.Maybe(Number),
-        ethValue: Match.Maybe(Number),
-        blockNumber: Number,
-        transactionHash: String,
-      }); // Check the type of the data
-      // we track the transactions by transactionHash
-      const prevTx = await Transactions.findOne({ transactionHash: transaction.transactionHash });
-      if (prevTx) {
-        // Transactions.update(prevTx._id, { $set: transaction });
-      } else {
-        Transactions.insert(transaction);
-      }
+    // add (or update) a transaction in the collection
+    // TODO: write to collection instead of Session
+    // not that this is blocking without a feedback
+    check(transaction, {
+      description: String,
+      from: String,
+      to: String,
+      ptiValue: Match.Maybe(Number),
+      ethValue: Match.Maybe(Number),
+      blockNumber: Number,
+      transactionHash: String,
+    }); // Check the type of the data
+    // we track the transactions by transactionHash
+    
+    const prevTx = await Transactions.findOne({ transactionHash: transaction.transactionHash });
+    if (prevTx) {
+      Transactions.update(prevTx._id, { $set: transaction });
+    } else {
+      Transactions.insert(transaction);
     }
+  }
 
   function addTransferEventToTransactionCollection(log) {
     // TODO: saves transactions in session - should save persistently in meteor collection
@@ -117,7 +118,6 @@ if (Meteor.isServer) {
           block.transactions.forEach(function (e) {
             if (myaccount === '*' || myaccount === e.from || myaccount === e.to) {
               addETHTransactionToCollection(e);
-              console.log(e);
             }
           });
         }
@@ -128,7 +128,6 @@ if (Meteor.isServer) {
   export function syncTransactionHistory() {
       // searches the whole blockchain for transactions that may be relevant
       // and saves these as transaction objects
-
   }
 
 }

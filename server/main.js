@@ -22,7 +22,7 @@ SyncedCron.add({
   name: 'Retrieve ETH TXs from blockchain',
   schedule(parser) {
     // parser is a later.parse object
-    return parser.recur().every(30).second();
+    return parser.recur().every(2).minute();
   },
   job() {
     getTransactionsByAccount('*');
