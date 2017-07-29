@@ -128,8 +128,8 @@ function doTx(amount, recipient, password, type) {
         rawTx = lightwallet.txutils.valueTx(txOptions);
         break;
       case 'PTI':
-        txOptions.to = PARATII_TOKEN_ADDRESS;
-        rawTx = lightwallet.txutils.functionTx(abidefinition, 'transfer', [recipient, value], txOptions);
+        txOptions.to = getContractAddress();
+        rawTx = lightwallet.txutils.functionTx(paratiiContract.abi, 'transfer', [recipient, value], txOptions);
         break;
       default:
 

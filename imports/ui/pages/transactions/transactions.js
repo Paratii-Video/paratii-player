@@ -1,9 +1,9 @@
 import { getUserPTIAddress } from '/imports/api/users.js';
-import { Transactions } from '../../../../imports/api/transactions.js';
 import './transactions.html';
 
 
 const moment = require('moment');
+const Transactions = new Mongo.Collection('transactions');
 
 
 Template.transactions.onCreated(function () {

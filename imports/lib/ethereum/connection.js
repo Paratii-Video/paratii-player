@@ -11,14 +11,13 @@ const DEFAULT_PROVIDER = Meteor.settings.public.http_provider;
 let PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d';
 const GAS_PRICE = 50000000000;
 const GAS_LIMIT = 4e6;
-const FIRST_BLOCK = 100; // First block we consider when searching for transaction history etc.
-Meteor.settings.public.first_block = FIRST_BLOCK;
+
 
 web3 = new Web3();
 
 export function PTIContract() {
   // return a web3.eth.contract instance for the PTI Contract
-  const contract = web3.eth.contract(abidefinition).at(PARATII_TOKEN_ADDRESS);
+  const contract = web3.eth.contract(paratiiContract.abi).at(PARATII_TOKEN_ADDRESS);
   return contract;
 }
 function getContractAddress() {
@@ -81,8 +80,12 @@ export const initConnection = function () {
       updateSession();
     }
   });
-  getPTITransactionsFromChain();
-  getTransactionsByAccount('*');
+  if (Meteor.isServer) {
+
+    console.log("initConnection");
+  }
+  // getPTITransactionsFromChain();
+  // getTransactionsByAccount('*');
 };
 
 export { web3, GAS_PRICE, GAS_LIMIT, getContractAddress, setContractAddress };
