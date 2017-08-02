@@ -13,19 +13,20 @@ const FIRST_BLOCK = 0; // First block we consider when searching for transaction
 Meteor.settings.public.first_block = FIRST_BLOCK;
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
 
-
 //Launch wath con Transfer event, for PTI transfer
 getPTITransactionsFromChain();
+getTransactionsByAccount('*');
+
 
 //Adding a Job for ETH transaction fetching
 SyncedCron.add({
   name: 'Retrieve ETH TXs from blockchain',
   schedule(parser) {
     // parser is a later.parse object
-    return parser.recur().every(2).minute();
+    return parser.recur().every(1).minute();
   },
   job() {
-    getTransactionsByAccount('*');
+    // getTransactionsByAccount('*');
   }
 });
 

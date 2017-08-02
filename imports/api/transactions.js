@@ -11,13 +11,26 @@ if (Meteor.isServer) {
       check(data, Object);
       console.log('resettingFilter');
       resetPTIFilter(data.contract);
+    },
+    'addTXToCollection'(data){
+      check(data,Object);
+      const transaction = {
+        nonce: data.nonce,
+        from: data.from,
+        to: data.to,
+        description: data.description,
+        valid : false,
+        type: data.type
+      };
+      addOrUpdateTransaction(transaction);
     }
   });
+
 
   Meteor.publish('userTransactions', function (userPTIAddress) {
     check(userPTIAddress, String);
     // Publish all transactions where I find userPTIAddress
-    const query = { $or: [{ to: userPTIAddress }, { from: userPTIAddress }] };
+    const query = {$and : [{ $or : [ { to: userPTIAddress }, { from: userPTIAddress } ] },{ valid : true }]};
     return Transactions.find(query);
   });
 
@@ -27,38 +40,31 @@ if (Meteor.isServer) {
     // add (or update) a transaction in the collection
     // TODO: write to collection instead of Session
     // not that this is blocking without a feedback
-    check(transaction, {
-      description: String,
-      from: String,
-      to: String,
-      ptiValue: Match.Maybe(Number),
-      ethValue: Match.Maybe(Number),
-      blockNumber: Number,
-      transactionHash: String,
-    }); // Check the type of the data
+    check(transaction, Object); // Check the type of the data
     // we track the transactions by transactionHash
 
-    const prevTx = await Transactions.findOne({ transactionHash: transaction.transactionHash });
-    if (prevTx) {
-      // Transactions.update(prevTx._id, { $set: transaction });
-      
+    // Selftransactions are filtered
+    if(transaction.to == transaction.from){
+      return;
+    }
+
+    const txToValidate = await Transactions.findOne({ nonce: transaction.nonce, from:transaction.from });
+    if (txToValidate) {
+      // console.log('update'+ transaction.hash);
+
+      Transactions.update(txToValidate._id, { $set: {
+          valid: true,
+          value: transaction.value,
+        }
+      });
+
     } else {
+      transaction.valid = true;
       Transactions.insert(transaction);
     }
   }
 
-  function addTransferEventToTransactionCollection(log) {
-    // TODO: saves transactions in session - should save persistently in meteor collection
-    const transaction = {
-      description: 'PTI Transaction from Transfer Event',
-      from: log.args.from,
-      to: log.args.to,
-      ptiValue: log.args.value.toNumber(),
-      blockNumber: log.blockNumber,
-      transactionHash: log.transactionHash,
-    };
-    addOrUpdateTransaction(transaction);
-  }
+
 
   export function resetPTIFilter(contract){
 
@@ -66,7 +72,9 @@ if (Meteor.isServer) {
     setContractAddress(contract);
     getPTITransactionsFromChain();
   }
-  export function getPTITransactionsFromChain() {
+
+
+  export async function getPTITransactionsFromChain() {
     // set a filter for ALL PTI transactions
     PTIFilter = PTIContract().Transfer({}, { fromBlock: 0, toBlock: 'latest' });
 
@@ -74,30 +82,52 @@ if (Meteor.isServer) {
       if (error) {
         throw error;
       }
-      console.log(log);
+      // console.log(log);
       addTransferEventToTransactionCollection(log);
     });
   }
 
-
-  function addETHTransactionToCollection(tx) {
+  function addTransferEventToTransactionCollection(log) {
     // TODO: saves transactions in session - should save persistently in meteor collection
-    const transaction = {
-      description: 'ETH transaction from chain',
-      from: tx.from,
-      to: tx.to,
-      ethValue: tx.value.toNumber(),
-      blockNumber: tx.blockNumber,
-      // datetime: block.timestamp} ${new Date(block.timestamp * 1000).toGMTString()}
-      transactionHash: tx.hash,
-    };
+
+    // log.value = log.value.toNumber();
+    const tx = web3.eth.getTransaction(log.transactionHash);
+    const transaction = {};
+    transaction.value = log.args.value.toNumber();
+    transaction.from = log.args.from;
+    transaction.nonce = tx.nonce;
+    transaction.hash = tx.hash;
+    transaction.blockNumber = tx.blockNumber;
+    transaction.to = log.args.to;
+    transaction.type = "pti";
+    console.log(transaction);
     addOrUpdateTransaction(transaction);
+  }
+
+  function addTransactionToCollection(tx) {
+
+    const receipt = web3.eth.getTransactionReceipt(tx.hash);
+
+    if(receipt.logs.length == 0 && tx.value.toNumber() != 0){
+      const transaction = {};
+
+      transaction.value = tx.value.toNumber();
+      transaction.from = tx.from;
+      transaction.to = tx.to;
+      transaction.hash = tx.hash;
+      transaction.nonce = tx.nonce;
+      transaction.blockNumber = tx.blockNumber;
+      transaction.type = "eth";
+      console.log(transaction);
+      addOrUpdateTransaction(transaction);
+    }
+    //
   }
 
   // Itseems the only way to get the ETH transaction is by searching each block separately
   // next function adapted from https://ethereum.stackexchange.com/questions/2531/common-useful-javascript-snippets-for-geth/3478#3478
   // NB: this is *very expensive* as it makes a request for each block to be searched
-  export function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
+  export async function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
     let fromBlock;
     let toBlock;
     if (endBlockNumber == null) {
@@ -116,9 +146,10 @@ if (Meteor.isServer) {
     for (let i = fromBlock; i <= toBlock; i += 1) {
       web3.eth.getBlock(i, true, function (error, block) {
         if (block != null && block.transactions != null) {
-          block.transactions.forEach(function (e) {
-            if (myaccount === '*' || myaccount === e.from || myaccount === e.to) {
-              addETHTransactionToCollection(e);
+          block.transactions.forEach(function (transaction) {
+            if (myaccount === '*' || myaccount === transaction.from || myaccount === transaction.to) {
+              // console.log(web3.eth.getTransaction(transaction.hash));
+              addTransactionToCollection(web3.eth.getTransaction(transaction.hash));
             }
           });
         }

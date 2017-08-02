@@ -14,8 +14,7 @@
   <div class="container">
     <table class="table table-striped">
       <tr>
-        <!-- <th>Id</th> -->
-        <!-- <th>Date</th> -->
+
         <th>Blocknumer</th>
         <th>Description</th>
         <th>ETH</th>
@@ -30,10 +29,16 @@
           <b>{{ description }}</b>
           <br>from: {{ from }}
           <br>to: {{ to }}
-          <br>transactionHash: {{ transactionHash}}
+          <br>transactionHash: {{ hash }}
+          <br>type: {{ type }}
         </td>
-        <td>{{ ethValue }}</td>
-        <td>{{ ptiValue }}</td>
+        {{#if equals type 'eth'}}
+          <td>{{ toEther value }}</td>
+          <td></td>
+        {{else}}
+          <td></td>
+          <td>{{ toEther value }}</td>
+        {{/if}}
       </tr>
       {{/each}}
     </table>
