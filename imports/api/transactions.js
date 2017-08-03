@@ -4,14 +4,8 @@ import { web3, PTIContract, setContractAddress } from '/imports/lib/ethereum/con
 
 if (Meteor.isServer) {
   const Transactions = new Mongo.Collection('transactions');
-  let PTIFilter;
 
   Meteor.methods({
-    'resetFilter'(data) {
-      check(data, Object);
-      console.log('resettingFilter');
-      resetPTIFilter(data.contract);
-    },
     'addTXToCollection'(data){
       check(data,Object);
       const transaction = {
@@ -64,21 +58,11 @@ if (Meteor.isServer) {
     }
   }
 
-
-
-  export function resetPTIFilter(contract){
-
-    PTIFilter.stopWatching();
-    setContractAddress(contract);
-    getPTITransactionsFromChain();
-  }
-
-
   export async function getPTITransactionsFromChain() {
     // set a filter for ALL PTI transactions
-    PTIFilter = PTIContract().Transfer({}, { fromBlock: 0, toBlock: 'latest' });
+    filter = PTIContract().Transfer({}, { fromBlock: 0, toBlock: 'latest' });
 
-    PTIFilter.watch(function (error, log) {
+    filter.watch(function (error, log) {
       if (error) {
         throw error;
       }

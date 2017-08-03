@@ -1,4 +1,4 @@
-// Server entry point, imports all server code
+l// Server entry point, imports all server code
 
 import '../imports/startup/server';
 import '../imports/startup/server/fixtures.js';
@@ -14,8 +14,17 @@ Meteor.settings.public.first_block = FIRST_BLOCK;
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
 
 //Launch wath con Transfer event, for PTI transfer
+// getETHTransactionsFromChain();
+
 getPTITransactionsFromChain();
-getTransactionsByAccount('*');
+// getTransactionsByAccount('*');
+
+
+// var filter = web3.eth.filter('pending');
+// filter.watch(function(err, log){
+//   console.log(log);
+// });
+//
 
 
 //Adding a Job for ETH transaction fetching
@@ -26,9 +35,9 @@ SyncedCron.add({
     return parser.recur().every(1).minute();
   },
   job() {
-    // getTransactionsByAccount('*');
+    getTransactionsByAccount('*');
   }
 });
 
 //starting all the added Job
-SyncedCron.start();
+// SyncedCron.start();
