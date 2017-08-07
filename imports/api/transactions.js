@@ -44,6 +44,12 @@ if (Meteor.isServer) {
     }
 
     const txToValidate = await Transactions.findOne({ nonce: transaction.nonce, from:transaction.from });
+    const txExist = await Transactions.findOne({ hash: transaction.hash});
+
+    if(txExist){
+      return;
+    }
+    
     if (txToValidate) {
       console.log('updating transction: '+ transaction.hash);
 
@@ -148,7 +154,7 @@ if (Meteor.isServer) {
     }
   }
 
-  export function syncTransactionHistory() {
+  export async function syncTransactionHistory() {
       // searches the whole blockchain for transactions that may be relevant
       // and saves these in the Transaction collection
       const transactionsCount = Transactions.find().count();
@@ -163,10 +169,14 @@ if (Meteor.isServer) {
   }
 
   export function watchTransactions() {
+      var filter = web3.eth.filter('latest');
+
       web3.eth.filter('latest', function(error, result) {
         console.log('new block!?')
         console.log(error);
-        console.log(result)
+        console.log(result);
+        syncTransactionHistory();
+        // syncTransactionHistory();
         // TODO: read the block and writ ehte transactions to the db
       })
   }
