@@ -132,6 +132,7 @@ if (Meteor.isServer) {
     for (let i = fromBlock; i <= toBlock; i += 1) {
       console.log(`getting block ${i}`)
       web3.eth.getBlock(i, true, function (error, block) {
+        console.log(`the block ${i} contains ${block.transactions.length} transactions`)
         if (block != null && block.transactions != null) {
           block.transactions.forEach(function (transaction) {
             console.log(`get transaction info`)
