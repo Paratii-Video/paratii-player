@@ -63,7 +63,9 @@ if (Meteor.isServer) {
   export async function getPTITransactionsFromChain(fromBlock=0) {
     // set a filter for ALL PTI transactions
     console.log('getPTITransactionsFromChain() called')
-    filter = PTIContract().Transfer({}, { fromBlock: fromBlock, toBlock: 'latest' });
+    filter = PTIContract().Transfer({}, {
+      fromBlock,
+      toBlock: 'latest' });
 
     filter.watch(function (error, log) {
       if (error) {
@@ -149,10 +151,13 @@ if (Meteor.isServer) {
   export function syncTransactionHistory() {
       // searches the whole blockchain for transactions that may be relevant
       // and saves these in the Transaction collection
-
-      // TODO: fromBlock should be the latest synced block
-      // (we can take the highest known blocknumber in the Transaction Collection)
-      const latestSyncedBlock = 0;
+      const transactionsCount = Transactions.find().count();
+      if(transactionsCount > 0){
+        // the highest known blocknumber in the Transaction Collection
+        latestSyncedBlock = Transactions.findOne({}, {sort: {blockNumber: -1, limit: 1}}).blockNumber;
+      }else{
+        let latestSyncedBlock = 0;
+      }
       getTransactionsByAccount('*', fromBlock=latestSyncedBlock);
       getPTITransactionsFromChain(fromBlock=latestSyncedBlock);
   }
@@ -160,8 +165,8 @@ if (Meteor.isServer) {
   export function watchTransactions() {
       web3.eth.filter('latest', function(error, result) {
         console.log('new block!?')
-        console.log('error');
-        console.log('result')
+        console.log(error);
+        console.log(result)
         // TODO: read the block and writ ehte transactions to the db
       })
   }
