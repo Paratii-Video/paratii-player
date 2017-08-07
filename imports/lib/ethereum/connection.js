@@ -45,7 +45,6 @@ function updateSession() {
   if (web3.isConnected()) {
     Session.set('eth_isConnected', true);
     Session.set('eth_currentBlock', web3.eth.blockNumber);
-    // Session.set('eth_highestBlock', sync.highestBlock);
     const ptiAddress = getUserPTIAddress();
     if (ptiAddress) {
       // SET PTI BALANCE

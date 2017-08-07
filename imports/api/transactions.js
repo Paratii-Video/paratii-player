@@ -1,4 +1,5 @@
 /* eslint-disable: no-param-reassign */
+
 import { web3, PTIContract, setContractAddress } from '/imports/lib/ethereum/connection.js';
 
 
@@ -20,7 +21,6 @@ if (Meteor.isServer) {
     }
   });
 
-
   Meteor.publish('userTransactions', function (userPTIAddress) {
     check(userPTIAddress, String);
     // Publish all transactions where I find userPTIAddress
@@ -35,6 +35,7 @@ if (Meteor.isServer) {
     // TODO: write to collection instead of Session
     // not that this is blocking without a feedback
     check(transaction, Object); // Check the type of the data
+
     // we track the transactions by transactionHash
 
     // Selftransactions are filtered
@@ -44,7 +45,7 @@ if (Meteor.isServer) {
 
     const txToValidate = await Transactions.findOne({ nonce: transaction.nonce, from:transaction.from });
     if (txToValidate) {
-      // console.log('update'+ transaction.hash);
+      console.log('updating transction: '+ transaction.hash);
 
       Transactions.update(txToValidate._id, { $set: {
           valid: true,
@@ -53,14 +54,16 @@ if (Meteor.isServer) {
       });
 
     } else {
+      console.log('insert new tarnsaction: '+ transaction.hash);
       transaction.valid = true;
       Transactions.insert(transaction);
     }
   }
 
-  export async function getPTITransactionsFromChain() {
+  export async function getPTITransactionsFromChain(fromBlock=0) {
     // set a filter for ALL PTI transactions
-    filter = PTIContract().Transfer({}, { fromBlock: 0, toBlock: 'latest' });
+    console.log('getPTITransactionsFromChain() called')
+    filter = PTIContract().Transfer({}, { fromBlock: fromBlock, toBlock: 'latest' });
 
     filter.watch(function (error, log) {
       if (error) {
@@ -84,7 +87,6 @@ if (Meteor.isServer) {
     transaction.blockNumber = tx.blockNumber;
     transaction.to = log.args.to;
     transaction.type = "pti";
-    console.log(transaction);
     addOrUpdateTransaction(transaction);
   }
 
@@ -102,7 +104,6 @@ if (Meteor.isServer) {
       transaction.nonce = tx.nonce;
       transaction.blockNumber = tx.blockNumber;
       transaction.type = "eth";
-      console.log(transaction);
       addOrUpdateTransaction(transaction);
     }
     //
@@ -112,6 +113,7 @@ if (Meteor.isServer) {
   // next function adapted from https://ethereum.stackexchange.com/questions/2531/common-useful-javascript-snippets-for-geth/3478#3478
   // NB: this is *very expensive* as it makes a request for each block to be searched
   export async function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
+    console.log(`getTransactionsByAccount called with args ${myaccount}`)
     let fromBlock;
     let toBlock;
     if (endBlockNumber == null) {
@@ -128,9 +130,11 @@ if (Meteor.isServer) {
     }
 
     for (let i = fromBlock; i <= toBlock; i += 1) {
+      console.log(`getting block ${i}`)
       web3.eth.getBlock(i, true, function (error, block) {
         if (block != null && block.transactions != null) {
           block.transactions.forEach(function (transaction) {
+            console.log(`get transaction info`)
             if (myaccount === '*' || myaccount === transaction.from || myaccount === transaction.to) {
               // console.log(web3.eth.getTransaction(transaction.hash));
               addTransactionToCollection(web3.eth.getTransaction(transaction.hash));
@@ -143,7 +147,22 @@ if (Meteor.isServer) {
 
   export function syncTransactionHistory() {
       // searches the whole blockchain for transactions that may be relevant
-      // and saves these as transaction objects
+      // and saves these in the Transaction collection
+
+      // TODO: fromBlock should be the latest synced block
+      // (we can take the highest known blocknumber in the Transaction Collection)
+      const latestSyncedBlock = 0;
+      getTransactionsByAccount('*', fromBlock=latestSyncedBlock);
+      getPTITransactionsFromChain(fromBlock=latestSyncedBlock);
+  }
+
+  export function watchTransactions() {
+      web3.eth.filter('latest', function(error, result) {
+        console.log('new block!?')
+        console.log('error');
+        console.log('result')
+        // TODO: read the block and writ ehte transactions to the db
+      })
   }
 
 }
