@@ -1,24 +1,47 @@
 <template name="transactions">
-  <div class="titleContainer" >
-    <span>Transaction History</span>
+  <div class="clearfix">
+    <div class="titleContainer" id="wallet-title">
+      <span>Transaction History</span>
+    </div>
+    {{#if userPTIAddress}}
+      <div class="float-right address-container">
+        <div class="address-identicon">{{> dapp_identicon identity=userPTIAddress class="dapp-tiny"}}</div>
+        <span class="address">This is your address: <span id="public_address">{{ userPTIAddress }}</span></span>
+      </div>
+    {{/if}}
   </div>
   <div class="line"></div>
   <div class="container">
     <table class="table table-striped">
       <tr>
-        <!-- <th>Id</th> -->
-        <th>Date</th>
+
+        <th>Blocknumer</th>
         <th>Description</th>
         <th>ETH</th>
         <th>PTI</th>
       </tr>
       {{#each transactions}}
-      <tr>
+      <tr class="{{#if equals from userPTIAddress}}send{{else}}received{{/if}}">
         <!-- <td>{{ id }}</td> -->
-        <td>{{formatDate datetime }}</td>
-        <td>{{ description }}</td>
-        <td>{{ amount_eth }}</td>
-        <td>{{ amount_pti }}</td>
+        <!-- <td>{{formatDate datetime }}</td> -->
+        <td>{{ blockNumber}}</td>
+        <td>
+          {{#if description}}
+          <b>{{ description }}</b>
+          {{/if}}
+          <br>from: {{ from }}
+          <br>to: {{ to }}
+          <br>transactionHash: {{ hash }}
+          <br>type: {{ type }}
+
+        </td>
+        {{#if equals type 'eth'}}
+          <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>
+          <td></td>
+        {{else}}
+          <td></td>
+          <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>
+        {{/if}}
       </tr>
       {{/each}}
     </table>

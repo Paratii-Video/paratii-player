@@ -10,6 +10,7 @@ import { add0x } from '/imports/lib/utils.js';
 import { getUserPTIAddress } from '/imports/api/users.js';
 import { web3, GAS_PRICE, GAS_LIMIT, getContractAddress, setContractAddress } from './connection.js';
 import { paratiiContract } from './paratiiContract.js';
+import { resetPTIFilter } from '/imports/api/transactions.js';
 
 
 // createKeystore will create a new keystore
@@ -106,7 +107,7 @@ function restoreWallet(password, seedPhrase) {
   return createKeystore(password, seedPhrase);
 }
 
-function doTx(amount, recipient, password, type) {
+function doTx(amount, recipient, password, type, description) {
   const fromAddr = getUserPTIAddress();
   const nonce = web3.eth.getTransactionCount(fromAddr);
   const value = parseInt(web3.toWei(amount, 'ether'), 10);
@@ -125,11 +126,13 @@ function doTx(amount, recipient, password, type) {
       case 'Eth':
         txOptions.to = add0x(recipient);
         txOptions.value = web3.toHex(value);
+        txOptions.type = 'eth';
         rawTx = lightwallet.txutils.valueTx(txOptions);
         break;
       case 'PTI':
-        txOptions.to = PARATII_TOKEN_ADDRESS;
-        rawTx = lightwallet.txutils.functionTx(abidefinition, 'transfer', [recipient, value], txOptions);
+        txOptions.to = getContractAddress();
+        txOptions.type = 'pti';
+        rawTx = lightwallet.txutils.functionTx(paratiiContract.abi, 'transfer', [recipient, value], txOptions);
         break;
       default:
 
@@ -141,6 +144,10 @@ function doTx(amount, recipient, password, type) {
       }
       console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
       const receipt = web3.eth.getTransactionReceipt(hash);
+      txOptions.from = fromAddr;
+      txOptions.description = description;
+      Meteor.call('addTXToCollection', txOptions);
+
       console.log(receipt);
     });
   });
@@ -189,6 +196,9 @@ function deployTestContract(owner) {
        // check address on the second call (contract deployed)
       } else {
         setContractAddress(myContract.address);
+        Meteor.call('resetFilter', {
+          contract: myContract.address
+        });
         console.log(myContract.address); // the contract address
       }
 
@@ -212,5 +222,6 @@ function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
     }
   }
 }
+
 
 export { createKeystore, restoreWallet, doTx, sendPTI, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction };

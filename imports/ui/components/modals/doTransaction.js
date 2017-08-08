@@ -25,15 +25,16 @@ Template.doTransaction.events({
     const amount = event.target.wallet_amount.value;
     const recipient = event.target.wallet_friend_number.value;
     const password = event.target.user_password.value;
+    const description = event.target.tx_description.value;
     let balance;
     const check = Session.get('checkTransaction');
 
     switch (type) {
       case 'Eth':
-        balance = web3.fromWei(Session.get('pti_balance'), 'ether');
+        balance = web3.fromWei(Session.get('eth_balance'), 'ether');
         break;
       case 'PTI':
-        balance = web3.fromWei(Session.get('eth_balance'), 'ether');
+        balance = web3.fromWei(Session.get('pti_balance'), 'ether');
         break;
       default:
     }
@@ -41,7 +42,7 @@ Template.doTransaction.events({
     if (parseFloat(amount) <= 0 || isNaN(parseFloat(amount)) === true) {
       check.wallet_amount = 'This value is not allowed';
     } else if (parseFloat(amount) > parseFloat(balance)) {
-      check.wallet_amount = 'You don\'t have enough #{this.label}';
+      check.wallet_amount = `You don\'t have enough ${this.label}`;
     } else {
       check.wallet_amount = null;
     }
@@ -58,7 +59,7 @@ Template.doTransaction.events({
     Session.set('checkTransaction', check);
     if (errors === undefined) {
       Modal.hide('doTransaction');
-      doTx(amount, recipient, password, type);
+      doTx(amount, recipient, password, type, description);
       // sendPTI(amount, recipient, password);
     }
   },

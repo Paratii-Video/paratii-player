@@ -22,6 +22,12 @@
                   {{> dapp_addressInput class="address_input form-control" placeholder="Friend's Wallet" value="" aria-describedby="sizing-addon1" name="wallet_friend_number"}}
               </div>
             </div>
+            <div class="form-group">
+              <div class="input-group">
+                  <span class="input-group-addon" id="sizing-addon3">Description</span>
+                  <input name="tx_description" type="text" class="form-control" placeholder="Thanks for last night pizza!" aria-describedby="sizing-addon1">
+              </div>
+            </div>
             <div class="form-group {{#if getErrors 'user_password'}}has-error{{/if}}">
               {{#if getErrors 'user_password'}}<label class="control-label">{{ getErrors 'user_password' }}</label>{{/if}}
               <div class="input-group">

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { web3 } from '/imports/lib/ethereum/connection.js';
-import { getTransactionsByAccount, getKeystore, deployTestContract } from '/imports/lib/ethereum/wallet.js';
+import { getTransactionsByAccount, getKeystore, deployTestContract, sendUnSignedContractTransaction } from '/imports/lib/ethereum/wallet.js';
 import { Template } from 'meteor/templating';
 import { getUserPTIAddress } from '/imports/api/users.js';
 import './debug.html';
@@ -11,7 +11,11 @@ Template.debug.events({
     getTransactionsByAccount(getUserPTIAddress(), 55, 104);
   },
   'click #deploy-parati-test-contract'() {
-    deployTestContract();
+    deployTestContract(web3.eth.accounts[0]);
+    sendUnSignedContractTransaction(web3.eth.accounts[0], 100)
+  },
+  'click #get-some-PTI'() {
+    sendUnSignedContractTransaction(web3.eth.accounts[0], 100)
   },
 });
 Template.debug.helpers({

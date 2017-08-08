@@ -12,6 +12,7 @@
            Not connected :-(
        {{/if}}
        </b>
+
         </li>
         <!-- <li>Accounts: {{ .web3.eth.accounts }}</li> -->
         <li>blocknumber: {{ eth_currentBlock }}</li>
@@ -29,10 +30,17 @@
         <li>
           The paratii contract address: {{ contractAddress }}
         </li>
+        <li>
+          {{#if eth_isConnected }}
+           <!-- <button id="get-transaction-console" class="btn">Fetch your transactions - look at console</button> -->
+           <a href="/transactions">See transaction history</a>
+         {{/if }}
+        </li>
         {{#if isTestRPC}}
         <li>
 
           <button id="deploy-parati-test-contract" class="btn">Deploy Test Contract</button>
+          <button id="get-some-PTI" class="btn">Get Some PTI</button>
 
         </li>
         {{/if}}

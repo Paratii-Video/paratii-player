@@ -57,7 +57,7 @@ if (Meteor.isServer) {
     },
   });
 
-  Meteor.publish('userTransactions', function (userPTIAddress) {
+  Meteor.publish('userEvents', function (userPTIAddress) {
     check(userPTIAddress, String);
     // Publish all transactions where I find userPTIAddress
     const query = { $or: [{ sender: userPTIAddress }, { receiver: userPTIAddress }] };

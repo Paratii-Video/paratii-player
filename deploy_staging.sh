@@ -6,9 +6,8 @@ meteor build .
 rsync -az paratii-player.tar.gz paratii@paratii.gerbrandy.com:/home/paratii/
 ssh paratii@paratii.gerbrandy.com <<'ENDSSH'
 #commands to run on remote host
-
+rm -r bundle
 tar xf paratii-player.tar.gz
-
 cd bundle/programs/server && sudo npm install
 export PWD=/home/paratii
 export HOME=/home/paratii
