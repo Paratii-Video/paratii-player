@@ -84,8 +84,7 @@ export const initConnection = function () {
 
     console.log("initConnection");
   }
-  // getPTITransactionsFromChain();
-  // getTransactionsByAccount('*');
+
 };
 
 export { web3, GAS_PRICE, GAS_LIMIT, getContractAddress, setContractAddress };

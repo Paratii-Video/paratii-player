@@ -208,20 +208,5 @@ function deployTestContract(owner) {
   });
 }
 
-function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
-  for (let i = startBlockNumber; i <= endBlockNumber; i += 1) {
-    console.log(`Searching block ${i}`);
-    const block = web3.eth.getBlock(i);
-    if (block != null && block.transactions != null) {
-      block.transactions.forEach(function (e) {
-        const transaction = web3.eth.getTransaction(e);
-        if (myaccount === '*' || myaccount === transaction.from || myaccount === transaction.to) {
-          console.log(transaction);
-        }
-      });
-    }
-  }
-}
 
-
-export { createKeystore, restoreWallet, doTx, sendPTI, getSeed, sendEther, getPTIBalance, getTransactionsByAccount, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction };
+export { createKeystore, restoreWallet, doTx, sendPTI, getSeed, sendEther, getPTIBalance, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction };

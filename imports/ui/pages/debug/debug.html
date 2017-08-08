@@ -21,11 +21,7 @@
           <br> Your private key (just for debug!): {{ privateKey }} {{# if currentUser.profile.ptiAddress }} {{> dapp_identicon identity=ptiAddress class="dapp-small"}} {{/if }}
           <li>Your Ether balance (in ether): {{ eth_balance }}</li>
           <li>Your Paratii balance (in PTI): {{ pti_balance }} </li>
-          <li>
-            {{#if eth_isConnected }}
-            <button id="get-transaction-console" class="btn">Fetch your transactions - look at console</button>
-            {{/if }}
-          </li>
+      
         </li>
         <li>
           The paratii contract address: {{ contractAddress }}
