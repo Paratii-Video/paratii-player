@@ -107,7 +107,7 @@ function restoreWallet(password, seedPhrase) {
   return createKeystore(password, seedPhrase);
 }
 
-function doTx(amount, recipient, password, type) {
+function doTx(amount, recipient, password, type, description) {
   const fromAddr = getUserPTIAddress();
   const nonce = web3.eth.getTransactionCount(fromAddr);
   const value = parseInt(web3.toWei(amount, 'ether'), 10);
@@ -142,6 +142,10 @@ function doTx(amount, recipient, password, type) {
       }
       console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
       const receipt = web3.eth.getTransactionReceipt(hash);
+      txOptions.from = fromAddr;
+      txOptions.description = description;
+      Meteor.call('addTXToCollection', txOptions);
+
       console.log(receipt);
     });
   });

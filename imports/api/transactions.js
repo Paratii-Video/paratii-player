@@ -9,6 +9,7 @@ if (Meteor.isServer) {
   Meteor.methods({
     'addTXToCollection'(data){
       check(data,Object);
+
       const transaction = {
         nonce: data.nonce,
         from: data.from,
@@ -49,7 +50,7 @@ if (Meteor.isServer) {
     if(txExist){
       return;
     }
-    
+
     if (txToValidate) {
       console.log('updating transction: '+ transaction.hash);
 

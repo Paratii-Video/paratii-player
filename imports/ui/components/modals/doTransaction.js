@@ -25,6 +25,7 @@ Template.doTransaction.events({
     const amount = event.target.wallet_amount.value;
     const recipient = event.target.wallet_friend_number.value;
     const password = event.target.user_password.value;
+    const description = event.target.tx_description.value;
     let balance;
     const check = Session.get('checkTransaction');
 
@@ -58,7 +59,7 @@ Template.doTransaction.events({
     Session.set('checkTransaction', check);
     if (errors === undefined) {
       Modal.hide('doTransaction');
-      doTx(amount, recipient, password, type);
+      doTx(amount, recipient, password, type, description);
       // sendPTI(amount, recipient, password);
     }
   },
