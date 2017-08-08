@@ -126,10 +126,12 @@ function doTx(amount, recipient, password, type, description) {
       case 'Eth':
         txOptions.to = add0x(recipient);
         txOptions.value = web3.toHex(value);
+        txOptions.type = 'eth';
         rawTx = lightwallet.txutils.valueTx(txOptions);
         break;
       case 'PTI':
         txOptions.to = getContractAddress();
+        txOptions.type = 'pti';
         rawTx = lightwallet.txutils.functionTx(paratiiContract.abi, 'transfer', [recipient, value], txOptions);
         break;
       default:

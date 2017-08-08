@@ -1,5 +1,7 @@
 /* eslint-disable: no-param-reassign */
 
+import { strip0x } from '/imports/lib/utils.js';
+
 import { web3, PTIContract, setContractAddress } from '/imports/lib/ethereum/connection.js';
 
 
@@ -9,16 +11,18 @@ if (Meteor.isServer) {
   Meteor.methods({
     'addTXToCollection'(data){
       check(data,Object);
-
+      console.log(data.nonce);
       const transaction = {
-        nonce: data.nonce,
+        nonce: web3.toDecimal(data.nonce),
         from: data.from,
         to: data.to,
         description: data.description,
         valid : false,
         type: data.type
       };
-      addOrUpdateTransaction(transaction);
+
+      console.log("oggetto transazione temporanea da validare",transaction);
+      Transactions.insert(transaction);
     }
   });
 
@@ -44,7 +48,14 @@ if (Meteor.isServer) {
       return;
     }
 
-    const txToValidate = await Transactions.findOne({ nonce: transaction.nonce, from:transaction.from });
+    console.log("look for nonce", transaction.nonce);
+    console.log("look for from", transaction.from);
+
+    const txToValidate = await Transactions.findOne({ nonce: transaction.nonce, from: transaction.from });
+
+    console.log("cerco se questa transazione esiste",txToValidate);
+
+
     const txExist = await Transactions.findOne({ hash: transaction.hash});
 
     if(txExist){
@@ -52,16 +63,18 @@ if (Meteor.isServer) {
     }
 
     if (txToValidate) {
-      console.log('updating transction: '+ transaction.hash);
+      console.log('updating transaction: '+ transaction.hash);
 
       Transactions.update(txToValidate._id, { $set: {
           valid: true,
           value: transaction.value,
+          hash: transaction.hash,
+          blockNumber: transaction.blockNumber,
         }
       });
 
     } else {
-      console.log('insert new tarnsaction: '+ transaction.hash);
+      console.log('insert new transaction: '+ transaction.hash);
       transaction.valid = true;
       Transactions.insert(transaction);
     }
@@ -102,7 +115,6 @@ if (Meteor.isServer) {
   function addTransactionToCollection(tx) {
 
     const receipt = web3.eth.getTransactionReceipt(tx.hash);
-
     if(receipt.logs.length == 0 && tx.value.toNumber() != 0){
       const transaction = {};
 

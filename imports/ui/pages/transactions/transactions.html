@@ -26,11 +26,14 @@
         <!-- <td>{{formatDate datetime }}</td> -->
         <td>{{ blockNumber}}</td>
         <td>
+          {{#if description}}
           <b>{{ description }}</b>
+          {{/if}}
           <br>from: {{ from }}
           <br>to: {{ to }}
           <br>transactionHash: {{ hash }}
           <br>type: {{ type }}
+
         </td>
         {{#if equals type 'eth'}}
           <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>
