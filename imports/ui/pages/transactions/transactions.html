@@ -21,7 +21,7 @@
         <th>PTI</th>
       </tr>
       {{#each transactions}}
-      <tr>
+      <tr class="{{#if equals from userPTIAddress}}send{{else}}received{{/if}}">
         <!-- <td>{{ id }}</td> -->
         <!-- <td>{{formatDate datetime }}</td> -->
         <td>{{ blockNumber}}</td>
@@ -33,11 +33,11 @@
           <br>type: {{ type }}
         </td>
         {{#if equals type 'eth'}}
-          <td>{{ toEther value }}</td>
+          <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>
           <td></td>
         {{else}}
           <td></td>
-          <td>{{ toEther value }}</td>
+          <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>
         {{/if}}
       </tr>
       {{/each}}
