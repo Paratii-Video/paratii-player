@@ -10,7 +10,6 @@ import { initIPFS } from '../../../lib/ipfs/index.js'
 // const concat = require('concat-stream')
 // const streamLib = require('stream')
 // const toBlob = require('stream-to-blob')
-
 export function createIPFSPlayer (templateInstance, currentVideo) {
   const templateDict = templateInstance.templateDict;
 
@@ -19,7 +18,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
   // because meteors package.json is @#$@#$% broken
   // cf. https://github.com/meteor/meteor/issues/7067
 
-  templateDict.set('status', 'loading IPFS File...');
+  templateDict.set('status', 'creating IPFS instance');
   console.log('node: ', window.ipfs)
   const videoElement = document.querySelector('#video-player');
   const ipfsHash = currentVideo.src
@@ -56,6 +55,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
     })
 
     initIPFS(() => {
+      templateDict.set('status', 'loading IPFS File...');
       window.ipfs.files.cat(ipfsHash, (err, stream) => {
         if (err) throw err
 
@@ -88,6 +88,8 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
               waiting = false
             }
           }
+
+          stream.resume()
         })
 
         stream.on('end', () => {
