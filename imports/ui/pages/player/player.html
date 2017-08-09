@@ -23,7 +23,7 @@
       <span id="current-time">{{formatTime currentTime}}</span>
       <span class="slash">/</span>
       <span id="total-time">{{formatTime totalTime}}</span>
-      <span id="status"><tt>STATUS: {{ status }}</tt></span>
+      {{ #if status }}<span id="status"><tt>STATUS: {{ status }}</tt></span>{{/if}}
       <button id="fullscreen-button" title="{{fullscreen}}">
         <img src= "/img/fullscreen-icon.svg">
       </button>
