@@ -5,8 +5,13 @@ import { Meteor } from 'meteor/meteor';
 import './routes.js';
 import './at_config.js';
 import { initConnection } from '../../lib/ethereum/connection.js';
-
+import { initIPFS } from '../../lib/ipfs/index.js'
 
 Meteor.setTimeout(function () {
   initConnection();
+  // IPFS integration.
+  initIPFS(() => {
+    console.log('ipfs initiated.')
+  })
+
 }, 1000);

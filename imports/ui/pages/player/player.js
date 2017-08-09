@@ -5,6 +5,7 @@ import { sprintf } from 'meteor/sgi:sprintfjs';
 import { formatNumber } from '/imports/lib/utils.js';
 import { Videos } from '../../../api/videos.js';
 import { createWebtorrentPlayer } from './webtorrent.js';
+import { createIPFSPlayer } from './ipfs.js';
 
 import './player.html';
 
@@ -29,6 +30,9 @@ function renderVideoElement(instance) {
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo);
     instance.templateDict.set('torrent', true);
+  } else if (currentVideo.src.startsWith('/ipfs')) {
+    createIPFSPlayer(instance, currentVideo);
+    instance.templateDict.set('ipfs', true);
   } else {
     const videoElement = $('#video-player');
     const sourceElement = document.createElement('source');

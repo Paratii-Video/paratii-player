@@ -65,12 +65,53 @@ export const populateVideos = () => {
     mimetype: 'video/mp4',
 
   };
-  if (Videos.find().count() === 0 || Videos.find({ src: v1.src }).count() === 0) {
+
+  const v4 = {
+    id: 4,
+    title: 'IPFS: this won\'t load',
+    description: 'non fragmented mp4, won\'t work',
+    thumb: '/img/thumb2-img.png',
+    duration: '00:45',
+    price: '',
+    uploader: 'John Doe',
+    stats: {
+      likes_percentage: 98,
+      views: 2244245,
+      likes: 2345555,
+      dislikes: 7,
+    },
+    tags: ['IPFS', 'Nature'],
+    src: '/ipfs/QmTKZgRNwDNZwHtJSjCp6r5FYefzpULfy37JvMt9DwvXse/video.mp4',
+    mimetype: 'video/mp4',
+
+  };
+
+  const v5 = {
+    id: 3,
+    title: 'IPFS Fragmented Mp4 works',
+    description: 'IPFS EXAMPLE video',
+    thumb: '/img/thumb2-img.png',
+    duration: '00:45',
+    price: '',
+    uploader: 'John Doe',
+    stats: {
+      likes_percentage: 98,
+      views: 2244245,
+      likes: 2345555,
+      dislikes: 7,
+    },
+    tags: ['IPFS', 'Animation'],
+    src: '/ipfs/QmR6QvFUBhHQ288VmpHQboqzLmDrrC2fcTUyT4hSMCwFyj',
+    mimetype: 'video/mp4',
+
+  };
+  if (Videos.find().count() === 0 || Videos.find({ src: v1.src }).count() === 0 ||
+      Videos.find({src: v5.src}).count() === 0) {
     Videos.remove({});
     console.log('|'); console.log('|');
     console.log('--> populate video collection');
 
-    videoList = [v1, v2, v3];
+    videoList = [v1, v2, v3, v4, v5];
     // v1, v2, v1, v2, v1, v2, v1, v2, v1, v2, v1, v2, v1, v2,
     //   v1, v2, v1, v2, v1, v2, v1, v2, v1, v2, v1, v2];
     _.each(videoList, (video) => {
