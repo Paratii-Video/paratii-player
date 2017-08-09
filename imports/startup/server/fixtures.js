@@ -15,7 +15,11 @@ export const populateVideos = () => {
     thumb: '/img/thumb1-img.png',
     duration: '15:30',
     price: '22',
-    uploader: 'Pole Pole Channel',
+    uploader: {
+      address : '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
+      name: 'Pole Pole Channel',
+      avatar: 'http://i.pravatar.cc/150?img=1'
+    },
     stats: {
       likes_percentage: 84,
       views: 15524,
@@ -34,7 +38,10 @@ export const populateVideos = () => {
     thumb: '/img/thumb2-img.png',
     duration: '03:22',
     price: '',
-    uploader: 'John Doe',
+    uploader: {
+      name: 'John Doe',
+      avatar: 'http://i.pravatar.cc/150?img=2'
+    },
     stats: {
       likes_percentage: 98,
       views: 2244245,
@@ -53,7 +60,10 @@ export const populateVideos = () => {
     thumb: '/img/thumb2-img.png',
     duration: '03:22',
     price: '',
-    uploader: 'John Doe',
+    uploader: {
+      name: 'Mike Torrent',
+      avatar: 'http://i.pravatar.cc/150?img=3'
+    },
     stats: {
       likes_percentage: 98,
       views: 2244245,

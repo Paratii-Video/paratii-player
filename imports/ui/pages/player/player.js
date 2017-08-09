@@ -191,6 +191,17 @@ const setLoadedProgress = (instance) => {
 };
 
 Template.player.events({
+  'click #unlock-video'(event) {
+    Modal.show('doTransaction', {
+      type: 'PTI',
+      label: 'Unlock this video',
+      action: 'unlock_video',
+      price: event.target.dataset.price, // Video Price
+      address: event.target.dataset.address, // Creator PTI address
+      videotitle: event.target.dataset.title, // Video title
+      videoid: FlowRouter.getParam('_id') // Video title
+    });
+  },
   'ended #video-player'(event, instance) {
     const navState = instance.navState;
     instance.templateDict.set('playing', false);

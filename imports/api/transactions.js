@@ -3,6 +3,7 @@ import {
   PTIContract,
   setContractAddress
 } from '/imports/lib/ethereum/connection.js';
+import { Videos } from '/imports/api/videos.js';
 
 export const Transactions = new Mongo.Collection('transactions');
 
@@ -10,7 +11,7 @@ export const Transactions = new Mongo.Collection('transactions');
 if (Meteor.isServer) {
 
   Meteor.methods({
-    'addTXToCollection' (data) {
+    'addTXToCollection' (data, options) {
       check(data, Object);
       console.log(data.nonce);
       const transaction = {
@@ -21,6 +22,8 @@ if (Meteor.isServer) {
         valid: false,
         type: data.type
       };
+
+      Object.assign(transaction, options);
 
       console.log("oggetto transazione temporanea da validare", transaction);
       Transactions.insert(transaction);
@@ -71,6 +74,14 @@ async function addOrUpdateTransaction(transaction) {
   }
 
   if (txToValidate) {
+    // If transaction is a video unlock, there id a video ID
+    if(txToValidate.idvideo){
+      const video = Videos.findOne({ _id: txToValidate.idvideo });
+      // If video price is different from user payment, return
+      if(video.price !== transaction.value){
+        return;
+      }
+    }
 
     Transactions.update(txToValidate._id, {
       $set: {

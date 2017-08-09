@@ -107,7 +107,7 @@ function restoreWallet(password, seedPhrase) {
   return createKeystore(password, seedPhrase);
 }
 
-function doTx(amount, recipient, password, type, description) {
+function doTx(amount, recipient, password, type, description, options) {
   const fromAddr = getUserPTIAddress();
   const nonce = web3.eth.getTransactionCount(fromAddr);
   const value = parseInt(web3.toWei(amount, 'ether'), 10);
@@ -146,7 +146,7 @@ function doTx(amount, recipient, password, type, description) {
       const receipt = web3.eth.getTransactionReceipt(hash);
       txOptions.from = fromAddr;
       txOptions.description = description;
-      Meteor.call('addTXToCollection', txOptions);
+      Meteor.call('addTXToCollection', txOptions, options);
 
       console.log(receipt);
     });
@@ -169,12 +169,6 @@ function getAccounts() {
   return web3.eth.accounts;
 }
 
-function sendPTI(amountInPti, recipient, password) {
-  doTx(amountInPti, recipient, password, 'PT');
-}
-function sendEther(amountInEth, recipient, password) {
-  doTx(amountInEth, recipient, password, 'Eth');
-}
 
 function deployTestContract(owner) {
   const MyContract = web3.eth.contract(paratiiContract.abi);
@@ -209,4 +203,4 @@ function deployTestContract(owner) {
 }
 
 
-export { createKeystore, restoreWallet, doTx, sendPTI, getSeed, sendEther, getPTIBalance, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction };
+export { createKeystore, restoreWallet, doTx, getSeed, getPTIBalance, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction };

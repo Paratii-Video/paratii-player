@@ -21,6 +21,7 @@ Template.doTransaction.helpers({
 Template.doTransaction.events({
   async 'submit #form-doTransaction'(event) {
     event.preventDefault();
+    const options = {};
     const type = this.type;  // Get the context from Template
     const amount = event.target.wallet_amount.value;
     const recipient = event.target.wallet_friend_number.value;
@@ -35,6 +36,7 @@ Template.doTransaction.events({
         break;
       case 'PTI':
         balance = web3.fromWei(Session.get('pti_balance'), 'ether');
+        options.videoid = this.videoid; // Video id whne you unlock a video
         break;
       default:
     }
@@ -59,8 +61,7 @@ Template.doTransaction.events({
     Session.set('checkTransaction', check);
     if (errors === undefined) {
       Modal.hide('doTransaction');
-      doTx(amount, recipient, password, type, description);
-      // sendPTI(amount, recipient, password);
+      doTx(amount, recipient, password, type, description, options);
     }
   },
 });

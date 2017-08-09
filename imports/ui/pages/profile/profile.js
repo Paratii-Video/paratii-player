@@ -61,10 +61,10 @@ Template.profile.events({
     });
   },
   'click #send-eth'() {
-    Modal.show('doTransaction', { type: 'Eth', label: 'Ethereum' });
+    Modal.show('doTransaction', { type: 'Eth', label: 'Send Ethereum' });
   },
   'click #send-pti'() {
-    Modal.show('doTransaction', { type: 'PTI', label: 'Paratii' });
+    Modal.show('doTransaction', { type: 'PTI', label: 'Send aratii' });
   },
   'click #restore-keystore'() {
     Modal.show('restoreKeystore', {});
