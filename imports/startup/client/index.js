@@ -10,8 +10,8 @@ import { initIPFS } from '../../lib/ipfs/index.js'
 Meteor.setTimeout(function () {
   initConnection();
   // IPFS integration.
-  initIPFS(() => {
-    console.log('ipfs initiated.')
-  })
+  // initIPFS(() => {
+  //   console.log('ipfs initiated.')
+  // })
 
 }, 1000);

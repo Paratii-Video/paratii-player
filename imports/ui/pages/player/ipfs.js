@@ -26,7 +26,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
   var queue = []
   var streamStarted = false
   var lastChunkIndex = 0
-  var chunksPerAppend = 4
+  var chunksPerAppend = 3
   var waiting = false
   mediaSource.addEventListener('sourceopen', sourceOpen, false)
 
@@ -49,8 +49,9 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
         let patch = Buffer.concat(queue.slice(lastChunkIndex, queue.length))
         sourceBuffer.appendBuffer(patch.buffer)
         lastChunkIndex = queue.length
-        waiting = true
       }
+      
+      waiting = true
       console.log('updateend, queue: ', queue.length, ' last: ', lastChunkIndex)
     })
 
