@@ -12,18 +12,15 @@ if (Meteor.isServer) {
   Meteor.methods({
     'addTXToCollection' (data) {
       check(data, Object);
-      console.log(data.nonce);
       const transaction = {
         nonce: web3.toDecimal(data.nonce),
         from: data.from,
         to: data.to,
         description: data.description,
-        valid: false,
         type: data.type
       };
 
-      console.log("oggetto transazione temporanea da validare", transaction);
-      Transactions.insert(transaction);
+      addOrUpdateTransaction(transaction);
     }
   });
 
@@ -47,44 +44,20 @@ if (Meteor.isServer) {
 
 async function addOrUpdateTransaction(transaction) {
   // add (or update) a transaction in the collection
-  // not that this is blocking without a feedback
   check(transaction, Object); // Check the type of the data
-
-  // we track the transactions by transactionHash
 
   // Selftransactions are filtered
   if (transaction.to == transaction.from) {
     return;
   }
 
-
-  const txToValidate = await Transactions.findOne({
+  const txToUpdate = await Transactions.findOne({
     nonce: transaction.nonce,
     from: transaction.from
   });
-  const txExist = await Transactions.findOne({
-    hash: transaction.hash
-  });
 
-  if (txExist) {
-    return;
-  }
+  txToUpdate ? Transactions.update({_id: txToUpdate._id}, {$set: transaction })  : Transactions.insert(transaction);
 
-  if (txToValidate) {
-
-    Transactions.update(txToValidate._id, {
-      $set: {
-        valid: true,
-        value: transaction.value,
-        hash: transaction.hash,
-        blockNumber: transaction.blockNumber,
-      }
-    });
-
-  } else {
-    transaction.valid = true;
-    Transactions.insert(transaction);
-  }
 }
 
 async function getPTITransactionsFromChain(fromBlock = 0) {
@@ -98,7 +71,6 @@ async function getPTITransactionsFromChain(fromBlock = 0) {
     if (error) {
       throw error;
     }
-    // console.log(log);
     addTransferEventToTransactionCollection(log);
   });
 }
@@ -115,6 +87,7 @@ function addTransferEventToTransactionCollection(log) {
   transaction.hash = tx.hash;
   transaction.blockNumber = tx.blockNumber;
   transaction.to = log.args.to;
+  transaction.valid = true;
   transaction.type = "pti";
   addOrUpdateTransaction(transaction);
 }
@@ -131,6 +104,7 @@ function addTransactionToCollection(tx) {
     transaction.hash = tx.hash;
     transaction.nonce = tx.nonce;
     transaction.blockNumber = tx.blockNumber;
+    transaction.valid = true;
     transaction.type = "eth";
     addOrUpdateTransaction(transaction);
   }
@@ -192,7 +166,6 @@ async function syncTransactionHistory() {
 
 
 function watchTransactions() {
-  var filter = web3.eth.filter('latest');
 
   web3.eth.filter('latest', function(error, result) {
     syncTransactionHistory();
