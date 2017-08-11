@@ -57,3 +57,4 @@ simply:reactive-local-storage
 dynamic-import
 meteor-tool
 percolate:synced-cron
+simple:reactive-method

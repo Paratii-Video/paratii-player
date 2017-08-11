@@ -46,24 +46,37 @@ function renderVideoElement(instance) {
 
 Template.player.onCreated(function () {
   const self = this;
+  const userPTIAddress = getUserPTIAddress();
+  Meteor.subscribe('userTransactions', userPTIAddress);
 
-  this.autorun(() => {
-    const transactionSub = self.subscribe('userTransactions');
-    if(transactionSub.ready() ) {
-
-      const transaction = Transactions.find();
-
-      Meteor.call('videos.isLocked', _video._id , getUserPTIAddress(), function (err, results) {
-        if (err){
-          throw(err);
-        }else{
-          console.log(results);
-          _playerState.set('locked', results);
-        }
-      });
-    }
-
+  let query = Transactions.find({videoid: FlowRouter.getParam('_id')});
+  let handle = query.observeChanges({
+    changed: function (id, fields) {
+      console.log("changes");
+    },
+    added: function (id, fields) {
+      console.log("added");
+     }
   });
+
+  // const transactionSub = self.subscribe('userTransactions');
+  // self.autorun(() => {
+  //
+  //   if(transactionSub.ready() ) {
+  //     console.log("ready");
+  //     const transaction = Transactions.find();
+  //
+  //     Meteor.call('videos.isLocked', _video._id , getUserPTIAddress(), function (err, results) {
+  //       if (err){
+  //         throw(err);
+  //       }else{
+  //         console.log(results);
+  //         _playerState.set('locked', results);
+  //       }
+  //     });
+  //   }
+  //
+  // });
 
   const instance = Template.instance();
   const bodyView = Blaze.getView('Template.App_body');
@@ -92,6 +105,16 @@ Template.player.onCreated(function () {
     // video subscription is ready
     renderVideoElement(instance);
   });
+
+
+  Meteor.call('videos.isLocked', FlowRouter.getParam('_id') , getUserPTIAddress(), function (err, results) {
+    if (err){
+      throw(err);
+    }else{
+      console.log(results);
+      _playerState.set('locked', results);
+    }
+  });
 });
 
 
@@ -101,6 +124,7 @@ Template.player.onDestroyed(function () {
 
 Template.player.helpers({
   isLocked(){
+
     return _playerState.get('locked');
   },
   playPause() {
