@@ -88,23 +88,3 @@ Template.transaction.helpers({
     return false;
   },
 });
-
-
-// Meteor.user is not available when the application start,
-// autorun restart the function till user is defined
-Tracker.autorun(() => {
-  const user = Meteor.user();
-  if (user !== undefined) {
-    // TODO: old implementation of events instead of BC
-    // const userPTIAddress = getUserPTIAddress();
-    // Meteor.subscribe('userTransactions', userPTIAddress);
-  }
-});
-
-
-Tracker.autorun(() => {
-  // const seed = Session.get('seed');
-  // if (seed != null) {
-  //   Modal.show('showSeed');
-  // }
-});

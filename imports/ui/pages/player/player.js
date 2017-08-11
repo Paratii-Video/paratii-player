@@ -3,10 +3,15 @@ import { Blaze } from 'meteor/blaze';
 import { sprintf } from 'meteor/sgi:sprintfjs';
 
 import { formatNumber } from '/imports/lib/utils.js';
+import { getUserPTIAddress } from '/imports/api/users.js';
+import { Transactions } from '/imports/api/transactions.js';
 import { Videos } from '../../../api/videos.js';
 import { createWebtorrentPlayer } from './webtorrent.js';
 
 import './player.html';
+
+// The session state is
+const _playerState = new ReactiveDict();
 
 let fullscreenOn = false;
 let controlsHandler;
@@ -14,7 +19,7 @@ let volumeHandler;
 let previousVolume = 100;
 let _video;
 
-const video = () => {
+function getVideo(){
   const videoId = FlowRouter.getParam('_id');
   if (!_video || _video.id !== videoId) {
     _video = Videos.findOne({ _id: videoId });
@@ -22,13 +27,14 @@ const video = () => {
   return _video;
 };
 
+
 function renderVideoElement(instance) {
   // adds the source to the vidoe element on this page
-  const currentVideo = video();
+  const currentVideo = getVideo();
 
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo);
-    instance.templateDict.set('torrent', true);
+    instance.playerState.set('torrent', true);
   } else {
     const videoElement = $('#video-player');
     const sourceElement = document.createElement('source');
@@ -39,25 +45,29 @@ function renderVideoElement(instance) {
 }
 
 Template.player.onCreated(function () {
+  var self = this;
+
   const instance = Template.instance();
   const bodyView = Blaze.getView('Template.App_body');
 
   // this makes the tests work
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized');
 
-  this.templateDict = new ReactiveDict();
-  this.templateDict.set('playing', false);
-  this.templateDict.set('currentTime', 0);
-  this.templateDict.set('totalTime', 0);
-  this.templateDict.set('hideControls', false);
-  this.templateDict.set('showVolume', false);
-  this.templateDict.set('loadedProgress', 0.0);
-  this.templateDict.set('playedProgress', 0.0);
-  this.templateDict.set('scrubberTranslate', 0);
-  this.templateDict.set('torrent', false);
-  this.templateDict.set('volumeValue', 100);
-  this.templateDict.set('volScrubberTranslate', 100);
-  this.templateDict.set('muted', false);
+  this.playerState = new ReactiveDict();
+  this.playerState.set('playing', false);
+  this.playerState.set('currentTime', 0);
+  this.playerState.set('totalTime', 0);
+  this.playerState.set('hideControls', false);
+  this.playerState.set('showVolume', false);
+  this.playerState.set('loadedProgress', 0.0);
+  this.playerState.set('playedProgress', 0.0);
+  this.playerState.set('scrubberTranslate', 0);
+  this.playerState.set('torrent', false);
+  this.playerState.set('volumeValue', 100);
+  this.playerState.set('volScrubberTranslate', 100);
+  this.playerState.set('muted', false);
+
+  _playerState.set('locked', true);
 
   // TODO: do not subscribe to all vidoes, just to the one we need
   Meteor.subscribe('videos', function () {
@@ -66,32 +76,58 @@ Template.player.onCreated(function () {
   });
 });
 
+
+Template.player.onRendered(function () {
+  const transactionSub = this.subscribe('userTransactions');
+
+  this.autorun(() => {
+    if(! transactionSub.ready() ) {
+      return;
+    }
+    const transaction = Transactions.find();
+
+    Meteor.call('videos.isLocked', _video._id , getUserPTIAddress(), function (err, results) {
+      if (err){
+        throw(err);
+      }else{
+        console.log(results);
+        _playerState.set('locked', results);
+      }
+    });
+
+  });
+});
+
+
 Template.player.onDestroyed(function () {
   Meteor.clearTimeout(controlsHandler);
 });
 
 Template.player.helpers({
+  isLocked(){
+    return _playerState.get('locked');
+  },
   playPause() {
-    return Template.instance().templateDict.get('playing') ? 'pause' : 'play';
+    return Template.instance().playerState.get('playing') ? 'pause' : 'play';
   },
   playPauseIcon() {
-    const state = Template.instance().templateDict.get('playing');
+    const state = Template.instance().playerState.get('playing');
     return (state) ? '/img/pause-icon.svg' : '/img/play-icon.svg';
   },
   currentTime() {
-    return Template.instance().templateDict.get('currentTime');
+    return Template.instance().playerState.get('currentTime');
   },
   totalTime() {
-    return Template.instance().templateDict.get('totalTime');
+    return Template.instance().playerState.get('totalTime');
   },
   video() {
-    return video();
+    return getVideo();
   },
   hasPrice() {
-    return video().price && video().price > 0;
+    return getVideo().price && getVideo().price > 0;
   },
   hideControls() {
-    return Template.instance().templateDict.get('hideControls') ? 'toggleFade' : '';
+    return Template.instance().playerState.get('hideControls') ? 'toggleFade' : '';
   },
   formatNumber(number) {
     return formatNumber(number);
@@ -102,28 +138,28 @@ Template.player.helpers({
     return sprintf('%02d:%02d', minutes, remainingSeconds);
   },
   volumeClass() {
-    return Template.instance().templateDict.get('showVolume') ? '' : 'closed';
+    return Template.instance().playerState.get('showVolume') ? '' : 'closed';
   },
   playedProgress() {
-    return Template.instance().templateDict.get('playedProgress');
+    return Template.instance().playerState.get('playedProgress');
   },
   loadedProgress() {
-    return Template.instance().templateDict.get('loadedProgress');
+    return Template.instance().playerState.get('loadedProgress');
   },
   scrubberTranslate() {
-    return Template.instance().templateDict.get('scrubberTranslate');
+    return Template.instance().playerState.get('scrubberTranslate');
   },
   status() {
-    return Template.instance().templateDict.get('status');
+    return Template.instance().playerState.get('status');
   },
   volumeValue() {
-    return Template.instance().templateDict.get('volumeValue');
+    return Template.instance().playerState.get('volumeValue');
   },
   volScrubberTranslate() {
-    return Template.instance().templateDict.get('volScrubberTranslate');
+    return Template.instance().playerState.get('volScrubberTranslate');
   },
   volumeIcon() {
-    const state = Template.instance().templateDict.get('muted');
+    const state = Template.instance().playerState.get('muted');
     return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg';
   },
 });
@@ -153,11 +189,11 @@ const requestCancelFullscreen = (element) => {
 };
 
 const pauseVideo = (instance) => {
-  instance.templateDict.set('playing', false);
+  instance.playerState.set('playing', false);
   instance.navState.set('minimized');
   instance.find('#video-player').pause();
   Meteor.clearTimeout(controlsHandler);
-  instance.templateDict.set('hideControls', false);
+  instance.playerState.set('hideControls', false);
   $('#app-container').removeClass('playing');
 };
 
@@ -165,20 +201,20 @@ const pauseVideo = (instance) => {
 const setVolume = (instance, value) => {
   const videoPlayer = instance.find('#video-player');
   videoPlayer.volume = value;
-  instance.templateDict.set('volumeValue', value * 100);
-  instance.templateDict.set('volScrubberTranslate', value * 100);
+  instance.playerState.set('volumeValue', value * 100);
+  instance.playerState.set('volScrubberTranslate', value * 100);
   if (value > 0) {
-    instance.templateDict.set('muted', false);
+    instance.playerState.set('muted', false);
   } else {
-    instance.templateDict.set('muted', true);
+    instance.playerState.set('muted', true);
   }
 };
 
 const setLoadedProgress = (instance) => {
   const videoPlayer = instance.find('#video-player');
-  const torrent = instance.templateDict.get('torrent');
+  const torrent = instance.playerState.get('torrent');
   if (videoPlayer.buffered.length > 0 && !torrent) {
-    const played = instance.templateDict.get('playedProgress');
+    const played = instance.playerState.get('playedProgress');
     let loaded = 0.0;
     // get the nearst end
     for (i = 0; i < videoPlayer.buffered.length; i += 1) {
@@ -186,7 +222,7 @@ const setLoadedProgress = (instance) => {
         loaded = videoPlayer.buffered.end(i) / videoPlayer.duration;
       }
     }
-    instance.templateDict.set('loadedProgress', loaded * 100);
+    instance.playerState.set('loadedProgress', loaded * 100);
   }
 };
 
@@ -199,16 +235,16 @@ Template.player.events({
       price: event.target.dataset.price, // Video Price
       address: event.target.dataset.address, // Creator PTI address
       videotitle: event.target.dataset.title, // Video title
-      videoid: FlowRouter.getParam('_id') // Video title
+      videoid: _video._id // Video title
     });
   },
   'ended #video-player'(event, instance) {
     const navState = instance.navState;
-    instance.templateDict.set('playing', false);
+    instance.playerState.set('playing', false);
     navState.set('minimized');
   },
   'click #play-pause-button'(event, instance) {
-    const dict = instance.templateDict;
+    const dict = instance.playerState;
     const navState = instance.navState;
     const videoPlayer = instance.find('#video-player');
     if (dict.get('playing')) {
@@ -238,7 +274,7 @@ Template.player.events({
   'timeupdate'(event, instance) {
     const videoPlayer = instance.find('#video-player');
     const time = videoPlayer.currentTime;
-    const dict = instance.templateDict;
+    const dict = instance.playerState;
 
     // update progress bar
     dict.set('playedProgress', (time / videoPlayer.duration) * 100);
@@ -261,8 +297,8 @@ Template.player.events({
       const barWidth = progress.offsetWidth;
       const offset = e.clientX - progress.getBoundingClientRect().left;
       videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
-      instance.templateDict.set('playedProgress', (offset / barWidth) * 100);
-      instance.templateDict.set('scrubberTranslate', (offset / barWidth) * 100);
+      instance.playerState.set('playedProgress', (offset / barWidth) * 100);
+      instance.playerState.set('scrubberTranslate', (offset / barWidth) * 100);
     });
   },
   'click #video-progress'(event, instance) {
@@ -270,8 +306,8 @@ Template.player.events({
     const barWidth = instance.find('#video-progress').offsetWidth;
     const offset = event.clientX - event.currentTarget.getBoundingClientRect().left;
     videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration;
-    instance.templateDict.set('playedProgress', (offset / barWidth) * 100);
-    instance.templateDict.set('scrubberTranslate', (offset / barWidth) * 100);
+    instance.playerState.set('playedProgress', (offset / barWidth) * 100);
+    instance.playerState.set('scrubberTranslate', (offset / barWidth) * 100);
   },
   'click #vol-control'(event, instance) {
     const barWidth = instance.find('#vol-control').offsetWidth;
@@ -289,12 +325,12 @@ Template.player.events({
   'loadedmetadata'(event, instance) {
     const videoPlayer = instance.find('#video-player');
     const duration = Math.floor(videoPlayer.duration);
-    instance.templateDict.set('totalTime', duration);
-    instance.templateDict.set('currentTime', 0);
+    instance.playerState.set('totalTime', duration);
+    instance.playerState.set('currentTime', 0);
     setLoadedProgress(instance);
   },
   'mousemove'(event, instance) {
-    const dict = instance.templateDict;
+    const dict = instance.playerState;
     const videoPlayer = instance.find('#video-player');
     dict.set('hideControls', false);
     Meteor.clearTimeout(controlsHandler);
@@ -309,11 +345,11 @@ Template.player.events({
   },
   'mouseover #volume-button, mouseover #vol-control'(event, instance) {
     Meteor.clearTimeout(volumeHandler);
-    instance.templateDict.set('showVolume', true);
+    instance.playerState.set('showVolume', true);
   },
   'mouseout #volume-button, mouseout #vol-control'(event, instance) {
     volumeHandler = Meteor.setTimeout(() => {
-      instance.templateDict.set('showVolume', false);
+      instance.playerState.set('showVolume', false);
     }, 1000);
   },
   'click #volume-button'(event, instance) {
@@ -326,12 +362,12 @@ Template.player.events({
     }
   },
   'click #button-like'() {
-    const videoId = FlowRouter.getParam('_id');
+    const videoId = _video._id;
     // const videoId = this._id // works as well
     Meteor.call('videos.like', videoId);
   },
   'click #button-dislike'() {
-    const videoId = FlowRouter.getParam('_id');
+    const videoId = _video._id;
     Meteor.call('videos.dislike', videoId);
   },
 });

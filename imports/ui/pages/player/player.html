@@ -43,7 +43,7 @@
           <span class="statistic-text" id="button-like"><img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
           <span class="statistic-text" id="button-dislike"><img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
         </div>
-        {{#if hasPrice}}
+        {{#if isLocked }}
           <button id="unlock-video" class="player-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
         {{/if}}
       </div>
