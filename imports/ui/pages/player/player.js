@@ -45,7 +45,25 @@ function renderVideoElement(instance) {
 }
 
 Template.player.onCreated(function () {
-  var self = this;
+  const self = this;
+
+  this.autorun(() => {
+    const transactionSub = self.subscribe('userTransactions');
+    if(transactionSub.ready() ) {
+
+      const transaction = Transactions.find();
+
+      Meteor.call('videos.isLocked', _video._id , getUserPTIAddress(), function (err, results) {
+        if (err){
+          throw(err);
+        }else{
+          console.log(results);
+          _playerState.set('locked', results);
+        }
+      });
+    }
+
+  });
 
   const instance = Template.instance();
   const bodyView = Blaze.getView('Template.App_body');
@@ -73,28 +91,6 @@ Template.player.onCreated(function () {
   Meteor.subscribe('videos', function () {
     // video subscription is ready
     renderVideoElement(instance);
-  });
-});
-
-
-Template.player.onRendered(function () {
-  const transactionSub = this.subscribe('userTransactions');
-
-  this.autorun(() => {
-    if(! transactionSub.ready() ) {
-      return;
-    }
-    const transaction = Transactions.find();
-
-    Meteor.call('videos.isLocked', _video._id , getUserPTIAddress(), function (err, results) {
-      if (err){
-        throw(err);
-      }else{
-        console.log(results);
-        _playerState.set('locked', results);
-      }
-    });
-
   });
 });
 
