@@ -13,20 +13,15 @@ if (Meteor.isServer) {
   Meteor.methods({
     'addTXToCollection' (data, options) {
       check(data, Object);
-      console.log(data.nonce);
       const transaction = {
         nonce: web3.toDecimal(data.nonce),
         from: data.from,
         to: data.to,
         description: data.description,
-        valid: false,
         type: data.type
       };
-
-      Object.assign(transaction, options);
-
-      console.log("oggetto transazione temporanea da validare", transaction);
-      Transactions.insert(transaction);
+      Object.assign(transaction, options); // If there are options they are merged in the transation object
+      addOrUpdateTransaction(transaction);
     }
   });
 
@@ -50,52 +45,20 @@ if (Meteor.isServer) {
 
 async function addOrUpdateTransaction(transaction) {
   // add (or update) a transaction in the collection
-  // not that this is blocking without a feedback
   check(transaction, Object); // Check the type of the data
-
-  // we track the transactions by transactionHash
 
   // Selftransactions are filtered
   if (transaction.to == transaction.from) {
     return;
   }
 
-
-  const txToValidate = await Transactions.findOne({
+  const txToUpdate = await Transactions.findOne({
     nonce: transaction.nonce,
     from: transaction.from
   });
-  const txExist = await Transactions.findOne({
-    hash: transaction.hash
-  });
 
-  if (txExist) {
-    return;
-  }
+  txToUpdate ? Transactions.update({_id: txToUpdate._id}, {$set: transaction })  : Transactions.insert(transaction);
 
-  if (txToValidate) {
-    // If transaction is a video unlock, there id a video ID
-    if(txToValidate.idvideo){
-      const video = Videos.findOne({ _id: txToValidate.idvideo });
-      // If video price is different from user payment, return
-      if(video.price !== transaction.value){
-        return;
-      }
-    }
-
-    Transactions.update(txToValidate._id, {
-      $set: {
-        valid: true,
-        value: transaction.value,
-        hash: transaction.hash,
-        blockNumber: transaction.blockNumber,
-      }
-    });
-
-  } else {
-    transaction.valid = true;
-    Transactions.insert(transaction);
-  }
 }
 
 async function getPTITransactionsFromChain(fromBlock = 0) {
@@ -109,15 +72,11 @@ async function getPTITransactionsFromChain(fromBlock = 0) {
     if (error) {
       throw error;
     }
-    // console.log(log);
     addTransferEventToTransactionCollection(log);
   });
 }
 
 function addTransferEventToTransactionCollection(log) {
-  // TODO: saves transactions in session - should save persistently in meteor collection
-
-  // log.value = log.value.toNumber();
   const tx = web3.eth.getTransaction(log.transactionHash);
   const transaction = {};
   transaction.value = log.args.value.toNumber();
@@ -126,26 +85,25 @@ function addTransferEventToTransactionCollection(log) {
   transaction.hash = tx.hash;
   transaction.blockNumber = tx.blockNumber;
   transaction.to = log.args.to;
+  transaction.valid = true;
   transaction.type = "pti";
   addOrUpdateTransaction(transaction);
 }
 
 function addTransactionToCollection(tx) {
-
   const receipt = web3.eth.getTransactionReceipt(tx.hash);
   if (receipt.logs.length == 0 && tx.value.toNumber() != 0) {
     const transaction = {};
-
     transaction.value = tx.value.toNumber();
     transaction.from = tx.from;
     transaction.to = tx.to;
     transaction.hash = tx.hash;
     transaction.nonce = tx.nonce;
     transaction.blockNumber = tx.blockNumber;
+    transaction.valid = true;
     transaction.type = "eth";
     addOrUpdateTransaction(transaction);
   }
-  //
 }
 
 // Itseems the only way to get the ETH transaction is by searching each block separately
@@ -156,13 +114,11 @@ async function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNum
   let toBlock;
   if (endBlockNumber == null) {
     toBlock = web3.eth.blockNumber;
-    // console.log(`Using endBlockNumber: ${endBlockNumber}`);
   } else {
     toBlock = endBlockNumber;
   }
   if (startBlockNumber == null) {
     fromBlock = 0;
-    // console.log(`Using startBlockNumber: ${startBlockNumber}`);
   } else {
     fromBlock = startBlockNumber;
   }
@@ -172,7 +128,6 @@ async function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNum
       if (block != null && block.transactions != null) {
         block.transactions.forEach(function(transaction) {
           if (myaccount === '*' || myaccount === transaction.from || myaccount === transaction.to) {
-            // console.log(web3.eth.getTransaction(transaction.hash));
             addTransactionToCollection(web3.eth.getTransaction(transaction.hash));
           }
         });
@@ -203,7 +158,6 @@ async function syncTransactionHistory() {
 
 
 function watchTransactions() {
-  var filter = web3.eth.filter('latest');
 
   web3.eth.filter('latest', function(error, result) {
     syncTransactionHistory();
