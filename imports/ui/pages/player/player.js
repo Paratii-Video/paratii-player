@@ -10,9 +10,6 @@ import { createWebtorrentPlayer } from './webtorrent.js';
 
 import './player.html';
 
-// The session state is
-const _playerState = new ReactiveDict();
-
 let fullscreenOn = false;
 let controlsHandler;
 let volumeHandler;
@@ -47,37 +44,6 @@ function renderVideoElement(instance) {
 Template.player.onCreated(function () {
   const self = this;
   const userPTIAddress = getUserPTIAddress();
-  Meteor.subscribe('userTransactions', userPTIAddress);
-
-  let query = Transactions.find({videoid: FlowRouter.getParam('_id')});
-  let handle = query.observeChanges({
-    changed: function (id, fields) {
-      console.log("changes");
-    },
-    added: function (id, fields) {
-      console.log("added");
-     }
-  });
-
-  // const transactionSub = self.subscribe('userTransactions');
-  // self.autorun(() => {
-  //
-  //   if(transactionSub.ready() ) {
-  //     console.log("ready");
-  //     const transaction = Transactions.find();
-  //
-  //     Meteor.call('videos.isLocked', _video._id , getUserPTIAddress(), function (err, results) {
-  //       if (err){
-  //         throw(err);
-  //       }else{
-  //         console.log(results);
-  //         _playerState.set('locked', results);
-  //       }
-  //     });
-  //   }
-  //
-  // });
-
   const instance = Template.instance();
   const bodyView = Blaze.getView('Template.App_body');
 
@@ -97,24 +63,42 @@ Template.player.onCreated(function () {
   this.playerState.set('volumeValue', 100);
   this.playerState.set('volScrubberTranslate', 100);
   this.playerState.set('muted', false);
+  this.playerState.set('locked', true);
 
-  _playerState.set('locked', true);
 
+  Meteor.subscribe('userTransactions', userPTIAddress);
   // TODO: do not subscribe to all vidoes, just to the one we need
   Meteor.subscribe('videos', function () {
     // video subscription is ready
-    renderVideoElement(instance);
+    // renderVideoElement(instance);
   });
 
+  let query = Transactions.find({videoid: FlowRouter.getParam('_id')});
+  let handle = query.observeChanges({
+    added: function (id, fields) {
+      console.log("added");
+      console.log(id);
+      console.log(fields);
+      self.playerState.set('locked', false);
+    },
+    changed: function (id, fields) {
+      console.log("changed");
+      console.log(id);
+      console.log(fields);
+      // self.playerState.set('locked', false);
+    },
+  });
 
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id') , getUserPTIAddress(), function (err, results) {
     if (err){
       throw(err);
     }else{
-      console.log(results);
-      _playerState.set('locked', results);
+      self.playerState.set('locked', results);
+      renderVideoElement(instance);
     }
   });
+
+
 });
 
 
@@ -124,8 +108,8 @@ Template.player.onDestroyed(function () {
 
 Template.player.helpers({
   isLocked(){
-
-    return _playerState.get('locked');
+    console.log(Template.instance().playerState.get('locked'));
+    return Template.instance().playerState.get('locked');
   },
   playPause() {
     return Template.instance().playerState.get('playing') ? 'pause' : 'play';

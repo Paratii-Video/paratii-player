@@ -56,8 +56,32 @@ async function addOrUpdateTransaction(transaction) {
     nonce: transaction.nonce,
     from: transaction.from
   });
+/*
+  var videoId;
+  if(txToUpdate){
+    videoId = txToUpdate.videoid;
+  } else {
+    videoId = transaction.videoid;
+  }
 
-  txToUpdate ? Transactions.update({_id: txToUpdate._id}, {$set: transaction })  : Transactions.insert(transaction);
+  if(videoId){
+    const video = Videos.findOne({_id:videoId});
+
+    console.log('trans: '+transaction.value);
+    console.log('video: '+web3.toWei(video.price, 'ether'));
+    if (parseInt(web3.toWei(video.price, 'ether'), 10) !== transaction.value ){
+      console.log('prices not match');
+      transaction.valid = false;
+    }
+  }
+
+*/
+  console.log('txToUpdate: ');
+  console.log(txToUpdate);
+  console.log('transaction: ');
+  console.log(transaction);
+
+  txToUpdate ? await Transactions.update({_id: txToUpdate._id}, {$set: transaction })  : await Transactions.insert(transaction);
 
 }
 

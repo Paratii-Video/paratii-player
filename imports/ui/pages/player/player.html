@@ -3,6 +3,7 @@
     <video id="video-player">
       <!-- <source src="{{ videoSource }}" type="video/webm" /> -->
     </video>
+    {{#unless isLocked }}
     <div class="player-controls {{playPause}} {{hideControls}}">
       <div id="video-progress">
         <div id="loaded-bar" style="width: {{loadedProgress}}%"></div>
@@ -27,8 +28,9 @@
       <button id="fullscreen-button" title="{{fullscreen}}">
         <img src= "/img/fullscreen-icon.svg">
       </button>
-
     </div>
+    {{/unless }}
+
     {{#with video}}
     <div class="player-overlay {{playPause}}">
       {{#each tag in tags }}
