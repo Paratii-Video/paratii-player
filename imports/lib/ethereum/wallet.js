@@ -31,14 +31,14 @@ function createKeystore(password, seedPhrase, cb) {
   };
   lightwallet.keystore.createVault(opts, function (err, keystore) {
     if (err) {
-      cb(err)
+      cb(err);
       return;
     }
 
     // while we are at it, also generate an address for our user
     keystore.keyFromPassword(password, function (error, pwDerivedKey) {
       if (error) {
-        cb(error)
+        cb(error);
         return;
       }
       // generate one new address/private key pairs
