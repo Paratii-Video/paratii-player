@@ -3,7 +3,7 @@ import { showSeed } from '/imports/ui/components/modals/showSeed.js';
 
 const mySubmitFunc = function (error, state) {
   if (state === 'signUp') {
-    //
+    showSeed();
   }
 };
 
@@ -13,7 +13,6 @@ const myPreSignupFunc = function (password) {
   Session.set('wallet-state', 'generating');
   createKeystore(password, undefined, function () {
     Session.set('wallet-state', '');
-    showSeed();
   });
 };
 
