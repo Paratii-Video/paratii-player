@@ -1,21 +1,23 @@
 import { createKeystore } from '/imports/lib/ethereum/wallet.js';
 import { showSeed } from '/imports/ui/components/modals/showSeed.js';
 
+
+var pass;
 const mySubmitFunc = function (error, state) {
+  // only create seed when the signup is seccessful
   if (state === 'signUp') {
-    //
+    Session.set('wallet-state', 'generating');
+    createKeystore(pass, undefined, function () {
+      Session.set('wallet-state', '');
+      showSeed();
+    });
   }
 };
 
 const myPreSignupFunc = function (password) {
-  // create a new wallet during signup
-    // alert('myPreSignupFunc')
-  Session.set('wallet-state', 'generating');
-  createKeystore(password, undefined, function () {
-    Session.set('wallet-state', '');
-    showSeed();
-  });
+  pass = password;
 };
+
 
 AccountsTemplates.avoidRedirect = true;
 
@@ -58,7 +60,7 @@ AccountsTemplates.configure({
   // onLogoutHook: myLogoutFunc,
   onSubmitHook: mySubmitFunc,
   preSignUpHook: myPreSignupFunc,
-  // postSignUpHook: myPostSubmitFunc,
+  // postSignUpHook: myPostSignUpHook,
 
   // Texts
   texts: {
