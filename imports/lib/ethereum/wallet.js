@@ -31,13 +31,15 @@ function createKeystore(password, seedPhrase, cb) {
   };
   lightwallet.keystore.createVault(opts, function (err, keystore) {
     if (err) {
-      throw err;
+      cb(err)
+      return;
     }
 
     // while we are at it, also generate an address for our user
     keystore.keyFromPassword(password, function (error, pwDerivedKey) {
       if (error) {
-        throw error;
+        cb(error)
+        return;
       }
       // generate one new address/private key pairs
       // the corresponding private keys are also encrypted
@@ -103,8 +105,8 @@ function getSeed(password, callback) {
 }
 
 
-function restoreWallet(password, seedPhrase) {
-  return createKeystore(password, seedPhrase);
+function restoreWallet(password, seedPhrase, cb) {
+  return createKeystore(password, seedPhrase, cb);
 }
 
 function doTx(amount, recipient, password, type, description) {
