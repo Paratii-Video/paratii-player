@@ -22,7 +22,6 @@ function createKeystore(password, seedPhrase, cb) {
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed();
   }
-  Session.set('seed', seedPhrase);
 
   // create a new keystore with the given password and seedPhrase
   const opts = {
@@ -45,16 +44,21 @@ function createKeystore(password, seedPhrase, cb) {
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 1);
 
-      RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore.serialize());
-      Session.set(`keystore-${Accounts.userId()}`, keystore.serialize());
+      if (Accounts.userId() !== null) {
+        Session.set('seed', seedPhrase);
+        RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore.serialize());
+        Session.set(`keystore-${Accounts.userId()}`, keystore.serialize());
 
-      const address = keystore.getAddresses()[0];
-      Session.set('userPTIAddress', add0x(address));
-      // TODO: we do not seem to be using this anymore...
-      Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
-      Session.set('generating-keystore', false);
-      if (cb) {
-        cb(error, seedPhrase);
+        const address = keystore.getAddresses()[0];
+        Session.set('userPTIAddress', add0x(address));
+        // TODO: we do not seem to be using this anymore...
+        Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
+        Session.set('generating-keystore', false);
+        if (cb) {
+          cb(error, seedPhrase);
+        }
+      } else {
+        cb('User not logged in, impossible to create a new keystore.');
       }
     });
   });

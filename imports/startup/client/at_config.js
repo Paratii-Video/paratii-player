@@ -11,7 +11,10 @@ const myPreSignupFunc = function (password) {
   // create a new wallet during signup
     // alert('myPreSignupFunc')
   Session.set('wallet-state', 'generating');
-  createKeystore(password, undefined, function () {
+  createKeystore(password, undefined, function (err) {
+    if (err) {
+      console.log(err);
+    }
     Session.set('wallet-state', '');
   });
 };
