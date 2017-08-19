@@ -43,22 +43,24 @@ function createKeystore(password, seedPhrase, cb) {
       // generate one new address/private key pairs
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 1);
+      const address = keystore.getAddresses()[0];
 
       if (Accounts.userId() !== null) {
         Session.set('seed', seedPhrase);
         RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore.serialize());
         Session.set(`keystore-${Accounts.userId()}`, keystore.serialize());
 
-        const address = keystore.getAddresses()[0];
         Session.set('userPTIAddress', add0x(address));
         // TODO: we do not seem to be using this anymore...
         Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
-        Session.set('generating-keystore', false);
-        if (cb) {
-          cb(error, seedPhrase);
-        }
       } else {
-        cb('User not logged in, impossible to create a new keystore.');
+        Session.set('newSeed', seedPhrase);
+        Session.set(`keystore-new`, keystore.serialize());
+        Session.set('newUserPTIAddress', add0x(address));
+      }
+      Session.set('generating-keystore', false);
+      if (cb) {
+        cb(error, seedPhrase);
       }
     });
   });
