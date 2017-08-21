@@ -3,7 +3,7 @@ import { showSeed } from '/imports/ui/components/modals/showSeed.js';
 
 const mySubmitFunc = function (error, state) {
   if (state === 'signUp') {
-    if (Session.get('newSeed')) {
+    if (Session.get('tempSeed')) {
       Session.set('wallet-state', 'generating');
       // if signup is successful, save the temporaries variables
       saveKeystore(
