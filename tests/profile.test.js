@@ -1,6 +1,6 @@
 /* eslint-disable: global-require, no-alert */
 /* eslint global-require: "off" */
-import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage } from './helpers.js';
+import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage, login } from './helpers.js';
 
 
 describe('account workflow', function () {
@@ -57,6 +57,57 @@ describe('account workflow', function () {
     browser.waitForExist('#avatar');
     // we should also see the wallet part
     browser.waitForExist('.walletContainer');
+  });
+
+  it('try to register a new account with an used email @watch', function () {
+    server.execute(createUser);
+    browser.url('http://localhost:3000/profile');
+    // we should see the login form, we click on the register link
+    browser.waitForExist('#at-signUp');
+    browser.$('#at-signUp').click();
+
+    // fill in the form
+    browser.waitForExist('[name="at-field-name"]');
+    browser
+      .setValue('[name="at-field-name"]', 'Guildenstern')
+      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+      .setValue('[name="at-field-password"]', 'password')
+      .setValue('[name="at-field-password_again"]', 'password');
+    // submit the form
+    browser.$('#at-btn').click();
+    browser.waitForVisible('.at-error', 2000);
+    const error = browser.getText('.at-error');
+    assert.isNotNull(error, 'should exist a error message');
+    assert.equal(error, 'Email already exists.');
+  });
+
+  it('do not overwrite a user address if failed to register a new user with an used email @watch', function () {
+    createUserAndLogin(browser);
+    browser.waitForVisible('#public_address', 5000);
+    const address = browser.getText('#public_address');
+    browser.$('#logout').click();
+    browser.url('http://localhost:3000/profile');
+    // we should see the login form, we click on the register link
+    browser.waitForExist('#at-signUp');
+    browser.$('#at-signUp').click();
+
+    // fill in the form
+    browser.waitForExist('[name="at-field-name"]');
+    browser
+      .setValue('[name="at-field-name"]', 'Guildenstern')
+      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+      .setValue('[name="at-field-password"]', 'password')
+      .setValue('[name="at-field-password_again"]', 'password');
+    // submit the form
+    browser.$('#at-btn').click();
+    // logout
+    browser.$('#at-signIn').click();
+
+    // verify if the address doesn't changed
+    login(browser);
+    browser.waitForVisible('#public_address', 5000);
+    const address2 = browser.getText('#public_address');
+    assert.equal(address, address2, 'The address is not the same.');
   });
 
   it('shows the seed', function () {
