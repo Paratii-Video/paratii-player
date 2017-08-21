@@ -22,7 +22,6 @@ function createKeystore(password, seedPhrase, cb) {
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed();
   }
-  Session.set('seed', seedPhrase);
 
   // create a new keystore with the given password and seedPhrase
   const opts = {
@@ -31,31 +30,47 @@ function createKeystore(password, seedPhrase, cb) {
   };
   lightwallet.keystore.createVault(opts, function (err, keystore) {
     if (err) {
-      throw err;
+      cb(err);
+      return;
     }
 
     // while we are at it, also generate an address for our user
     keystore.keyFromPassword(password, function (error, pwDerivedKey) {
       if (error) {
-        throw error;
+        cb(error);
+        return;
       }
       // generate one new address/private key pairs
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 1);
-
-      RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore.serialize());
-      Session.set(`keystore-${Accounts.userId()}`, keystore.serialize());
-
       const address = keystore.getAddresses()[0];
-      Session.set('userPTIAddress', add0x(address));
-      // TODO: we do not seem to be using this anymore...
-      Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
+
+      if (Accounts.userId() !== null) {
+        // if there is a logged user, save as always
+        saveKeystore(seedPhrase, keystore.serialize(), address);
+      } else {
+        // else, save in a temporary session variable
+        Session.set('tempSeed', seedPhrase);
+        Session.set(`tempKeystore`, keystore.serialize());
+        Session.set('tempAddress', add0x(address));
+      }
       Session.set('generating-keystore', false);
       if (cb) {
         cb(error, seedPhrase);
       }
     });
   });
+}
+
+// save the seed, keystore and address in the session
+function saveKeystore(seedPhrase, keystore, address) {
+  Session.set('seed', seedPhrase);
+  RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore);
+  Session.set(`keystore-${Accounts.userId()}`, keystore);
+
+  Session.set('userPTIAddress', add0x(address));
+  // TODO: we do not seem to be using this anymore...
+  Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
 }
 
 // getKeystore tries to load the keystore from the Session,
@@ -103,8 +118,8 @@ function getSeed(password, callback) {
 }
 
 
-function restoreWallet(password, seedPhrase) {
-  return createKeystore(password, seedPhrase);
+function restoreWallet(password, seedPhrase, cb) {
+  return createKeystore(password, seedPhrase, cb);
 }
 
 function doTx(amount, recipient, password, type, description) {
@@ -209,4 +224,4 @@ function deployTestContract(owner) {
 }
 
 
-export { createKeystore, restoreWallet, doTx, sendPTI, getSeed, sendEther, getPTIBalance, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction };
+export { createKeystore, restoreWallet, doTx, sendPTI, getSeed, sendEther, getPTIBalance, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction, saveKeystore };
