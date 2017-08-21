@@ -35,6 +35,7 @@ function renderVideoElement(instance) {
   } else {
     const videoElement = $('#video-player');
     const sourceElement = document.createElement('source');
+    console.log(currentVideo.src);
     sourceElement.src = currentVideo.src;
     sourceElement.type = currentVideo.mimetype;
     videoElement.append(sourceElement);
@@ -92,7 +93,7 @@ Template.player.onCreated(function () {
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id') , getUserPTIAddress(), function (err, results) {
     if (err){
       throw(err);
-    }else{
+    } else {
       self.playerState.set('locked', results);
       renderVideoElement(instance);
     }
