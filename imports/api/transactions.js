@@ -3,27 +3,31 @@ import {
   PTIContract,
   setContractAddress
 } from '/imports/lib/ethereum/connection.js';
+import { Videos } from '/imports/api/videos.js';
 
 export const Transactions = new Mongo.Collection('transactions');
+
+
 
 
 if (Meteor.isServer) {
 
   Meteor.methods({
-    'addTXToCollection' (data) {
+    'addTXToCollection' (data, options) {
       check(data, Object);
-      console.log(data.nonce);
       const transaction = {
         nonce: web3.toDecimal(data.nonce),
         from: data.from,
         to: data.to,
         description: data.description,
-        valid: false,
-        type: data.type
+        source: "client",
+        value: data.value,
+        currency: data.currency
       };
 
-      console.log("oggetto transazione temporanea da validare", transaction);
-      Transactions.insert(transaction);
+      Object.assign(transaction, options); // If there are options they are merged in the transation object
+      console.log("FROM client", transaction);
+      insertAndValidateTransaction(transaction);
     }
   });
 
@@ -31,26 +35,22 @@ if (Meteor.isServer) {
     check(userPTIAddress, String);
     // Publish all transactions where I find userPTIAddress
     const query = {
-      $and: [{
-        $or: [{
+      $and:[{
+        $or : [{
           to: userPTIAddress
         }, {
           from: userPTIAddress
-        }]
-      }, {
-        valid: true
+        }],
+        blockNumber: {$ne : null}
       }]
     };
     return Transactions.find(query);
   });
 }
 
-async function addOrUpdateTransaction(transaction) {
+async function insertAndValidateTransaction(transaction) {
   // add (or update) a transaction in the collection
-  // not that this is blocking without a feedback
   check(transaction, Object); // Check the type of the data
-
-  // we track the transactions by transactionHash
 
   // Selftransactions are filtered
   if (transaction.to == transaction.from) {
@@ -58,37 +58,34 @@ async function addOrUpdateTransaction(transaction) {
   }
 
 
-  const txToValidate = await Transactions.findOne({
-    nonce: transaction.nonce,
-    from: transaction.from
-  });
   const txExist = await Transactions.findOne({
-    hash: transaction.hash
+    nonce: transaction.nonce,
+    from: transaction.from,
+    source: transaction.source
   });
 
-  if (txExist) {
-    return;
-  }
-
-  if (txToValidate) {
-
-    Transactions.update(txToValidate._id, {
-      $set: {
-        valid: true,
-        value: transaction.value,
-        hash: transaction.hash,
-        blockNumber: transaction.blockNumber,
-      }
-    });
-
-  } else {
-    transaction.valid = true;
+  if(!txExist) {
     Transactions.insert(transaction);
   }
+
+
+  const txToValidate = await Transactions.findOne({
+    blockNumber: null,
+    nonce: transaction.nonce,
+    from: transaction.from,
+    source: "client"
+  });
+
+
+  if(txToValidate) {
+    Transactions.update({_id: txToValidate._id}, {$set: {blockNumber:transaction.blockNumber, hash:transaction.hash } });
+  }
+
 }
 
 async function getPTITransactionsFromChain(fromBlock = 0) {
   // set a filter for ALL PTI transactions
+  console.log("PTI SYNC STARTING FROM", fromBlock);
   filter = PTIContract().Transfer({}, {
     fromBlock,
     toBlock: 'latest'
@@ -98,15 +95,11 @@ async function getPTITransactionsFromChain(fromBlock = 0) {
     if (error) {
       throw error;
     }
-    // console.log(log);
     addTransferEventToTransactionCollection(log);
   });
 }
 
 function addTransferEventToTransactionCollection(log) {
-  // TODO: saves transactions in session - should save persistently in meteor collection
-
-  // log.value = log.value.toNumber();
   const tx = web3.eth.getTransaction(log.transactionHash);
   const transaction = {};
   transaction.value = log.args.value.toNumber();
@@ -115,26 +108,27 @@ function addTransferEventToTransactionCollection(log) {
   transaction.hash = tx.hash;
   transaction.blockNumber = tx.blockNumber;
   transaction.to = log.args.to;
-  transaction.type = "pti";
-  addOrUpdateTransaction(transaction);
+  transaction.currency = "pti";
+  transaction.source = "event";
+  console.log("FROM event", transaction.hash);
+  insertAndValidateTransaction(transaction);
 }
 
 function addTransactionToCollection(tx) {
-
   const receipt = web3.eth.getTransactionReceipt(tx.hash);
   if (receipt.logs.length == 0 && tx.value.toNumber() != 0) {
     const transaction = {};
-
     transaction.value = tx.value.toNumber();
     transaction.from = tx.from;
     transaction.to = tx.to;
     transaction.hash = tx.hash;
     transaction.nonce = tx.nonce;
     transaction.blockNumber = tx.blockNumber;
-    transaction.type = "eth";
-    addOrUpdateTransaction(transaction);
+    transaction.currency = "eth";
+    transaction.source = "blockchain";
+    console.log("FROM blockchain", transaction.hash);
+    insertAndValidateTransaction(transaction);
   }
-  //
 }
 
 // Itseems the only way to get the ETH transaction is by searching each block separately
@@ -143,15 +137,16 @@ function addTransactionToCollection(tx) {
 async function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
   let fromBlock;
   let toBlock;
+
+
+
   if (endBlockNumber == null) {
     toBlock = web3.eth.blockNumber;
-    // console.log(`Using endBlockNumber: ${endBlockNumber}`);
   } else {
     toBlock = endBlockNumber;
   }
   if (startBlockNumber == null) {
     fromBlock = 0;
-    // console.log(`Using startBlockNumber: ${startBlockNumber}`);
   } else {
     fromBlock = startBlockNumber;
   }
@@ -161,7 +156,6 @@ async function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNum
       if (block != null && block.transactions != null) {
         block.transactions.forEach(function(transaction) {
           if (myaccount === '*' || myaccount === transaction.from || myaccount === transaction.to) {
-            // console.log(web3.eth.getTransaction(transaction.hash));
             addTransactionToCollection(web3.eth.getTransaction(transaction.hash));
           }
         });
@@ -173,29 +167,50 @@ async function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNum
 async function syncTransactionHistory() {
   // searches the whole blockchain for transactions that may be relevant
   // and saves these in the Transaction collection
-  const transactionsCount = await Transactions.find().count();
-  if (transactionsCount > 0) {
-    // the highest known blocknumber in the Transaction Collection
-    latestSyncedBlock = Transactions.findOne({}, {
-      sort: {
-        blockNumber: -1,
-        limit: 1
-      }
-    }).blockNumber;
-  } else {
-    let latestSyncedBlock = 0;
-  }
-  getTransactionsByAccount('*', fromBlock = latestSyncedBlock);
-  getPTITransactionsFromChain(fromBlock = latestSyncedBlock);
+
 };
 
+async function getLatestBlockToSync(source){
 
+  let latestBlock;
+
+  // the highest known blocknumber in the Transaction Collection
+  latestBlock = Transactions.findOne({source: source}, {
+    sort: {
+      blockNumber: -1,
+      limit: 1,
+    }
+  });
+
+  return latestBlock;
+
+}
 
 function watchTransactions() {
-  var filter = web3.eth.filter('latest');
+
+  getLatestBlockToSync("event").then(function(results){
+    let blockStart;
+    if(results == null){
+      blockStart = 267;
+    } else {
+      blockStart = results.blockNumber + 1;
+    }
+    getPTITransactionsFromChain(blockStart);
+  });
 
   web3.eth.filter('latest', function(error, result) {
-    syncTransactionHistory();
+
+    getLatestBlockToSync("blockchain").then(function(results){
+      let blockStart;
+      if(results == null){
+        blockStart = 267;
+      } else {
+        blockStart = results.blockNumber + 1;
+      }
+      console.log("ETH SYNC STARTING FROM", blockStart);
+      getTransactionsByAccount('*', blockStart);
+
+    });
   });
 };
 

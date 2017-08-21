@@ -13,7 +13,7 @@ describe('account workflow', function () {
     browser.execute(clearLocalStorage);
   });
 
-  it('check if page works @watch', function () {
+  it('check if page works', function () {
     browser.url('http://localhost:3000/transactions');
     // we should see the login form, we click on the register link
   });

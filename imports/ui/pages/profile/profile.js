@@ -49,22 +49,24 @@ Template.profile.events({
   'click #create-wallet'() {
     getPassword().then(function (password) {
       if (password) {
-        createKeystore(password).then(function (wallet, err) {
-          if (err) {
+        // set seed in the session, then show the new seed
+        Session.set('wallet-state', 'generating');
+        createKeystore(password, undefined, function (err, seed) {
+          Session.set('wallet-state', '');
+          if(err) {
             throw err;
           }
-          // set the seed in the Session, so that showSeed will shwo it immediately
-          Session.set('seed', wallet.seed);
+          Session.set('seed', seed);
           Modal.show('showSeed', {});
         });
       }
     });
   },
   'click #send-eth'() {
-    Modal.show('doTransaction', { type: 'Eth', label: 'Ethereum' });
+    Modal.show('doTransaction', { type: 'Eth', label: 'Send Ethereum' });
   },
   'click #send-pti'() {
-    Modal.show('doTransaction', { type: 'PTI', label: 'Paratii' });
+    Modal.show('doTransaction', { type: 'PTI', label: 'Send aratii' });
   },
   'click #restore-keystore'() {
     Modal.show('restoreKeystore', {});
@@ -87,24 +89,4 @@ Template.transaction.helpers({
     }
     return false;
   },
-});
-
-
-// Meteor.user is not available when the application start,
-// autorun restart the function till user is defined
-Tracker.autorun(() => {
-  const user = Meteor.user();
-  if (user !== undefined) {
-    // TODO: old implementation of events instead of BC
-    // const userPTIAddress = getUserPTIAddress();
-    // Meteor.subscribe('userTransactions', userPTIAddress);
-  }
-});
-
-
-Tracker.autorun(() => {
-  // const seed = Session.get('seed');
-  // if (seed != null) {
-  //   Modal.show('showSeed');
-  // }
 });

@@ -19,6 +19,7 @@
     <div class="videosListContainer">
       {{# each videos }}
         <div class="videoCardContainer">
+          {{isLocked}}
           <div class="videoThumbContent">
             <a href="{{pathFor route='player' _id=this._id}}"><img src="{{thumb}}"/></a>
             <div class="videoCardDuration">{{duration}}</div>
