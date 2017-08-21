@@ -27,8 +27,13 @@
         <td>{{ blockNumber}}</td>
         <td>
           {{#if description}}
-          <b>{{ description }}</b>
+            <b>{{ description }}</b>
           {{/if}}
+          <br>
+          {{#if videoid}}
+            <b>{{ videoid }}</b>
+          {{/if}}
+
           <br>from: {{ from }}
           <br>to: {{ to }}
           <br>transactionHash: {{ hash }}

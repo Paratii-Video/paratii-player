@@ -24,7 +24,7 @@ if (Meteor.isServer) {
         value: data.value,
         currency: data.currency
       };
-      
+
       Object.assign(transaction, options); // If there are options they are merged in the transation object
       console.log("FROM client", transaction);
       insertAndValidateTransaction(transaction);
@@ -35,11 +35,14 @@ if (Meteor.isServer) {
     check(userPTIAddress, String);
     // Publish all transactions where I find userPTIAddress
     const query = {
-        $or: [{
+      $and:[{
+        $or : [{
           to: userPTIAddress
         }, {
           from: userPTIAddress
-        }]
+        }],
+        blockNumber: {$ne : null}
+      }]
     };
     return Transactions.find(query);
   });
@@ -188,7 +191,7 @@ function watchTransactions() {
   getLatestBlockToSync("event").then(function(results){
     let blockStart;
     if(results == null){
-      blockStart = 0;
+      blockStart = 267;
     } else {
       blockStart = results.blockNumber + 1;
     }
@@ -200,7 +203,7 @@ function watchTransactions() {
     getLatestBlockToSync("blockchain").then(function(results){
       let blockStart;
       if(results == null){
-        blockStart = 0;
+        blockStart = 267;
       } else {
         blockStart = results.blockNumber + 1;
       }
