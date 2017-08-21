@@ -32,16 +32,18 @@ describe('player workflow', function () {
   });
 
 
-  it('play a free video', function () {
+  it('play a free video @watch', function () {
     browser.url('http://localhost:3000/player/12345');
     browser.waitForExist('#video-player');
+    browser.waitForExist('.player-overlay');
+    browser.waitForExist('.player-controls');
     browser.click('#play-pause-button');
     assert.isTrue(browser.getAttribute('#nav', 'class').includes('closed'));
     assert.isTrue(browser.getAttribute('.player-controls', 'class').includes('pause'));
     assert.isTrue(browser.getAttribute('.player-overlay', 'class').includes('pause'));
   });
 
-  it('click on the progress bar @watch', function () {
+  it('click on the progress bar', function () {
     browser.url('http://localhost:3000/player/12345');
     browser.waitForExist('#video-player');
     // browser.waitForExist('#loaded-bar');
