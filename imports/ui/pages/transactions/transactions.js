@@ -21,7 +21,7 @@ Template.registerHelper('equals', function (a, b) {
 });
 
 Template.registerHelper('toEther', function (a) {
-  return parseInt(web3.fromWei(a, 'ether'));
+  return parseFloat(web3.fromWei(a, 'ether'));
 });
 
 Template.transactions.helpers({

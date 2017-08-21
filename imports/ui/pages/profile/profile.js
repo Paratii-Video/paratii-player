@@ -63,10 +63,10 @@ Template.profile.events({
     });
   },
   'click #send-eth'() {
-    Modal.show('doTransaction', { type: 'Eth', label: 'Ethereum' });
+    Modal.show('doTransaction', { type: 'Eth', label: 'Send Ethereum' });
   },
   'click #send-pti'() {
-    Modal.show('doTransaction', { type: 'PTI', label: 'Paratii' });
+    Modal.show('doTransaction', { type: 'PTI', label: 'Send aratii' });
   },
   'click #restore-keystore'() {
     Modal.show('restoreKeystore', {});
@@ -89,24 +89,4 @@ Template.transaction.helpers({
     }
     return false;
   },
-});
-
-
-// Meteor.user is not available when the application start,
-// autorun restart the function till user is defined
-Tracker.autorun(() => {
-  const user = Meteor.user();
-  if (user !== undefined) {
-    // TODO: old implementation of events instead of BC
-    // const userPTIAddress = getUserPTIAddress();
-    // Meteor.subscribe('userTransactions', userPTIAddress);
-  }
-});
-
-
-Tracker.autorun(() => {
-  // const seed = Session.get('seed');
-  // if (seed != null) {
-  //   Modal.show('showSeed');
-  // }
 });

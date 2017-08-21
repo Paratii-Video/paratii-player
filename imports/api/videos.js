@@ -1,4 +1,5 @@
 import { check } from 'meteor/check';
+import { Transactions } from '/imports/api/transactions.js';
 
 export const Videos = new Mongo.Collection('videos');
 
@@ -14,19 +15,33 @@ export function userDislikesVideo(userId, videoId) {
   );
 }
 
+
 if (Meteor.isServer) {
   // This code only runs on the server
-  Meteor.publish('videos', function videosPublication() {
+  Meteor.publish('videos', function() {
     return Videos.find();
   });
-}
 
+  Meteor.methods({
+    'videos.isLocked'(videoid, userAddress){
+      const video = Videos.findOne( { _id: videoid } );
+      if(video.price == 0){
+        return false; // Video is free, it doesn't have a price
+      } else {
+        const videoUnlocked = Transactions.findOne( { videoid: videoid, from: userAddress, blockNumber: {$ne: null} });
+        if(videoUnlocked){
+          return false;
+        }
+      }
+      return true;
+    }
+  });
+
+}
 Meteor.methods({
   'videos.like'(videoId) {
     check(videoId, String);
-
     const currentUserId = Meteor.userId();
-
     if (!currentUserId) {
       return false;
     }
@@ -90,4 +105,5 @@ Meteor.methods({
     });
     return video.id;
   },
+
 });

@@ -14,8 +14,12 @@ export const populateVideos = () => {
     description: 'A video about nature, power, surfing and lots of natural power...',
     thumb: '/img/thumb1-img.png',
     duration: '15:30',
-    price: '22',
-    uploader: 'Pole Pole Channel',
+    price: 22,
+    uploader: {
+      address : '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
+      name: 'Pole Pole Channel',
+      avatar: 'http://i.pravatar.cc/150?img=1'
+    },
     stats: {
       likes_percentage: 84,
       views: 15524,
@@ -33,8 +37,11 @@ export const populateVideos = () => {
     description: 'Longboard Expression Session at NC before the final Pro 2016! Best barrels ever seen in a longboard!!',
     thumb: '/img/thumb2-img.png',
     duration: '03:22',
-    price: '',
-    uploader: 'John Doe',
+    price: 0,
+    uploader: {
+      name: 'John Doe',
+      avatar: 'http://i.pravatar.cc/150?img=2'
+    },
     stats: {
       likes_percentage: 98,
       views: 2244245,
@@ -52,8 +59,11 @@ export const populateVideos = () => {
     description: 'Trying with webtorrent...',
     thumb: '/img/thumb2-img.png',
     duration: '03:22',
-    price: '',
-    uploader: 'John Doe',
+    price: 22,
+    uploader: {
+      name: 'Mike Torrent',
+      avatar: 'http://i.pravatar.cc/150?img=3'
+    },
     stats: {
       likes_percentage: 98,
       views: 2244245,

@@ -3,6 +3,7 @@
     <video id="video-player">
       <!-- <source src="{{ videoSource }}" type="video/webm" /> -->
     </video>
+    {{#unless isLocked }}
     <div class="player-controls {{playPause}} {{hideControls}}">
       <div id="video-progress">
         <div id="loaded-bar" style="width: {{loadedProgress}}%"></div>
@@ -27,14 +28,15 @@
       <button id="fullscreen-button" title="{{fullscreen}}">
         <img src= "/img/fullscreen-icon.svg">
       </button>
-
     </div>
+    {{/unless }}
+
     {{#with video}}
     <div class="player-overlay {{playPause}}">
       {{#each tag in tags }}
         <div class="primary-tag">{{ tag }}</div>
       {{/each}}
-      <div class="player-uploader">{{ uploader }}</div>
+      <div class="player-uploader">{{ uploader.name }} <img class="dapp-identicon" src="{{ uploader.avatar }}"/></div>
       <div class="player-info">
         <div class="player-title">{{ title }}</div>
         <div class="player-description">{{ description }}</div>
@@ -43,8 +45,8 @@
           <span class="statistic-text" id="button-like"><img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
           <span class="statistic-text" id="button-dislike"><img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
         </div>
-        {{#if hasPrice}}
-          <button class="player-price">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
+        {{#if isLocked }}
+          <button id="unlock-video" class="player-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
         {{/if}}
       </div>
     </div>

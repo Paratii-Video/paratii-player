@@ -122,7 +122,7 @@ function restoreWallet(password, seedPhrase, cb) {
   return createKeystore(password, seedPhrase, cb);
 }
 
-function doTx(amount, recipient, password, type, description) {
+function doTx(amount, recipient, password, type, description, options) {
   const fromAddr = getUserPTIAddress();
   const nonce = web3.eth.getTransactionCount(fromAddr);
   const value = parseInt(web3.toWei(amount, 'ether'), 10);
@@ -141,12 +141,12 @@ function doTx(amount, recipient, password, type, description) {
       case 'Eth':
         txOptions.to = add0x(recipient);
         txOptions.value = web3.toHex(value);
-        txOptions.type = 'eth';
+        txOptions.currency = 'eth';
         rawTx = lightwallet.txutils.valueTx(txOptions);
         break;
       case 'PTI':
         txOptions.to = getContractAddress();
-        txOptions.type = 'pti';
+        txOptions.currency = 'pti';
         rawTx = lightwallet.txutils.functionTx(paratiiContract.abi, 'transfer', [recipient, value], txOptions);
         break;
       default:
@@ -157,13 +157,12 @@ function doTx(amount, recipient, password, type, description) {
       if (err) {
         throw err;
       }
-      console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
-      const receipt = web3.eth.getTransactionReceipt(hash);
+
       txOptions.from = fromAddr;
       txOptions.description = description;
-      Meteor.call('addTXToCollection', txOptions);
+      txOptions.value = value;
+      Meteor.call('addTXToCollection', txOptions, options);
 
-      console.log(receipt);
     });
   });
 }
@@ -184,12 +183,6 @@ function getAccounts() {
   return web3.eth.accounts;
 }
 
-function sendPTI(amountInPti, recipient, password) {
-  doTx(amountInPti, recipient, password, 'PT');
-}
-function sendEther(amountInEth, recipient, password) {
-  doTx(amountInEth, recipient, password, 'Eth');
-}
 
 function deployTestContract(owner) {
   const MyContract = web3.eth.contract(paratiiContract.abi);
@@ -223,5 +216,4 @@ function deployTestContract(owner) {
   });
 }
 
-
-export { createKeystore, restoreWallet, doTx, sendPTI, getSeed, sendEther, getPTIBalance, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction, saveKeystore };
+export { createKeystore, restoreWallet, doTx, getSeed, getPTIBalance, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction, saveKeystore };
