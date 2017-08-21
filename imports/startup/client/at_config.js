@@ -1,17 +1,20 @@
-import { createKeystore } from '/imports/lib/ethereum/wallet.js';
+import { createKeystore, saveKeystore } from '/imports/lib/ethereum/wallet.js';
 import { showSeed } from '/imports/ui/components/modals/showSeed.js';
 
 const mySubmitFunc = function (error, state) {
   if (state === 'signUp') {
     if (Session.get('newSeed')) {
-      Session.set('seed', Session.get('newSeed'));
-      RLocalStorage.setItem(`keystore-${Accounts.userId()}`, Session.get('keystore-new'));
-      Session.set(`keystore-${Accounts.userId()}`, Session.get('keystore-new'));
-
-      Session.set('userPTIAddress', Session.get('newUserPTIAddress'));
-      // TODO: we do not seem to be using this anymore...
-      Meteor.call('users.update', { 'profile.ptiAddress': Session.get('newUserPTIAddress') });
-      Session.set('newSeed', null);
+      Session.set('wallet-state', 'generating');
+      // if signup is successful, save the temporaries variables
+      saveKeystore(
+        Session.get('tempSeed'),
+        Session.get('tempKeystore'),
+        Session.get('tempAddress')
+      );
+      Session.set('tempSeed', null);
+      Session.set('tempKeystore', null);
+      Session.set('tempAddress', null);
+      Session.set('wallet-state', '');
     }
     showSeed();
   }
@@ -19,7 +22,6 @@ const mySubmitFunc = function (error, state) {
 
 const myPreSignupFunc = function (password) {
   // create a new wallet during signup
-    // alert('myPreSignupFunc')
   Session.set('wallet-state', 'generating');
   createKeystore(password, undefined, function (err) {
     if (err) {

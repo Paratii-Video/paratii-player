@@ -46,17 +46,13 @@ function createKeystore(password, seedPhrase, cb) {
       const address = keystore.getAddresses()[0];
 
       if (Accounts.userId() !== null) {
-        Session.set('seed', seedPhrase);
-        RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore.serialize());
-        Session.set(`keystore-${Accounts.userId()}`, keystore.serialize());
-
-        Session.set('userPTIAddress', add0x(address));
-        // TODO: we do not seem to be using this anymore...
-        Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
+        // if there is a logged user, save as always
+        saveKeystore(seedPhrase, keystore.serialize(), address);
       } else {
-        Session.set('newSeed', seedPhrase);
-        Session.set(`keystore-new`, keystore.serialize());
-        Session.set('newUserPTIAddress', add0x(address));
+        // else, save in a temporary session variable
+        Session.set('tempSeed', seedPhrase);
+        Session.set(`tempKeystore`, keystore.serialize());
+        Session.set('tempAddress', add0x(address));
       }
       Session.set('generating-keystore', false);
       if (cb) {
@@ -64,6 +60,17 @@ function createKeystore(password, seedPhrase, cb) {
       }
     });
   });
+}
+
+// save the seed, keystore and address in the session
+function saveKeystore(seedPhrase, keystore, address) {
+  Session.set('seed', seedPhrase);
+  RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore);
+  Session.set(`keystore-${Accounts.userId()}`, keystore);
+
+  Session.set('userPTIAddress', add0x(address));
+  // TODO: we do not seem to be using this anymore...
+  Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
 }
 
 // getKeystore tries to load the keystore from the Session,
@@ -209,5 +216,4 @@ function deployTestContract(owner) {
   });
 }
 
-
-export { createKeystore, restoreWallet, doTx, getSeed, getPTIBalance, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction };
+export { createKeystore, restoreWallet, doTx, getSeed, getPTIBalance, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction, saveKeystore };
