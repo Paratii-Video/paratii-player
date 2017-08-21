@@ -37,8 +37,8 @@ deployment:
   staging:
     branch: master
     commands:
-      - ./deploy_staging.sh
-    timeout: 1200
+      - ./deploy_staging.sh:
+          timeout: 1200
 
 notify:
   webhooks:
