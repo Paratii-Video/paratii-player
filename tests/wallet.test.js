@@ -11,7 +11,7 @@ describe('wallet', function () {
 
   });
 
-  it('should be able to send some ETH @watch', function () {
+  it('should be able to send some ETH', function () {
     createUserAndLogin(browser);
     browser.waitForExist('#public_address', 3000);
     browser.execute(getSomeEth, 1);
@@ -20,7 +20,7 @@ describe('wallet', function () {
     assert.equal(amount, 1);
   });
 
-  it('should be able to send some PTI @watch', function () {
+  it('should be able to send some PTI', function () {
     createUserAndLogin(browser);
     browser.waitForExist('#public_address', 3000);
     browser.execute(deployContract);
