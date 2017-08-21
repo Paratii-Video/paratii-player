@@ -85,6 +85,7 @@ describe('account workflow', function () {
     createUserAndLogin(browser);
     browser.waitForVisible('#public_address', 5000);
     const address = browser.getText('#public_address');
+    // logout
     browser.$('#logout').click();
     browser.url('http://localhost:3000/profile');
     // we should see the login form, we click on the register link
@@ -100,8 +101,6 @@ describe('account workflow', function () {
       .setValue('[name="at-field-password_again"]', 'password');
     // submit the form
     browser.$('#at-btn').click();
-    // logout
-    browser.$('#at-signIn').click();
 
     // verify if the address doesn't changed
     login(browser);
