@@ -32,7 +32,7 @@ describe('player workflow', function () {
   });
 
 
-  it('play a free video @watch', function () {
+  it('play a free video', function () {
     browser.url('http://localhost:3000/player/12345');
     browser.waitForExist('#video-player');
     browser.waitForExist('.player-overlay');
