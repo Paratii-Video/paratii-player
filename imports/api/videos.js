@@ -37,7 +37,6 @@ if (Meteor.isServer) {
   });
 
 }
-
 Meteor.methods({
   'videos.like'(videoId) {
     check(videoId, String);

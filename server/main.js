@@ -13,6 +13,7 @@ const FIRST_BLOCK = 0; // First block we consider when searching for transaction
 Meteor.settings.public.first_block = FIRST_BLOCK;
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
 
+
 Meteor.startup(function() {
   // sync the transaction history - update the collection to include the latest blocks
   getTransactionsByAccount('*', 267);
