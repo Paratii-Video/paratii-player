@@ -1,7 +1,7 @@
 'use strict'
 // const WebRTCStar = require('libp2p-webrtc-star')
 // const WS = require('libp2p-websockets')
-const SECIO = require('js-libp2p-secio')
+const SECIO = require('libp2p-secio')
 /**
  * initIPFS - initiates Ipfs instance
  *
