@@ -100,7 +100,10 @@ describe('account workflow', function () {
       .setValue('[name="at-field-password_again"]', 'password');
     // submit the form
     browser.$('#at-btn').click();
+    // logout
     browser.$('#at-signIn').click();
+
+    // verify if the address doesn't changed
     login(browser);
     browser.waitForVisible('#public_address', 5000);
     const address2 = browser.getText('#public_address');
