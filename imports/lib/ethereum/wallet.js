@@ -22,7 +22,6 @@ function createKeystore(password, seedPhrase, cb) {
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed();
   }
-  Session.set('seed', seedPhrase);
 
   // create a new keystore with the given password and seedPhrase
   const opts = {
@@ -31,25 +30,34 @@ function createKeystore(password, seedPhrase, cb) {
   };
   lightwallet.keystore.createVault(opts, function (err, keystore) {
     if (err) {
-      throw err;
+      cb(err);
+      return;
     }
 
     // while we are at it, also generate an address for our user
     keystore.keyFromPassword(password, function (error, pwDerivedKey) {
       if (error) {
-        throw error;
+        cb(error);
+        return;
       }
       // generate one new address/private key pairs
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 1);
-
-      RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore.serialize());
-      Session.set(`keystore-${Accounts.userId()}`, keystore.serialize());
-
       const address = keystore.getAddresses()[0];
-      Session.set('userPTIAddress', add0x(address));
-      // TODO: we do not seem to be using this anymore...
-      Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
+
+      if (Accounts.userId() !== null) {
+        Session.set('seed', seedPhrase);
+        RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore.serialize());
+        Session.set(`keystore-${Accounts.userId()}`, keystore.serialize());
+
+        Session.set('userPTIAddress', add0x(address));
+        // TODO: we do not seem to be using this anymore...
+        Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
+      } else {
+        Session.set('newSeed', seedPhrase);
+        Session.set(`keystore-new`, keystore.serialize());
+        Session.set('newUserPTIAddress', add0x(address));
+      }
       Session.set('generating-keystore', false);
       if (cb) {
         cb(error, seedPhrase);
@@ -103,8 +111,8 @@ function getSeed(password, callback) {
 }
 
 
-function restoreWallet(password, seedPhrase) {
-  return createKeystore(password, seedPhrase);
+function restoreWallet(password, seedPhrase, cb) {
+  return createKeystore(password, seedPhrase, cb);
 }
 
 function doTx(amount, recipient, password, type, description, options) {
@@ -126,12 +134,12 @@ function doTx(amount, recipient, password, type, description, options) {
       case 'Eth':
         txOptions.to = add0x(recipient);
         txOptions.value = web3.toHex(value);
-        txOptions.type = 'eth';
+        txOptions.currency = 'eth';
         rawTx = lightwallet.txutils.valueTx(txOptions);
         break;
       case 'PTI':
         txOptions.to = getContractAddress();
-        txOptions.type = 'pti';
+        txOptions.currency = 'pti';
         rawTx = lightwallet.txutils.functionTx(paratiiContract.abi, 'transfer', [recipient, value], txOptions);
         break;
       default:
@@ -142,13 +150,12 @@ function doTx(amount, recipient, password, type, description, options) {
       if (err) {
         throw err;
       }
-      console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
-      const receipt = web3.eth.getTransactionReceipt(hash);
+
       txOptions.from = fromAddr;
       txOptions.description = description;
+      txOptions.value = value;
       Meteor.call('addTXToCollection', txOptions, options);
 
-      console.log(receipt);
     });
   });
 }
