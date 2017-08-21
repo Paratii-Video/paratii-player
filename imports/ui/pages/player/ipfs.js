@@ -12,10 +12,11 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
   // because meteors package.json is @#$@#$% broken
   // cf. https://github.com/meteor/meteor/issues/7067
 
-  templateDict.set('status', 'creating IPFS instance');
-  const videoElement = document.querySelector('#video-player');
+  templateDict.set('status', 'creating IPFS instance')
+  const videoElement = document.querySelector('#video-player')
   const ipfsHash = currentVideo.src
   var mediaSource = new window.MediaSource()
+  var meter = 0
   var queue = []
   var streamStarted = false
   var lastChunkIndex = 0
@@ -35,6 +36,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
 	      console.log('appending chunks from ', lastChunkIndex, ' to ', queue.length - 1)
         let patch = Buffer.concat(queue.slice(lastChunkIndex, queue.length))
         sourceBuffer.appendBuffer(patch.buffer)
+        meter += patch.buffer.byteLength
         lastChunkIndex = queue.length
       } else if (lastChunkIndex < queue.length) {
         // there are few chunks but less than minimum
@@ -42,6 +44,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
 	      console.log('got chunks but less than minimum')
         let patch = Buffer.concat(queue.slice(lastChunkIndex, queue.length))
         sourceBuffer.appendBuffer(patch.buffer)
+        meter += patch.buffer.byteLength
         lastChunkIndex = queue.length
       }
 
@@ -66,6 +69,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
           })
         })
         console.log('bitswap stat: ', window.ipfs.bitswap.stat())
+        console.log('[IPFS] meter: ', meter, ' bytes')
       }, 10000)
       // -----------------------------------------------------------------------
 
@@ -89,6 +93,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
                 console.log('first chunk(s) appending')
                 let patch = Buffer.concat(queue.slice(lastChunkIndex, queue.length - lastChunkIndex))
                 sourceBuffer.appendBuffer(patch.buffer)
+                meter += patch.buffer.byteLength
                 lastChunkIndex = queue.length
                 streamStarted = true
                 templateDict.set('status', 'Buffering Chunks...')
@@ -101,6 +106,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
               // append what we got.
               let patch = Buffer.concat(queue.slice(lastChunkIndex, queue.length))
               sourceBuffer.appendBuffer(patch.buffer)
+              meter += patch.buffer.byteLength
               lastChunkIndex = queue.length
               waiting = false
             }

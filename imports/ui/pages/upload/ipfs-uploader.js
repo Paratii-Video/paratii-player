@@ -9,7 +9,19 @@ document.addEventListener('DOMContentLoaded', (e) => {
   dropAreaEl.addEventListener('dragover', dragenter)
   dropAreaEl.addEventListener('dragenter', dragenter)
   dropAreaEl.addEventListener('drop', drop)
-
+  // var storageQuota = window.StorageQuota
+  // storageQuota.requestPersistentQuota(100 * 1024 * 1024).then((storageInfo) => {
+  //   console.log('got storageInfo ', storageInfo)
+  // })
+  if (navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist().then(granted => {
+      if (granted) {
+        console.log('Storage will not be cleared except by explicit user action')
+      } else {
+        console.log('Storage may be cleared by the UA under storage pressure.')
+      }
+    })
+  }
 })
 
 function dragenter (ev) {
@@ -49,7 +61,10 @@ function addToIPFS (file) {
   function readFileContents (file) {
     return new Promise((resolve) => {
       const reader = new window.FileReader()
-      reader.onload = (event) => resolve(event.target.result)
+      reader.onload = (event) => {
+        console.log('reader onload ', event)
+        resolve(event.target.result)
+      }
       reader.readAsArrayBuffer(file)
     })
   }
