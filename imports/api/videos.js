@@ -30,13 +30,11 @@ if (Meteor.isServer) {
 
   // Publish videos by playlist
   Meteor.publish('videosPlaylist', function(_id) {
-    console.log(_id);
     if( _id === null){
       return Videos.find();
     }else{
       const playlist = Playlists.findOne({_id});
       const videosIds = playlist.videos;
-      console.log(playlist);
       return Videos.find({ _id: { "$in": videosIds } });
     }
   });

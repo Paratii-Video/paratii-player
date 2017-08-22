@@ -192,14 +192,12 @@ function deployTestContract(owner) {
       data: paratiiContract.unlinked_binary,
       gas: web3.toHex(GAS_LIMIT),
     }, function (err, myContract) {
-    console.log(err);
     if (!err) {
        // NOTE: The callback will fire twice!
        // Once the contract has the transactionHash property set and once its deployed on an address.
 
        // e.g. check tx hash on the first call (transaction send)
       if (!myContract.address) {
-        console.log(myContract.transactionHash); // The hash of the transaction, which deploys the contract
 
        // check address on the second call (contract deployed)
       } else {
@@ -207,7 +205,6 @@ function deployTestContract(owner) {
         Meteor.call('resetFilter', {
           contract: myContract.address
         });
-        console.log(myContract.address); // the contract address
       }
 
        // Note that the returned "myContractReturned" === "myContract",
