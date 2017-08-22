@@ -2,9 +2,9 @@ import prettyBytes from 'pretty-bytes';
 
 
 export function createWebtorrentPlayer(templateInstance, currentVideo) {
-  const templateDict = templateInstance.templateDict;
+  const templateDict = templateInstance.playerState;
 
-
+  console.log(templateInstance.playerState);
   // must do $.getScript instead of just packaging webtorrent with meteor
   // because meteors package.json is @#$@#$% broken
   // cf. https://github.com/meteor/meteor/issues/7067

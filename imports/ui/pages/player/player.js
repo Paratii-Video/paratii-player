@@ -4,7 +4,7 @@ import { sprintf } from 'meteor/sgi:sprintfjs';
 
 import { formatNumber } from '/imports/lib/utils.js';
 import { getUserPTIAddress } from '/imports/api/users.js';
-import { Transactions } from '/imports/api/transactions.js';
+import { UserTransactions } from '/imports/api/transactions.js';
 import { Videos } from '../../../api/videos.js';
 import { createWebtorrentPlayer } from './webtorrent.js';
 
@@ -28,7 +28,8 @@ function getVideo(){
 function renderVideoElement(instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = getVideo();
-
+  console.log("currentvideo",currentVideo);
+  console.log("instance",instance);
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo);
     instance.playerState.set('torrent', true);

@@ -7,6 +7,7 @@ import '../imports/api/users.js';
 import { syncTransactionHistory, watchTransactions, getTransactionsByAccount } from '/imports/api/transactions.js';
 import { web3, PTIContract, getContractAddress } from '/imports/lib/ethereum/connection.js';
 
+
 web3 = new Web3();
 const DEFAULT_PROVIDER = Meteor.settings.public.http_provider;
 const FIRST_BLOCK = 0; // First block we consider when searching for transaction history etc.
