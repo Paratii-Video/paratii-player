@@ -88,7 +88,7 @@ async function insertAndValidateTransaction(transaction) {
   });
 
   if(!txExist) {
-    Transactions.insert(transaction);
+    const newTxId = Transactions.insert(transaction);
   }
 
 
@@ -99,9 +99,22 @@ async function insertAndValidateTransaction(transaction) {
     source: "client"
   });
 
-
   if(txToValidate) {
     Transactions.update({_id: txToValidate._id}, {$set: {blockNumber:transaction.blockNumber, hash:transaction.hash } });
+  }else{
+    const txValidated = await Transactions.findOne({
+      blockNumber: {$ne : null},
+      nonce: transaction.nonce,
+      from: transaction.from,
+      source: {$ne : "client"}
+    });
+    if(txValidated) {
+      Transactions.update({_id: newTxId }, {$set: {blockNumber:txValidated.blockNumber, hash:txValidated.hash } });
+    }
+  }
+
+  if(transaction.source === 'client' ){
+
   }
 
 }

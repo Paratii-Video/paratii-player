@@ -106,8 +106,10 @@ Template.player.onDestroyed(function () {
 
 Template.player.helpers({
   isLocked(){
-    console.log(Template.instance().playerState.get('locked'));
     return Template.instance().playerState.get('locked');
+  },
+  canAutoplay(){
+    return Template.instance().playerState.get('locked') ? '' : 'autoplay';
   },
   playPause() {
     return Template.instance().playerState.get('playing') ? 'pause' : 'play';
