@@ -27,19 +27,21 @@
         <td>{{ blockNumber}}</td>
         <td>
           {{#if description}}
-            <b>{{ description }}</b>
-          {{/if}}
-          <br>
-          {{#if videoid}}
-            <b>{{ videoid }}</b>
+            description: <b>{{ description }}</b>
+            <br>
           {{/if}}
 
-          <br>from: {{ from }}
+          {{#if videoid}}
+            videoid: <b>{{ videoid }}</b>
+            <br>
+          {{/if}}
+
+          from: {{ from }}
           <br>to: {{ to }}
-          <br>transactionHash: {{ hash }}
+          <br>transactionHash: {{ _id }}
           <br>currency: {{ currency }}
           <br>source: {{ source }}
-
+          <br><br><br>
         </td>
         {{#if equals currency 'eth'}}
           <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>

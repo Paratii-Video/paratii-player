@@ -16,6 +16,7 @@ web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER));
 
 Meteor.startup(function() {
   // sync the transaction history - update the collection to include the latest blocks
+  // chain start sync from block 267 because it takes to long start from 0
   getTransactionsByAccount('*', 267);
   // now keep watching for blocks
   watchTransactions();

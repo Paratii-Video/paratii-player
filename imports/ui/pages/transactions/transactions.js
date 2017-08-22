@@ -1,5 +1,5 @@
 import { getUserPTIAddress } from '/imports/api/users.js';
-import { Transactions } from '/imports/api/transactions.js';
+import { UserTransactions } from '/imports/api/transactions.js';
 import './transactions.html';
 
 
@@ -26,7 +26,8 @@ Template.registerHelper('toEther', function (a) {
 
 Template.transactions.helpers({
   transactions() {
-    return Transactions.find({}, { sort: { blockNumber: -1 } });
+    return UserTransactions.find();
+    // return Transactions.find({}, { sort: { blockNumber: -1 } });
     // return Session.get('transactions') || [];
   },
   userPTIAddress() {

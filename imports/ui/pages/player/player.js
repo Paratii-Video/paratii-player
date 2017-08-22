@@ -74,7 +74,7 @@ Template.player.onCreated(function () {
     // renderVideoElement(instance);
   });
 
-  let query = Transactions.find({videoid: FlowRouter.getParam('_id')});
+  let query = UserTransactions.find({videoid: FlowRouter.getParam('_id')});
   let handle = query.observeChanges({
     added: function (id, fields) {
       console.log("added");
