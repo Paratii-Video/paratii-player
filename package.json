@@ -18,6 +18,8 @@
     "chai": "^4.1.0",
     "eth-lightwallet": "^2.5.6",
     "hooked-web3-provider": "^1.0.0",
+    "libp2p-crypto": "git+https://github.com/ya7ya/js-libp2p-crypto.git",
+    "libp2p-secio": "git+https://github.com/ya7ya/js-libp2p-secio.git",
     "meteor-node-stubs": "~0.2.4",
     "moment": "^2.18.1",
     "pretty-bytes": "^4.0.2",

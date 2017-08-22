@@ -121,7 +121,6 @@ export const populateVideos = () => {
       src: 'magnet:?xt=urn:btih:978c3df6e8e3562b18613e36086bf2592093db90&dn=Around+The+Block+Series+-+Teaser+1+-+Sergio+Lerner.mp4&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com',
       mimetype: 'video/mp4',
     },
-
     {
       _id: "5",
       title: 'Around the Block - Teaser 16',
@@ -143,6 +142,53 @@ export const populateVideos = () => {
       tags: ['WEBTORRENT', 'AROUND THE BLOCK'],
       src: 'magnet:?xt=urn:btih:826bfc8069e71418c215179f12546460e3364b5a&dn=Around_The_Block_Teaser_16.mp4&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com',
       mimetype: 'video/mp4',
+    },
+    {
+      _id: "6",
+      title: 'Around The Block Series - Teaser 1 - Sergio Lerner',
+      description: 'Around the Block is a humane account of the most fascinating social experiment ever played in the internet, in the form of a documentary series. This is just a teaser. Rollout of 6 free episodes begins in Autumn 2017. ',
+      thumb: '/img/cover/teaser1.jpg',
+      duration: '01:57',
+      price: 0,
+      uploader: {
+        address : '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
+        name: 'Paratii',
+        avatar: 'http://i.pravatar.cc/150?img=4'
+      },
+      stats: {
+        likes_percentage: 98,
+        views: 2244245,
+        likes: 2345555,
+        dislikes: 7,
+      },
+      tags: ['IPFS', 'Around The Block'],
+      // src: '/ipfs/QmeqDeRWSghNQwheSt6R8bB7wd2tgAo1KYT4VGLsbDdgWx',
+      src: 'https://gateway.ipfs.io/ipfs/QmayHsEJfu1Pq5q1k3c9f9z14fh6AyJsam4LFbSQYWMXZt',
+      mimetype: 'video/mp4',
+
+    },{
+      _id: "7",
+      title: 'Around The Block Series - Teaser 16 - Alex Van De Sande',
+      description: 'IPFS EXAMPLE video',
+      thumb: '/img/cover/teaser16.jpg',
+      duration: '01:46',
+      price: 0,
+      uploader: {
+        address : '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
+        name: 'Paratii',
+        avatar: 'http://i.pravatar.cc/150?img=4'
+      },
+      stats: {
+        likes_percentage: 98,
+        views: 2244245,
+        likes: 2345555,
+        dislikes: 7,
+      },
+      tags: ['IPFS', 'Around The Block'],
+      // src: '/ipfs/QmR6QvFUBhHQ288VmpHQboqzLmDrrC2fcTUyT4hSMCwFyj',
+      src: 'https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg',
+      mimetype: 'video/mp4',
+
     }
   ];
 
@@ -160,20 +206,27 @@ export const populateVideos = () => {
 export const populatePlaylist = () => {
   const p1 = {
     _id: "1",
-    title: 'Around the block',
+    title: 'Around the block WebTorrent',
     description: 'A super playlist about blockchain!',
     url: 'around-the-block',
     videos: [ Videos.find().fetch()[3]._id, Videos.find().fetch()[4]._id]
   };
   const p2 = {
     _id: "2",
+    title: 'Around the block IPFS',
+    description: 'A super playlist about blockchain!',
+    url: 'around-the-block',
+    videos: [ Videos.find().fetch()[6]._id, Videos.find().fetch()[5]._id]
+  };
+  const p3 = {
+    _id: "3",
     title: 'Best surf Collection',
     description: 'A collection of surfing’s most inspiring moments of the year, from dogs inside barrels to chasing the big ones in Northern California.',
     url: 'best-surf-colection',
     videos: [ Videos.find().fetch()[0]._id, Videos.find().fetch()[1]._id]
   };
-  const p3 = {
-    _id: "3",
+  const p4 = {
+    _id: "4",
     title: 'Mother Life',
     description: 'A awesome playlist about Nature!',
     url: 'mother-life',
@@ -185,7 +238,7 @@ export const populatePlaylist = () => {
     console.log('|'); console.log('|');
     console.log('--> populate playlits collection');
 
-    playlistList = [p1, p2, p3];
+    playlistList = [p1, p2, p3, p4];
     _.each(playlistList, (playlist) => {
       Playlists.insert(playlist);
     });

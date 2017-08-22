@@ -7,6 +7,7 @@ import { getUserPTIAddress } from '/imports/api/users.js';
 import { UserTransactions } from '/imports/api/transactions.js';
 import { Videos } from '../../../api/videos.js';
 import { createWebtorrentPlayer } from './webtorrent.js';
+import { createIPFSPlayer } from './ipfs.js';
 
 import './player.html';
 
@@ -33,6 +34,9 @@ function renderVideoElement(instance) {
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo);
     instance.playerState.set('torrent', true);
+  } else if (currentVideo.src.startsWith('/ipfs')) {
+    createIPFSPlayer(instance, currentVideo);
+    instance.playerState.set('ipfs', true);
   } else {
     const videoElement = $('#video-player');
     const sourceElement = document.createElement('source');
@@ -109,7 +113,13 @@ Template.player.helpers({
     return Template.instance().playerState.get('locked');
   },
   canAutoplay(){
-    return Template.instance().playerState.get('locked') ? '' : 'autoplay';
+    const locked = Template.instance().playerState.get('locked');
+    if(!locked) {
+      // Template.instance().navState.set('closed');
+      return 'autoplay';
+    } else {
+      return '';
+    }
   },
   playPause() {
     return Template.instance().playerState.get('playing') ? 'pause' : 'play';
