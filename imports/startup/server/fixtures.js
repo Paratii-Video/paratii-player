@@ -68,41 +68,42 @@ export const populateVideos = () => {
 
   const v4 = {
     id: 4,
-    title: 'IPFS: this won\'t load',
-    description: 'non fragmented mp4, won\'t work',
+    title: 'Around The Block Series - Teaser 1 - Sergio Lerner',
+    description: 'Around the Block is a humane account of the most fascinating social experiment ever played in the internet, in the form of a documentary series. This is just a teaser. Rollout of 6 free episodes begins in Autumn 2017. ',
     thumb: '/img/thumb2-img.png',
-    duration: '00:45',
+    duration: '01:57',
     price: '',
-    uploader: 'John Doe',
+    uploader: 'Paratii',
     stats: {
       likes_percentage: 98,
       views: 2244245,
       likes: 2345555,
       dislikes: 7,
     },
-    tags: ['IPFS', 'Nature'],
+    tags: ['IPFS', 'Around The Block'],
     // src: '/ipfs/QmeqDeRWSghNQwheSt6R8bB7wd2tgAo1KYT4VGLsbDdgWx',
-    src: '/ipfs/Qmeoh3jMNJru5zcLPVevFVCRMPx72MwA89Aee3FKhPSqRQ',
+    src: 'https://gateway.ipfs.io/ipfs/QmayHsEJfu1Pq5q1k3c9f9z14fh6AyJsam4LFbSQYWMXZt',
     mimetype: 'video/mp4',
 
   };
 
   const v5 = {
     id: 3,
-    title: 'IPFS Fragmented Mp4 works',
+    title: 'Around The Block Series - Teaser 16 - Alex Van De Sande',
     description: 'IPFS EXAMPLE video',
     thumb: '/img/thumb2-img.png',
-    duration: '00:45',
+    duration: '01:46',
     price: '',
-    uploader: 'John Doe',
+    uploader: 'Paratii',
     stats: {
       likes_percentage: 98,
       views: 2244245,
       likes: 2345555,
       dislikes: 7,
     },
-    tags: ['IPFS', 'Animation'],
-    src: '/ipfs/QmR6QvFUBhHQ288VmpHQboqzLmDrrC2fcTUyT4hSMCwFyj',
+    tags: ['IPFS', 'Around The Block'],
+    // src: '/ipfs/QmR6QvFUBhHQ288VmpHQboqzLmDrrC2fcTUyT4hSMCwFyj',
+    src: 'https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg',
     mimetype: 'video/mp4',
 
   };
