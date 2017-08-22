@@ -26,7 +26,7 @@ Template.registerHelper('toEther', function (a) {
 
 Template.transactions.helpers({
   transactions() {
-    return UserTransactions.find();
+    return UserTransactions.find({}, { sort: { blockNumber: -1 } });
     // return Transactions.find({}, { sort: { blockNumber: -1 } });
     // return Session.get('transactions') || [];
   },
