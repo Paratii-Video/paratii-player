@@ -4,7 +4,7 @@ import { sprintf } from 'meteor/sgi:sprintfjs';
 
 import { formatNumber } from '/imports/lib/utils.js';
 import { getUserPTIAddress } from '/imports/api/users.js';
-import { Transactions } from '/imports/api/transactions.js';
+import { UserTransactions } from '/imports/api/transactions.js';
 import { Videos } from '../../../api/videos.js';
 import { createWebtorrentPlayer } from './webtorrent.js';
 
@@ -28,13 +28,15 @@ function getVideo(){
 function renderVideoElement(instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = getVideo();
-
+  console.log("currentvideo",currentVideo);
+  console.log("instance",instance);
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo);
     instance.playerState.set('torrent', true);
   } else {
     const videoElement = $('#video-player');
     const sourceElement = document.createElement('source');
+    console.log(currentVideo.src);
     sourceElement.src = currentVideo.src;
     sourceElement.type = currentVideo.mimetype;
     videoElement.append(sourceElement);
@@ -69,7 +71,7 @@ Template.player.onCreated(function () {
   Meteor.subscribe('userTransactions', userPTIAddress);
   Meteor.subscribe('videoPlay', FlowRouter.getParam('_id'));
 
-  let query = Transactions.find({videoid: FlowRouter.getParam('_id')});
+  let query = UserTransactions.find({videoid: FlowRouter.getParam('_id')});
   let handle = query.observeChanges({
     added: function (id, fields) {
       console.log("added");
@@ -88,7 +90,7 @@ Template.player.onCreated(function () {
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id') , getUserPTIAddress(), function (err, results) {
     if (err){
       throw(err);
-    }else{
+    } else {
       self.playerState.set('locked', results);
       renderVideoElement(instance);
     }

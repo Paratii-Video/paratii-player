@@ -16,6 +16,7 @@ export function userDislikesVideo(userId, videoId) {
   );
 }
 
+
 if (Meteor.isServer) {
   // Publish all videos
   Meteor.publish('videos', function() {
@@ -43,7 +44,7 @@ if (Meteor.isServer) {
   Meteor.methods({
     'videos.isLocked'(videoid, userAddress){
       const video = Videos.findOne( { _id: videoid } );
-      if(video.price === ''){
+      if(video.price == 0){
         return false; // Video is free, it doesn't have a price
       } else {
         const videoUnlocked = Transactions.findOne( { videoid: videoid, from: userAddress, blockNumber: {$ne: null} });
@@ -56,7 +57,6 @@ if (Meteor.isServer) {
   });
 
 }
-
 Meteor.methods({
   'videos.like'(videoId) {
     check(videoId, String);
