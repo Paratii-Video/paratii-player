@@ -8,6 +8,8 @@ import { Videos } from '/imports/api/videos.js';
 export const Transactions = new Mongo.Collection('transactions');
 
 
+
+
 if (Meteor.isServer) {
 
   Meteor.methods({
@@ -18,10 +20,14 @@ if (Meteor.isServer) {
         from: data.from,
         to: data.to,
         description: data.description,
-        type: data.type
+        source: "client",
+        value: data.value,
+        currency: data.currency
       };
+
       Object.assign(transaction, options); // If there are options they are merged in the transation object
-      addOrUpdateTransaction(transaction);
+      console.log("FROM client", transaction);
+      insertAndValidateTransaction(transaction);
     }
   });
 
@@ -29,21 +35,20 @@ if (Meteor.isServer) {
     check(userPTIAddress, String);
     // Publish all transactions where I find userPTIAddress
     const query = {
-      $and: [{
-        $or: [{
+      $and:[{
+        $or : [{
           to: userPTIAddress
         }, {
           from: userPTIAddress
-        }]
-      }, {
-        valid: true
+        }],
+        blockNumber: {$ne : null}
       }]
     };
     return Transactions.find(query);
   });
 }
 
-async function addOrUpdateTransaction(transaction) {
+async function insertAndValidateTransaction(transaction) {
   // add (or update) a transaction in the collection
   check(transaction, Object); // Check the type of the data
 
@@ -52,41 +57,35 @@ async function addOrUpdateTransaction(transaction) {
     return;
   }
 
-  const txToUpdate = await Transactions.findOne({
+
+  const txExist = await Transactions.findOne({
     nonce: transaction.nonce,
-    from: transaction.from
+    from: transaction.from,
+    source: transaction.source
   });
-/*
-  var videoId;
-  if(txToUpdate){
-    videoId = txToUpdate.videoid;
-  } else {
-    videoId = transaction.videoid;
+
+  if(!txExist) {
+    Transactions.insert(transaction);
   }
 
-  if(videoId){
-    const video = Videos.findOne({_id:videoId});
 
-    console.log('trans: '+transaction.value);
-    console.log('video: '+web3.toWei(video.price, 'ether'));
-    if (parseInt(web3.toWei(video.price, 'ether'), 10) !== transaction.value ){
-      console.log('prices not match');
-      transaction.valid = false;
-    }
+  const txToValidate = await Transactions.findOne({
+    blockNumber: null,
+    nonce: transaction.nonce,
+    from: transaction.from,
+    source: "client"
+  });
+
+
+  if(txToValidate) {
+    Transactions.update({_id: txToValidate._id}, {$set: {blockNumber:transaction.blockNumber, hash:transaction.hash } });
   }
-
-*/
-  console.log('txToUpdate: ');
-  console.log(txToUpdate);
-  console.log('transaction: ');
-  console.log(transaction);
-
-  txToUpdate ? await Transactions.update({_id: txToUpdate._id}, {$set: transaction })  : await Transactions.insert(transaction);
 
 }
 
 async function getPTITransactionsFromChain(fromBlock = 0) {
   // set a filter for ALL PTI transactions
+  console.log("PTI SYNC STARTING FROM", fromBlock);
   filter = PTIContract().Transfer({}, {
     fromBlock,
     toBlock: 'latest'
@@ -109,9 +108,10 @@ function addTransferEventToTransactionCollection(log) {
   transaction.hash = tx.hash;
   transaction.blockNumber = tx.blockNumber;
   transaction.to = log.args.to;
-  transaction.valid = true;
-  transaction.type = "pti";
-  addOrUpdateTransaction(transaction);
+  transaction.currency = "pti";
+  transaction.source = "event";
+  console.log("FROM event", transaction.hash);
+  insertAndValidateTransaction(transaction);
 }
 
 function addTransactionToCollection(tx) {
@@ -124,9 +124,10 @@ function addTransactionToCollection(tx) {
     transaction.hash = tx.hash;
     transaction.nonce = tx.nonce;
     transaction.blockNumber = tx.blockNumber;
-    transaction.valid = true;
-    transaction.type = "eth";
-    addOrUpdateTransaction(transaction);
+    transaction.currency = "eth";
+    transaction.source = "blockchain";
+    console.log("FROM blockchain", transaction.hash);
+    insertAndValidateTransaction(transaction);
   }
 }
 
@@ -136,6 +137,9 @@ function addTransactionToCollection(tx) {
 async function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
   let fromBlock;
   let toBlock;
+
+
+
   if (endBlockNumber == null) {
     toBlock = web3.eth.blockNumber;
   } else {
@@ -163,28 +167,50 @@ async function getTransactionsByAccount(myaccount, startBlockNumber, endBlockNum
 async function syncTransactionHistory() {
   // searches the whole blockchain for transactions that may be relevant
   // and saves these in the Transaction collection
-  const transactionsCount = await Transactions.find().count();
-  if (transactionsCount > 0) {
-    // the highest known blocknumber in the Transaction Collection
-    latestSyncedBlock = Transactions.findOne({}, {
-      sort: {
-        blockNumber: -1,
-        limit: 1
-      }
-    }).blockNumber;
-  } else {
-    let latestSyncedBlock = 0;
-  }
-  getTransactionsByAccount('*', fromBlock = latestSyncedBlock);
-  getPTITransactionsFromChain(fromBlock = latestSyncedBlock);
+
 };
 
+async function getLatestBlockToSync(source){
 
+  let latestBlock;
+
+  // the highest known blocknumber in the Transaction Collection
+  latestBlock = Transactions.findOne({source: source}, {
+    sort: {
+      blockNumber: -1,
+      limit: 1,
+    }
+  });
+
+  return latestBlock;
+
+}
 
 function watchTransactions() {
 
+  getLatestBlockToSync("event").then(function(results){
+    let blockStart;
+    if(results == null){
+      blockStart = 267;
+    } else {
+      blockStart = results.blockNumber + 1;
+    }
+    getPTITransactionsFromChain(blockStart);
+  });
+
   web3.eth.filter('latest', function(error, result) {
-    syncTransactionHistory();
+
+    getLatestBlockToSync("blockchain").then(function(results){
+      let blockStart;
+      if(results == null){
+        blockStart = 267;
+      } else {
+        blockStart = results.blockNumber + 1;
+      }
+      console.log("ETH SYNC STARTING FROM", blockStart);
+      getTransactionsByAccount('*', blockStart);
+
+    });
   });
 };
 

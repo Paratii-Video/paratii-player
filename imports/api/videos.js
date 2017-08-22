@@ -46,7 +46,7 @@ if (Meteor.isServer) {
       if(video.price === ''){
         return false; // Video is free, it doesn't have a price
       } else {
-        const videoUnlocked = Transactions.findOne({ videoid: videoid, from: userAddress, valid: true});
+        const videoUnlocked = Transactions.findOne( { videoid: videoid, from: userAddress, blockNumber: {$ne: null} });
         if(videoUnlocked){
           return false;
         }

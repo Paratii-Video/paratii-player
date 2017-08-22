@@ -49,12 +49,14 @@ Template.profile.events({
   'click #create-wallet'() {
     getPassword().then(function (password) {
       if (password) {
-        createKeystore(password).then(function (wallet, err) {
-          if (err) {
+        // set seed in the session, then show the new seed
+        Session.set('wallet-state', 'generating');
+        createKeystore(password, undefined, function (err, seed) {
+          Session.set('wallet-state', '');
+          if(err) {
             throw err;
           }
-          // set the seed in the Session, so that showSeed will shwo it immediately
-          Session.set('seed', wallet.seed);
+          Session.set('seed', seed);
           Modal.show('showSeed', {});
         });
       }
