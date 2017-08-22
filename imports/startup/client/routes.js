@@ -48,6 +48,13 @@ FlowRouter.route('/playlists', {
   },
 });
 
+FlowRouter.route('/playlists/:_id', {
+  name: 'playlists',
+  action() {
+    BlazeLayout.render('App_body', { main: 'playlists' });
+  },
+});
+
 FlowRouter.route('/profile', {
   name: 'profile',
   action() {

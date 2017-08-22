@@ -67,11 +67,7 @@ Template.player.onCreated(function () {
 
 
   Meteor.subscribe('userTransactions', userPTIAddress);
-  // TODO: do not subscribe to all vidoes, just to the one we need
-  Meteor.subscribe('videos', function () {
-    // video subscription is ready
-    // renderVideoElement(instance);
-  });
+  Meteor.subscribe('videoPlay', FlowRouter.getParam('_id'));
 
   let query = Transactions.find({videoid: FlowRouter.getParam('_id')});
   let handle = query.observeChanges({
