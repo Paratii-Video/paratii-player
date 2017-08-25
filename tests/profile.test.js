@@ -132,7 +132,7 @@ describe('account workflow', function () {
   });
 
 
-  it('restore the keystore', function () {
+  it('restore the keystore @watch', function () {
     createUserAndLogin(browser);
     browser.waitForExist('#show-seed', 5000);
     browser.click('#show-seed');
@@ -155,6 +155,30 @@ describe('account workflow', function () {
     browser.waitForExist('#public_address', 3000);
     const newPublicAddress = browser.getHTML('#public_address', false);
     assert.equal(publicAddress, newPublicAddress);
+  });
+
+  it('do not restore keystore if wrong password @watch', function () {
+    createUserAndLogin(browser);
+    browser.waitForExist('#show-seed', 5000);
+    browser.click('#show-seed');
+    browser.waitForVisible('[name="user_password"]');
+    browser.setValue('[name="user_password"]', 'password');
+    browser.click('#btn-show-seed');
+    browser.pause(1000);
+    browser.waitForVisible('#seed');
+    const seed = browser.getHTML('#seed tt', false);
+    const publicAddress = browser.getHTML('#public_address', false);
+    browser.click('#btn-eth-close');
+    browser.execute(clearLocalStorage);
+    browser.refresh();
+    browser.waitForVisible('#restore-keystore');
+    browser.click('#restore-keystore');
+    browser.waitForVisible('[name="field-seed"]');
+    browser.setValue('[name="field-seed"]', seed);
+    browser.setValue('[name="field-password"]', 'wrong');
+    browser.click('#btn-restorekeystore-restore');
+    browser.waitForVisible('.control-label', 2000);
+    assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text');
   });
 
   it('do not create a new wallet if wrong password', function () {
