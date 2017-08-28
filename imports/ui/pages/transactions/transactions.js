@@ -42,7 +42,7 @@ Template.transactions.helpers({
         { description: regex },
         { currency: regex },
         { from: regex },
-        { to: regex }
+        { to: regex },
       ]
     };
     return UserTransactions.find( query , { sort: { blockNumber: -1 } });
