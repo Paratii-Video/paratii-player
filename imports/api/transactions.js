@@ -32,42 +32,18 @@ if (Meteor.isServer) {
     }
   });
 
-  Meteor.publish('userTransactions', function(userPTIAddress, search, item, page) {
+  Meteor.publish('userTransactions', function(userPTIAddress) {
     check(userPTIAddress, String);
-    // check(search, String);
-    // check(item, String);
-    // check(page, String);
 
-    // if search is defined create query
-    // search param can be: description, address
-    console.log(search);
-    let query = {};
-    if(search !== undefined){
-      let regex = new RegExp( search, 'i');
-
-      query = {
-        $or: [
-          
-          { description: regex },
-          { currency : regex }
-        ],
+    // Publish all transactions where I find userPTIAddress and blockNumber exist
+    const query = {
+        $or : [{
+          to: userPTIAddress
+        }, {
+          from: userPTIAddress
+        }],
         blockNumber: {$ne : null}
-      };
-    } else {
-
-      // Publish all transactions where I find userPTIAddress and blockNumber exist
-
-      query = {
-          $or : [{
-            to: userPTIAddress
-          }, {
-            from: userPTIAddress
-          }],
-          blockNumber: {$ne : null}
-      };
-      console.log(query);
-    }
-
+    };
 
     // Aggregate transactions with same hash as ID and group data
     // new collections userTransactions will be publish with this structures

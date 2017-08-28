@@ -7,24 +7,14 @@ const moment = require('moment');
 
 
 Template.transactions.onCreated(function () {
-  const userPTIAddress = getUserPTIAddress();
-  // Meteor.subscribe('userTransactions', userPTIAddress);
 
   let template = Template.instance();
 
   template.searchQuery = new ReactiveVar();
   template.searching   = new ReactiveVar( false );
 
-  template.autorun( () => {
-    template.subscribe( 'userTransactions', userPTIAddress , template.searchQuery.get(), () => {
-      setTimeout( () => {
-        console.log("timeout");
-        template.searching.set( false );
-      }, 300 );
-    });
-  });
-
-
+  const userPTIAddress = getUserPTIAddress();
+  Meteor.subscribe('userTransactions', userPTIAddress);
 });
 
 
@@ -42,25 +32,32 @@ Template.registerHelper('toEther', function (a) {
 
 Template.transactions.helpers({
   transactions() {
-    return UserTransactions.find({}, { sort: { blockNumber: -1 } });
-  // return Transactions.find({}, { sort: { blockNumber: -1 } });
-  // return Session.get('transactions') || [];
+    let query = {};
+    let template = Template.instance();
+    let regex = new RegExp( template.searchQuery.get() , 'i' );
+
+    query = {
+      $or: [
+        { _id: regex },
+        { description: regex },
+        { currency: regex },
+        { from: regex },
+        { to: regex }
+      ]
+    };
+    return UserTransactions.find( query , { sort: { blockNumber: -1 } });
+    // return Transactions.find({}, { sort: { blockNumber: -1 } });
+    // return Session.get('transactions') || [];
   },
   userPTIAddress() {
     return getUserPTIAddress();
-  },
-  searching() {
-    return Template.instance().searching.get();
-  },
-  query() {
-   return Template.instance().searchQuery.get();
   },
 });
 
 Template.transactions.events({
   'keyup [name="search"]' ( event, template ) {
     let value = event.target.value.trim();
-    console.log(value);
+
     if ( value !== '' && event.keyCode === 13 ) {
       template.searchQuery.set( value );
       template.searching.set( true );
