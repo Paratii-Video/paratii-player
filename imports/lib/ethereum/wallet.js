@@ -14,10 +14,11 @@ import { resetPTIFilter } from '/imports/api/transactions.js';
 
 
 // createKeystore will create a new keystore
-// save it in the sesion object and in local storage
+// save it in the session object and in local storage
 // generate an address, and save that in the sesssion too
 function createKeystore(password, seedPhrase, cb) {
   // create a new seedPhrase if we have none
+
   Session.set('generating-keystore', true);
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed();

@@ -1,5 +1,9 @@
-import { getSeed } from '/imports/lib/ethereum/wallet.js';
+import { getSeed, createKeystore } from '/imports/lib/ethereum/wallet.js';
 import './showSeed.html';
+
+Template.showSeed.onCreated(function () {
+  this.errorMessage = new ReactiveVar(null);
+});
 
 Template.showSeed.helpers({
   seed() {
@@ -7,29 +11,49 @@ Template.showSeed.helpers({
     return seed;
   },
   errorMessage() {
-    const errorMessage = Session.get('errorMessage');
-    return errorMessage;
+    return Template.instance().errorMessage.get();
   },
 });
 
 Template.showSeed.onDestroyed(function () {
   Session.set('seed', null);
-  Session.set('errorMessage', null);
 });
 
-Template.showSeed.events({
-  'submit #form-show-seed'(event) {
-    event.preventDefault();
-    const password = event.target.user_password.value;
+const createNewSeed = (password) => {
+  Session.set('wallet-state', 'generating');
+  createKeystore(password, undefined, function (err, seed) {
+    Session.set('wallet-state', '');
+    button.button('reset');
+    if(err) {
+      throw err;
+    }
+    Session.set('seed', seed);
+  });
+};
 
+Template.showSeed.events({
+  'submit #form-show-seed'(event, instance) {
+    event.preventDefault();
     const button = $('#btn-show-seed');
     button.button('loading');
-    getSeed(password, function () {
-      button.button('reset');
+    const password = event.target.user_password.value;
+    Meteor.call('checkPassword', password, (error, result) => {
+      if(result){
+        if (this.type === 'create') {
+          createNewSeed(password);
+        } else {
+          getSeed(password, () => {
+            button.button('reset');
+          });
+        }
+      } else {
+        instance.errorMessage.set('Wrong password');
+        button.button('reset');
+      }
     });
   },
 });
 
-export function showSeed() {
-  Modal.show('showSeed', {});
+export function showSeed(type = 'show') {
+  Modal.show('showSeed', { type });
 }
