@@ -32,8 +32,11 @@ if (Meteor.isServer) {
     }
   });
 
-  Meteor.publish('userTransactions', function(userPTIAddress) {
+  Meteor.publish('userTransactions', function(userPTIAddress, search, item, page) {
     check(userPTIAddress, String);
+    check(search, String);
+    check(item, String);
+    check(page, String);
 
     // Publish all transactions where I find userPTIAddress and blockNumber exist
     const query = {
