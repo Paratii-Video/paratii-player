@@ -99,7 +99,6 @@ module.exports = function (self) {
     if (event && event.data && event.data.cmd) {
       switch (event.data.cmd) {
         case 'cat':
-          // TODO run ipfs cat
           node.files.cat(event.data.args[0]).then((stream) => {
             stream.on('data', (chunk) => {
               self.postMessage({
@@ -113,6 +112,23 @@ module.exports = function (self) {
           break
         case 'add':
           // TODO run ipfs add
+          node.files.add([{
+            path: event.data.args.name,
+            content: new node.types.Buffer(event.data.args.buffer)
+          }]).then((files) => {
+            // file is added to IPFS
+            // TODO
+            // - cat the file from a peer we control to make sure it's available if the
+            // user closes the browser tab.
+            // - add the hash to a localStorage list.
+            console.log('added file ', files)
+            self.postMessage({
+              callback: event.data.callback,
+              payload: files
+            })
+          }).catch((err) => {
+            if (err) throw err
+          })
           break
         case 'get':
           break
