@@ -69,28 +69,54 @@ function addToIPFS (file) {
     });
   }
 
-  initIPFS(() => {
-    console.log('[IPFS] uploader instance ready.');
+  const InlineWorker = require('inline-worker')
+  const IPFSWorker = require('/imports/lib/ipfs/ipfs-worker.js')
+  const ipfsWorker = new InlineWorker(IPFSWorker)
+  ipfsWorker.onmessage = function (ev) {
+    console.log('got msg from worker: ', ev)
+    if (ev.data && ev.data.ready) {
+      readFileContents(file).then((buf) => {
+        ipfsWorker.postMessage({
+          cmd: 'add',
+          args: {
+            name: file.name,
+            buffer: buf
+          },
+          callback: 'cb-handler'
+        })
+      })
+    }
 
-    readFileContents(file).then((buf) => {
-      console.log('[IPFS] add \t: file.name: ', file.name, ' contentsize: ', buf.byteLength);
-      // TODO
-      // if there is transcoding required, it should be done before adding the file.
-      window.ipfs.files.add([{
-        path: file.name,
-        content: new window.ipfs.types.Buffer(buf)
-      }]).then((files) => {
-        // file is added to IPFS
-        // TODO
-        // - cat the file from a peer we control to make sure it's available if the
-        // user closes the browser tab.
-        // - add the hash to a localStorage list.
-        console.log('added file ', files);
-        statusEl.innerHTML = 'DONE! file ' + files[0].path + ' to IPFS as ' + files[0].hash;
-      }).catch((err) => {
-        if (err) throw err;
-      });
+    if (ev.data && ev.data.callback) {
+      console.log('Got callback\n', ev.data.payload)
+      statusEl.innerHTML = 'DONE! file ' + ev.data.payload[0].path + ' to IPFS as ' + ev.data.payload[0].hash
+    }
+  }
+  ipfsWorker.postMessage('playlists')
 
-    });
-  });
+  // initIPFS(() => {
+  //   console.log('[IPFS] uploader instance ready.')
+  //
+  //   readFileContents(file).then((buf) => {
+  //     console.log('[IPFS] add \t: file.name: ', file.name, ' contentsize: ', buf.byteLength)
+  //
+  //     // TODO
+  //     // if there is transcoding required, it should be done before adding the file.
+  //     window.ipfs.files.add([{
+  //       path: file.name,
+  //       content: new window.ipfs.types.Buffer(buf)
+  //     }]).then((files) => {
+  //       // file is added to IPFS
+  //       // TODO
+  //       // - cat the file from a peer we control to make sure it's available if the
+  //       // user closes the browser tab.
+  //       // - add the hash to a localStorage list.
+  //       console.log('added file ', files)
+  //       statusEl.innerHTML = 'DONE! file ' + files[0].path + ' to IPFS as ' + files[0].hash
+  //     }).catch((err) => {
+  //       if (err) throw err
+  //     })
+  //
+  //   })
+  // })
 }
