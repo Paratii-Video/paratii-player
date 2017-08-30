@@ -14,8 +14,8 @@ function initIPFS (callback) {
     // no cache busting because unpkg is complaining
     $.ajaxSetup({
       cache: true
-    });
-    $.getScript('https://unpkg.com/ipfs@0.25.1/dist/index.js', () => {
+    })
+    $.getScript('https://unpkg.com/ipfs@0.25.2/dist/index.js', () => {
     // $.getScript('./ipfs0.25.1.js', () => {
       // console.log('Ipfs: ', Ipfs)
       // const wstar = new WebRTCStar()
