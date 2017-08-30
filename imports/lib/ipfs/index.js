@@ -15,10 +15,12 @@ function initIPFS (callback) {
     $.ajaxSetup({
       cache: true
     })
-    $.getScript('https://unpkg.com/ipfs@0.25.2/dist/index.js', () => {
+    // $.getScript('https://unpkg.com/ipfs@0.25.2/dist/index.js', () => {
+    $.getScript('http://localhost:3000/test/files/index.js', () => {
     // $.getScript('./ipfs0.25.1.js', () => {
       // console.log('Ipfs: ', Ipfs)
       // const wstar = new WebRTCStar()
+      console.log('SECIO TEST : ', SECIO.modified)
       window.ipfs = new Ipfs({
         repo: String(Math.random()),
         config: {
@@ -59,7 +61,8 @@ function initIPFS (callback) {
       var peerInfo;
 
       window.ipfs.on('ready', () => {
-        console.log('[IPFS] node Ready.');
+        console.log('[IPFS] node Ready.')
+        console.log('[IPFS] _libp2pModules: ', window.ipfs._libp2pModules)
         window.ipfs.id().then((id) => {
           peerInfo = id;
           console.log('[IPFS] id: ', id);
