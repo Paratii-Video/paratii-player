@@ -8,10 +8,14 @@ import './playlists.html';
 
 Template.playlists.onCreated(function () {
   this.lockeds = new ReactiveDict();
-  Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'), () => {
-    Meteor.subscribe('playlists', () => {
+  Meteor.subscribe('playlists');
+  // autorun this when the playlist changes
+  this.autorun(() => {
+    // subscribe to videos of the current playlist
+    Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'), () => {
       const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() });
       const videosId = playlist.videos;
+      // for each video of the playlist checks if the user bought it
       videosId.forEach((id) => {
         Meteor.call('videos.isLocked', id, userAddress, (err, result) => {
           if(err) {
@@ -46,6 +50,7 @@ Template.playlists.helpers({
     }
   },
   isLocked(video) {
+    console.log("locked" + video._id, Template.instance().lockeds.get(video._id));
     return Template.instance().lockeds.get(video._id);
   },
   hasPrice(video) {
