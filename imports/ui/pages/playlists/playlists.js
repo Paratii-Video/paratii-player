@@ -1,13 +1,28 @@
-import { Template } from 'meteor/templating'
-import { formatNumber } from '/imports/lib/utils.js'
-import { Videos } from '../../../../imports/api/videos.js'
-import { Playlists } from '../../../../imports/api/playlists.js'
-import './playlists.html'
+import { Template } from 'meteor/templating';
+import { formatNumber } from '/imports/lib/utils.js';
+import { Videos } from '../../../../imports/api/videos.js';
+import { Playlists } from '../../../../imports/api/playlists.js';
+import { getUserPTIAddress } from '/imports/api/users.js';
+import { Tracker } from 'meteor/tracker';
+import './playlists.html';
 
 Template.playlists.onCreated(function () {
-  Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'))
-  Meteor.subscribe('playlists')
-})
+  this.lockeds = new ReactiveDict();
+  Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'), () => {
+    Meteor.subscribe('playlists', () => {
+      const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() });
+      const videosId = playlist.videos;
+      videosId.forEach((id) => {
+        Meteor.call('videos.isLocked', id, userAddress, (err, result) => {
+          if(err) {
+            throw err;
+          }
+          this.lockeds.set(id, result);
+        });
+      });
+    });
+  });
+});
 
 function getCurrentPlaylistId () {
   let playlistID = FlowRouter.getParam('_id')
@@ -30,8 +45,11 @@ Template.playlists.helpers({
       return videos
     }
   },
-  hasPrice (video) {
-    return video && video.price && video.price > 0
+  isLocked(video) {
+    return Template.instance().lockeds.get(video._id);
+  },
+  hasPrice(video) {
+    return video && video.price && video.price > 0;
   },
   formatNumber (number) {
     return formatNumber(number)

@@ -20,12 +20,13 @@
     <div class="videosListContainer">
       {{# each videos }}
         <div class="videoCardContainer">
-          {{isLocked}}
           <div class="videoThumbContent">
             <a href="{{pathFor route='player' _id=this._id}}"><img src="{{thumb}}"/></a>
             <div class="videoCardDuration">{{duration}}</div>
-            {{#if hasPrice this}}
+            {{#if isLocked this}}
               <div class="videoCardPrice">{{price }} PTI</div>
+            {{else if hasPrice this}}
+              <div class="videoCardPrice">✓</div>
             {{/if}}
           </div>
           <div class="videoCardTitle"><a href="{{pathFor route='player' _id=this._id}}">{{title}}</a></div>
