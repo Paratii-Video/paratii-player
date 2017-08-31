@@ -3,13 +3,27 @@ import { formatNumber } from '/imports/lib/utils.js';
 import { Videos } from '../../../../imports/api/videos.js';
 import { Playlists } from '../../../../imports/api/playlists.js';
 import { getUserPTIAddress } from '/imports/api/users.js';
+import { Tracker } from 'meteor/tracker';
 import './playlists.html';
 
 const userAddress = getUserPTIAddress();
 
 Template.playlists.onCreated(function () {
-  Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'));
-  Meteor.subscribe('playlists');
+  this.lockeds = new ReactiveDict();
+  Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'), () => {
+    Meteor.subscribe('playlists', () => {
+      const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() });
+      const videosId = playlist.videos;
+      videosId.forEach((id) => {
+        Meteor.call('videos.isLocked', id, userAddress, (err, result) => {
+          if(err) {
+            throw err;
+          }
+          this.lockeds.set(id, result);
+        });
+      });
+    });
+  });
 });
 
 function getCurrentPlaylistId(){
@@ -32,6 +46,9 @@ Template.playlists.helpers({
       const videos = Videos.find({ _id: { "$in": videosIds } });
       return videos;
     }
+  },
+  isLocked(video) {
+    return Template.instance().lockeds.get(video._id);
   },
   hasPrice(video) {
     return video && video.price && video.price > 0;
