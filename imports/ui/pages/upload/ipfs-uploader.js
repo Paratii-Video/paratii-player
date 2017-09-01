@@ -107,7 +107,7 @@ function addToIPFS (file) {
 
       let myReadableStreamBuffer = new streamBuffers.ReadableStreamBuffer({
         // frequency: 10,   // in milliseconds.
-        chunkSize: 2048  // in bytes.
+        chunkSize: 16048  // in bytes.
       })
 
       window.ipfs.files.createAddStream((err, stream) => {
