@@ -72,9 +72,9 @@ function initIPFS (callback) {
 
       window.ipfs.on('error', (err) => {
         if (err) {
-          console.log('IPFS node ', window.ipfs);
-          console.error('[IPFS] ', err);
-          throw err;
+          console.log('IPFS node ', window.ipfs)
+          console.error('[IPFS] ', err)
+          // throw err
         }
       });
     });

@@ -25,6 +25,7 @@
     "moment": "^2.18.1",
     "pretty-bytes": "^4.0.2",
     "promisify-node": "^0.4.0",
+    "stream-buffers": "^3.0.1",
     "web3": "^0.19.1",
     "webworker-threads": "^0.7.13"
   },
