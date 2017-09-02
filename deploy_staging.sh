@@ -1,12 +1,13 @@
 #!/bin/bash
 export TOOL_NODE_FLAGS="--max-old-space-size=4096"
 
-meteor build .
+meteor build /tmp/
 
-rsync -az paratii-player.tar.gz paratii@paratii.gerbrandy.com:/home/paratii/
+rsync -az /tmp/paratii-player.tar.gz paratii@paratii.gerbrandy.com:/home/paratii/
+rsync -az settings-prod.json paratii@paratii.gerbrandy.com:/home/paratii/settings-prod.json
 ssh paratii@paratii.gerbrandy.com <<'ENDSSH'
 #commands to run on remote host
-rm -r bundle
+    rm -r bundle
 tar xf paratii-player.tar.gz
 cd bundle/programs/server && sudo npm install
 export PWD=/home/paratii
@@ -24,7 +25,7 @@ export ROOT_URL=https://paratii.gerbrandy.com
 
 # optional JSON config - the contents of file specified by passing "--settings" parameter to meteor command in development mode
 # export METEOR_SETTINGS='{ "somesetting": "someval", "public": { "othersetting": "anothervalue" } }'
-export METEOR_SETTINGS=$(cat settings-proc.json)
+export METEOR_SETTINGS=$(cat settings-prod.json)
 
 # this is optional: http://docs.meteor.com/#email
 # commented out will default to no email being sent
