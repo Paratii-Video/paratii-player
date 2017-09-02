@@ -107,7 +107,7 @@ function addToIPFS (file) {
 
       let myReadableStreamBuffer = new streamBuffers.ReadableStreamBuffer({
         // frequency: 10,   // in milliseconds.
-        chunkSize: 16048  // in bytes.
+        chunkSize: 32048  // in bytes.
       })
 
       window.ipfs.files.createAddStream((err, stream) => {
@@ -116,6 +116,10 @@ function addToIPFS (file) {
         stream.on('data', (file) => {
           console.log('FILE : ', file)
           statusEl.innerHTML = 'DONE! file ' + file.path + ' to IPFS as ' + file.hash
+          if(progressbar) {
+            clearInterval(progressbar)
+            progress = 0
+          }
         })
 
         myReadableStreamBuffer.on('data', (chunk) => {
@@ -135,10 +139,10 @@ function addToIPFS (file) {
         console.log('buf size: ', buf.byteLength)
         console.log('readable stream : ', myReadableStreamBuffer)
         console.log('readable stream destory: ', myReadableStreamBuffer.destory)
-        if(!myReadableStreamBuffer.destory) {
-          console.log('adding destory method')
-          myReadableStreamBuffer.destory = () => {
-            this.stop()
+        if(!myReadableStreamBuffer.destroy) {
+          console.log('adding destroy method')
+          myReadableStreamBuffer.destroy = () => {
+            console.log('destroy called')
           }
         }
 
@@ -157,9 +161,11 @@ function addToIPFS (file) {
 
         myReadableStreamBuffer.resume()
 
-        setInterval(() => {
+        let progressbar  = setInterval(() => {
           console.log('progress: ', progress, '/', fileSize, ' = ', Math.floor((progress / fileSize) * 100), '%')
         }, 5000)
+
+
       })
       // TODO
       // if there is transcoding required, it should be done before adding the file.
