@@ -70,6 +70,7 @@ Template.player.onCreated(function () {
   this.playerState.set('muted', false);
   this.playerState.set('locked', true);
   this.playerState.set('fullscreen', false);
+  this.playerState.set('no-transition', false);
 
   if (userPTIAddress) {
     Meteor.subscribe('userTransactions', userPTIAddress)
@@ -168,7 +169,11 @@ Template.player.helpers({
   },
   fullscreen() {
     return Template.instance().playerState.get('fullscreen');
+  },
+  noTransition(){
+    return Template.instance().playerState.get('no-transition');
   }
+
 });
 
 const requestFullscreen = (element) => {
@@ -271,6 +276,8 @@ Template.player.events({
   'click #fullscreen-button'(event, instance) {
     const videoPlayer = instance.find('#player-container');
     const state = instance.playerState;
+
+    state.set('no-transition', true);
     if (state.get('fullscreen')) {
       requestCancelFullscreen(document);
       state.set('fullscreen', false);
@@ -280,6 +287,7 @@ Template.player.events({
       state.set('fullscreen', true);
       console.log('fullscreen entrou');
     }
+    state.set('no-transition', false);
   },
   'timeupdate' (event, instance) {
     const videoPlayer = instance.find('#video-player')
