@@ -6,6 +6,16 @@
   height: 100%;
   background-color: black;
   border-radius: 10px;
+  &.fullscreen {
+    left: 0px;
+    width: 100%;
+    transition: 0s;
+    .player-overlay, .player-controls {
+      left: 0px;
+      width: 100%;
+      transition: 0s;
+    }
+  }
 }
 
 .embed_code{
@@ -17,10 +27,10 @@
 }
 .player-overlay {
   position: absolute;
-  padding: 10px 10px 10px 70px;
+  padding: 10px 10px 10px 10px;
   top: 0px;
-  left: 0px;
-  width: 100%;
+  left: 60px;
+  width: ~"calc(100% - 60px)";
   height: 100%;
   color: white;
   background-color: rgba(0,0,0,0.5);
@@ -140,10 +150,11 @@
 
 .player-controls {
   width: 100%;
-  padding: 10px 20px 20px 80px;
+  padding: 10px 20px 20px 20px;
   z-index: 100;
   position: absolute;
-  left: 0;
+  left: 60px;
+  width: ~"calc(100% - 60px)";
   box-sizing: border-box;
   bottom: 0px;
   transition: 0.5s;

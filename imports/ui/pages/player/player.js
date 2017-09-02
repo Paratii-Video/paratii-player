@@ -12,11 +12,10 @@ import '/imports/ui/components/modals/embedCustomizer.js'
 
 import './player.html'
 
-let fullscreenOn = false
-let controlsHandler
-let volumeHandler
-let previousVolume = 100
-let _video
+let controlsHandler;
+let volumeHandler;
+let previousVolume = 100;
+let _video;
 
 function getVideo () {
   const videoId = FlowRouter.getParam('_id')
@@ -56,20 +55,21 @@ Template.player.onCreated(function () {
   // this makes the tests work
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized')
 
-  this.playerState = new ReactiveDict()
-  this.playerState.set('playing', false)
-  this.playerState.set('currentTime', 0)
-  this.playerState.set('totalTime', 0)
-  this.playerState.set('hideControls', false)
-  this.playerState.set('showVolume', false)
-  this.playerState.set('loadedProgress', 0.0)
-  this.playerState.set('playedProgress', 0.0)
-  this.playerState.set('scrubberTranslate', 0)
-  this.playerState.set('torrent', false)
-  this.playerState.set('volumeValue', 100)
-  this.playerState.set('volScrubberTranslate', 100)
-  this.playerState.set('muted', false)
-  this.playerState.set('locked', true)
+  this.playerState = new ReactiveDict();
+  this.playerState.set('playing', false);
+  this.playerState.set('currentTime', 0);
+  this.playerState.set('totalTime', 0);
+  this.playerState.set('hideControls', false);
+  this.playerState.set('showVolume', false);
+  this.playerState.set('loadedProgress', 0.0);
+  this.playerState.set('playedProgress', 0.0);
+  this.playerState.set('scrubberTranslate', 0);
+  this.playerState.set('torrent', false);
+  this.playerState.set('volumeValue', 100);
+  this.playerState.set('volScrubberTranslate', 100);
+  this.playerState.set('muted', false);
+  this.playerState.set('locked', true);
+  this.playerState.set('fullscreen', false);
 
   if (userPTIAddress) {
     Meteor.subscribe('userTransactions', userPTIAddress)
@@ -111,17 +111,8 @@ Template.player.helpers({
   isLocked () {
     return Template.instance().playerState.get('locked')
   },
-  canAutoplay () {
-    const locked = Template.instance().playerState.get('locked')
-    if (!locked) {
-      // Template.instance().navState.set('closed');
-      return 'autoplay'
-    } else {
-      return ''
-    }
-  },
-  playPause () {
-    return Template.instance().playerState.get('playing') ? 'pause' : 'play'
+  playPause() {
+    return Template.instance().playerState.get('playing') ? 'pause' : 'play';
   },
   playPauseIcon() {
     const state = Template.instance().playerState.get('playing');
@@ -171,11 +162,14 @@ Template.player.helpers({
   volScrubberTranslate () {
     return Template.instance().playerState.get('volScrubberTranslate')
   },
-  volumeIcon () {
-    const state = Template.instance().playerState.get('muted')
-    return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg'
+  volumeIcon() {
+    const state = Template.instance().playerState.get('muted');
+    return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg';
+  },
+  fullscreen() {
+    return Template.instance().playerState.get('fullscreen');
   }
-})
+});
 
 const requestFullscreen = (element) => {
   if (element.requestFullscreen) {
@@ -274,14 +268,17 @@ Template.player.events({
       }, 3000)
     }
   },
-  'click #fullscreen-button' (event, instance) {
-    const videoPlayer = instance.find('#player-container')
-    if (fullscreenOn) {
-      requestCancelFullscreen(document)
-      fullscreenOn = false
+  'click #fullscreen-button'(event, instance) {
+    const videoPlayer = instance.find('#player-container');
+    const state = instance.playerState;
+    if (state.get('fullscreen')) {
+      requestCancelFullscreen(document);
+      state.set('fullscreen', false);
+      console.log('fullscreen saiu');
     } else {
-      requestFullscreen(videoPlayer)
-      fullscreenOn = true
+      requestFullscreen(videoPlayer);
+      state.set('fullscreen', true);
+      console.log('fullscreen entrou');
     }
   },
   'timeupdate' (event, instance) {
