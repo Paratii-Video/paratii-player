@@ -11,7 +11,6 @@ import { createIPFSPlayer } from './ipfs.js';
 
 import './player.html';
 
-let fullscreenOn = false;
 let controlsHandler;
 let volumeHandler;
 let previousVolume = 100;
@@ -70,6 +69,7 @@ Template.player.onCreated(function () {
   this.playerState.set('volScrubberTranslate', 100);
   this.playerState.set('muted', false);
   this.playerState.set('locked', true);
+  this.playerState.set('fullscreen', false);
 
 
   Meteor.subscribe('userTransactions', userPTIAddress);
@@ -111,15 +111,6 @@ Template.player.onDestroyed(function () {
 Template.player.helpers({
   isLocked(){
     return Template.instance().playerState.get('locked');
-  },
-  canAutoplay(){
-    const locked = Template.instance().playerState.get('locked');
-    if(!locked) {
-      // Template.instance().navState.set('closed');
-      return 'autoplay';
-    } else {
-      return '';
-    }
   },
   playPause() {
     return Template.instance().playerState.get('playing') ? 'pause' : 'play';
@@ -176,6 +167,9 @@ Template.player.helpers({
     const state = Template.instance().playerState.get('muted');
     return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg';
   },
+  fullscreen() {
+    return Template.instance().playerState.get('fullscreen');
+  }
 });
 
 const requestFullscreen = (element) => {
@@ -277,12 +271,15 @@ Template.player.events({
   },
   'click #fullscreen-button'(event, instance) {
     const videoPlayer = instance.find('#player-container');
-    if (fullscreenOn) {
+    const state = instance.playerState;
+    if (state.get('fullscreen')) {
       requestCancelFullscreen(document);
-      fullscreenOn = false;
+      state.set('fullscreen', false);
+      console.log('fullscreen saiu');
     } else {
       requestFullscreen(videoPlayer);
-      fullscreenOn = true;
+      state.set('fullscreen', true);
+      console.log('fullscreen entrou');
     }
   },
   'timeupdate'(event, instance) {
