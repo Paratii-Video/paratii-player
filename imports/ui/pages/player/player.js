@@ -125,7 +125,7 @@ Template.player.helpers({
     return Template.instance().playerState.get('playing') ? 'pause' : 'play';
   },
   playPauseIcon() {
-    const state = Template.instance().playerState.get('layeplaying');
+    const state = Template.instance().playerState.get('playing');
     return (state) ? '/img/pause-icon.svg' : '/img/play-icon.svg';
   },
   currentTime() {
