@@ -47,20 +47,7 @@ Template.profile.helpers({
 
 Template.profile.events({
   'click #create-wallet'() {
-    getPassword().then(function (password) {
-      if (password) {
-        // set seed in the session, then show the new seed
-        Session.set('wallet-state', 'generating');
-        createKeystore(password, undefined, function (err, seed) {
-          Session.set('wallet-state', '');
-          if(err) {
-            throw err;
-          }
-          Session.set('seed', seed);
-          Modal.show('showSeed', {});
-        });
-      }
-    });
+    Modal.show('showSeed', { type: 'create' });
   },
   'click #send-eth'() {
     Modal.show('doTransaction', { type: 'Eth', label: 'Send Ethereum' });
@@ -72,7 +59,7 @@ Template.profile.events({
     Modal.show('restoreKeystore', {});
   },
   'click #show-seed'() {
-    Modal.show('showSeed', {});
+    Modal.show('showSeed', { type: 'show' });
   },
   'click #edit-profile'() {
     const modalOptions = {

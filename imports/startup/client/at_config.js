@@ -16,7 +16,7 @@ const mySubmitFunc = function (error, state) {
       Session.set('tempAddress', null);
       Session.set('wallet-state', '');
     }
-    showSeed();
+    showSeed('show');
   }
 };
 
@@ -25,7 +25,7 @@ const myPreSignupFunc = function (password) {
   Session.set('wallet-state', 'generating');
   createKeystore(password, undefined, function (err) {
     if (err) {
-      console.log(err);
+      throw err;
     }
     Session.set('wallet-state', '');
   });

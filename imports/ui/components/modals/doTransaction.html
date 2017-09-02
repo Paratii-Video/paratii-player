@@ -24,7 +24,11 @@
               <div class="input-group">
                 {{#if action }}
                   <span class="input-group-addon" id="sizing-addon3">Uploader's Account</span>
-                  <input name="wallet_friend_number" type="text" value="{{address}}" class="form-control" aria-describedby="sizing-addon1" readonly>
+                  <div class="dapp-address-input">
+                    <input name="wallet_friend_number" type="text" value="{{address}}" class="form-control" aria-describedby="sizing-addon1" readonly>
+                    {{> dapp_identicon identity='{{address}}' class="dapp-small"}}
+                  </div>
+
                 {{else}}
                   <span class="input-group-addon" id="sizing-addon3">Friend's Account</span>
                   {{> dapp_addressInput class="address_input form-control" placeholder="Friend's Wallet" value="" aria-describedby="sizing-addon1" name="wallet_friend_number"}}

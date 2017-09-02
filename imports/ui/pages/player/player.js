@@ -4,9 +4,10 @@ import { sprintf } from 'meteor/sgi:sprintfjs';
 
 import { formatNumber } from '/imports/lib/utils.js';
 import { getUserPTIAddress } from '/imports/api/users.js';
-import { Transactions } from '/imports/api/transactions.js';
+import { UserTransactions } from '/imports/api/transactions.js';
 import { Videos } from '../../../api/videos.js';
 import { createWebtorrentPlayer } from './webtorrent.js';
+import { createIPFSPlayer } from './ipfs.js';
 
 import './player.html';
 
@@ -28,10 +29,14 @@ function getVideo(){
 function renderVideoElement(instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = getVideo();
-
+  console.log("currentvideo",currentVideo);
+  console.log("instance",instance);
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo);
     instance.playerState.set('torrent', true);
+  } else if (currentVideo.src.startsWith('/ipfs')) {
+    createIPFSPlayer(instance, currentVideo);
+    instance.playerState.set('ipfs', true);
   } else {
     const videoElement = $('#video-player');
     const sourceElement = document.createElement('source');
@@ -68,13 +73,9 @@ Template.player.onCreated(function () {
 
 
   Meteor.subscribe('userTransactions', userPTIAddress);
-  // TODO: do not subscribe to all vidoes, just to the one we need
-  Meteor.subscribe('videos', function () {
-    // video subscription is ready
-    // renderVideoElement(instance);
-  });
+  Meteor.subscribe('videoPlay', FlowRouter.getParam('_id'));
 
-  let query = Transactions.find({videoid: FlowRouter.getParam('_id')});
+  let query = UserTransactions.find({videoid: FlowRouter.getParam('_id')});
   let handle = query.observeChanges({
     added: function (id, fields) {
       console.log("added");
@@ -109,14 +110,22 @@ Template.player.onDestroyed(function () {
 
 Template.player.helpers({
   isLocked(){
-    console.log(Template.instance().playerState.get('locked'));
     return Template.instance().playerState.get('locked');
+  },
+  canAutoplay(){
+    const locked = Template.instance().playerState.get('locked');
+    if(!locked) {
+      // Template.instance().navState.set('closed');
+      return 'autoplay';
+    } else {
+      return '';
+    }
   },
   playPause() {
     return Template.instance().playerState.get('playing') ? 'pause' : 'play';
   },
   playPauseIcon() {
-    const state = Template.instance().playerState.get('playing');
+    const state = Template.instance().playerState.get('layeplaying');
     return (state) ? '/img/pause-icon.svg' : '/img/play-icon.svg';
   },
   currentTime() {

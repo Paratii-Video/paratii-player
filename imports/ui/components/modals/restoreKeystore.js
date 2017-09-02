@@ -5,12 +5,14 @@ import '/imports/api/users.js';
 import './restoreKeystore.html';
 
 Template.restoreKeystore.onCreated(function () {
-  this.error = new ReactiveVar();
+  this.errors = new ReactiveDict();
+  this.errors.set('password', null);
+  this.errors.set('seed', null);
 });
 
 Template.restoreKeystore.helpers({
-  getError() {
-    return Template.instance().error.get();
+  getError(name) {
+    return Template.instance().errors.get(name);
   },
 });
 
@@ -19,11 +21,19 @@ Template.restoreKeystore.events({
     // Prevent default browser form submit
     event.preventDefault();
     const target = event.target;
-    restoreWallet(target['field-password'].value, target['field-seed'].value, function(err, seedPhrase){
-      if (err) {
-        instance.error.set('Invalid seed!');
+    const password = target['field-password'].value;
+    const seed = target['field-seed'].value;
+    Meteor.call('checkPassword', password, (error, result) => {
+      if (result) {
+        restoreWallet(password, seed, function(err, seedPhrase){
+          if (err) {
+            instance.errors.set('seed', 'Invalid seed!');
+          } else {
+            Modal.hide('restoreKeystore');
+          }
+        });
       } else {
-        Modal.hide('restoreKeystore');
+        instance.errors.set('password', 'Wrong password');
       }
     });
   },

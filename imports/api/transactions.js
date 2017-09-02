@@ -6,6 +6,7 @@ import {
 import { Videos } from '/imports/api/videos.js';
 
 export const Transactions = new Mongo.Collection('transactions');
+export const UserTransactions = new Mongo.Collection('userTransactions');
 
 
 
@@ -33,18 +34,40 @@ if (Meteor.isServer) {
 
   Meteor.publish('userTransactions', function(userPTIAddress) {
     check(userPTIAddress, String);
-    // Publish all transactions where I find userPTIAddress
+
+    // Publish all transactions where I find userPTIAddress and blockNumber exist
     const query = {
-      $and:[{
         $or : [{
           to: userPTIAddress
         }, {
           from: userPTIAddress
         }],
         blockNumber: {$ne : null}
-      }]
     };
-    return Transactions.find(query);
+
+    // Aggregate transactions with same hash as ID and group data
+    // new collections userTransactions will be publish with this structures
+    ReactiveAggregate(this, Transactions, [
+        { $match : query },
+        { $group : {
+            _id : "$hash",
+            blockNumber: { $last: "$blockNumber"},
+            source : { $push: "$source"},
+            from : { $first: "$from"},
+            to : { $first: "$to"},
+            currency : { $first: "$currency"},
+            description : { $first: "$description"},
+            value : { $first: "$value"},
+            // transactions: { $push: "$$ROOT" }
+            videoid: { $push: "$videoid" }
+          }
+      }
+      ],
+      { clientCollection: "userTransactions"});
+
+
+
+
   });
 }
 
@@ -65,7 +88,7 @@ async function insertAndValidateTransaction(transaction) {
   });
 
   if(!txExist) {
-    Transactions.insert(transaction);
+    const newTxId = Transactions.insert(transaction);
   }
 
 
@@ -76,9 +99,22 @@ async function insertAndValidateTransaction(transaction) {
     source: "client"
   });
 
-
   if(txToValidate) {
     Transactions.update({_id: txToValidate._id}, {$set: {blockNumber:transaction.blockNumber, hash:transaction.hash } });
+  }else{
+    const txValidated = await Transactions.findOne({
+      blockNumber: {$ne : null},
+      nonce: transaction.nonce,
+      from: transaction.from,
+      source: {$ne : "client"}
+    });
+    if(txValidated) {
+      Transactions.update({_id: newTxId }, {$set: {blockNumber:txValidated.blockNumber, hash:txValidated.hash } });
+    }
+  }
+
+  if(transaction.source === 'client' ){
+
   }
 
 }

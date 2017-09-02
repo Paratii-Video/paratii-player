@@ -1,5 +1,6 @@
 import { check } from 'meteor/check';
 import { Transactions } from '/imports/api/transactions.js';
+import { Playlists } from '/imports/api/playlists.js';
 
 export const Videos = new Mongo.Collection('videos');
 
@@ -17,9 +18,25 @@ export function userDislikesVideo(userId, videoId) {
 
 
 if (Meteor.isServer) {
-  // This code only runs on the server
+  // Publish all videos
   Meteor.publish('videos', function() {
     return Videos.find();
+  });
+
+  // Publish one video by id
+  Meteor.publish('videoPlay', function(_id) {
+    return Videos.find(_id);
+  });
+
+  // Publish videos by playlist
+  Meteor.publish('videosPlaylist', function(_id) {
+    if( _id === null){
+      return Videos.find();
+    }else{
+      const playlist = Playlists.findOne({_id});
+      const videosIds = playlist.videos;
+      return Videos.find({ _id: { "$in": videosIds } });
+    }
   });
 
   Meteor.methods({

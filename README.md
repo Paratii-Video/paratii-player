@@ -71,3 +71,16 @@ Testing
 Run lint:
 
     npm run lint
+
+Pull requests are welcome.
+
+[preach here about testing]
+
+
+# Building the application
+
+    meteor build
+
+if you get out-of-memory errors, setting TOOL_NODE_FLAGS may help:
+
+    export TOOL_NODE_FLAGS="--max_old_space_size=4096"
