@@ -1,5 +1,6 @@
 {
   "public" : {
+    "isProduction": true,
     "http_provider": "http://paratii-chain.gerbrandy.com"
   }
 }
