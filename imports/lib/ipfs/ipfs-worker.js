@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = function (self) {
   // const SECIO = require('libp2p-secio')
@@ -32,14 +32,14 @@ module.exports = function (self) {
   // self.importScripts('https://code.jquery.com/jquery-3.2.1.min.js')
   // console.log('$: ', $)
 
-  self.importScripts('https://unpkg.com/ipfs@0.25.2/dist/index.js')
+  self.importScripts('https://unpkg.com/ipfs@0.25.2/dist/index.js');
 
-  console.log('ipfs: ', self.Ipfs)
+  console.log('ipfs: ', self.Ipfs);
 
-  self.postMessage('Got ipfs '+ self.Ipfs)
+  self.postMessage('Got ipfs '+ self.Ipfs);
 
   if (!self.Ipfs) {
-    throw new Error('self.Ipfs is undefined')
+    throw new Error('self.Ipfs is undefined');
   }
 
   var node = new self.Ipfs({
@@ -77,18 +77,18 @@ module.exports = function (self) {
     //     }
     //   }
     // }
-  })
+  });
 
   node.on('start', () => {
-    console.log('node is starting..')
-  })
+    console.log('node is starting..');
+  });
   node.on('ready', () => {
-    console.log('worker node is ready')
-    self.postMessage({ready: true}) // 'node ready')
-  })
+    console.log('worker node is ready');
+    self.postMessage({ready: true}); // 'node ready')
+  });
 
   self.onmessage = function (event) {
-    console.log('worker: ', event)
+    console.log('worker: ', event);
     // example cmd structure
     // {
     //   cmd: 'cat',
@@ -103,12 +103,12 @@ module.exports = function (self) {
               self.postMessage({
                 callback: event.data.callback,
                 payload: chunk
-              })
-            })
+              });
+            });
           }).catch((err) => {
-            if (err) throw err
-          })
-          break
+            if (err) throw err;
+          });
+          break;
         case 'add':
           // TODO run ipfs add
           node.files.add([{
@@ -120,23 +120,23 @@ module.exports = function (self) {
             // - cat the file from a peer we control to make sure it's available if the
             // user closes the browser tab.
             // - add the hash to a localStorage list.
-            console.log('added file ', files)
+            console.log('added file ', files);
             self.postMessage({
               callback: event.data.callback,
               payload: files
-            })
+            });
           }).catch((err) => {
-            if (err) throw err
-          })
-          break
+            if (err) throw err;
+          });
+          break;
         case 'get':
-          break
+          break;
         default:
-          console.error('Worker Error: Command Not found cmd: ', event.data.cmd)
+          console.error('Worker Error: Command Not found cmd: ', event.data.cmd);
       }
     }
-  }
-}
+  };
+};
 
 
 // in the main thread. use this

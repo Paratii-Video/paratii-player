@@ -1,7 +1,7 @@
 'use strict';
-import { Meteor } from 'meteor/meteor'
+import { Meteor } from 'meteor/meteor';
 
-const SECIO = require('libp2p-secio')
+const SECIO = require('libp2p-secio');
 /**
  * initIPFS - initiates Ipfs instance
  *
@@ -14,15 +14,15 @@ function initIPFS (callback) {
     // no cache busting because unpkg is complaining
     $.ajaxSetup({
       cache: true
-    })
+    });
     // $.getScript('https://unpkg.com/ipfs@0.25.2/dist/index.js', () => {
     $.getScript('http://localhost:3000/test/files/index.js', () => {
     // $.getScript('./ipfs0.25.1.js', () => {
       // console.log('Ipfs: ', Ipfs)
       // const wstar = new WebRTCStar()
-      console.log('SECIO TEST : ', SECIO.modified)
-      let isProduction = Meteor.settings.isProduction
-      console.log('isProduction:', isProduction)
+      console.log('SECIO TEST : ', SECIO.modified);
+      let isProduction = Meteor.settings.isProduction;
+      console.log('isProduction:', isProduction);
       if (isProduction) {
         window.ipfs = new Ipfs({
           repo: 'paratii-alpha',
@@ -59,7 +59,7 @@ function initIPFS (callback) {
               }
             }
           }
-        })
+        });
       } else {
         window.ipfs = new Ipfs({
           repo: String(Math.random()),
@@ -96,14 +96,14 @@ function initIPFS (callback) {
               }
             }
           }
-        })
+        });
       }
 
       var peerInfo;
 
       window.ipfs.on('ready', () => {
-        console.log('[IPFS] node Ready.')
-        console.log('[IPFS] _libp2pModules: ', window.ipfs._libp2pModules)
+        console.log('[IPFS] node Ready.');
+        console.log('[IPFS] _libp2pModules: ', window.ipfs._libp2pModules);
         window.ipfs.id().then((id) => {
           peerInfo = id;
           console.log('[IPFS] id: ', id);
@@ -113,8 +113,8 @@ function initIPFS (callback) {
 
       window.ipfs.on('error', (err) => {
         if (err) {
-          console.log('IPFS node ', window.ipfs)
-          console.error('[IPFS] ', err)
+          console.log('IPFS node ', window.ipfs);
+          console.error('[IPFS] ', err);
           // throw err
         }
       });
