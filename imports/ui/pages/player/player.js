@@ -105,8 +105,8 @@ Template.player.onDestroyed(function () {
 })
 
 Template.player.helpers({
-  isLocked () {
-    return Template.instance().playerState.get('locked')
+  isLocked(){
+    return Template.instance().playerState.get('locked');
   },
   playPause() {
     return Template.instance().playerState.get('playing') ? 'pause' : 'play';
