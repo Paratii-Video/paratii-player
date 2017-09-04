@@ -2,10 +2,7 @@ import { Template } from 'meteor/templating'
 import { formatNumber } from '/imports/lib/utils.js'
 import { Videos } from '../../../../imports/api/videos.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
-import { getUserPTIAddress } from '/imports/api/users.js'
 import './playlists.html'
-
-const userAddress = getUserPTIAddress()
 
 Template.playlists.onCreated(function () {
   Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'))
@@ -27,7 +24,7 @@ Template.playlists.helpers({
   },
   videos () {
     if (Playlists.find().fetch().length > 0) {
-      const playlist = Playlists.findOne({_id: getCurrentPlaylistId() })
+      const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
       const videosIds = playlist.videos
       const videos = Videos.find({ _id: { '$in': videosIds } })
       return videos
@@ -41,13 +38,13 @@ Template.playlists.helpers({
   },
   currentPlaylistName () {
     if (Playlists.find().fetch().length > 0) {
-      const playlist = Playlists.findOne({_id: getCurrentPlaylistId() })
+      const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
       return playlist.title
     }
   },
   currentPlaylistDesc () {
     if (Playlists.find().fetch().length > 0) {
-      const playlist = Playlists.findOne({_id: getCurrentPlaylistId() })
+      const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
       return playlist.description
     }
   }

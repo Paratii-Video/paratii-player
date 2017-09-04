@@ -74,7 +74,7 @@ Template.player.onCreated(function () {
   Meteor.subscribe('videoPlay', FlowRouter.getParam('_id'))
 
   let query = UserTransactions.find({videoid: FlowRouter.getParam('_id')})
-  let handle = query.observeChanges({
+  query.observeChanges({
     added: function (id, fields) {
       console.log('added')
       console.log(id)
@@ -226,7 +226,7 @@ const setLoadedProgress = (instance) => {
     const played = instance.playerState.get('playedProgress')
     let loaded = 0.0
     // get the nearst end
-    for (i = 0; i < videoPlayer.buffered.length; i += 1) {
+    for (let i = 0; i < videoPlayer.buffered.length; i += 1) {
       if (loaded <= played) {
         loaded = videoPlayer.buffered.end(i) / videoPlayer.duration
       }

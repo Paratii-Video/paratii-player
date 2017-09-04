@@ -1,5 +1,3 @@
-/* eslint-disable: global-require, no-alert */
-/* eslint global-require: "off" */
 import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage, login } from './helpers.js'
 
 describe('account workflow', function () {
@@ -165,7 +163,7 @@ describe('account workflow', function () {
     browser.pause(1000)
     browser.waitForVisible('#seed')
     const seed = browser.getHTML('#seed tt', false)
-    const publicAddress = browser.getHTML('#public_address', false)
+    // const publicAddress = browser.getHTML('#public_address', false)
     browser.click('#btn-eth-close')
     browser.execute(clearLocalStorage)
     browser.refresh()

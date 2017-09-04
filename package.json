@@ -6,8 +6,8 @@
     "dev": "concurrently --kill-others \"npm run testrpc\" \"meteor run --settings settings-dev.json\"",
     "test": "meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754",
     "testrpc": "testrpc",
-    "lint": "standard --env meteor mocha",
-    "lint-fix": "eslint --env meteor mocha --fix",
+    "lint": "standard",
+    "lint-fix": "standard --fix",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
     "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=5000"
   },
@@ -44,5 +44,22 @@
     "shell-source": "^1.1.0",
     "shelljs": "^0.7.8",
     "standard": "*"
+  },
+  "standard": {
+    "envs": ["mocha", "meteor"],
+    "globals": [
+      "AccountsTemplates",
+      "assert",
+      "browser",
+      "FlowRouter",
+      "Modal",
+      "server",
+      "web3"
+    ],
+    "ignore": [
+      "imports/lib/ethereum/from-ethereum-wallet",
+      "public/test/files/index.js",
+      "public/test/files/index.min.js"
+    ]
   }
 }

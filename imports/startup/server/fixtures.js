@@ -187,15 +187,15 @@ export const populateVideos = () => {
       src: 'https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg',
       mimetype: 'video/mp4'
 
-    },{
-      id: "8",
+    }, {
+      id: '8',
       title: '[IPFS] Big Buck Bunny',
       description: 'IPFS EXAMPLE video',
       thumb: '/img/thumb2-img.png',
       duration: '01:00',
       price: 0,
       uploader: {
-        address : '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
+        address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
         name: 'Paratii',
         avatar: 'http://i.pravatar.cc/150?img=4'
       },
@@ -203,11 +203,11 @@ export const populateVideos = () => {
         likes_percentage: 98,
         views: 2244245,
         likes: 2345555,
-        dislikes: 7,
+        dislikes: 7
       },
       tags: ['IPFS', 'Fragmented Mp4'],
       src: '/ipfs/QmR6QvFUBhHQ288VmpHQboqzLmDrrC2fcTUyT4hSMCwFyj',
-      mimetype: 'video/mp4',
+      mimetype: 'video/mp4'
     }
   ]
 
@@ -228,35 +228,35 @@ export const populatePlaylist = () => {
     title: 'Around the block WebTorrent',
     description: 'A super playlist about blockchain!',
     url: 'around-the-block',
-    videos: [ Videos.find().fetch()[3]._id, Videos.find().fetch()[4]._id]
+    videos: [Videos.find().fetch()[3]._id, Videos.find().fetch()[4]._id]
   }
   const p2 = {
     _id: '2',
     title: 'Around the block IPFS',
     description: 'A super playlist about blockchain!',
     url: 'around-the-block',
-    videos: [ Videos.find().fetch()[6]._id, Videos.find().fetch()[5]._id]
+    videos: [Videos.find().fetch()[6]._id, Videos.find().fetch()[5]._id]
   }
   const p3 = {
     _id: '3',
     title: 'Best surf Collection',
     description: 'A collection of surfing’s most inspiring moments of the year, from dogs inside barrels to chasing the big ones in Northern California.',
     url: 'best-surf-colection',
-    videos: [ Videos.find().fetch()[0]._id, Videos.find().fetch()[1]._id]
+    videos: [Videos.find().fetch()[0]._id, Videos.find().fetch()[1]._id]
   }
   const p4 = {
     _id: '4',
     title: 'Mother Life',
     description: 'A awesome playlist about Nature!',
     url: 'mother-life',
-    videos: [ Videos.find().fetch()[2]._id]
+    videos: [Videos.find().fetch()[2]._id]
   }
 
   // if (Playlists.find().count() === 0) {
   Playlists.remove({})
   console.log('--> populate playlits collection')
 
-  playlistList = [p1, p2, p3, p4]
+  let playlistList = [p1, p2, p3, p4]
   _.each(playlistList, (playlist) => {
     Playlists.insert(playlist)
   })

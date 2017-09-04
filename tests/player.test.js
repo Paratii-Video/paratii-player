@@ -1,5 +1,3 @@
-/* eslint global-require: "off" */
-
 import { assert } from 'chai'
 
 function createVideo () {

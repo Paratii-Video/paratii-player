@@ -43,7 +43,7 @@ Template.doTransaction.events({
     if (parseFloat(amount) <= 0 || isNaN(parseFloat(amount)) === true) {
       check.wallet_amount = 'This value is not allowed'
     } else if (parseFloat(amount) > parseFloat(balance)) {
-      check.wallet_amount = `You don\'t have enough ${this.label}`
+      check.wallet_amount = `You don't have enough ${this.label}`
     } else {
       check.wallet_amount = null
     }

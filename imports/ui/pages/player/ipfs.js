@@ -32,7 +32,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
     sourceBuffer.addEventListener('updateend', (ev) => {
       if (lastChunkIndex + chunksPerAppend < queue.length) {
         // there are more chunks queued than minimum, append all.
-	      console.log('appending chunks from ', lastChunkIndex, ' to ', queue.length - 1)
+        console.log('appending chunks from ', lastChunkIndex, ' to ', queue.length - 1)
         let patch = Buffer.concat(queue.slice(lastChunkIndex, queue.length))
         sourceBuffer.appendBuffer(patch.buffer)
         meter += patch.buffer.byteLength
@@ -40,7 +40,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
       } else if (lastChunkIndex < queue.length) {
         // there are few chunks but less than minimum
         // for now , push them for testing.
-	      console.log('got chunks but less than minimum')
+        console.log('got chunks but less than minimum')
         let patch = Buffer.concat(queue.slice(lastChunkIndex, queue.length))
         sourceBuffer.appendBuffer(patch.buffer)
         meter += patch.buffer.byteLength

@@ -1,3 +1,5 @@
+/* globals WebTorrent */
+
 import prettyBytes from 'pretty-bytes'
 
 export function createWebtorrentPlayer (templateInstance, currentVideo) {

@@ -1,6 +1,3 @@
-/* eslint-env mocha */
-/* eslint-disable func-names, prefer-arrow-callback */
-
 import { assert } from 'chai'
 import { $ } from 'meteor/jquery'
 import StubCollections from 'meteor/hwillson:stub-collections'
@@ -71,7 +68,7 @@ describe('player page', function () {
   })
 
   it('increments the likes counter when clicked', function () {
-    data = {}
+    let data = {}
     withRenderedTemplate('player', data, (el) => {
       assert.equal($(el).find('#button-like').text(), '3.141')
     })
@@ -84,7 +81,7 @@ describe('player page', function () {
   })
 
   it('increments the dislikes counter when clicked', function () {
-    data = {}
+    let data = {}
     withRenderedTemplate('player', data, (el) => {
       assert.equal($(el).find('#button-dislike').text(), '2.718')
     })

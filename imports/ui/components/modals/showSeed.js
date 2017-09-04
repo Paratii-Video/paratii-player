@@ -1,3 +1,4 @@
+/* eslint-env browser */
 import { getSeed, createKeystore } from '/imports/lib/ethereum/wallet.js'
 import './showSeed.html'
 
@@ -23,7 +24,7 @@ const createNewSeed = (password) => {
   Session.set('wallet-state', 'generating')
   createKeystore(password, undefined, function (err, seed) {
     Session.set('wallet-state', '')
-    button.button('reset')
+    // button.button('reset')
     if (err) {
       throw err
     }
@@ -38,6 +39,9 @@ Template.showSeed.events({
     button.button('loading')
     const password = event.target.user_password.value
     Meteor.call('checkPassword', password, (error, result) => {
+      if (error) {
+        throw error
+      }
       if (result) {
         if (this.type === 'create') {
           createNewSeed(password)

@@ -10,7 +10,6 @@ import { add0x } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { web3, GAS_PRICE, GAS_LIMIT, getContractAddress, setContractAddress } from './connection.js'
 import { paratiiContract } from './paratiiContract.js'
-import { resetPTIFilter } from '/imports/api/transactions.js'
 
 // createKeystore will create a new keystore
 // save it in the session object and in local storage
@@ -136,6 +135,7 @@ function doTx (amount, recipient, password, type, description, options) {
       gasLimit: web3.toHex(GAS_LIMIT)
     }
 
+    let rawTx
     switch (type) {
       case 'Eth':
         txOptions.to = add0x(recipient)
@@ -209,4 +209,4 @@ function deployTestContract (owner) {
   })
 }
 
-export { createKeystore, restoreWallet, doTx, getSeed, getPTIBalance, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction, saveKeystore }
+export { createKeystore, restoreWallet, doTx, getSeed, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction, saveKeystore }

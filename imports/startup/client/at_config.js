@@ -2,6 +2,9 @@ import { createKeystore, saveKeystore } from '/imports/lib/ethereum/wallet.js'
 import { showSeed } from '/imports/ui/components/modals/showSeed.js'
 
 const mySubmitFunc = function (error, state) {
+  if (error) {
+    throw error
+  }
   if (state === 'signUp') {
     if (Session.get('tempSeed')) {
       Session.set('wallet-state', 'generating')

@@ -1,3 +1,4 @@
+/* globals SVGInjector */
 import 'meteor/johnantoni:meteor-svginjector'
 import './navigation.html'
 

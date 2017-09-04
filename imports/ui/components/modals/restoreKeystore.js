@@ -24,6 +24,7 @@ Template.restoreKeystore.events({
     const password = target['field-password'].value
     const seed = target['field-seed'].value
     Meteor.call('checkPassword', password, (error, result) => {
+      if (error) { throw error }
       if (result) {
         restoreWallet(password, seed, function (err, seedPhrase) {
           if (err) {

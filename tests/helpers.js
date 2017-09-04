@@ -1,4 +1,4 @@
-/* eslint global-require: "off" */
+/* eslint-env browser */
 
 export function login (browser) {
   browser.url('http://localhost:3000/profile')
@@ -30,7 +30,6 @@ export function deployContract () {
   const wallet = require('./imports/lib/ethereum/wallet.js')
   const accounts = wallet.getAccounts()
   wallet.deployTestContract(accounts[0])
-  //
 }
 
 export function resetDb () {

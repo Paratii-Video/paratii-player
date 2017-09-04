@@ -1,7 +1,7 @@
-/* eslint-disable no-alert */
+/* globals Modal */
 
-import { createKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js'
-import { getUserPTIAddress, getPassword } from '/imports/api/users.js'
+import { getKeystore } from '/imports/lib/ethereum/wallet.js'
+import { getUserPTIAddress } from '/imports/api/users.js'
 import { Events } from '/imports/api/events.js'
 import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'

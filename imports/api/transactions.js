@@ -1,9 +1,8 @@
+/* globals ReactiveAggregate */
 import {
   web3,
-  PTIContract,
-  setContractAddress
+  PTIContract
 } from '/imports/lib/ethereum/connection.js'
-import { Videos } from '/imports/api/videos.js'
 
 export const Transactions = new Mongo.Collection('transactions')
 export const UserTransactions = new Mongo.Collection('userTransactions')
@@ -20,7 +19,7 @@ if (Meteor.isServer) {
         source: 'client',
         value: data.value,
         currency: data.currency,
-        date: new Date(),
+        date: new Date()
       }
 
       Object.assign(transaction, options) // If there are options they are merged in the transation object
@@ -45,23 +44,23 @@ if (Meteor.isServer) {
     // Aggregate transactions with same hash as ID and group data
     // new collections userTransactions will be publish with this structures
     ReactiveAggregate(this, Transactions, [
-        { $match: query },
+      { $match: query },
       { $group: {
         _id: '$hash',
-        blockNumber: { $last: '$blockNumber'},
-        source: { $push: '$source'},
-        from: { $first: '$from'},
-        to: { $first: '$to'},
-        currency: { $first: '$currency'},
-        description: { $first: '$description'},
-        value: { $first: '$value'},
+        blockNumber: {$last: '$blockNumber'},
+        source: {$push: '$source'},
+        from: {$first: '$from'},
+        to: {$first: '$to'},
+        currency: {$first: '$currency'},
+        description: {$first: '$description'},
+        value: {$first: '$value'},
         // transactions: { $push: "$$ROOT" }
         videoid: { $push: '$videoid' },
         data: {$push: '$date'}
       }
       }
     ],
-      { clientCollection: 'userTransactions'})
+      {clientCollection: 'userTransactions'})
   })
 }
 
@@ -70,7 +69,7 @@ async function insertAndValidateTransaction (transaction) {
   check(transaction, Object) // Check the type of the data
 
   // Selftransactions are filtered
-  if (transaction.to == transaction.from) {
+  if (transaction.to === transaction.from) {
     return
   }
 
@@ -80,7 +79,7 @@ async function insertAndValidateTransaction (transaction) {
     source: transaction.source
   })
 
-  let newTxId;
+  let newTxId
   if (!txExist) {
     newTxId = Transactions.insert(transaction)
   } else {
@@ -95,7 +94,7 @@ async function insertAndValidateTransaction (transaction) {
   })
 
   if (txToValidate) {
-    Transactions.update({_id: txToValidate._id}, {$set: {blockNumber: transaction.blockNumber, hash: transaction.hash } })
+    Transactions.update({_id: txToValidate._id}, { $set: { blockNumber: transaction.blockNumber, hash: transaction.hash } })
   } else {
     const txValidated = await Transactions.findOne({
       blockNumber: {$ne: null},
@@ -104,7 +103,7 @@ async function insertAndValidateTransaction (transaction) {
       source: {$ne: 'client'}
     })
     if (txValidated) {
-      Transactions.update({_id: newTxId }, {$set: {blockNumber: txValidated.blockNumber, hash: txValidated.hash } })
+      Transactions.update({ _id: newTxId }, { $set: { blockNumber: txValidated.blockNumber, hash: txValidated.hash } })
     }
   }
 
@@ -113,29 +112,29 @@ async function insertAndValidateTransaction (transaction) {
   }
 }
 
-async function syncTransactions() {
+async function syncTransactions () {
   // syncs all transactions in the blockchain that are not in the database yet
   let fromBlock
   let toBlock
   fromBlock = (await getLatestSyncedBlockNumber()) + 1
   toBlock = web3.eth.blockNumber
-  syncPTITransactions(fromBlock, toBlock);
-  syncETHTransactions(fromBlock, toBlock);
+  syncPTITransactions(fromBlock, toBlock)
+  syncETHTransactions(fromBlock, toBlock)
 }
 
 async function syncPTITransactions (fromBlock = 0, toBlock) {
   // set a filter for ALL PTI transactions
   console.log('PTI SYNC FROM', fromBlock, 'TO', toBlock)
-  filter = PTIContract().Transfer({}, {
+  let filter = PTIContract().Transfer({}, {
     fromBlock,
-    toBlock,
+    toBlock
   })
 
   filter.get(function (error, logs) {
     if (error) {
       throw error
     }
-    logs.forEach(function(log) {
+    logs.forEach(function (log) {
       addTransferEventToTransactionCollection(log)
     })
   })
@@ -147,39 +146,42 @@ async function syncPTITransactions (fromBlock = 0, toBlock) {
 async function syncETHTransactions (fromBlock, toBlock) {
   console.log('ETH SYNC FROM', fromBlock, 'TO', toBlock)
   for (let i = fromBlock; i <= toBlock; i += 1) {
-    syncBlockWithDB(i);
+    syncBlockWithDB(i)
   }
 };
 
-async function syncBlockWithDB(blockHashOrNumber) {
+async function syncBlockWithDB (blockHashOrNumber) {
   web3.eth.getBlock(blockHashOrNumber, true, function (error, block) {
+    if (error) {
+      throw error
+    }
     if (block != null && block.transactions != null) {
       block.transactions.forEach(function (transaction) {
-          addTransactionToCollection(web3.eth.getTransaction(transaction.hash))
+        addTransactionToCollection(web3.eth.getTransaction(transaction.hash))
       })
     }
   })
 }
 
-
-async function watchTransactions() {
-  watchPTITransactions();
-  watchETHTransactions();
+async function watchTransactions () {
+  watchPTITransactions()
+  watchETHTransactions()
 }
 
 function watchETHTransactions () {
   console.log('Watching for ETH Transactions')
   web3.eth.filter('latest', function (error, result) {
+    if (error) {
+      throw error
+    }
     syncBlockWithDB(result)
   })
 };
 
-
-
 async function watchPTITransactions () {
   // set a filter for ALL PTI transactions
   console.log('Watching for PTI Transactions')
-  filter = PTIContract().Transfer({}, {
+  let filter = PTIContract().Transfer({}, {
     fromBlock: 'latest',
     toBlock: 'latest'
   })
@@ -209,7 +211,7 @@ function addTransferEventToTransactionCollection (log) {
 
 function addTransactionToCollection (tx) {
   const receipt = web3.eth.getTransactionReceipt(tx.hash)
-  if (receipt.logs.length == 0 && tx.value.toNumber() != 0) {
+  if (receipt.logs.length === 0 && tx.value.toNumber() !== 0) {
     const transaction = {}
     transaction.value = tx.value.toNumber()
     transaction.from = tx.from
@@ -232,8 +234,8 @@ async function getLatestSyncedBlockNumber () {
 
   latestBlock = Transactions.findOne({}, {
     sort: {
-      blockNumber: -1,
-    },
+      blockNumber: -1
+    }
   })
 
   return latestBlock.blockNumber
@@ -241,5 +243,5 @@ async function getLatestSyncedBlockNumber () {
 
 export {
   syncTransactions,
-  watchTransactions,
+  watchTransactions
 }

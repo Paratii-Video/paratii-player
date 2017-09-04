@@ -11,7 +11,7 @@ let PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d'
 const GAS_PRICE = 50000000000
 const GAS_LIMIT = 4e6
 
-web3 = new Web3()
+const web3 = new Web3()
 
 export function PTIContract () {
   // return a web3.eth.contract instance for the PTI Contract
@@ -53,6 +53,7 @@ function updateSession () {
 
       // SET ETH BALANCE
       web3.eth.getBalance(ptiAddress, function (err, result) {
+        if (err) { throw err }
         if (result !== undefined) {
           Session.set('eth_balance', result.toNumber())
         }

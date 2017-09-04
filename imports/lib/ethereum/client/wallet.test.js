@@ -10,6 +10,7 @@ describe('ethereum wallet', function () {
     const password = 'mypass'
     // createKeystore returns a seed
     createKeystore(password, null, function (error, seed) {
+      if (error) { throw error }
       assert.equal(seed.split(' ').length, 12)
       done()
     })
@@ -20,6 +21,7 @@ describe('ethereum wallet', function () {
     const seedPhrase = 'fire child menu visa cupboard audit reason announce output hungry bulk vessel'
     // createKeystore returns a seed
     createKeystore(password, seedPhrase, function (error, seed) {
+      if (error) { throw error }
       assert.equal(seed.split(' ').length, 12)
       done()
     })

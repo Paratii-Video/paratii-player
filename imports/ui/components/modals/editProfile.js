@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 import { Template } from 'meteor/templating'
 import '/imports/api/users.js'
 import './editProfile.html'

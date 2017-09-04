@@ -118,13 +118,6 @@ export function getUserPTIAddress () {
   // return undefined;
 }
 
-export async function getPassword () {
-  // TODO: use a Modal!
-  const password = prompt('Please enter password', 'Password')
-  await Meteor.call('checkPassword', password)
-  return password
-}
-
 export function checkPassword (password) {
     // check the password, return True if it valid, false otherwise
   return Promise.promisify(Meteor.call)('checkPassword', password)

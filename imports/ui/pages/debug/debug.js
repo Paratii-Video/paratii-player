@@ -19,6 +19,7 @@ Template.debug.helpers({
     // not included in wallet because is unsafe
     const keystore = getKeystore()
     keystore.keyFromPassword('password', function (err, pwDerivedKey) {
+      if (err) { throw err }
       Session.set('privateKey', keystore.exportPrivateKey(getUserPTIAddress(), pwDerivedKey))
     })
 
@@ -29,9 +30,6 @@ Template.debug.helpers({
   },
   isTestRPC () {
     return Session.get('isTestRPC')
-  },
-  accounts () {
-    return EthAccounts.find()
   },
   eth_host () {
     return Session.get('eth_host')
