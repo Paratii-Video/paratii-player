@@ -1,1 +1,1 @@
-import './wanderlust.html';
+import './wanderlust.html'

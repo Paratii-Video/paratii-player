@@ -1,9 +1,9 @@
-import { check } from 'meteor/check';
+import { check } from 'meteor/check'
 
-export const Playlists = new Mongo.Collection('playlists');
+export const Playlists = new Mongo.Collection('playlists')
 
 if (Meteor.isServer) {
-  Meteor.publish('playlists', function() {
-    return Playlists.find();
-  });
+  Meteor.publish('playlists', function () {
+    return Playlists.find()
+  })
 }

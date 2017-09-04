@@ -68,7 +68,7 @@ Testing
     npm test
     npm run
 
-Run lint:
+Run lint (we use [standardjs](https://standardjs.com/)):
 
     npm run lint
 

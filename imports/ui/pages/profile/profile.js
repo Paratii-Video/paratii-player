@@ -1,79 +1,77 @@
 /* eslint-disable no-alert */
 
-import { createKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js';
-import { getUserPTIAddress, getPassword } from '/imports/api/users.js';
-import { Events } from '/imports/api/events.js';
-import '/imports/ui/components/modals/editProfile.js';
-import '/imports/ui/components/modals/doTransaction.js';
-import '/imports/ui/components/modals/restoreKeystore.js';
-import '/imports/ui/components/modals/showSeed.js';
-import './profile.html';
-
+import { createKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js'
+import { getUserPTIAddress, getPassword } from '/imports/api/users.js'
+import { Events } from '/imports/api/events.js'
+import '/imports/ui/components/modals/editProfile.js'
+import '/imports/ui/components/modals/doTransaction.js'
+import '/imports/ui/components/modals/restoreKeystore.js'
+import '/imports/ui/components/modals/showSeed.js'
+import './profile.html'
 
 Template.profile.helpers({
-  events() {
+  events () {
     // Perform a reactive database query against minimongo
-    return Events.find();
+    return Events.find()
   },
-  userEmail() {
-    return Meteor.user().emails[0].address;
+  userEmail () {
+    return Meteor.user().emails[0].address
   },
-  hasKeystore() {
-    return (getKeystore() !== undefined) ? getKeystore() : false;
+  hasKeystore () {
+    return (getKeystore() !== undefined) ? getKeystore() : false
   },
-  userPTIAddress() {
-    return getUserPTIAddress();
+  userPTIAddress () {
+    return getUserPTIAddress()
   },
-  eth_balance() {
-    const balance = Session.get('eth_balance');
+  eth_balance () {
+    const balance = Session.get('eth_balance')
     if (balance !== undefined && balance > 0) {
-      return web3.fromWei(balance, 'ether');
+      return web3.fromWei(balance, 'ether')
     }
-    return false;
+    return false
   },
-  pti_balance() {
-    const balance = Session.get('pti_balance');
+  pti_balance () {
+    const balance = Session.get('pti_balance')
     if (balance !== undefined && balance > 0) {
-      return web3.fromWei(balance, 'ether');
+      return web3.fromWei(balance, 'ether')
     }
-    return false;
+    return false
   },
-  wallet_is_generating() {
-    return Session.get('wallet-state') === 'generating';
-  },
+  wallet_is_generating () {
+    return Session.get('wallet-state') === 'generating'
+  }
 
-});
-
+})
 
 Template.profile.events({
-  'click #create-wallet'() {
-    Modal.show('showSeed', { type: 'create' });
+  'click #create-wallet' () {
+    Modal.show('showSeed', { type: 'create' })
   },
-  'click #send-eth'() {
-    Modal.show('doTransaction', { type: 'Eth', label: 'Send Ethereum' });
+  'click #send-eth' () {
+    Modal.show('doTransaction', { type: 'Eth', label: 'Send Ethereum' })
   },
-  'click #send-pti'() {
-    Modal.show('doTransaction', { type: 'PTI', label: 'Send aratii' });
+  'click #send-pti' () {
+    Modal.show('doTransaction', { type: 'PTI', label: 'Send aratii' })
   },
-  'click #restore-keystore'() {
-    Modal.show('restoreKeystore', {});
+  'click #restore-keystore' () {
+    Modal.show('restoreKeystore', {})
   },
-  'click #show-seed'() {
-    Modal.show('showSeed', { type: 'show' });
+  'click #show-seed' () {
+    Modal.show('showSeed', { type: 'show' })
   },
-  'click #edit-profile'() {
+  'click #edit-profile' () {
     const modalOptions = {
-    };
+    }
     Modal.show('editProfile', {
-    }, modalOptions);
-  },
-});
+    }, modalOptions)
+  }
+})
 
 Template.transaction.helpers({
-  sendCheck() {
+  sendCheck () {
     if (this.sender === getUserPTIAddress()) {
-      return true;
+      return true
     }
-    return false;
-  },
-});
+    return false
+  }
+})

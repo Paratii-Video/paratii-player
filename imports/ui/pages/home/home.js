@@ -1,3 +1,3 @@
-import './home.html';
+import './home.html'
 
-import '../../components/navigation/navigation.js';
+import '../../components/navigation/navigation.js'

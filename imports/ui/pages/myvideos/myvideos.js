@@ -1,1 +1,1 @@
-import './myvideos.html';
+import './myvideos.html'

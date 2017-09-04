@@ -1,2 +1,2 @@
-import './upload.html';
-import './ipfs-uploader.js';
+import './upload.html'
+import './ipfs-uploader.js'

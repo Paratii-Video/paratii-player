@@ -1,40 +1,40 @@
-import { Template } from 'meteor/templating';
-import { restoreWallet } from '/imports/lib/ethereum/wallet.js';
+import { Template } from 'meteor/templating'
+import { restoreWallet } from '/imports/lib/ethereum/wallet.js'
 
-import '/imports/api/users.js';
-import './restoreKeystore.html';
+import '/imports/api/users.js'
+import './restoreKeystore.html'
 
 Template.restoreKeystore.onCreated(function () {
-  this.errors = new ReactiveDict();
-  this.errors.set('password', null);
-  this.errors.set('seed', null);
-});
+  this.errors = new ReactiveDict()
+  this.errors.set('password', null)
+  this.errors.set('seed', null)
+})
 
 Template.restoreKeystore.helpers({
-  getError(name) {
-    return Template.instance().errors.get(name);
-  },
-});
+  getError (name) {
+    return Template.instance().errors.get(name)
+  }
+})
 
 Template.restoreKeystore.events({
-  'submit #form-restore-keystore'(event, instance) {
+  'submit #form-restore-keystore' (event, instance) {
     // Prevent default browser form submit
-    event.preventDefault();
-    const target = event.target;
-    const password = target['field-password'].value;
-    const seed = target['field-seed'].value;
+    event.preventDefault()
+    const target = event.target
+    const password = target['field-password'].value
+    const seed = target['field-seed'].value
     Meteor.call('checkPassword', password, (error, result) => {
       if (result) {
-        restoreWallet(password, seed, function(err, seedPhrase){
+        restoreWallet(password, seed, function (err, seedPhrase) {
           if (err) {
-            instance.errors.set('seed', 'Invalid seed!');
+            instance.errors.set('seed', 'Invalid seed!')
           } else {
-            Modal.hide('restoreKeystore');
+            Modal.hide('restoreKeystore')
           }
-        });
+        })
       } else {
-        instance.errors.set('password', 'Wrong password');
+        instance.errors.set('password', 'Wrong password')
       }
-    });
-  },
-});
+    })
+  }
+})

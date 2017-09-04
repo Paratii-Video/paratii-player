@@ -1,37 +1,37 @@
-import { createKeystore, saveKeystore } from '/imports/lib/ethereum/wallet.js';
-import { showSeed } from '/imports/ui/components/modals/showSeed.js';
+import { createKeystore, saveKeystore } from '/imports/lib/ethereum/wallet.js'
+import { showSeed } from '/imports/ui/components/modals/showSeed.js'
 
 const mySubmitFunc = function (error, state) {
   if (state === 'signUp') {
     if (Session.get('tempSeed')) {
-      Session.set('wallet-state', 'generating');
+      Session.set('wallet-state', 'generating')
       // if signup is successful, save the temporaries variables
       saveKeystore(
         Session.get('tempSeed'),
         Session.get('tempKeystore'),
         Session.get('tempAddress')
-      );
-      Session.set('tempSeed', null);
-      Session.set('tempKeystore', null);
-      Session.set('tempAddress', null);
-      Session.set('wallet-state', '');
+      )
+      Session.set('tempSeed', null)
+      Session.set('tempKeystore', null)
+      Session.set('tempAddress', null)
+      Session.set('wallet-state', '')
     }
-    showSeed('show');
+    showSeed('show')
   }
-};
+}
 
 const myPreSignupFunc = function (password) {
   // create a new wallet during signup
-  Session.set('wallet-state', 'generating');
+  Session.set('wallet-state', 'generating')
   createKeystore(password, undefined, function (err) {
     if (err) {
-      throw err;
+      throw err
     }
-    Session.set('wallet-state', '');
-  });
-};
+    Session.set('wallet-state', '')
+  })
+}
 
-AccountsTemplates.avoidRedirect = true;
+AccountsTemplates.avoidRedirect = true
 
 // Options for accounts
 // https://github.com/meteor-useraccounts/core/blob/master/Guide.md#configuration-api
@@ -77,23 +77,22 @@ AccountsTemplates.configure({
   // Texts
   texts: {
     button: {
-      signUp: 'Create your account',
+      signUp: 'Create your account'
     },
     // socialSignUp: "Register...",
     socialIcons: {
-      'meteor-developer': 'fa fa-rocket',
+      'meteor-developer': 'fa fa-rocket'
     },
     title: {
       forgotPwd: 'Recover Your Password',
-      signUp: 'Sign Up',
-    },
-  },
-});
+      signUp: 'Sign Up'
+    }
+  }
+})
 
-
-function addNameFieldToRegistrationForm() {
-  const email = AccountsTemplates.removeField('email');
-  const pwd = AccountsTemplates.removeField('password');
+function addNameFieldToRegistrationForm () {
+  const email = AccountsTemplates.removeField('email')
+  const pwd = AccountsTemplates.removeField('password')
 
   AccountsTemplates.addField(
     {
@@ -104,17 +103,17 @@ function addNameFieldToRegistrationForm() {
       //     signUp: "At least six characters"
       // },
       required: true,
-      minLength: 4,
+      minLength: 4
       // re: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
       // errStr: 'At least 1 digit, 1 lowercase and 1 uppercase',
-    },
-  );
+    }
+  )
 
-  AccountsTemplates.addField(email);
-  AccountsTemplates.addField(pwd);
+  AccountsTemplates.addField(email)
+  AccountsTemplates.addField(pwd)
 }
 
-addNameFieldToRegistrationForm();
+addNameFieldToRegistrationForm()
 
 // AccountsTemplates.configureRoute('signIn', redirect="/account");
 // AccountsTemplates.configureRoute('enrollAccount');
