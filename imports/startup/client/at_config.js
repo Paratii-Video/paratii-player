@@ -3,7 +3,8 @@ import { showSeed } from '/imports/ui/components/modals/showSeed.js'
 
 const mySubmitFunc = function (error, state) {
   if (error) {
-    throw error
+    // NB: do _not_ throw error, it will break the accounts workflow
+    console.log(error)
   }
   if (state === 'signUp') {
     if (Session.get('tempSeed')) {

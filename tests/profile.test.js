@@ -177,7 +177,7 @@ describe('account workflow', function () {
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('do not create a new wallet if wrong password', function () {
+  it('do not create a new wallet if the password is wrong', function () {
     createUserAndLogin(browser)
     browser.execute(clearLocalStorage)
     browser.refresh()
