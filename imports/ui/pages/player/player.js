@@ -12,10 +12,10 @@ import '/imports/ui/components/modals/embedCustomizer.js'
 
 import './player.html'
 
-let controlsHandler;
-let volumeHandler;
-let previousVolume = 100;
-let _video;
+let controlsHandler
+let volumeHandler
+let previousVolume = 100
+let _video
 
 function getVideo () {
   const videoId = FlowRouter.getParam('_id')
@@ -55,22 +55,22 @@ Template.player.onCreated(function () {
   // this makes the tests work
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized')
 
-  this.playerState = new ReactiveDict();
-  this.playerState.set('playing', false);
-  this.playerState.set('currentTime', 0);
-  this.playerState.set('totalTime', 0);
-  this.playerState.set('hideControls', false);
-  this.playerState.set('showVolume', false);
-  this.playerState.set('loadedProgress', 0.0);
-  this.playerState.set('playedProgress', 0.0);
-  this.playerState.set('scrubberTranslate', 0);
-  this.playerState.set('torrent', false);
-  this.playerState.set('volumeValue', 100);
-  this.playerState.set('volScrubberTranslate', 100);
-  this.playerState.set('muted', false);
-  this.playerState.set('locked', true);
-  this.playerState.set('fullscreen', false);
-  this.playerState.set('no-transition', false);
+  this.playerState = new ReactiveDict()
+  this.playerState.set('playing', false)
+  this.playerState.set('currentTime', 0)
+  this.playerState.set('totalTime', 0)
+  this.playerState.set('hideControls', false)
+  this.playerState.set('showVolume', false)
+  this.playerState.set('loadedProgress', 0.0)
+  this.playerState.set('playedProgress', 0.0)
+  this.playerState.set('scrubberTranslate', 0)
+  this.playerState.set('torrent', false)
+  this.playerState.set('volumeValue', 100)
+  this.playerState.set('volScrubberTranslate', 100)
+  this.playerState.set('muted', false)
+  this.playerState.set('locked', true)
+  this.playerState.set('fullscreen', false)
+  this.playerState.set('no-transition', false)
 
   if (userPTIAddress) {
     Meteor.subscribe('userTransactions', userPTIAddress)
@@ -108,16 +108,15 @@ Template.player.onDestroyed(function () {
 })
 
 Template.player.helpers({
-
   isLocked () {
     return Template.instance().playerState.get('locked')
   },
-  playPause() {
-    return Template.instance().playerState.get('playing') ? 'pause' : 'play';
+  playPause () {
+    return Template.instance().playerState.get('playing') ? 'pause' : 'play'
   },
-  playPauseIcon() {
-    const state = Template.instance().playerState.get('playing');
-    return (state) ? '/img/pause-icon.svg' : '/img/play-icon.svg';
+  playPauseIcon () {
+    const state = Template.instance().playerState.get('playing')
+    return (state) ? '/img/pause-icon.svg' : '/img/play-icon.svg'
   },
   currentTime () {
     return Template.instance().playerState.get('currentTime')
@@ -163,18 +162,18 @@ Template.player.helpers({
   volScrubberTranslate () {
     return Template.instance().playerState.get('volScrubberTranslate')
   },
-  volumeIcon() {
-    const state = Template.instance().playerState.get('muted');
-    return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg';
+  volumeIcon () {
+    const state = Template.instance().playerState.get('muted')
+    return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg'
   },
-  fullscreen() {
-    return Template.instance().playerState.get('fullscreen');
+  fullscreen () {
+    return Template.instance().playerState.get('fullscreen')
   },
-  noTransition(){
-    return Template.instance().playerState.get('no-transition');
+  noTransition () {
+    return Template.instance().playerState.get('no-transition')
   }
 
-});
+})
 
 });
 
@@ -275,21 +274,21 @@ Template.player.events({
       }, 3000)
     }
   },
-  'click #fullscreen-button'(event, instance) {
-    const videoPlayer = instance.find('#player-container');
-    const state = instance.playerState;
+  'click #fullscreen-button' (event, instance) {
+    const videoPlayer = instance.find('#player-container')
+    const state = instance.playerState
 
-    state.set('no-transition', true);
+    state.set('no-transition', true)
     if (state.get('fullscreen')) {
-      requestCancelFullscreen(document);
-      state.set('fullscreen', false);
-      console.log('fullscreen saiu');
+      requestCancelFullscreen(document)
+      state.set('fullscreen', false)
+      console.log('fullscreen saiu')
     } else {
-      requestFullscreen(videoPlayer);
-      state.set('fullscreen', true);
-      console.log('fullscreen entrou');
+      requestFullscreen(videoPlayer)
+      state.set('fullscreen', true)
+      console.log('fullscreen entrou')
     }
-    state.set('no-transition', false);
+    state.set('no-transition', false)
   },
   'timeupdate' (event, instance) {
     const videoPlayer = instance.find('#video-player')
