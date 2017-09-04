@@ -63,7 +63,9 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
           if (err) throw err
           console.log(peers.length + ' peers in the swarm')
           peers.map((peer) => {
-            console.log(peer.addr.toString())
+            if (peer.addr) {
+              console.log(peer.addr.toString())
+            }
           })
         })
         console.log('bitswap stat: ', window.ipfs.bitswap.stat())

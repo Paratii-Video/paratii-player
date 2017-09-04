@@ -249,7 +249,7 @@ export const populatePlaylist = () => {
     title: 'Mother Life',
     description: 'A awesome playlist about Nature!',
     url: 'mother-life',
-    videos: [Videos.find().fetch()[2]._id]
+    videos: [Videos.find().fetch()[2]._id, Videos.find().fetch()[7]._id]
   }
 
   // if (Playlists.find().count() === 0) {
