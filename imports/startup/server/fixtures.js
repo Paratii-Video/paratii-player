@@ -187,6 +187,27 @@ export const populateVideos = () => {
       src: 'https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg',
       mimetype: 'video/mp4'
 
+    },{
+      id: "8",
+      title: '[IPFS] Big Buck Bunny',
+      description: 'IPFS EXAMPLE video',
+      thumb: '/img/thumb2-img.png',
+      duration: '01:00',
+      price: 0,
+      uploader: {
+        address : '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
+        name: 'Paratii',
+        avatar: 'http://i.pravatar.cc/150?img=4'
+      },
+      stats: {
+        likes_percentage: 98,
+        views: 2244245,
+        likes: 2345555,
+        dislikes: 7,
+      },
+      tags: ['IPFS', 'Fragmented Mp4'],
+      src: '/ipfs/QmR6QvFUBhHQ288VmpHQboqzLmDrrC2fcTUyT4hSMCwFyj',
+      mimetype: 'video/mp4',
     }
   ]
 

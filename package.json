@@ -11,6 +11,9 @@
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
     "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=5000"
   },
+  "pre-commit": [
+    "lint-fix"
+  ],
   "dependencies": {
     "babel-runtime": "^6.20.0",
     "bcrypt": "^1.0.2",
@@ -18,13 +21,16 @@
     "chai": "^4.1.0",
     "eth-lightwallet": "^2.5.6",
     "hooked-web3-provider": "^1.0.0",
+    "inline-worker": "^1.1.0",
     "libp2p-crypto": "git+https://github.com/ya7ya/js-libp2p-crypto.git",
     "libp2p-secio": "git+https://github.com/ya7ya/js-libp2p-secio.git",
     "meteor-node-stubs": "~0.2.4",
     "moment": "^2.18.1",
     "pretty-bytes": "^4.0.2",
     "promisify-node": "^0.4.0",
-    "web3": "^0.19.1"
+    "stream-buffers": "^3.0.1",
+    "web3": "^0.19.1",
+    "webworker-threads": "^0.7.13"
   },
   "devDependencies": {
     "chimp": "^0.49.1",
@@ -34,6 +40,7 @@
     "ethereumjs-testrpc": "^4.0.1",
     "mocha": "^3.4.1",
     "nightmare": "^2.10.0",
+    "pre-commit": "^1.2.2",
     "shell-source": "^1.1.0",
     "shelljs": "^0.7.8",
     "standard": "*"
