@@ -91,7 +91,7 @@ Template.player.onCreated(function () {
 
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id'), getUserPTIAddress(), function (err, results) {
     if (err) {
-      throw (err)
+      throw err
     } else {
       self.playerState.set('locked', results)
       renderVideoElement(instance)

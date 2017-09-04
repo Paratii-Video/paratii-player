@@ -59,3 +59,4 @@ meteor-tool
 percolate:synced-cron
 simple:reactive-method
 jcbernack:reactive-aggregate
+shell-server

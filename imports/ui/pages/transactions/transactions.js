@@ -42,8 +42,6 @@ Template.transactions.helpers({
       ]
     }
     return UserTransactions.find(query, { sort: { blockNumber: -1 } })
-    // return Transactions.find({}, { sort: { blockNumber: -1 } });
-    // return Session.get('transactions') || [];
   },
   userPTIAddress () {
     return getUserPTIAddress()

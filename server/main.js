@@ -4,7 +4,7 @@ import '../imports/startup/server'
 import '../imports/startup/server/fixtures.js'
 import '../imports/startup/both'
 import '../imports/api/users.js'
-import { syncTransactionHistory, watchTransactions, getTransactionsByAccount } from '/imports/api/transactions.js'
+import { watchTransactions, syncTransactions } from '/imports/api/transactions.js'
 import { web3, PTIContract, getContractAddress } from '/imports/lib/ethereum/connection.js'
 
 web3 = new Web3()
@@ -14,9 +14,12 @@ Meteor.settings.public.first_block = FIRST_BLOCK
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
 
 Meteor.startup(function () {
-  // sync the transaction history - update the collection to include the latest blocks
-  // chain start sync from block 267 because it takes to long start from 0
-  getTransactionsByAccount('*', 267)
+  Meteor.defer( function() {
+    // sync the transaction history - update the collection to include the latest blocks
+    // chain start sync from block 267 because it takes to long start from 0
+    // TODO: commented this out
+    syncTransactions()
+  })
   // now keep watching for blocks
   watchTransactions()
 })

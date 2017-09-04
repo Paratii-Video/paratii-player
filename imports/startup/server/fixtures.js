@@ -254,14 +254,13 @@ export const populatePlaylist = () => {
 
   // if (Playlists.find().count() === 0) {
   Playlists.remove({})
-  console.log('|'); console.log('|')
   console.log('--> populate playlits collection')
 
   playlistList = [p1, p2, p3, p4]
   _.each(playlistList, (playlist) => {
     Playlists.insert(playlist)
   })
-  // }
+  console.log('--> done.')
 }
 
 Meteor.startup(function () {

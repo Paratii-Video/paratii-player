@@ -19,11 +19,12 @@ if (Meteor.isServer) {
         description: data.description,
         source: 'client',
         value: data.value,
-        currency: data.currency
+        currency: data.currency,
+        date: new Date(),
       }
 
       Object.assign(transaction, options) // If there are options they are merged in the transation object
-      console.log('FROM client', transaction)
+      console.log('Inserting Transaction from  Client application', transaction)
       insertAndValidateTransaction(transaction)
     }
   })
@@ -54,8 +55,9 @@ if (Meteor.isServer) {
         currency: { $first: '$currency'},
         description: { $first: '$description'},
         value: { $first: '$value'},
-            // transactions: { $push: "$$ROOT" }
-        videoid: { $push: '$videoid' }
+        // transactions: { $push: "$$ROOT" }
+        videoid: { $push: '$videoid' },
+        data: {$push: '$date'}
       }
       }
     ],
@@ -78,8 +80,11 @@ async function insertAndValidateTransaction (transaction) {
     source: transaction.source
   })
 
+  let newTxId;
   if (!txExist) {
-    const newTxId = Transactions.insert(transaction)
+    newTxId = Transactions.insert(transaction)
+  } else {
+    newTxId = txExist._id
   }
 
   const txToValidate = await Transactions.findOne({
@@ -108,11 +113,74 @@ async function insertAndValidateTransaction (transaction) {
   }
 }
 
-async function getPTITransactionsFromChain (fromBlock = 0) {
+async function syncTransactions() {
+  // syncs all transactions in the blockchain that are not in the database yet
+  let fromBlock
+  let toBlock
+  fromBlock = (await getLatestSyncedBlockNumber()) + 1
+  toBlock = web3.eth.blockNumber
+  syncPTITransactions(fromBlock, toBlock);
+  syncETHTransactions(fromBlock, toBlock);
+}
+
+async function syncPTITransactions (fromBlock = 0, toBlock) {
   // set a filter for ALL PTI transactions
-  console.log('PTI SYNC STARTING FROM', fromBlock)
+  console.log('PTI SYNC FROM', fromBlock, 'TO', toBlock)
   filter = PTIContract().Transfer({}, {
     fromBlock,
+    toBlock,
+  })
+
+  filter.get(function (error, logs) {
+    if (error) {
+      throw error
+    }
+    logs.forEach(function(log) {
+      addTransferEventToTransactionCollection(log)
+    })
+  })
+}
+
+// Itseems the only way to get the ETH transaction is by searching each block separately
+// next function adapted from https://ethereum.stackexchange.com/questions/2531/common-useful-javascript-snippets-for-geth/3478#3478
+// NB: this is *very expensive* as it makes a request for each block to be searched
+async function syncETHTransactions (fromBlock, toBlock) {
+  console.log('ETH SYNC FROM', fromBlock, 'TO', toBlock)
+  for (let i = fromBlock; i <= toBlock; i += 1) {
+    syncBlockWithDB(i);
+  }
+};
+
+async function syncBlockWithDB(blockHashOrNumber) {
+  web3.eth.getBlock(blockHashOrNumber, true, function (error, block) {
+    if (block != null && block.transactions != null) {
+      block.transactions.forEach(function (transaction) {
+          addTransactionToCollection(web3.eth.getTransaction(transaction.hash))
+      })
+    }
+  })
+}
+
+
+async function watchTransactions() {
+  watchPTITransactions();
+  watchETHTransactions();
+}
+
+function watchETHTransactions () {
+  console.log('Watching for ETH Transactions')
+  web3.eth.filter('latest', function (error, result) {
+    syncBlockWithDB(result)
+  })
+};
+
+
+
+async function watchPTITransactions () {
+  // set a filter for ALL PTI transactions
+  console.log('Watching for PTI Transactions')
+  filter = PTIContract().Transfer({}, {
+    fromBlock: 'latest',
     toBlock: 'latest'
   })
 
@@ -135,7 +203,7 @@ function addTransferEventToTransactionCollection (log) {
   transaction.to = log.args.to
   transaction.currency = 'pti'
   transaction.source = 'event'
-  console.log('FROM event', transaction.hash)
+  console.log('Add event to collection: ', transaction.hash)
   insertAndValidateTransaction(transaction)
 }
 
@@ -151,89 +219,27 @@ function addTransactionToCollection (tx) {
     transaction.blockNumber = tx.blockNumber
     transaction.currency = 'eth'
     transaction.source = 'blockchain'
-    console.log('FROM blockchain', transaction.hash)
+    console.log('Add transaction to collection: ', transaction.hash)
     insertAndValidateTransaction(transaction)
   }
 }
 
-// Itseems the only way to get the ETH transaction is by searching each block separately
-// next function adapted from https://ethereum.stackexchange.com/questions/2531/common-useful-javascript-snippets-for-geth/3478#3478
-// NB: this is *very expensive* as it makes a request for each block to be searched
-async function getTransactionsByAccount (myaccount, startBlockNumber, endBlockNumber) {
-  let fromBlock
-  let toBlock
-
-  if (endBlockNumber == null) {
-    toBlock = web3.eth.blockNumber
-  } else {
-    toBlock = endBlockNumber
-  }
-  if (startBlockNumber == null) {
-    fromBlock = 0
-  } else {
-    fromBlock = startBlockNumber
-  }
-
-  for (let i = fromBlock; i <= toBlock; i += 1) {
-    web3.eth.getBlock(i, true, function (error, block) {
-      if (block != null && block.transactions != null) {
-        block.transactions.forEach(function (transaction) {
-          if (myaccount === '*' || myaccount === transaction.from || myaccount === transaction.to) {
-            addTransactionToCollection(web3.eth.getTransaction(transaction.hash))
-          }
-        })
-      }
-    })
-  }
-};
-
-async function syncTransactionHistory () {
-  // searches the whole blockchain for transactions that may be relevant
-  // and saves these in the Transaction collection
-
-};
-
-async function getLatestBlockToSync (source) {
+async function getLatestSyncedBlockNumber () {
+  // return the number of the latest block that has been synced to the db
+  // TODO: a block may have more than one transaction - this function should return
+  // the latest block in which *all* transactions have been synced
   let latestBlock
 
-  // the highest known blocknumber in the Transaction Collection
-  latestBlock = Transactions.findOne({source: source}, {
+  latestBlock = Transactions.findOne({}, {
     sort: {
       blockNumber: -1,
-      limit: 1
-    }
+    },
   })
 
-  return latestBlock
+  return latestBlock.blockNumber
 }
 
-function watchTransactions () {
-  getLatestBlockToSync('event').then(function (results) {
-    let blockStart
-    if (results == null) {
-      blockStart = 267
-    } else {
-      blockStart = results.blockNumber + 1
-    }
-    getPTITransactionsFromChain(blockStart)
-  })
-
-  web3.eth.filter('latest', function (error, result) {
-    getLatestBlockToSync('blockchain').then(function (results) {
-      let blockStart
-      if (results == null) {
-        blockStart = 267
-      } else {
-        blockStart = results.blockNumber + 1
-      }
-      console.log('ETH SYNC STARTING FROM', blockStart)
-      getTransactionsByAccount('*', blockStart)
-    })
-  })
-};
-
 export {
-  getTransactionsByAccount,
+  syncTransactions,
   watchTransactions,
-  syncTransactionHistory
 }
