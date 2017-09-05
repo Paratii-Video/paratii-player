@@ -1,5 +1,6 @@
 /* globals SVGInjector */
 import 'meteor/johnantoni:meteor-svginjector'
+import { web3 } from '/imports/lib/ethereum/connection.js'
 import './navigation.html'
 
 const loadSVG = () => {

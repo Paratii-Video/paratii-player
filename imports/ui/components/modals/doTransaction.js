@@ -1,6 +1,8 @@
 import { Template } from 'meteor/templating'
 import { doTx } from '/imports/lib/ethereum/wallet.js'
+import { web3 } from '/imports/lib/ethereum/connection.js'
 import { checkPassword } from '/imports/api/users.js'
+
 import '/imports/lib/validate.js'
 import './doTransaction.html'
 

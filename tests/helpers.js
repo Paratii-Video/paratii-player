@@ -9,8 +9,10 @@ export function login (browser) {
 }
 
 export function getSomeEth (amount) {
+  console.log('getSomeEth')
   const wallet = require('./imports/lib/ethereum/wallet.js')
   const accounts = wallet.getAccounts()
+  console.log(accounts)
   wallet.sendUnSignedTransaction(accounts[0], amount)
 }
 

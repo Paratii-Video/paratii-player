@@ -1,8 +1,3 @@
-/* eslint no-console: "off" */
-/* eslint no-prompt: "off" */
-/* eslint no-alert: "off" */
-/* eslint max-len: "off" */
-/* eslint no-param-reassign: "off" */
 import * as RLocalStorage from 'meteor/simply:reactive-local-storage'
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js'
 import { Accounts } from 'meteor/accounts-base'
@@ -166,7 +161,13 @@ function doTx (amount, recipient, password, type, description, options) {
 
 function sendUnSignedTransaction (address, amount) {
   const toAddr = getUserPTIAddress()
-  web3.eth.sendTransaction({ from: add0x(address), to: add0x(toAddr), value: web3.toWei(amount, 'ether'), gasLimit: 21000, gasPrice: 20000000000 })
+  console.log('send some eth')
+  web3.eth.sendTransaction({ from: add0x(address), to: add0x(toAddr), value: web3.toWei(amount, 'ether'), gas: 21000, gasPrice: 20000000000 }, function (error, result) {
+    if (error) {
+      console.log(error)
+    }
+    console.log(result)
+  })
 }
 
 function sendUnSignedContractTransaction (address, value) {

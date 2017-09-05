@@ -128,7 +128,7 @@ describe('account workflow', function () {
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('restore the keystore @watch', function () {
+  it('restore the keystore', function () {
     createUserAndLogin(browser)
     browser.waitForExist('#show-seed', 5000)
     browser.click('#show-seed')
@@ -153,7 +153,7 @@ describe('account workflow', function () {
     assert.equal(publicAddress, newPublicAddress)
   })
 
-  it('do not restore keystore if wrong password @watch', function () {
+  it('do not restore keystore if wrong password', function () {
     createUserAndLogin(browser)
     browser.waitForExist('#show-seed', 5000)
     browser.click('#show-seed')

@@ -3,6 +3,8 @@
 import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Events } from '/imports/api/events.js'
+import { web3 } from '/imports/lib/ethereum/connection.js'
+
 import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
 import '/imports/ui/components/modals/restoreKeystore.js'

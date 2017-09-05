@@ -53,8 +53,7 @@
       "browser",
       "FlowRouter",
       "Modal",
-      "server",
-      "web3"
+      "server"
     ],
     "ignore": [
       "imports/lib/ethereum/from-ethereum-wallet",

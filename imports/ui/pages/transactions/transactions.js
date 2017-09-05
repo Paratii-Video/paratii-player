@@ -1,5 +1,7 @@
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { UserTransactions } from '/imports/api/transactions.js'
+import { web3 } from '/imports/lib/ethereum/connection.js'
+
 import './transactions.html'
 
 const moment = require('moment')

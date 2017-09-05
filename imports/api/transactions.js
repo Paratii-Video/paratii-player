@@ -172,7 +172,9 @@ function watchETHTransactions () {
   console.log('Watching for ETH Transactions')
   web3.eth.filter('latest', function (error, result) {
     if (error) {
-      throw error
+      // TODO: proper error handling
+      console.log(error)
+      return
     }
     syncBlockWithDB(result)
   })
@@ -188,7 +190,9 @@ async function watchPTITransactions () {
 
   filter.watch(function (error, log) {
     if (error) {
-      throw error
+      // TODO: proper error handling
+      console.log(error)
+      return
     }
     addTransferEventToTransactionCollection(log)
   })
