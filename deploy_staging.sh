@@ -7,9 +7,10 @@ rsync -az /tmp/paratii-player.tar.gz paratii@paratii.gerbrandy.com:/home/paratii
 rsync -az settings-prod.json paratii@paratii.gerbrandy.com:/home/paratii/settings-prod.json
 ssh paratii@paratii.gerbrandy.com <<'ENDSSH'
 #commands to run on remote host
-    rm -r bundle
+rm -r bundle
 tar xf paratii-player.tar.gz
 cd bundle/programs/server && sudo npm install
+cd
 export PWD=/home/paratii
 export HOME=/home/paratii
 # leave as 127.0.0.1 for security
