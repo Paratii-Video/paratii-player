@@ -17,7 +17,7 @@ function initIPFS (callback) {
       cache: true
     })
     // $.getScript('https://unpkg.com/ipfs@0.25.4/dist/index.js', () => {
-    $.getScript('http://localhost:3000/test/files/index.js', () => {
+    $.getScript('/test/files/index.js', () => {
     // $.getScript('./ipfs0.25.1.js', () => {
       // console.log('Ipfs: ', Ipfs)
       // const wstar = new WebRTCStar()
