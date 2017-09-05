@@ -188,7 +188,7 @@ export const populateVideos = () => {
       mimetype: 'video/mp4'
 
     }, {
-      id: '8',
+      _id: '8',
       title: '[IPFS] Big Buck Bunny',
       description: 'IPFS EXAMPLE video',
       thumb: '/img/thumb2-img.png',
