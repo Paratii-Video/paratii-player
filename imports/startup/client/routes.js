@@ -12,9 +12,7 @@ import '/imports/ui/pages/profile/profile.js'
 import '/imports/ui/pages/myvideos/myvideos.js'
 import '/imports/ui/pages/not-found/not-found.js'
 import '/imports/ui/pages/transactions/transactions.js'
-import '/imports/ui/pages/trendingCauses/trendingCauses.js'
 import '/imports/ui/pages/upload/upload.js'
-import '/imports/ui/pages/wanderlust/wanderlust.js'
 
 // Set up all routes in the app
 FlowRouter.route('/', {
@@ -66,24 +64,10 @@ FlowRouter.route('/transactions', {
   }
 })
 
-FlowRouter.route('/trendingCauses', {
-  name: 'trendingCauses',
-  action () {
-    BlazeLayout.render('App_body', { main: 'trendingCauses' })
-  }
-})
-
 FlowRouter.route('/upload', {
   name: 'upload',
   action () {
     BlazeLayout.render('App_body', { main: 'upload' })
-  }
-})
-
-FlowRouter.route('/wanderlust', {
-  name: 'wanderlust',
-  action () {
-    BlazeLayout.render('App_body', { main: 'wanderlust' })
   }
 })
 

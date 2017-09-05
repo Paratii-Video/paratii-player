@@ -50,18 +50,6 @@ Template.navigation.helpers({
         id: 'upload',
         locked: true
       }, {
-        icon: '/img/trendingcause_icon.svg',
-        text: 'Trending causes',
-        path: FlowRouter.path('trendingCauses'),
-        id: 'trendingCauses',
-        locked: true
-      }, {
-        icon: '/img/wanderlust_icon.svg',
-        text: 'Wanderlust',
-        path: FlowRouter.path('wanderlust'),
-        id: 'wanderlust',
-        locked: true
-      }, {
         icon: '/img/lock_icon.svg',
         text: 'DEBUG',
         path: FlowRouter.path('debug'),
