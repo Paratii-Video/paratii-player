@@ -24,7 +24,7 @@ if (Meteor.isServer) {
 
       Object.assign(transaction, options) // If there are options they are merged in the transation object
       console.log('Inserting Transaction from  Client application', transaction)
-      insertAndValidateTransaction(transaction)
+      addOrUpdateTransaction(transaction)
     }
   })
 
@@ -37,8 +37,8 @@ if (Meteor.isServer) {
         to: userPTIAddress
       }, {
         from: userPTIAddress
-      }],
-      blockNumber: {$ne: null}
+      }]
+      // blockNumber: {$ne: null}
     }
 
     // Aggregate transactions with same hash as ID and group data
@@ -64,52 +64,56 @@ if (Meteor.isServer) {
   })
 }
 
-async function insertAndValidateTransaction (transaction) {
+async function addOrUpdateTransaction (transaction) {
   // add (or update) a transaction in the collection
   check(transaction, Object) // Check the type of the data
 
-  // Selftransactions are filtered
-  if (transaction.to === transaction.from) {
-    return
-  }
-
-  const txExist = await Transactions.findOne({
-    nonce: transaction.nonce,
-    from: transaction.from,
-    source: transaction.source
-  })
-
-  let newTxId
-  if (!txExist) {
-    newTxId = Transactions.insert(transaction)
+  // // Selftransactions are filtered
+  // if (transaction.to === transaction.from) {
+  //   return
+  // }
+  // if the transaction has a hash value, we use that as its identifier
+  let existingTransaction
+  if (transaction.hash) {
+    existingTransaction = await Transactions.findOne({
+      hash: transaction.hash
+    })
   } else {
-    newTxId = txExist._id
-  }
-
-  const txToValidate = await Transactions.findOne({
-    blockNumber: null,
-    nonce: transaction.nonce,
-    from: transaction.from,
-    source: 'client'
-  })
-
-  if (txToValidate) {
-    Transactions.update({_id: txToValidate._id}, { $set: { blockNumber: transaction.blockNumber, hash: transaction.hash } })
-  } else {
-    const txValidated = await Transactions.findOne({
-      blockNumber: {$ne: null},
+    existingTransaction = await Transactions.findOne({
       nonce: transaction.nonce,
       from: transaction.from,
-      source: {$ne: 'client'}
+      source: transaction.source
     })
-    if (txValidated) {
-      Transactions.update({ _id: newTxId }, { $set: { blockNumber: txValidated.blockNumber, hash: txValidated.hash } })
-    }
   }
 
-  if (transaction.source === 'client') {
-
+  let txId
+  if (existingTransaction) {
+    txId = existingTransaction._id
+  } else {
+    txId = Transactions.insert(transaction)
   }
+  return txId
+
+  // const txToValidate = await Transactions.findOne({
+  //   blockNumber: null,
+  //   nonce: transaction.nonce,
+  //   from: transaction.from,
+  //   source: 'client'
+  // })
+  //
+  // if (txToValidate) {
+  //   Transactions.update({_id: txToValidate._id}, { $set: { blockNumber: transaction.blockNumber, hash: transaction.hash } })
+  // } else {
+  //   const txValidated = await Transactions.findOne({
+  //     blockNumber: {$ne: null},
+  //     nonce: transaction.nonce,
+  //     from: transaction.from,
+  //     source: {$ne: 'client'}
+  //   })
+  //   if (txValidated) {
+  //     Transactions.update({ _id: newTxId }, { $set: { blockNumber: txValidated.blockNumber, hash: txValidated.hash } })
+  //   }
+  // }
 }
 
 async function syncTransactions () {
@@ -135,7 +139,7 @@ async function syncPTITransactions (fromBlock = 0, toBlock) {
       throw error
     }
     logs.forEach(function (log) {
-      addTransferEventToTransactionCollection(log)
+      addPTITransaction(log)
     })
   })
 }
@@ -151,13 +155,14 @@ async function syncETHTransactions (fromBlock, toBlock) {
 };
 
 async function syncBlockWithDB (blockHashOrNumber) {
+  // get the block given blockHashOrNumber, find its transactions and write them to the DB
   web3.eth.getBlock(blockHashOrNumber, true, function (error, block) {
     if (error) {
       throw error
     }
     if (block != null && block.transactions != null) {
       block.transactions.forEach(function (transaction) {
-        addTransactionToCollection(web3.eth.getTransaction(transaction.hash))
+        addETHTransaction(web3.eth.getTransaction(transaction.hash))
       })
     }
   })
@@ -194,11 +199,11 @@ async function watchPTITransactions () {
       console.log(error)
       return
     }
-    addTransferEventToTransactionCollection(log)
+    addPTITransaction(log)
   })
 }
 
-function addTransferEventToTransactionCollection (log) {
+function addPTITransaction (log) {
   const tx = web3.eth.getTransaction(log.transactionHash)
   const transaction = {}
   transaction.value = log.args.value.toNumber()
@@ -210,12 +215,11 @@ function addTransferEventToTransactionCollection (log) {
   transaction.currency = 'pti'
   transaction.source = 'event'
   console.log('Add event to collection: ', transaction.hash)
-  insertAndValidateTransaction(transaction)
+  addOrUpdateTransaction(transaction)
 }
 
-function addTransactionToCollection (tx) {
-  const receipt = web3.eth.getTransactionReceipt(tx.hash)
-  if (receipt.logs.length === 0 && tx.value.toNumber() !== 0) {
+export function addETHTransaction (tx) {
+  if (tx.value.toNumber() > 0) {
     const transaction = {}
     transaction.value = tx.value.toNumber()
     transaction.from = tx.from
@@ -226,7 +230,7 @@ function addTransactionToCollection (tx) {
     transaction.currency = 'eth'
     transaction.source = 'blockchain'
     console.log('Add transaction to collection: ', transaction.hash)
-    insertAndValidateTransaction(transaction)
+    return addOrUpdateTransaction(transaction)
   }
 }
 
