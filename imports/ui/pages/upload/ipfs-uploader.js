@@ -59,14 +59,29 @@ function drop (ev) {
 }
 
 function addToIPFS (files) {
+  var fileSize = 0
+  var total = 0
+  function updateProgress (chunkLength) {
+    total += chunkLength
+    console.log('Progress \t', total, ' / ', fileSize, ' = ', Math.floor((total / fileSize) * 100))
+  }
+
   initIPFS(() => {
     pull(
       pull.values(files),
-      pull.through((file) => console.log('Adding %s', file)),
+      pull.through((file) => {
+        console.log('Adding ', file)
+        fileSize = file.size
+        total = 0
+      }),
       pull.asyncMap((file, cb) => pull(
         pull.values([{
           path: file.name,
-          content: pullFilereader(file)
+          // content: pullFilereader(file)
+          content: pull(
+            pullFilereader(file),
+            pull.through((chunk) => updateProgress(chunk.length))
+          )
         }]),
         window.ipfs.files.createAddPullStream(),
         pull.collect((err, res) => {
