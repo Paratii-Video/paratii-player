@@ -115,7 +115,9 @@ function restoreWallet (password, seedPhrase, cb) {
   return createKeystore(password, seedPhrase, cb)
 }
 
-function doTx (amount, recipient, password, type, description, options) {
+function doTx (amount, recipient, password, type, description, extraInfo) {
+  // send some ETH or PTI
+  // the type argument can either be ETH or PTI
   const fromAddr = getUserPTIAddress()
   const nonce = web3.eth.getTransactionCount(fromAddr)
   const value = parseInt(web3.toWei(amount, 'ether'), 10)
@@ -150,11 +152,12 @@ function doTx (amount, recipient, password, type, description, options) {
       if (err) {
         throw err
       }
-
       txOptions.from = fromAddr
       txOptions.description = description
       txOptions.value = value
-      Meteor.call('addTXToCollection', txOptions, options)
+      txOptions.transactionHash = hash
+      Object.assign(txOptions, extraInfo) // If there are options they are merged in the transation object
+      Meteor.call('addTXToCollection', txOptions)
     })
   })
 }

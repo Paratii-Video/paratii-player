@@ -9,22 +9,8 @@ export const UserTransactions = new Mongo.Collection('userTransactions')
 
 if (Meteor.isServer) {
   Meteor.methods({
-    'addTXToCollection' (data, options) {
-      check(data, Object)
-      const transaction = {
-        nonce: web3.toDecimal(data.nonce),
-        from: data.from,
-        to: data.to,
-        description: data.description,
-        source: 'client',
-        value: data.value,
-        currency: data.currency,
-        date: new Date()
-      }
-
-      Object.assign(transaction, options) // If there are options they are merged in the transation object
-      console.log('Inserting Transaction from  Client application', transaction)
-      addOrUpdateTransaction(transaction)
+    'addTXToCollection' (tx) {
+      addAppTransaction(tx)
     }
   })
 
@@ -202,6 +188,7 @@ async function watchPTITransactions () {
 }
 
 function addPTITransaction (log) {
+  // add a transaction to the collection that derives from Transfer Event from PTI contract
   // const tx = web3.eth.getTransaction(log.transactionHash)
   const transaction = {}
   transaction.value = log.args.value.toNumber()
@@ -217,6 +204,7 @@ function addPTITransaction (log) {
 }
 
 function addETHTransaction (tx) {
+  // add some info from native ETH transactions
   if (tx.value.toNumber() > 0) {
     const transaction = {}
     transaction.value = tx.value.toNumber()
@@ -230,6 +218,25 @@ function addETHTransaction (tx) {
     console.log('Add transaction to collection: ', transaction.hash)
     return addOrUpdateTransaction(transaction)
   }
+}
+
+function addAppTransaction (tx) {
+  // add information from the application to the Transaction history
+  check(tx, Object)
+  const transaction = {
+    nonce: web3.toDecimal(tx.nonce),
+    from: tx.from,
+    to: tx.to,
+    description: tx.description,
+    source: 'client',
+    value: tx.value,
+    currency: tx.currency,
+    date: new Date(),
+    transactionHash: tx.transactionHash
+  }
+
+  console.log('Inserting Transaction from  Client Application', transaction)
+  return addOrUpdateTransaction(transaction)
 }
 
 async function getLatestSyncedBlockNumber () {
@@ -248,9 +255,9 @@ async function getLatestSyncedBlockNumber () {
 }
 
 export {
-  syncTransactions,
-  watchTransactions,
+  addAppTransaction,
   addETHTransaction,
-  addPTITransaction
-
+  addPTITransaction,
+  syncTransactions,
+  watchTransactions
 }

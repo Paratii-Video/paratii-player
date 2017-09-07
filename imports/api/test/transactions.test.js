@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { assert } from 'chai'
-import { Transactions, addETHTransaction, addPTITransaction } from '../transactions.js'
+import { Transactions, addETHTransaction, addPTITransaction, addAppTransaction } from '../transactions.js'
 
 const BigNumber = require('bignumber.js')
 
@@ -59,6 +59,28 @@ describe('Transactions', () => {
         }
 
         await addPTITransaction(tx)
+        // Transactions.insert(tx)
+        assert.equal(Transactions.find().count(), 1)
+        // if we try to add an ETH transaction with the same hash a second time, it will fail silently
+        addPTITransaction(tx)
+        assert.equal(Transactions.find().count(), 1)
+      })
+
+      it('insert an App transaction', async () => {
+        assert.equal(Transactions.find().count(), 0)
+        let tx = {
+          nonce: 2,
+          blockNumber: 1,
+          transactionHash: 0x1245,
+          args: {
+            value: new BigNumber(333),
+            from: 0x12345,
+            to: 0x23445
+          },
+          topics: [0x1232143]
+        }
+
+        await addAppTransaction(tx)
         // Transactions.insert(tx)
         assert.equal(Transactions.find().count(), 1)
         // if we try to add an ETH transaction with the same hash a second time, it will fail silently
