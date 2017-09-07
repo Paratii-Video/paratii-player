@@ -18,8 +18,8 @@ Install node (https://nodejs.org/en/download/) and npm (these are the instructio
     sudo pm install npm@latest -g
 
 Install meteor (https://www.meteor.com/install):
+curl https://install.meteor.com/ | sh
 
-    curl https://install.meteor.com/ | sh
 
 Clone this paratii-player repository, either with https or ssh:
 
@@ -36,6 +36,8 @@ Install the package:
 Now, start the application:
 
     npm start
+
+If you have any problems, see the troubleshooting section.
 
 
 # Testing
@@ -84,3 +86,16 @@ Pull requests are welcome.
 if you get out-of-memory errors, setting TOOL_NODE_FLAGS may help:
 
     export TOOL_NODE_FLAGS="--max_old_space_size=4096"
+
+
+# troubleshooting
+
+If `npm install` reports that `gyp ERR! stack Error: Can't find Python executable "python", you can set the PYTHON env variable`, it may be because python2.7 is not installed on your system:
+
+    sudo apt-get install python-2.7
+    export PYTHON=/usr/bin/python2.7
+
+
+If you see that `gyp ERR! stack Error: not found: make`
+`
+   sudo apt-get install build-essential
