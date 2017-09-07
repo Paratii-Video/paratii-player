@@ -68,10 +68,6 @@ async function addOrUpdateTransaction (transaction) {
   // add (or update) a transaction in the collection
   check(transaction, Object) // Check the type of the data
 
-  // // Selftransactions are filtered
-  // if (transaction.to === transaction.from) {
-  //   return
-  // }
   // if the transaction has a hash value, we use that as its identifier
   let existingTransaction
   if (transaction.hash) {
@@ -88,8 +84,10 @@ async function addOrUpdateTransaction (transaction) {
 
   let txId
   if (existingTransaction) {
+    console.log('Transaction already exists  - not added')
     txId = existingTransaction._id
   } else {
+    console.log('Added transaction')
     txId = Transactions.insert(transaction)
   }
   return txId
@@ -204,21 +202,21 @@ async function watchPTITransactions () {
 }
 
 function addPTITransaction (log) {
-  const tx = web3.eth.getTransaction(log.transactionHash)
+  // const tx = web3.eth.getTransaction(log.transactionHash)
   const transaction = {}
   transaction.value = log.args.value.toNumber()
   transaction.from = log.args.from
-  transaction.nonce = tx.nonce
-  transaction.hash = tx.hash
-  transaction.blockNumber = tx.blockNumber
+  transaction.hash = log.topics[0]
+  transaction.transactionHash = log.transactionHash
+  transaction.blockNumber = log.blockNumber
   transaction.to = log.args.to
   transaction.currency = 'pti'
   transaction.source = 'event'
   console.log('Add event to collection: ', transaction.hash)
-  addOrUpdateTransaction(transaction)
+  return addOrUpdateTransaction(transaction)
 }
 
-export function addETHTransaction (tx) {
+function addETHTransaction (tx) {
   if (tx.value.toNumber() > 0) {
     const transaction = {}
     transaction.value = tx.value.toNumber()
@@ -251,5 +249,8 @@ async function getLatestSyncedBlockNumber () {
 
 export {
   syncTransactions,
-  watchTransactions
+  watchTransactions,
+  addETHTransaction,
+  addPTITransaction
+
 }
