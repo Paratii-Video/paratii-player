@@ -70,7 +70,9 @@ Template.player.onCreated(function () {
   this.playerState.set('muted', false)
   this.playerState.set('locked', true)
 
-  Meteor.subscribe('userTransactions', userPTIAddress)
+  if (userPTIAddress) {
+    Meteor.subscribe('userTransactions', userPTIAddress)
+  }
   Meteor.subscribe('videoPlay', FlowRouter.getParam('_id'))
 
   let query = UserTransactions.find({videoid: FlowRouter.getParam('_id')})
