@@ -61,7 +61,6 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
       setInterval(() => {
         window.ipfs.swarm.peers((err, peers) => {
           if (err) throw err
-          console.log(peers.length + ' peers in the swarm')
           peers.map((peer) => {
             if (peer.addr) {
               console.log(peer.addr.toString())
