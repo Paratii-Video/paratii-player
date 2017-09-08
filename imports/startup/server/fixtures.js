@@ -164,31 +164,8 @@ export const populateVideos = () => {
       src: 'https://gateway.ipfs.io/ipfs/QmayHsEJfu1Pq5q1k3c9f9z14fh6AyJsam4LFbSQYWMXZt',
       mimetype: 'video/mp4'
 
-    },{
-      _id: "8",
-      title: 'Around The Block Series - Teaser 16 - Alex Van De Sande',
-      description: 'IPFS EXAMPLE video',
-      thumb: '/img/cover/teaser16.jpg',
-      duration: '01:46',
-      price: 1,
-      uploader: {
-        address : '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
-        name: 'Paratii',
-        avatar: 'http://i.pravatar.cc/150?img=4'
-      },
-      stats: {
-        likes_percentage: 98,
-        views: 2244245,
-        likes: 2345555,
-        dislikes: 7,
-      },
-      tags: ['IPFS', 'Around The Block'],
-      // src: '/ipfs/QmR6QvFUBhHQ288VmpHQboqzLmDrrC2fcTUyT4hSMCwFyj',
-      src: 'https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg',
-      mimetype: 'video/mp4',
-
-    },{
-      _id: "7",
+    }, {
+      _id: '7',
       title: 'Around The Block Series - Teaser 16 - Alex Van De Sande',
       description: 'IPFS EXAMPLE video',
       thumb: '/img/cover/teaser16.jpg',
@@ -258,8 +235,8 @@ export const populatePlaylist = () => {
     title: 'Around the block IPFS',
     description: 'A super playlist about blockchain!',
     url: 'around-the-block',
-    videos: [ Videos.find().fetch()[6]._id, Videos.find().fetch()[5]._id, Videos.find().fetch()[7]._id]
-  };
+    videos: [Videos.find().fetch()[6]._id, Videos.find().fetch()[5]._id, Videos.find().fetch()[7]._id]
+  }
   const p3 = {
     _id: '3',
     title: 'Best surf Collection',
