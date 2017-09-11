@@ -40,6 +40,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
   var lastChunkIndex = 0
   var chunksPerAppend = 3
   var waiting = false
+  var latestStat
   mediaSource.addEventListener('sourceopen', sourceOpen, false)
 
   function sourceOpen (ev) {
@@ -59,7 +60,8 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
       metrics.rates = utils.calcRates(metrics.queue.map(chunk => chunk.rate))
 
       templateDict.set('status', 'Download: ' + (metrics.overallRate / 1000) + 'KB/s | ' +
-                       'duplication Ratio: ' + metrics.dupRatio.toFixed(2) + '%')
+                       'duplication Ratio: ' + metrics.dupRatio.toFixed(2) + '% | ' +
+                       'Connected Peers: ' + latestStat.peers.length)
     }
 
     sourceBuffer.addEventListener('updateend', (ev) => {
@@ -84,8 +86,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
     })
 
     initIPFS(() => {
-      let latestStat
-
+      // window.ipfs is available.
       function updateStats () {
         metrics.elapsed = utils.duration(metrics.started)
         metrics.overallRate = utils.speed(metrics.received, utils.duration(metrics.started))
@@ -108,12 +109,18 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
           'metrics.overallRate: ', metrics.overallRate, '\n',
           'metrics.rates: ', metrics.rates)
 
-          templateDict.set('status', 'metrics.dupRatio: ' + metrics.dupRatio.toFixed(2) + '%')
+          templateDict.set('status', 'Download: ' + (metrics.overallRate / 1000) + 'KB/s | ' +
+                           'duplication Ratio: ' + metrics.dupRatio.toFixed(2) + '% | ' +
+                           'Connected Peers: ' + latestStat.peers.length)
         } else {
           console.log('[IPFS]\nmeter: ', metrics.received, ' bytes\n',
           'dup Ratio: ', 0, '%\n',
           'metrics.overallRate: ', metrics.overallRate, '\n',
           'metrics.rates: ', metrics.rates)
+
+          templateDict.set('status', 'Download: ' + (metrics.overallRate / 1000) + 'KB/s | ' +
+                           'duplication Ratio: ' + 0 + '% | ' +
+                           'Connected Peers: ' + latestStat.peers.length)
         }
       }
       // print peers and bitswap state for debugging ---------------------------
