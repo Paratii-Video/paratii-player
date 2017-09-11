@@ -57,6 +57,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
     })
 
     initIPFS(() => {
+      let latestStat
       // print peers and bitswap state for debugging ---------------------------
       setInterval(() => {
         window.ipfs.swarm.peers((err, peers) => {
@@ -67,8 +68,14 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
             }
           })
         })
-        console.log('bitswap stat: ', window.ipfs.bitswap.stat())
-        console.log('[IPFS] meter: ', meter, ' bytes')
+        latestStat = window.ipfs.bitswap.stat()
+        console.log('bitswap stat: ', JSON.stringify(window.ipfs.bitswap.stat()))
+        if (latestStat.dupDataReceived) {
+          console.log('[IPFS]\nmeter: ', meter, ' bytes\n',
+            'dup Ratio: ', ((latestStat.dupDataReceived / meter) * 100))
+        } else {
+          console.log('[IPFS]\nmeter: ', meter, ' bytes\n')
+        }
       }, 10000)
       // -----------------------------------------------------------------------
 
