@@ -37,7 +37,7 @@ function fakeVideoUnlock (address) {
   Transactions.insert(transaction)
 }
 
-describe('price tag status', function () {
+describe('price tag status @watch', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     server.execute(resetDb)
@@ -60,8 +60,11 @@ describe('price tag status', function () {
     server.execute(createVideo, 0)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/10')
-    browser.waitForExist('.videoCardContainer')
-    assert.equal(browser.$$('.videoCardPrice'), '')
+    browser.waitForExist('.videoCardContainer', 2000)
+
+    // .videoCardPrice should not exists
+    const priceTag = browser.waitForExist('.videoCardPrice', null, true)
+    assert.isTrue(priceTag)
   })
 
   it('when the video has a price', () => {
@@ -69,7 +72,7 @@ describe('price tag status', function () {
     server.execute(createVideo, 10)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/10')
-    browser.waitForExist('.videoCardContainer')
+    browser.waitForExist('.videoCardContainer', 2000)
     assert.equal(browser.getText('.videoCardPrice'), '10 PTI')
   })
 
@@ -87,7 +90,7 @@ describe('price tag status', function () {
     // browser.setValue('[name="user_password"]', 'password')
     // browser.click('#send_trans_btn')
     browser.url('http:localhost:3000/playlists/10')
-    browser.waitForExist('.videoCardContainer')
+    browser.waitForExist('.videoCardContainer', 2000)
     assert.equal(browser.getText('.videoCardPrice'), '✓')
   })
 })
