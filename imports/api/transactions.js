@@ -4,6 +4,18 @@ import {
   PTIContract
 } from '/imports/lib/ethereum/connection.js'
 
+/*****************************
+Transactions data model looks like this.
+
+- Documents inthe transaction hsitory are identified by the fields transactionHash and logIndex.
+  - hash is the transactionHash of the transaction
+  - logIndex is the index of the logged event (and cane undefined for 'native' ETH transactions that do not log anything)
+- Each ETH transfer of transaction is stored undert its the hash of the transaction
+
+- not that one Transaction can
+
+*********************************/
+
 export const Transactions = new Mongo.Collection('transactions')
 export const UserTransactions = new Mongo.Collection('userTransactions')
 
@@ -28,7 +40,7 @@ if (Meteor.isServer) {
     }
 
     // Aggregate transactions with same hash as ID and group data
-    // new collections userTransactions will be publish with this structures
+    // new collections userTransactions will be published with this structures
     ReactiveAggregate(this, Transactions, [
       { $match: query },
       { $group: {
@@ -52,13 +64,26 @@ if (Meteor.isServer) {
 
 async function addOrUpdateTransaction (transaction) {
   // add (or update) a transaction in the collection
-  check(transaction, Object) // Check the type of the data
+  transaction.logIndex = transaction.logIndex || undefined
+  check(transaction, {
+    hash: Number,
+    logIndex: Match.OneOf(Number, undefined),
+    date: Match.Maybe(Date),
+    blockNumber: Number,
+    currency: String,
+    from: Number,
+    source: String,
+    to: Number,
+    value: Match.Maybe(Number),
+    nonce: Match.Maybe(Number),
+    description: Match.Maybe(String)
+  })
 
-  // if the transaction has a hash value, we use that as its identifier
   let existingTransaction
   if (transaction.hash) {
     existingTransaction = await Transactions.findOne({
-      hash: transaction.hash
+      hash: transaction.hash,
+      logIndex: transaction.logIndex
     })
   } else {
     existingTransaction = await Transactions.findOne({
@@ -162,6 +187,7 @@ function watchETHTransactions () {
   web3.eth.filter('latest', function (error, result) {
     if (error) {
       // TODO: proper error handling
+      console.log('Error setting filter')
       console.log(error)
       return
     }
@@ -180,6 +206,7 @@ async function watchPTITransactions () {
   filter.watch(function (error, log) {
     if (error) {
       // TODO: proper error handling
+      console.log('Error setting filter')
       console.log(error)
       return
     }
@@ -193,8 +220,9 @@ function addPTITransaction (log) {
   const transaction = {}
   transaction.value = log.args.value.toNumber()
   transaction.from = log.args.from
-  transaction.hash = log.topics[0]
-  transaction.transactionHash = log.transactionHash
+  // transaction.hash = log.topics[0]
+  transaction.hash = log.transactionHash
+  transaction.logIndex = log.logIndex
   transaction.blockNumber = log.blockNumber
   transaction.to = log.args.to
   transaction.currency = 'pti'
@@ -228,11 +256,11 @@ function addAppTransaction (tx) {
     from: tx.from,
     to: tx.to,
     description: tx.description,
-    source: 'client',
-    value: tx.value,
+    source: 'app',
+    // value: tx.value,
     currency: tx.currency,
     date: new Date(),
-    transactionHash: tx.transactionHash
+    hash: tx.hash
   }
 
   console.log('Inserting Transaction from  Client Application', transaction)
