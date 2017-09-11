@@ -103,7 +103,7 @@ export const populateVideos = () => {
       description: 'First teaser of Around the Block ',
       thumb: '/img/cover/teaser1.jpg',
       duration: '03:22',
-      price: '',
+      price: 0,
       uploader: {
         address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
         name: 'Paratii',
@@ -235,7 +235,7 @@ export const populatePlaylist = () => {
     title: 'Around the block IPFS',
     description: 'A super playlist about blockchain!',
     url: 'around-the-block',
-    videos: [Videos.find().fetch()[6]._id, Videos.find().fetch()[5]._id]
+    videos: [Videos.find().fetch()[6]._id, Videos.find().fetch()[5]._id, Videos.find().fetch()[7]._id]
   }
   const p3 = {
     _id: '3',
