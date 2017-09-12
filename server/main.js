@@ -18,7 +18,9 @@ Meteor.startup(async function () {
   Meteor.defer(function () {
     // sync the transaction history - update the collection to include the latest blocks
     // chain start sync from block 267 because it takes to long start from 0
-    // syncTransactions()
+    if (Meteor.settings.syncTransactionsOnStartup) {
+      syncTransactions()
+    }
   })
   Meteor.defer(function () {
     // now keep watching for blocks
