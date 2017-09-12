@@ -16,7 +16,7 @@ function createVideo (price) {
 }
 
 function createPlaylist () {
-  const playlist =  {
+  const playlist = {
     id: '98765',
     title: 'Around the block IPFS',
     description: 'A super playlist about blockchain!',
@@ -41,14 +41,6 @@ describe('price tag status @watch', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     server.execute(resetDb)
-    server.execute(() => {
-      const { Videos } = require('/imports/api/videos')
-      Videos.remove({'_id': '12345'})
-      const { Playlists } = require('/imports/api/playlists')
-      Playlists.remove({'_id': '98765'})
-      const { Transactions } = require('/imports/api/transactions')
-      Transactions.remove({'_id': '5000'})
-    })
   })
 
   afterEach(function () {
