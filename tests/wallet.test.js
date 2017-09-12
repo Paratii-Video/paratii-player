@@ -11,7 +11,7 @@ describe('wallet', function () {
 
   })
 
-  it('should be able to send some ETH', function () {
+  it('should be able to send some ETH @watch', function () {
     createUserAndLogin(browser)
     browser.waitForExist('#public_address', 3000)
     browser.execute(getSomeEth, 1)

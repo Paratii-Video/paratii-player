@@ -254,7 +254,7 @@ export const populatePlaylist = () => {
 
   // if (Playlists.find().count() === 0) {
   Playlists.remove({})
-  console.log('--> populate playlits collection')
+  console.log('--> populate playlists collection')
 
   let playlistList = [p1, p2, p3, p4]
   _.each(playlistList, (playlist) => {

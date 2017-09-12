@@ -12,13 +12,18 @@ const FIRST_BLOCK = 0 // First block we consider when searching for transaction 
 Meteor.settings.public.first_block = FIRST_BLOCK
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
 
-Meteor.startup(function () {
+Meteor.startup(async function () {
+  console.log('settings.public.http_provider: ', Meteor.settings.public.http_provider)
+
   Meteor.defer(function () {
     // sync the transaction history - update the collection to include the latest blocks
     // chain start sync from block 267 because it takes to long start from 0
-    // TODO: commented this out
-    syncTransactions()
+    if (Meteor.settings.syncTransactionsOnStartup) {
+      syncTransactions()
+    }
   })
-  // now keep watching for blocks
-  watchTransactions()
+  Meteor.defer(function () {
+    // now keep watching for blocks
+    watchTransactions()
+  })
 })
