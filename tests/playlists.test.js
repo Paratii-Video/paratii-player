@@ -16,7 +16,7 @@ function createVideo (price) {
 }
 
 function createPlaylist () {
-  const playlist = {
+  const playlist =  {
     id: '98765',
     title: 'Around the block IPFS',
     description: 'A super playlist about blockchain!',
@@ -59,7 +59,7 @@ describe('price tag status @watch', function () {
     createUserAndLogin(browser)
     server.execute(createVideo, 0)
     server.execute(createPlaylist)
-    browser.url('http:localhost:3000/playlists/10')
+    browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.videoCardContainer', 2000)
 
     // .videoCardPrice should not exists
@@ -71,7 +71,7 @@ describe('price tag status @watch', function () {
     createUserAndLogin(browser)
     server.execute(createVideo, 10)
     server.execute(createPlaylist)
-    browser.url('http:localhost:3000/playlists/10')
+    browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.videoCardContainer', 2000)
     assert.equal(browser.getText('.videoCardPrice'), '10 PTI')
   })
@@ -89,7 +89,7 @@ describe('price tag status @watch', function () {
     // browser.waitForVisible('[name="user_password"]')
     // browser.setValue('[name="user_password"]', 'password')
     // browser.click('#send_trans_btn')
-    browser.url('http:localhost:3000/playlists/10')
+    browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.videoCardContainer', 2000)
     assert.equal(browser.getText('.videoCardPrice'), '✓')
   })
