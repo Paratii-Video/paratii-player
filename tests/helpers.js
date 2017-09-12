@@ -37,6 +37,12 @@ export function deployContract () {
 export function resetDb () {
   Meteor.users.remove({ 'profile.name': 'Guildenstern' })
   Meteor.users.remove({ 'emails.address': 'guildenstern@rosencrantz.com' })
+  const { Videos } = require('/imports/api/videos')
+  Videos.remove({'_id': '12345'})
+  const { Playlists } = require('/imports/api/playlists')
+  Playlists.remove({'_id': '98765'})
+  const { Transactions } = require('/imports/api/transactions')
+  Transactions.remove({'_id': '5000'})
 }
 
 export function createUser () {
