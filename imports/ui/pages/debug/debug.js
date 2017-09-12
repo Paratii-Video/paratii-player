@@ -18,8 +18,14 @@ Template.debug.helpers({
   privateKey () {
     // not included in wallet because is unsafe
     const keystore = getKeystore()
+    if (!keystore) {
+      return
+    }
     keystore.keyFromPassword('password', function (err, pwDerivedKey) {
-      if (err) { throw err }
+      if (err) {
+        console.log(err)
+        return
+      }
       Session.set('privateKey', keystore.exportPrivateKey(getUserPTIAddress(), pwDerivedKey))
     })
 

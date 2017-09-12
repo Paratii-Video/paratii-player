@@ -3,7 +3,6 @@
 
 import { assert } from 'chai'
 import { $ } from 'meteor/jquery'
-
 import { withRenderedTemplate } from '../../../test-helpers.js'
 
 import '../debug.js'
