@@ -27,7 +27,7 @@ test:
         timeout: 1020
     - npm run dev:
         background: true
-    - sleep: 60
+    - sleep 60
     - npm run chimp-test
     - npm run lint
   post:
