@@ -116,7 +116,12 @@ describe('account workflow', function () {
     browser.waitForVisible('#btn-eth-close')
     browser.click('#btn-eth-close')
   })
-
+  it('sends ether @watch', function () {
+    createUserAndLogin(browser)
+    browser.waitForExist('#send-eth', 5000)
+    browser.click('#send-eth')
+    browser.waitForExist('.modal-dialog', 5000)
+  })
   it('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
     browser.waitForExist('#show-seed', 5000)

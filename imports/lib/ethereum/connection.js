@@ -1,8 +1,7 @@
-/* eslint no-unused-vars: "off" */
+/* globals web3 */
+/* eslint no-global-assign: 0 */
 import Web3 from 'web3'
 import { getUserPTIAddress } from '/imports/api/users.js'
-import { deployTestContract } from '/imports/lib/ethereum/wallet.js'
-import { abidefinition } from './abidefinition.js'
 import { paratiiContract } from './paratiiContract.js'
 
 // TODO: store all this information in a settings.json object
@@ -11,7 +10,8 @@ let PARATII_TOKEN_ADDRESS = '0x385b2e03433c816def636278fb600ecd056b0e8d'
 const GAS_PRICE = 50000000000
 const GAS_LIMIT = 4e6
 
-const web3 = new Web3()
+// must not define this var ethereum-tools will trip
+web3 = new Web3()
 
 export function PTIContract () {
   // return a web3.eth.contract instance for the PTI Contract
