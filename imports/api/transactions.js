@@ -4,6 +4,8 @@ import {
   PTIContract
 } from '/imports/lib/ethereum/connection.js'
 
+import { Settings } from '/imports/api/settings.js'
+
 /*****************************
 Transactions data model looks like this.
 
@@ -17,6 +19,7 @@ Transactions data model looks like this.
 *********************************/
 
 export const Transactions = new Mongo.Collection('transactions')
+export const TransactionSyncHistory = new Mongo.Collection('transactionSyncHistory')
 export const UserTransactions = new Mongo.Collection('userTransactions')
 
 if (Meteor.isServer) {
@@ -65,19 +68,24 @@ if (Meteor.isServer) {
 async function addOrUpdateTransaction (transaction) {
   // add (or update) a transaction in the collection
   transaction.logIndex = transaction.logIndex || undefined
-  check(transaction, {
-    hash: Number,
-    logIndex: Match.OneOf(Number, undefined),
-    date: Match.Maybe(Date),
-    blockNumber: Number,
-    currency: String,
-    from: Number,
-    source: String,
-    to: Number,
-    value: Match.Maybe(Number),
-    nonce: Match.Maybe(Number),
-    description: Match.Maybe(String)
-  })
+  try {
+    check(transaction, {
+      blockNumber: Match.Maybe(Number),
+      currency: String,
+      date: Match.Maybe(Date),
+      description: Match.Maybe(String),
+      from: String,
+      hash: String,
+      logIndex: Match.Maybe(Match.OneOf(Number, undefined)),
+      nonce: Match.Maybe(Number),
+      source: String,
+      to: String,
+      value: Match.Maybe(Number)
+    })
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
 
   let existingTransaction
   if (transaction.hash) {
@@ -95,11 +103,11 @@ async function addOrUpdateTransaction (transaction) {
 
   let txId
   if (existingTransaction) {
-    console.log('Transaction already exists  - not added')
     txId = existingTransaction._id
+    console.log('Transaction already exists  - not added')
   } else {
-    console.log('Added transaction')
     txId = Transactions.insert(transaction)
+    console.log('Transaction added')
   }
   return txId
 
@@ -127,12 +135,18 @@ async function addOrUpdateTransaction (transaction) {
 
 async function syncTransactions () {
   // syncs all transactions in the blockchain that are not in the database yet
-  let fromBlock
-  let toBlock
-  fromBlock = (await getLatestSyncedBlockNumber()) + 1
-  toBlock = web3.eth.blockNumber
-  syncPTITransactions(fromBlock, toBlock)
-  syncETHTransactions(fromBlock, toBlock)
+  let fromBlock = (await getLatestSyncedBlockNumber()) + 1
+  let toBlock = web3.eth.blockNumber
+  console.log(`syncing transactions from Block ${fromBlock}`)
+  for (let i = fromBlock; i <= toBlock; i++) {
+    let synchistory = TransactionSyncHistory.findOne(i)
+    if (synchistory) {
+      console.log(` block ${i} exists in db - skipping`)
+    } else {
+      await syncPTITransactions(i, i + 1)
+      await syncETHTransactions(i, i + 1)
+    }
+  }
 }
 
 async function syncPTITransactions (fromBlock = 0, toBlock) {
@@ -145,10 +159,16 @@ async function syncPTITransactions (fromBlock = 0, toBlock) {
 
   filter.get(function (error, logs) {
     if (error) {
+      console.log(error)
       throw error
     }
     logs.forEach(function (log) {
-      addPTITransaction(log)
+      try {
+        addPTITransaction(log)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
     })
   })
 }
@@ -159,21 +179,31 @@ async function syncPTITransactions (fromBlock = 0, toBlock) {
 async function syncETHTransactions (fromBlock, toBlock) {
   console.log('ETH SYNC FROM', fromBlock, 'TO', toBlock)
   for (let i = fromBlock; i <= toBlock; i += 1) {
-    syncBlockWithDB(i)
+    await syncBlockWithDB(i)
   }
 };
 
 async function syncBlockWithDB (blockHashOrNumber) {
   // get the block given blockHashOrNumber, find its transactions and write them to the DB
-  web3.eth.getBlock(blockHashOrNumber, true, function (error, block) {
+
+  await Meteor.wrapAsync(web3.eth.getBlock, web3.eth)(blockHashOrNumber, true, function (error, block) {
     if (error) {
       throw error
     }
+    console.log('got block', block.number)
     if (block != null && block.transactions != null) {
       block.transactions.forEach(function (transaction) {
-        addETHTransaction(web3.eth.getTransaction(transaction.hash))
+        try {
+          addETHTransaction(web3.eth.getTransaction(transaction.hash))
+        } catch (err) {
+          console.log(err)
+          throw err
+        }
       })
     }
+    TransactionSyncHistory.upsert(block.number, {'isSynced': true})
+
+    // Settings.update('latestSyncedBlockNumber', { value: block.number })
   })
 }
 
@@ -217,6 +247,8 @@ async function watchPTITransactions () {
 function addPTITransaction (log) {
   // add a transaction to the collection that derives from Transfer Event from PTI contract
   // const tx = web3.eth.getTransaction(log.transactionHash)
+  console.log('Adding PTI Transaction')
+  console.log(log.logIndex)
   const transaction = {}
   transaction.value = log.args.value.toNumber()
   transaction.from = log.args.from
@@ -235,15 +267,15 @@ function addETHTransaction (tx) {
   // add some info from native ETH transactions
   if (tx.value.toNumber() > 0) {
     const transaction = {}
-    transaction.value = tx.value.toNumber()
+    transaction.blockNumber = tx.blockNumber
+    transaction.currency = 'eth'
     transaction.from = tx.from
+    transaction.value = tx.value.toNumber()
     transaction.to = tx.to
     transaction.hash = tx.hash
     transaction.nonce = tx.nonce
-    transaction.blockNumber = tx.blockNumber
-    transaction.currency = 'eth'
     transaction.source = 'blockchain'
-    console.log('Add transaction to collection: ', transaction.hash)
+    console.log('Add ETH transaction to collection: ', transaction.hash)
     return addOrUpdateTransaction(transaction)
   }
 }
@@ -267,19 +299,18 @@ function addAppTransaction (tx) {
   return addOrUpdateTransaction(transaction)
 }
 
-async function getLatestSyncedBlockNumber () {
+function getLatestSyncedBlockNumber () {
   // return the number of the latest block that has been synced to the db
   // TODO: a block may have more than one transaction - this function should return
   // the latest block in which *all* transactions have been synced
   let latestBlock
 
-  latestBlock = Transactions.findOne({}, {
-    sort: {
-      blockNumber: -1
-    }
-  })
-
-  return latestBlock.blockNumber
+  latestBlock = Settings.findOne('latestSyncedBlockNumber')
+  if (latestBlock) {
+    return latestBlock.value
+  } else {
+    return 0
+  }
 }
 
 export {

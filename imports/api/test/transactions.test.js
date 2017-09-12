@@ -31,9 +31,9 @@ describe('Transactions', () => {
         assert.equal(Transactions.find().count(), 0)
         let tx = {
           value: new BigNumber(12345566),
-          from: 0x12345,
-          to: 0x23445,
-          hash: 0xabdafe,
+          from: '0x12345',
+          to: '0x23445',
+          hash: '0xabdafe',
           nonce: 2,
           blockNumber: 22
         }
@@ -50,11 +50,11 @@ describe('Transactions', () => {
           nonce: 2,
           blockNumber: 1,
           // hash: 0x1245,
-          transactionHash: 0x1245,
+          transactionHash: '0x1245',
           args: {
             value: new BigNumber(333),
-            from: 0x12345,
-            to: 0x23445
+            from: '0x12345',
+            to: '0x23445'
           },
           topics: [0x1232143]
         }
@@ -72,17 +72,17 @@ describe('Transactions', () => {
         let tx = {
           nonce: 2,
           blockNumber: 1,
-          hash: 0x1245,
-          from: 0x12345,
-          to: 0x12345,
+          hash: '0x1245',
+          from: '0x12345',
+          to: '0x12345',
           args: {
             value: new BigNumber(333),
-            from: 0x12345,
-            to: 0x23445
+            from: '0x12345',
+            to: '0x23445'
           },
-          topics: [0x1232143],
+          topics: ['0x1232143'],
           description: 'Here is an addition description',
-          currency: 'pti',
+          currency: 'pti'
         }
 
         await addAppTransaction(tx)
@@ -94,7 +94,6 @@ describe('Transactions', () => {
         let transaction = Transactions.findOne()
         assert.equal(transaction.source, 'app')
       })
-
     })
   }
 })
