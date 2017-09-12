@@ -50,10 +50,10 @@ Template.profile.events({
     Modal.show('showSeed', { type: 'create' })
   },
   'click #send-eth' () {
-    Modal.show('doTransaction', { type: 'Eth', label: 'Send Ethereum' })
+    Modal.show('doTransaction', { type: 'Eth', label: 'Send Ether' })
   },
   'click #send-pti' () {
-    Modal.show('doTransaction', { type: 'PTI', label: 'Send aratii' })
+    Modal.show('doTransaction', { type: 'PTI', label: 'Send Paratii' })
   },
   'click #restore-keystore' () {
     Modal.show('restoreKeystore', {})
