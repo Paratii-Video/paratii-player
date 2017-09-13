@@ -21,7 +21,7 @@ function initIPFS (callback) {
     // $.getScript('./ipfs0.25.1.js', () => {
       // console.log('Ipfs: ', Ipfs)
       // const wstar = new WebRTCStar()
-      console.log('SECIO TEST : ', SECIO.modified)
+      // console.log('SECIO TEST : ', SECIO.modified)
       let isProduction = Meteor.settings.isProduction
       console.log('isProduction:', isProduction)
       if (isProduction) {
@@ -104,7 +104,16 @@ function initIPFS (callback) {
 
       window.ipfs.on('ready', () => {
         console.log('[IPFS] node Ready.')
-        console.log('[IPFS] _libp2pModules: ', window.ipfs._libp2pModules)
+
+        window.ipfs._bitswap.notifications.on('receivedNewBlock', (peerId, block) => {
+          console.log('[IPFS] receivedNewBlock | peer: ', peerId.toB58String(), ' block length: ', block.data.length)
+          console.log('---------[IPFS] bitswap LedgerMap ---------------------')
+          window.ipfs._bitswap.engine.ledgerMap.forEach((ledger, peerId, ledgerMap) => {
+            console.log(`${peerId} : ${JSON.stringify(ledger.accounting)}\n`)
+          })
+          console.log('-------------------------------------------------------')
+        })
+
         window.ipfs.id().then((id) => {
           let peerInfo = id
           console.log('[IPFS] id: ', peerInfo)

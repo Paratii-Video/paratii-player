@@ -140,7 +140,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
           metrics.totalBytes = stream.size
           if (stream.content) {
             stream.content.on('data', (chunk) => {
-              console.log('chunk ', chunk)
+              // console.log('chunk ', chunk)
 
               // if (chunk && chunk.length > 0) {
               if (chunk) {
