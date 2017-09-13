@@ -104,7 +104,11 @@ function initIPFS (callback) {
 
       window.ipfs.on('ready', () => {
         console.log('[IPFS] node Ready.')
-        console.log('[IPFS] _libp2pModules: ', window.ipfs._libp2pModules)
+        // console.log('[IPFS] _libp2pModules: ', window.ipfs._libp2pModules)
+        window.ipfs._bitswap.notifications.on('receivedNewBlock', (peerId, block) => {
+          console.log('[IPFS] receivedNewBlock | peer: ', peerId.toB58String(), ' block length: ', block.data.length)
+        })
+
         window.ipfs.id().then((id) => {
           let peerInfo = id
           console.log('[IPFS] id: ', peerInfo)
