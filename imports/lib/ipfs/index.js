@@ -30,10 +30,10 @@ function initIPFS (callback) {
           config: {
             Addresses: {
               Swarm: [
-                '/dns4/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss',
+                '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
                 // run our own star-signal server.
                 // https://github.com/libp2p/js-libp2p-webrtc-star
-                '/dns4/libp2p-webrtc-star/ip4/34.213.133.148/tcp/42000/wss'
+                '/ip4/34.213.133.148/tcp/42000/wss/p2p-webrtc-star',
               ]
             },
             Bootstrap: [
@@ -68,10 +68,11 @@ function initIPFS (callback) {
           config: {
             Addresses: {
               Swarm: [
-                '/dns4/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss',
+                // '/dns4/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss',
+                '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
                 // run our own star-signal server.
                 // https://github.com/libp2p/js-libp2p-webrtc-star
-                '/dns4/libp2p-webrtc-star/ip4/34.213.133.148/tcp/42000/wss'
+                '/ip4/34.213.133.148/tcp/42000/wss/p2p-webrtc-star',
               ]
             },
             Bootstrap: [

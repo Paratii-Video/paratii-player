@@ -58,10 +58,11 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
       metrics.elapsed = utils.duration(metrics.started)
       metrics.overallRate = utils.speed(metrics.received, utils.duration(metrics.started))
       metrics.rates = utils.calcRates(metrics.queue.map(chunk => chunk.rate))
+      let connectedPeers = (latestStat && latestStat.peers) ? latestStat.peers.length : 0
 
       templateDict.set('status', 'Download: ' + (metrics.overallRate / 1000) + 'KB/s | ' +
                        'duplication Ratio: ' + metrics.dupRatio.toFixed(2) + '% | ' +
-                       'Connected Peers: ' + latestStat.peers.length)
+                       'Connected Peers: ' + connectedPeers)
     }
 
     sourceBuffer.addEventListener('updateend', (ev) => {
@@ -192,7 +193,8 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
               console.log('file end')
               console.log('queue length ', metrics.queue.length)
               console.log('last ', lastChunkIndex)
-              templateDict.set('status', 'File buffered. metrics.dupRatio: ', metrics.dupRatio.toFixed(2) + '%')
+              updateStats()
+              templateDict.set('status', 'File buffered. metrics. dupRatio: ' + metrics.dupRatio.toFixed(2) + '%')
               clearInterval(pollStats)
             })
             stream.content.resume()
