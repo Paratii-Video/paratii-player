@@ -1,6 +1,18 @@
-import { initIPFS } from '../../../lib/ipfs/index.js'
+import paratiiIPFS from '../../../lib/ipfs/index.js'
 import utils from './utils.js'
 import hrtime from 'browser-process-hrtime'
+
+// global.Buffer = global.Buffer || require('buffer').Buffer
+// const CID = require('cids')
+// const mh = require('multihashes')
+
+// function splitPath (path) {
+//   if (path[path.length - 1] === '/') {
+//     path = path.substring(0, path.length - 1)
+//   }
+//
+//   return path.substring(6).split('/')
+// }
 
 // FRAGMENTING COMMAND to convert mp4 to fragmented mp4
 // This still has issues. like the 0 duration.
@@ -86,13 +98,16 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
       // }
     })
 
-    initIPFS(() => {
+    paratiiIPFS.initIPFS(() => {
       // window.ipfs is available.
       function updateStats () {
         metrics.elapsed = utils.duration(metrics.started)
         metrics.overallRate = utils.speed(metrics.received, utils.duration(metrics.started))
         metrics.rates = utils.calcRates(metrics.queue.map(chunk => chunk.rate))
-
+        if (!paratiiIPFS.isOnline()) {
+          clearInterval(pollStats)
+          return
+        }
         window.ipfs.swarm.peers((err, peers) => {
           if (err) throw err
           peers.map((peer) => {
@@ -137,6 +152,58 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
         if (err) throw err
         filesStream.on('data', (stream) => {
           if (err) throw err
+          // trying to stop stream after aborting.
+          // TODO: ask js-ipfs team about a proper way to do this.
+          // videoElement.parentElement.addEventListener('DOMNodeRemoved', (ev) => {
+          //   if (ev.relatedNode.id === 'app-container') {
+          //     console.log('video ABORTED ', ev.relatedNode)
+          //     stream.content.destroy()
+          //     filesStream.destroy()
+          //
+          //     stream.content.end()
+          //     filesStream.end()
+          //
+          //     let parts = splitPath(ipfsHash)
+          //     let cid = new CID(mh.fromB58String(parts[0]))
+          //     // let fstream = exporter(ipfsHash, window.ipfs._ipldResolver)
+          //     // console.log('fstream: ', fstream)
+          //     // fstream.on('data', (f) => {
+          //     //   console.log('f: ', f)
+          //     // })
+          //     window.ipfs.dag.get(cid, (err, result) => {
+          //       if (err) throw err
+          //       console.log('DAG RES VALUE: ', result.value)
+          //       let dagNode = result.value
+          //       let unwanted = []
+          //       for (let link of dagNode.links) {
+          //         // console.log('link: ', link.multihash)
+          //         let linkCid
+          //         try {
+          //           mh.validate(link.multihash)
+          //           linkCid = new CID(link.multihash)
+          //         } catch (e) {
+          //           console.log('error: ', e)
+          //           if (e) throw e
+          //         }
+          //
+          //         unwanted.push(linkCid)
+          //       }
+          //
+          //       let blocks = window.ipfs._bitswap.wm.wantlist // .contains(cid)
+          //       console.log('blocks: ', blocks)
+          //       console.log('unwanted: ', unwanted)
+          //       try {
+          //         window.ipfs._bitswap.wm.cancelWants(unwanted)
+          //       } catch (e) {
+          //         console.error('bitswap Error: ', e)
+          //         throw e
+          //       }
+          //       console.log('blocks AFter unwant: ', window.ipfs._bitswap.wm.wantlist)
+          //     })
+          //
+          //     // throw new Error('video ABORTED ')
+          //   }
+          // })
           console.log('stream: ', stream)
           metrics.totalBytes = stream.size
           if (stream.content) {
