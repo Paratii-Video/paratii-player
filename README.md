@@ -15,10 +15,11 @@ Install node (https://nodejs.org/en/download/) and npm (these are the instructio
     sudo apt-get install -y build-essential
     curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
     sudo apt-get install -y nodejs
-    sudo pm install npm@latest -g
+    sudo npm install npm@latest -g
 
 Install meteor (https://www.meteor.com/install):
-curl https://install.meteor.com/ | sh
+
+    curl https://install.meteor.com/ | sh
 
 
 Clone this paratii-player repository, either with https or ssh:
