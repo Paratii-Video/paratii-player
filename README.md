@@ -92,7 +92,7 @@ if you get out-of-memory errors, setting TOOL_NODE_FLAGS may help:
 
 If `npm install` reports that `gyp ERR! stack Error: Can't find Python executable "python", you can set the PYTHON env variable`, it may be because python2.7 is not installed on your system:
 
-    sudo apt-get install python-2.7
+    sudo apt-get install python2.7
     export PYTHON=/usr/bin/python2.7
 
 
