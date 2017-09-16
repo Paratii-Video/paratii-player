@@ -8,8 +8,16 @@ import { watchTransactions, syncTransactions } from '/imports/api/transactions.j
 import { web3 } from '/imports/lib/ethereum/connection.js'
 
 const DEFAULT_PROVIDER = Meteor.settings.public.http_provider
-const FIRST_BLOCK = 0 // First block we consider when searching for transaction history etc.
-Meteor.settings.public.first_block = FIRST_BLOCK
+let FIRST_BLOCK = 0 // First block we consider when searching for transaction history etc.
+
+
+if(Meteor.settings.public.first_block === undefined){
+  FIRST_BLOCK = 0;
+} else {
+  FIRST_BLOCK = Meteor.settings.public.first_block
+}
+
+console.log("FIRST_BLOCK", FIRST_BLOCK);
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
 
 Meteor.startup(async function () {

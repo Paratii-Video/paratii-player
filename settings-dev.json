@@ -1,5 +1,6 @@
 {
   "public" : {
-    "http_provider": "http://localhost:8545"
+    "http_provider": "http://localhost:8545",
+    "first_block": 0
   }
 }
