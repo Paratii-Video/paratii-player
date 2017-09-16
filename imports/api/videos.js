@@ -3,7 +3,6 @@ import { Transactions } from '/imports/api/transactions.js'
 import { Playlists } from '/imports/api/playlists.js'
 
 export const Videos = new Mongo.Collection('videos')
-
 export function userLikesVideo (userId, videoId) {
   return Boolean(
     Meteor.users.findOne({ _id: userId, 'stats.likes': { $in: [videoId] } })
