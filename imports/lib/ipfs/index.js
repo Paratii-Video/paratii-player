@@ -3,6 +3,7 @@
 import { Meteor } from 'meteor/meteor'
 
 const REPO_PATH = 'paratii-ipfs-repo'
+function noop () {}
 
 const paratiiIPFS = {
   /**
@@ -15,9 +16,9 @@ const paratiiIPFS = {
       callback()
     } else {
       // no cache busting because unpkg is complaining
-      $.ajaxSetup({
-        cache: true
-      })
+      // $.ajaxSetup({
+      //   cache: true
+      // })
       // $.getScript('https://unpkg.com/ipfs@0.25.4/dist/index.js', () => {
       $.getScript('/test/files/index.js', () => {
         let isProduction = Meteor.settings.isProduction
@@ -60,11 +61,12 @@ const paratiiIPFS = {
           })
         } else {
           window.ipfs = new Ipfs({
-            repo: repo,
+            repo: String(Math.random()),
             config: {
               Addresses: {
                 Swarm: [
-                  '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
+                  // '/ip4/127.0.0.1/tcp/9090/wss/p2p-websocket-star/',
+                  // '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
                   // run our own star-signal server.
                   // https://github.com/libp2p/js-libp2p-webrtc-star
                   // '/ip4/34.213.133.148/tcp/42000/wss/p2p-webrtc-star'
@@ -80,6 +82,11 @@ const paratiiIPFS = {
                 '/ip4/34.213.133.148/tcp/4003/ws/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW',
                 '/dns4/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H',
                 '/ip4/212.71.247.117/tcp/4003/ws/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H'
+                // '/dns4/ams-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd',
+                // '/dns4/sfo-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLju6m7xTh3DuokvT3886QRYqxAzb1kShaanJgW36yx',
+                // '/dns4/lon-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLMeWqB7YGVLJN3pNLQpmmEk35v6wYtsMGLzSr5QBU3',
+                // '/dns4/sgp-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLSafTMBsPKadTEgaXctDQVcqN88CNLHXMkTNwMKPnu',
+                // '/dns4/nyc-2.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLV4Bbm51jM9C4gDYZQ9Cy3U6aXMJDAbzgu2fzaDs64'
               ]
             }
           })
@@ -150,6 +157,50 @@ const paratiiIPFS = {
       return false
     }
     return window.ipfs.isOnline()
+  },
+
+  // transactions
+  updateTransactions: (callback) => {
+    // adds up or create data transactions in localStorage
+    // TODO : store this somewhere safe or in a verifiable way.
+    // if (!ledger || typeof ledger === 'function') {
+    //   return callback(new Error('ledger is required to update transactions.'))
+    // }
+
+    if (!callback || typeof callback !== 'function') {
+      callback = noop
+    }
+
+    let localLedger = window.localStorage.getItem('paratii-ledger')
+    if (!localLedger) {
+      localLedger = {}
+    } else {
+      localLedger = JSON.parse(localLedger)
+    }
+    // TODO to be continued
+    if (!paratiiIPFS.isOnline()) {
+      window.localStorage.setItem('paratii-ledger', JSON.stringify(localLedger))
+      return callback(new Error('Node is offline.'))
+    }
+
+    window.ipfs._bitswap.engine.ledgerMap.forEach((ledger, peerId, ledgerMap) => {
+      console.log(`${peerId} : ${JSON.stringify(ledger.accounting)}\n`)
+      localLedger[peerId] = localLedger[peerId] || {
+        bytesSent: 0,
+        bytesRecv: 0
+      }
+
+      localLedger[peerId].bytesSent += ledger.accounting.bytesSent
+      localLedger[peerId].bytesRecv += ledger.accounting.bytesRecv
+
+      ledger.accounting.bytesSent = 0
+      ledger.accounting.bytesRecv = 0
+
+      window.ipfs._bitswap.engine.ledgerMap.set(peerId, ledger)
+    })
+
+    window.localStorage.setItem('paratii-ledger', JSON.stringify(localLedger))
+    callback(null, 1)
   },
   start: (callback) => {
     if (!window.Ipfs) {

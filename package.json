@@ -24,6 +24,7 @@
     "eth-lightwallet": "^2.5.6",
     "hooked-web3-provider": "^1.0.0",
     "inline-worker": "^1.1.0",
+    "libp2p-websocket-star": "^0.4.0",
     "meteor-node-stubs": "~0.2.4",
     "moment": "^2.18.1",
     "multihashes": "^0.4.9",
