@@ -1,13 +1,7 @@
-/* eslint global-require: "off" */
-// import { assert } from 'chai';
 import { resetDb, mustBeTestChain, createUserAndLogin, getSomeEth, getSomePTI } from './helpers.js'
-import { add0x } from '../imports/lib/utils.js'
 import { deployParatiiContracts } from './deployContracts.js'
-import Web3 from 'web3'
-
 
 describe('wallet', function () {
-
   beforeEach(function () {
     mustBeTestChain()
     server.execute(resetDb)

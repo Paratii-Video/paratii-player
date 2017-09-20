@@ -9,15 +9,14 @@ let DEFAULT_PROVIDER = 'http://localhost:8545'
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
 let owner = web3.eth.accounts[0]
 
-
-function _deploy(contractSpec, cb) {
+function _deploy (contractSpec, cb) {
   console.log('deploying contract')
   let contract = web3.eth.contract(contractSpec.abi)
   let contractInstance = contract.new({
-      from: add0x(owner),
-      data: contractSpec.unlinked_binary,
-      gas: web3.toHex(4e6),
-    },
+    from: add0x(owner),
+    data: contractSpec.unlinked_binary,
+    gas: web3.toHex(4e6)
+  },
     function (err, myContract) {
       console.log('callback')
       if (!err) {
@@ -41,16 +40,16 @@ function _deploy(contractSpec, cb) {
     })
   return contractInstance
 }
-function deploy(contractSpec) {
+function deploy (contractSpec) {
   return Promise.promisify(_deploy)(contractSpec)
 }
-export async function deployParatiiContracts() {
+export async function deployParatiiContracts () {
   console.log(await web3.eth.getBalance(web3.eth.accounts[0]))
   let paratiiToken = await deploy(ParatiiTokenSpec)
   // let paratiiRegistry = await deploy(ParatiiRegistrySpec)
   return
-  console.log(paratiiRegistry)
-  console.log(paratiiRegistry.address)
-  // paratiiRegistry = web3.eth.contract(ParatiiRegistrySpec.abi).at(paratiiRegistry.address)
-  await paratiiRegistry.registerContract('ParatiiToken', paratiiToken.address, {from: web3.eth.accounts[0]})
+  // console.log(paratiiRegistry)
+  // console.log(paratiiRegistry.address)
+  // // paratiiRegistry = web3.eth.contract(ParatiiRegistrySpec.abi).at(paratiiRegistry.address)
+  // await paratiiRegistry.registerContract('ParatiiToken', paratiiToken.address, {from: web3.eth.accounts[0]})
 }

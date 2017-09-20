@@ -33,7 +33,7 @@ Template.debug.helpers({
     return Session.get('privateKey')
   },
   contractAddress () {
-      return Session.get('ParatiiToken')
+    return Session.get('ParatiiToken')
   },
   isTestRPC () {
     return Session.get('isTestRPC')

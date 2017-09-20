@@ -23,9 +23,8 @@ export async function PTIContract () {
   }
 }
 
-function getParatiiRegistry() {
+function getParatiiRegistry () {
   return web3.eth.contract(ParatiiRegistry.abi).at(PARATII_REGISTRY_ADDRESS)
-
 }
 async function getContractAddress (name) {
   if (Session.get(name + '-Adress')) {
@@ -36,7 +35,7 @@ async function getContractAddress (name) {
       let address = await getParatiiRegistry().getContract(name)
       console.log(`contract ${name} is located at ${address}`)
       return address
-    } catch(err) {
+    } catch (err) {
       console.log(err)
     }
   }
@@ -59,7 +58,7 @@ async function updateSession () {
     Session.set('eth_isConnected', true)
     Session.set('eth_currentBlock', web3.eth.blockNumber)
     const ptiAddress = getUserPTIAddress()
-    getContractAddress('ParatiiToken').then(function(result){
+    getContractAddress('ParatiiToken').then(function (result) {
       Session.set('ParatiiToken', result)
     })
     if (ptiAddress) {
@@ -77,9 +76,8 @@ async function updateSession () {
           Session.set('eth_balance', result.toNumber())
         }
       })
-
     }
-} else {
+  } else {
     Session.set('eth_isConnected', false)
     Session.set('eth_currentBlock', null)
     Session.set('eth_highestBlock', null)

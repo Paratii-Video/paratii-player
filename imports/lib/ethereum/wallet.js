@@ -182,6 +182,4 @@ function sendUnSignedContractTransaction (address, value) {
   contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: address })
 }
 
-
-
 export { createKeystore, restoreWallet, doTx, getSeed, sendUnSignedTransaction, sendUnSignedContractTransaction, saveKeystore }

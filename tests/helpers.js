@@ -1,5 +1,4 @@
 
-
 export function login (browser) {
   browser.url('http://localhost:3000/profile')
   browser.waitForExist('[name="at-field-email"]', 2000)
@@ -26,12 +25,12 @@ export function getContractAddress () {
   return connection.getContractAddress()
 }
 
-async function setContractAddress (address) {
-  PARATII_TOKEN_ADDRESS = address
-  if (Meteor.isClient) {
-    Session.set('pti_contract_address', address)
-  }
-}
+// async function setContractAddress (address) {
+//   PARATII_TOKEN_ADDRESS = address
+//   if (Meteor.isClient) {
+//     Session.set('pti_contract_address', address)
+//   }
+// }
 
 export function resetDb () {
   Meteor.users.remove({ 'profile.name': 'Guildenstern' })
@@ -73,7 +72,7 @@ export function clearLocalStorage () {
 
 export function deployTestContracts () {
   console.log('deploying contracts...')
-  return
+
   // const wallet = require('./imports/lib/ethereum/wallet.js')
   // let ParatiiRegistry = require('./imports/lib/ethereum/contracts/ParatiiRegistry.json')
   // console.log(ParatiiRegistry)
@@ -114,19 +113,17 @@ export function deployTestContracts () {
   // })
 }
 
+// export function deployContracts () {
+//   const wallet = require('./imports/lib/ethereum/wallet.js')
+//   const accounts = web3.eth.accounts
+//   deployTestContract(accounts[0])
+// }
 
-export function deployContracts () {
-  const wallet = require('./imports/lib/ethereum/wallet.js')
-  const accounts = web3.eth.accounts
-  deployTestContract(accounts[0])
-}
-
-export function mustBeTestChain() {
-  let host = server.execute(function() { return web3.currentProvider.host })
-  let local_nodes = 'http://localhost:8545'
-  if (host !== local_nodes) {
-    let msg = `These tests can only be run on a local test node (e.g. ${local_nodes})- your app is using ${host} instead.`
+export function mustBeTestChain () {
+  let host = server.execute(function () { return web3.currentProvider.host })
+  let localNodes = 'http://localhost:8545'
+  if (host !== localNodes) {
+    let msg = `These tests can only be run on a local test node (e.g. ${localNodes})- your app is using ${host} instead.`
     throw Error(msg)
   }
-
 }
