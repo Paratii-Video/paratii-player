@@ -1,7 +1,8 @@
 {
   "public" : {
     "isProduction": true,
-    "http_provider": "https://paratii-chain.gerbrandy.com",
-    "first_block": 0
+    "http_provider": "https://chain.paratii.video",
+    "first_block": 0,
+    "ParatiiRegistry":  "0x076390810721D1a4A7dC990767425A4d6AD0fB35"
   }
 }

@@ -116,7 +116,7 @@ describe('account workflow', function () {
     browser.waitForVisible('#btn-eth-close')
     browser.click('#btn-eth-close')
   })
-  it('sends ether @watch', function () {
+  it('sends ether', function () {
     createUserAndLogin(browser)
     browser.waitForExist('#send-eth', 5000)
     browser.click('#send-eth')

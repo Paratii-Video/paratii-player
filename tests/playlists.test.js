@@ -37,7 +37,7 @@ function fakeVideoUnlock (address) {
   Transactions.insert(transaction)
 }
 
-describe('price tag status @watch', function () {
+describe('price tag status', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     server.execute(resetDb)
