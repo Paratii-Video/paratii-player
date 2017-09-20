@@ -6,6 +6,30 @@ import './transactions.html'
 
 const moment = require('moment')
 
+function getBitTransactions () {
+  let localLedger = window.localStorage.getItem('paratii-ledger')
+  if (localLedger) {
+    localLedger = JSON.parse(localLedger)
+  } else {
+    return null
+  }
+  let resp = []
+  console.log('localLedger ', localLedger)
+  let keys = Object.keys(localLedger)
+  for (let i = 0; i < keys.length; i++) {
+    resp.push({
+      peer: keys[i],
+      bytesSent: localLedger[keys[i]].bytesSent,
+      bytesRecv: localLedger[keys[i]].bytesRecv
+    })
+  }
+  console.log('bit Accounting ', JSON.stringify(resp))
+
+  return resp
+}
+
+getBitTransactions()
+
 Template.transactions.onCreated(function () {
   let template = Template.instance()
 
@@ -13,6 +37,7 @@ Template.transactions.onCreated(function () {
   template.searching = new ReactiveVar(false)
 
   const userPTIAddress = getUserPTIAddress()
+  // template.bitTransactions = getBitTransactions()
   Meteor.subscribe('userTransactions', userPTIAddress)
 })
 
