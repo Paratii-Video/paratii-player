@@ -3,9 +3,9 @@ import lightwallet from 'eth-lightwallet/dist/lightwallet.js'
 import { Accounts } from 'meteor/accounts-base'
 import { add0x } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-import { web3, GAS_PRICE, GAS_LIMIT, getContractAddress } from './connection.js'
-import { ParatiiToken } from './contracts/ParatiiToken.json'
-import { ParatiiRegistry } from './contracts/ParatiiRegistry.json'
+import { web3, GAS_PRICE, GAS_LIMIT } from './connection.js'
+import { getContractAddress } from './contracts.js'
+import ParatiiToken from './contracts/ParatiiToken.json'
 
 // createKeystore will create a new keystore
 // save it in the session object and in local storage
@@ -175,11 +175,12 @@ function sendUnSignedTransaction (address, amount) {
   })
 }
 
-function sendUnSignedContractTransaction (address, value) {
-  const contractAddress = getContractAddress('ParatiiToken')
+async function sendUnSignedContractTransaction (address, value) {
+  const contractAddress = await getContractAddress('ParatiiToken')
   const toAddr = getUserPTIAddress()
   const contract = web3.eth.contract(ParatiiToken.abi).at(contractAddress)
-  contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: address })
+  let result = await contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: address })
+  return result
 }
 
 export { createKeystore, restoreWallet, doTx, getSeed, sendUnSignedTransaction, sendUnSignedContractTransaction, saveKeystore }

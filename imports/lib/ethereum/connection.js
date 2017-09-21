@@ -1,13 +1,12 @@
 /* globals web3 */
 /* eslint no-global-assign: 0 */
 import Web3 from 'web3'
-import { getUserPTIAddress } from '/imports/api/users.js'
+import { getUserPTIAddress } from '../../api/users.js'
 import ParatiiToken from './contracts/ParatiiToken.json'
-import ParatiiRegistry from './contracts/ParatiiRegistry.json'
-
+import { getContractAddress, setRegistryAddress } from './contracts.js'
 // TODO: store all this information in a settings.json object
 const DEFAULT_PROVIDER = Meteor.settings.public.http_provider
-let PARATII_REGISTRY_ADDRESS = Meteor.settings.public.ParatiiRegistry
+
 const GAS_PRICE = 50000000000
 const GAS_LIMIT = 4e6
 
@@ -23,25 +22,7 @@ export async function PTIContract () {
   }
 }
 
-function getParatiiRegistry () {
-  return web3.eth.contract(ParatiiRegistry.abi).at(PARATII_REGISTRY_ADDRESS)
-}
-async function getContractAddress (name) {
-  if (Session.get(name + '-Adress')) {
-    return Session.get(name + '-Adress')
-  } else {
-    console.log(`getting contract address of the contract ${name} from the registry`)
-    try {
-      let address = await getParatiiRegistry().getContract(name)
-      console.log(`contract ${name} is located at ${address}`)
-      return address
-    } catch (err) {
-      console.log(err)
-    }
-  }
-}
-
-async function updateSession () {
+export async function updateSession () {
   /* update Session variables with latest information from the blockchain */
   console.log('update Sesssion')
   Session.set('eth_host', web3.currentProvider.host)
@@ -65,7 +46,7 @@ async function updateSession () {
       // SET PTI BALANCE
       const contract = await PTIContract()
       if (contract) {
-        const ptiBalance = contract.balanceOf(ptiAddress)
+        const ptiBalance = await contract.balanceOf(ptiAddress)
         Session.set('pti_balance', ptiBalance.toNumber())
       }
 
@@ -89,9 +70,11 @@ async function updateSession () {
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
 
 export const initConnection = function () {
-  console.log('intitalizing connection..')
+  console.log('initializing connection..')
   Session.set('eth_testContractDeployed', false)
   web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
+
+  setRegistryAddress(Meteor.settings.public.ParatiiRegistry)
 
   const filter = web3.eth.filter('latest')
   filter.watch(function (error, result) {
@@ -104,4 +87,4 @@ export const initConnection = function () {
   }
 }
 
-export { web3, GAS_PRICE, GAS_LIMIT, getContractAddress, setContractAddress }
+export { web3, GAS_PRICE, GAS_LIMIT }

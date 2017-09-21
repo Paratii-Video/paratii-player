@@ -1,4 +1,4 @@
-
+/* global localStorage */
 export function login (browser) {
   browser.url('http://localhost:3000/profile')
   browser.waitForExist('[name="at-field-email"]', 2000)
@@ -21,8 +21,8 @@ export function getSomePTI (amount) {
 }
 
 export function getContractAddress () {
-  const connection = require('./imports/lib/ethereum/connection.js')
-  return connection.getContractAddress()
+  const contracts = require('./imports/lib/ethereum/contracts.js')
+  return contracts.getContractAddress()
 }
 
 // async function setContractAddress (address) {

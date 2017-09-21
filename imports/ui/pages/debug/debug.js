@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { web3 } from '/imports/lib/ethereum/connection.js'
+import { getRegistryAddress } from '/imports/lib/ethereum/contracts.js'
 import { getKeystore, sendUnSignedContractTransaction } from '/imports/lib/ethereum/wallet.js'
-import { getContractAddress } from '/imports/lib/ethereum/connection.js'
 import { Template } from 'meteor/templating'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import './debug.html'
@@ -35,6 +35,10 @@ Template.debug.helpers({
   contractAddress () {
     return Session.get('ParatiiToken')
   },
+  ParatiiRegistryAddress () {
+    return getRegistryAddress()
+  },
+
   isTestRPC () {
     return Session.get('isTestRPC')
   },
