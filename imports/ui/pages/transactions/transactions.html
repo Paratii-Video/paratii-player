@@ -59,4 +59,15 @@
       {{/each}}
     </table>
   </div>
+
+  <div class="container">
+    <ul class="bit-transactions-list">
+        <!-- <li> peer | bytesSent | bytesRecv </li> -->
+      {{#each bitTransaction}}
+        <li>
+          {{ peer }} | {{ bytesSent }} | {{ bytesRecv }}
+        </li>
+      {{/each}}
+    </ul>
+  </div>
 </template>
