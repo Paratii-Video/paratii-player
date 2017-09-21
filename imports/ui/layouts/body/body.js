@@ -20,6 +20,11 @@ Template.App_body.onRendered(function () {
 Template.App_body.helpers({
   light () {
     return (Template.instance().navState.get() === 'maximized') ? '' : 'toggleFade'
+  },
+  getRoute () {
+    var current = FlowRouter.current()
+    var route = current.route.name
+    return route
   }
 })
 

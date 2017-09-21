@@ -8,6 +8,13 @@
   border-radius: 10px;
 }
 
+.embed_code{
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
 .player-overlay {
   position: absolute;
   padding: 10px 10px 10px 70px;
@@ -35,6 +42,18 @@
     img {
       margin-right: 5px;
     }
+  }
+
+  .sharing-actions{
+    li{
+      display: inline-block;
+
+      img {
+        color: white
+      }
+
+    }
+
   }
 }
 
@@ -199,6 +218,8 @@
   #fullscreen-button {
     float: right;
   }
+
+
 
   #current-time {
     color: #fff;

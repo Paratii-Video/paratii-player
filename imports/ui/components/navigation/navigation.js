@@ -1,6 +1,7 @@
 /* globals SVGInjector */
 import 'meteor/johnantoni:meteor-svginjector'
 import { web3 } from '/imports/lib/ethereum/connection.js'
+import paratiiIPFS from '/imports/lib/ipfs/index.js'
 import './navigation.html'
 
 const loadSVG = () => {
@@ -54,6 +55,11 @@ Template.navigation.helpers({
         text: 'DEBUG',
         path: FlowRouter.path('debug'),
         id: 'debug'
+      }, {
+        icon: '/img/lock_icon.svg',
+        text: 'Clear Cache',
+        path: '#',
+        id: 'clear-repo'
       }
     ])
 
@@ -99,5 +105,16 @@ Template.navigation.events({
   },
   'click #logout' () {
     Meteor.logout()
+  },
+  'click #clear-repo' (ev) {
+    console.log('clearing cache . ', ev.target)
+    ev.target.innerText = 'Clearing...'
+    paratiiIPFS.clearRepo(() => {
+      console.log('cache cleared')
+      ev.target.innerText = 'Cache Cleared!!'
+      setTimeout(() => {
+        ev.target.innerText = 'Clear Cache'
+      }, 5000)
+    })
   }
 })

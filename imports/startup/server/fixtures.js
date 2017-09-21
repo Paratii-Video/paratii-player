@@ -191,7 +191,6 @@ export const populateVideos = () => {
       _id: '8',
       title: '[IPFS] Big Buck Bunny',
       description: 'IPFS EXAMPLE video',
-      thumb: '/img/thumb2-img.png',
       duration: '01:00',
       price: 0,
       uploader: {

@@ -67,6 +67,12 @@ function addToIPFS (files) {
   }
 
   initIPFS(() => {
+    setInterval(() => {
+      window.ipfs._bitswap.engine.ledgerMap.forEach((ledger, peerId, ledgerMap) => {
+        console.log(`${peerId} : ${JSON.stringify(ledger.accounting)}\n`)
+      })
+    }, 5000)
+
     pull(
       pull.values(files),
       pull.through((file) => {

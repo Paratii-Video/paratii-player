@@ -26,8 +26,8 @@ const utils = {
     const middle = Math.floor(rates.length / 2)
     const isEven = rates.length % 2 === 0
     const median = isEven
-    ? (rates[middle] + rates[middle - 1]) / 2 || 0
-    : rates[middle] || 0
+      ? (rates[middle] + rates[middle - 1]) / 2 || 0
+      : rates[middle] || 0
 
     return {
       min,

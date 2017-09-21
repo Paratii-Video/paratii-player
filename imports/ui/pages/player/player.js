@@ -8,6 +8,7 @@ import { UserTransactions } from '/imports/api/transactions.js'
 import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import { createIPFSPlayer } from './ipfs.js'
+import '/imports/ui/components/modals/embedCustomizer.js'
 
 import './player.html'
 
@@ -106,6 +107,7 @@ Template.player.onDestroyed(function () {
 })
 
 Template.player.helpers({
+
   isLocked () {
     return Template.instance().playerState.get('locked')
   },
@@ -380,5 +382,12 @@ Template.player.events({
   'click #button-dislike' () {
     const videoId = _video._id
     Meteor.call('videos.dislike', videoId)
+  },
+  'click #embed' () {
+    const videoId = _video._id
+    Modal.show('embedCustomizer', {
+      videoId: videoId,
+      label: 'Embed code'
+    })
   }
 })
