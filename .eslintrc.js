@@ -1,7 +1,9 @@
 module.exports = {
     "extends": "standard",
     "globals": {
-        "Meteor": false
+        "Meteor": false,
+        "FlowRouter": false,
+        "Modal": false
     },
     "env": {
       "meteor": true

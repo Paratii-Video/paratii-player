@@ -78,6 +78,13 @@ FlowRouter.route('/player/:_id', {
   }
 })
 
+FlowRouter.route('/embed/:_id', {
+  name: 'embed',
+  action () {
+    BlazeLayout.render('App_body', { main: 'player' })
+  }
+})
+
 FlowRouter.route('/debug', {
   name: 'debug',
   action () {
