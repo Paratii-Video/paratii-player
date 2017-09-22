@@ -171,22 +171,6 @@ Template.player.helpers({
   volumeIcon () {
     const state = Template.instance().playerState.get('muted')
     return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg'
-  },
-  nextVideoPath () {
-    const playlistId = FlowRouter.getParam('playlist_id')
-    const playlist = Playlists.findOne({ _id: playlistId })
-    const videos = playlist.videos
-    const currentIndex = videos.indexOf(getVideo()._id)
-    var nextId
-    if (videos[currentIndex + 1] != null) {
-      nextId = videos[currentIndex + 1]
-    } else {
-      nextId = videos[0]
-    }
-    const pathDef = 'player'
-    const params = { playlist_id: playlistId, _id: nextId }
-    const path = FlowRouter.path(pathDef, params)
-    return path
   }
 })
 
@@ -286,6 +270,21 @@ Template.player.events({
         }
       }, 3000)
     }
+  },
+  'click #next-video-button' () {
+    const playlistId = FlowRouter.getParam('playlist_id')
+    const playlist = Playlists.findOne({ _id: playlistId })
+    const videos = playlist.videos
+    const currentIndex = videos.indexOf(getVideo()._id)
+    var nextId
+    if (videos[currentIndex + 1] != null) {
+      nextId = videos[currentIndex + 1]
+    } else {
+      nextId = videos[0]
+    }
+    const pathDef = 'player'
+    const params = { playlist_id: playlistId, _id: nextId }
+    FlowRouter.go(pathDef, params)
   },
   'click #fullscreen-button' (event, instance) {
     const videoPlayer = instance.find('#player-container')
