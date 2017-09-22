@@ -1,14 +1,15 @@
 /* eslint-disable no-console */
 import { web3 } from '/imports/lib/ethereum/connection.js'
-import { getKeystore, deployTestContract, sendUnSignedContractTransaction } from '/imports/lib/ethereum/wallet.js'
+import { getRegistryAddress } from '/imports/lib/ethereum/contracts.js'
+import { getKeystore, sendUnSignedContractTransaction } from '/imports/lib/ethereum/wallet.js'
 import { Template } from 'meteor/templating'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import './debug.html'
 
 Template.debug.events({
   'click #deploy-parati-test-contract' () {
-    deployTestContract(web3.eth.accounts[0])
-    sendUnSignedContractTransaction(web3.eth.accounts[0], 100)
+    // deployTestContract(web3.eth.accounts[0])
+    // sendUnSignedContractTransaction(web3.eth.accounts[0], 100)
   },
   'click #get-some-PTI' () {
     sendUnSignedContractTransaction(web3.eth.accounts[0], 100)
@@ -32,8 +33,12 @@ Template.debug.helpers({
     return Session.get('privateKey')
   },
   contractAddress () {
-    return Session.get('pti_contract_address')
+    return Session.get('ParatiiToken')
   },
+  ParatiiRegistryAddress () {
+    return getRegistryAddress()
+  },
+
   isTestRPC () {
     return Session.get('isTestRPC')
   },

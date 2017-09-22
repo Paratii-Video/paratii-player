@@ -33,7 +33,7 @@
     "pull-filereader": "^1.0.1",
     "pull-stream": "^3.6.0",
     "stream-buffers": "^3.0.1",
-    "web3": "^0.19.1",
+    "web3": "^0.20.2",
     "webworker-threads": "^0.7.13"
   },
   "devDependencies": {
@@ -67,7 +67,8 @@
       "browser",
       "FlowRouter",
       "Modal",
-      "server"
+      "server",
+      "web3"
     ],
     "ignore": [
       "imports/lib/ethereum/from-ethereum-wallet",
