@@ -286,6 +286,21 @@ Template.player.events({
     const params = { playlist_id: playlistId, _id: nextId }
     FlowRouter.go(pathDef, params)
   },
+  'click #previous-video-button' () {
+    const playlistId = FlowRouter.getParam('playlist_id')
+    const playlist = Playlists.findOne({ _id: playlistId })
+    const videos = playlist.videos
+    const currentIndex = videos.indexOf(getVideo()._id)
+    var previousId
+    if (videos[currentIndex - 1] != null) {
+      previousId = videos[currentIndex - 1]
+    } else {
+      previousId = videos[videos.length - 1]
+    }
+    const pathDef = 'player'
+    const params = { playlist_id: playlistId, _id: previousId }
+    FlowRouter.go(pathDef, params)
+  },
   'click #fullscreen-button' (event, instance) {
     const videoPlayer = instance.find('#player-container')
     if (fullscreen()) {
