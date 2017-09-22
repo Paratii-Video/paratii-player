@@ -175,8 +175,6 @@ Template.player.helpers({
 
 })
 
-});
-
 const requestFullscreen = (element) => {
   if (element.requestFullscreen) {
     element.requestFullscreen()
