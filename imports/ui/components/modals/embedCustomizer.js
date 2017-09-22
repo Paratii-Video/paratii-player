@@ -7,7 +7,7 @@ Template.embedCustomizer.helpers({
   },
   code () {
     var iframe = document.createElement('iframe')
-    iframe.src = Meteor.absoluteUrl.defaultOptions.rootUrl + 'embed/' + this.videoId
+    iframe.src = Meteor.absoluteUrl.defaultOptions.rootUrl + '/embed/' + this.videoId
     iframe.width = 570
     iframe.height = 320
     var iframeHtml = iframe.outerHTML
