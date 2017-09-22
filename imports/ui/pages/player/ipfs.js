@@ -99,7 +99,6 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
     })
 
     paratiiIPFS.initIPFS(() => {
-
       paratiiIPFS.protocol.notifications.on('message:new', (peerId, msg) => {
         if (msg && msg.hello) {
           console.log('[PROTOCOL] Got peer ', peerId.toB58String(), ' | PTI: ', msg.hello.eth.toString())
@@ -121,7 +120,7 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
           let msg = paratiiIPFS.protocol.createCommand('test')
           peers.map((peer) => {
             paratiiIPFS.protocol.network.sendMessage(peer.peer.id, msg, (err) => {
-              if (err) console.error('[Paratii-protocol] Error ', err)
+              if (err) console.warn('[Paratii-protocol] Error ', err)
             })
 
             if (peer.addr) {
