@@ -99,6 +99,13 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
     })
 
     paratiiIPFS.initIPFS(() => {
+
+      paratiiIPFS.protocol.notifications.on('message:new', (peerId, msg) => {
+        if (msg && msg.hello) {
+          console.log('[PROTOCOL] Got peer ', peerId.toB58String(), ' | PTI: ', msg.hello.eth.toString())
+        }
+      })
+
       // window.ipfs is available.
       function updateStats () {
         metrics.elapsed = utils.duration(metrics.started)
@@ -111,7 +118,12 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
         window.ipfs.swarm.peers((err, peers) => {
           if (err) throw err
           console.log('-----------------------Peers---------------------------')
+          let msg = paratiiIPFS.protocol.createCommand('test')
           peers.map((peer) => {
+            paratiiIPFS.protocol.network.sendMessage(peer.peer.id, msg, (err) => {
+              if (err) console.error('[Paratii-protocol] Error ', err)
+            })
+
             if (peer.addr) {
               console.log(peer)
             }
