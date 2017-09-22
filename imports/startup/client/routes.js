@@ -71,9 +71,10 @@ FlowRouter.route('/upload', {
   }
 })
 
-FlowRouter.route('/player/:_id', {
+FlowRouter.route('/player/:playlist_id/:_id', {
   name: 'player',
   action () {
+    BlazeLayout.reset()
     BlazeLayout.render('App_body', { main: 'player' })
   }
 })
