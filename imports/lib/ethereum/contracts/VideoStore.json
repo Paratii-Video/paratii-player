@@ -1,0 +1,2108 @@
+{
+  "contractName": "VideoStore",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "videoId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "buyVideo",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_paratiiRegistry",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "payable": false,
+      "type": "fallback"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "videoId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "buyer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "price",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogBuyVideo",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_msg",
+          "type": "address"
+        }
+      ],
+      "name": "LogAddress",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_msg",
+          "type": "int256"
+        }
+      ],
+      "name": "LogInt",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_msg",
+          "type": "string"
+        }
+      ],
+      "name": "LogString",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_msg",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogUint",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_msg",
+          "type": "bytes"
+        }
+      ],
+      "name": "LogBytes",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_msg",
+          "type": "bytes32"
+        }
+      ],
+      "name": "LogBytes32",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_msg",
+          "type": "bool"
+        }
+      ],
+      "name": "LogBool",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x6060604052341561000f57600080fd5b6040516020806105b3833981016040528080519150505b5b60008054600160a060020a03191633600160a060020a03161790555b60018054600160a060020a031916600160a060020a0383161790555b505b610543806100706000396000f3006060604052361561003b5763ffffffff60e060020a60003504166363a72117811461004e5780638da5cb5b14610078578063f2fde38b146100a7575b341561004657600080fd5b5b600080fd5b005b341561005957600080fd5b6100646004356100c8565b604051901515815260200160405180910390f35b341561008357600080fd5b61008b61040f565b604051600160a060020a03909116815260200160405180910390f35b34156100b257600080fd5b61004c600160a060020a036004351661041e565b005b600154600090819081908190819081908190600160a060020a03166335817773826040516020015260405160e060020a63ffffffff8316028152602060048201819052600d60248301527f566964656f526567697374727900000000000000000000000000000000000000604483015260649091019060405180830381600087803b151561015557600080fd5b6102c65a03f1151561016657600080fd5b5050506040518051600154909750600160a060020a03169050633581777360006040516020015260405160e060020a63ffffffff8316028152602060048201819052600d60248301527f5061726174696941766174617200000000000000000000000000000000000000604483015260649091019060405180830381600087803b15156101f257600080fd5b6102c65a03f1151561020357600080fd5b5050506040518051955050600160a060020a03861663a2d6d3828960006040516040015260405160e060020a63ffffffff841602815260048101919091526024016040805180830381600087803b151561025c57600080fd5b6102c65a03f1151561026d57600080fd5b5050506040518051906020018051905093509350339150670de0b6b3a7640000610295610476565b84028115156102a057fe5b04905084600160a060020a03166323b872dd83878460006040516020015260405160e060020a63ffffffff8616028152600160a060020a0393841660048201529190921660248201526044810191909152606401602060405180830381600087803b151561030d57600080fd5b6102c65a03f1151561031e57600080fd5b50505060405180515050600160a060020a0385166323b872dd838684870360006040516020015260405160e060020a63ffffffff8616028152600160a060020a0393841660048201529190921660248201526044810191909152606401602060405180830381600087803b151561039457600080fd5b6102c65a03f115156103a557600080fd5b50505060405180519050507f97c8305fa4f7b1e57e7f0e30dae4f85993ec5c5ce15a8409754a4994f1c9200f883385604051928352600160a060020a0390911660208301526040808301919091526060909101905180910390a1600196505b505050505050919050565b600054600160a060020a031681565b60005433600160a060020a0390811691161461043957600080fd5b600160a060020a03811615610471576000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0383161790555b5b5b50565b600154600090600160a060020a031663e8ac013e826040516020015260405160e060020a63ffffffff8316028152602060048201819052601c60248301527f566964656f5265646973747269627574696f6e506f6f6c536861726500000000604483015260649091019060405180830381600087803b15156104f757600080fd5b6102c65a03f1151561050857600080fd5b50505060405180519150505b905600a165627a7a72305820ee40c3ba3b7deba68595fa06188f28a91d6232f8868d418de3367d5ff3c3c2850029",
+  "deployedBytecode": "0x6060604052361561003b5763ffffffff60e060020a60003504166363a72117811461004e5780638da5cb5b14610078578063f2fde38b146100a7575b341561004657600080fd5b5b600080fd5b005b341561005957600080fd5b6100646004356100c8565b604051901515815260200160405180910390f35b341561008357600080fd5b61008b61040f565b604051600160a060020a03909116815260200160405180910390f35b34156100b257600080fd5b61004c600160a060020a036004351661041e565b005b600154600090819081908190819081908190600160a060020a03166335817773826040516020015260405160e060020a63ffffffff8316028152602060048201819052600d60248301527f566964656f526567697374727900000000000000000000000000000000000000604483015260649091019060405180830381600087803b151561015557600080fd5b6102c65a03f1151561016657600080fd5b5050506040518051600154909750600160a060020a03169050633581777360006040516020015260405160e060020a63ffffffff8316028152602060048201819052600d60248301527f5061726174696941766174617200000000000000000000000000000000000000604483015260649091019060405180830381600087803b15156101f257600080fd5b6102c65a03f1151561020357600080fd5b5050506040518051955050600160a060020a03861663a2d6d3828960006040516040015260405160e060020a63ffffffff841602815260048101919091526024016040805180830381600087803b151561025c57600080fd5b6102c65a03f1151561026d57600080fd5b5050506040518051906020018051905093509350339150670de0b6b3a7640000610295610476565b84028115156102a057fe5b04905084600160a060020a03166323b872dd83878460006040516020015260405160e060020a63ffffffff8616028152600160a060020a0393841660048201529190921660248201526044810191909152606401602060405180830381600087803b151561030d57600080fd5b6102c65a03f1151561031e57600080fd5b50505060405180515050600160a060020a0385166323b872dd838684870360006040516020015260405160e060020a63ffffffff8616028152600160a060020a0393841660048201529190921660248201526044810191909152606401602060405180830381600087803b151561039457600080fd5b6102c65a03f115156103a557600080fd5b50505060405180519050507f97c8305fa4f7b1e57e7f0e30dae4f85993ec5c5ce15a8409754a4994f1c9200f883385604051928352600160a060020a0390911660208301526040808301919091526060909101905180910390a1600196505b505050505050919050565b600054600160a060020a031681565b60005433600160a060020a0390811691161461043957600080fd5b600160a060020a03811615610471576000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0383161790555b5b5b50565b600154600090600160a060020a031663e8ac013e826040516020015260405160e060020a63ffffffff8316028152602060048201819052601c60248301527f566964656f5265646973747269627574696f6e506f6f6c536861726500000000604483015260649091019060405180830381600087803b15156104f757600080fd5b6102c65a03f1151561050857600080fd5b50505060405180519150505b905600a165627a7a72305820ee40c3ba3b7deba68595fa06188f28a91d6232f8868d418de3367d5ff3c3c2850029",
+  "sourceMap": "286:1404:8:-;;;461:103;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;461:103:8;380:48:10;405:5;:18;;-1:-1:-1;;;;;;405:18:10;413:10;-1:-1:-1;;;;;405:18:10;;;;380:48;523:15:8;:34;;-1:-1:-1;;;;;;523:34:8;-1:-1:-1;;;;;523:34:8;;;;;461:103;;286:1404;;;;;;;",
+  "deployedSourceMap": "286:1404:8:-;;;;;;;;-1:-1:-1;;;286:1404:8;;;;;;;;;;;;;;;;;;;;;;;;;;;;639:37;661:8;;;639:37;286:1404;732:763;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;238:20:10;;;;;;;;;;;;;;;-1:-1:-1;;;;;238:20:10;;;;;;;;;;;;;;738:124;;;;;;;;;;-1:-1:-1;;;;;738:124:10;;;;;;;732:763:8;950:15;;782:4;;;;;;;;;;;;;;-1:-1:-1;;;;;950:15:8;:27;782:4;950:44;;;;;;;-1:-1:-1;;;950:44:8;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1048:15;;950:44;;-1:-1:-1;;;;;;1048:15:8;;-1:-1:-1;1048:27:8;:15;:44;;;;;;;-1:-1:-1;;;1048:44:8;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;;;1123:20:8;;;1144:7;1123:29;;;;;;;;-1:-1:-1;;;1123:29:8;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1102:50;;;;1177:10;1161:26;;1253:8;1224:25;:23;:25::i;:::-;1216:5;:33;1215:46;;;;;;;;1196:65;;1270:13;-1:-1:-1;;;;;1270:26:8;;1297:5;1312:13;1329:11;1270:71;;;;;;;;-1:-1:-1;;;1270:71:8;;;;;;-1:-1:-1;;;;;1270:71:8;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;;;1350:26:8;;;1377:5;1392;1400:19;;;1350:70;;;;;;;;-1:-1:-1;;;1350:70:8;;;;;;-1:-1:-1;;;;;1350:70:8;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1429:39;1441:7;1450:10;1462:5;1429:39;;;;;-1:-1:-1;;;;;1429:39:8;;;;;;;;;;;;;;;;;;;;;;;;;;1484:4;1477:11;;732:763;;;;;;;;;;:::o;238:20:10:-;;;-1:-1:-1;;;;;238:20:10;;:::o;738:124::-;558:5;;544:10;-1:-1:-1;;;;;544:19:10;;;558:5;;544:19;536:28;;;;;;-1:-1:-1;;;;;803:22:10;;;799:59;;835:5;:16;;-1:-1:-1;;835:16:10;-1:-1:-1;;;;;835:16:10;;;;;799:59;570:1;738:124;;:::o;1501:187:8:-;1624:15;;1553:4;;-1:-1:-1;;;;;1624:15:8;:25;1553:4;1624:57;;;;;;;-1:-1:-1;;;1624:57:8;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;1501:187:8;;:::o",
+  "source": "pragma solidity ^0.4.13;\n\nimport './ParatiiAvatar.sol';\nimport './ParatiiToken.sol';\nimport './VideoRegistry.sol';\nimport './ParatiiRegistry.sol';\nimport \"../debug/Debug.sol\";\n\n\n/**\n * @title VideoStore\n * @dev A Contract that wraps the native transfer function and logs an event.\n */\n\ncontract VideoStore is Ownable, Debug {\n\n    ParatiiRegistry paratiiRegistry;\n\n    event LogBuyVideo(\n      bytes32 videoId,\n      address buyer,\n      uint price\n    );\n\n    function VideoStore(ParatiiRegistry _paratiiRegistry) {\n      paratiiRegistry = _paratiiRegistry;\n    }\n\n    // If someone accidentally sends ether to this contract, revert;\n    function () {\n        revert();\n    }\n\n    /**\n     * @dev buyVideo buys a video\n     */\n    function buyVideo(bytes32 videoId) public returns(bool)  {\n       // get the info about the video\n       /*LogAddress(ParatiiRegistry.getContract('VideoRegistry'));*/\n       VideoRegistry videoRegistry = VideoRegistry(paratiiRegistry.getContract('VideoRegistry'));\n       ParatiiAvatar paratiiAvatar = ParatiiAvatar(paratiiRegistry.getContract('ParatiiAvatar'));\n       var (owner, price) = videoRegistry.videos(videoId);\n       address buyer = msg.sender;\n       uint paratiiPart = (price * redistributionPoolShare()) / 10 ** 18;\n       paratiiAvatar.transferFrom(buyer, address(paratiiAvatar),  paratiiPart);\n       paratiiAvatar.transferFrom(buyer, address(owner), price - paratiiPart);\n       LogBuyVideo(videoId, msg.sender, price);\n       return true;\n    }\n\n    function redistributionPoolShare() internal returns(uint) {\n        // the \"percentage\" in precision 10**18\n        return paratiiRegistry.getNumber('VideoRedistributionPoolShare');\n    }\n}\n",
+  "sourcePath": "/media/data/projects/bossanova/paratii-contracts/contracts/paratii/VideoStore.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/media/data/projects/bossanova/paratii-contracts/contracts/paratii/VideoStore.sol",
+      "exportedSymbols": {
+        "VideoStore": [
+          828
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".13"
+          ]
+        },
+        "id": 699,
+        "name": "PragmaDirective",
+        "src": "0:24:8"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 382,
+          "absolutePath": "/media/data/projects/bossanova/paratii-contracts/contracts/paratii/ParatiiAvatar.sol",
+          "file": "./ParatiiAvatar.sol",
+          "scope": 829,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 700,
+        "name": "ImportDirective",
+        "src": "26:29:8"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 575,
+          "absolutePath": "/media/data/projects/bossanova/paratii-contracts/contracts/paratii/ParatiiToken.sol",
+          "file": "./ParatiiToken.sol",
+          "scope": 829,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 701,
+        "name": "ImportDirective",
+        "src": "56:28:8"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 698,
+          "absolutePath": "/media/data/projects/bossanova/paratii-contracts/contracts/paratii/VideoRegistry.sol",
+          "file": "./VideoRegistry.sol",
+          "scope": 829,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 702,
+        "name": "ImportDirective",
+        "src": "85:29:8"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 537,
+          "absolutePath": "/media/data/projects/bossanova/paratii-contracts/contracts/paratii/ParatiiRegistry.sol",
+          "file": "./ParatiiRegistry.sol",
+          "scope": 829,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 703,
+        "name": "ImportDirective",
+        "src": "115:31:8"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 88,
+          "absolutePath": "/media/data/projects/bossanova/paratii-contracts/contracts/debug/Debug.sol",
+          "file": "../debug/Debug.sol",
+          "scope": 829,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 704,
+        "name": "ImportDirective",
+        "src": "147:28:8"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            87,
+            967
+          ],
+          "contractKind": "contract",
+          "documentation": "@title VideoStore\n@dev A Contract that wraps the native transfer function and logs an event.",
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            828,
+            87,
+            967
+          ],
+          "name": "VideoStore",
+          "scope": 829
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "Ownable",
+                  "referencedDeclaration": 967,
+                  "type": "contract Ownable"
+                },
+                "id": 705,
+                "name": "UserDefinedTypeName",
+                "src": "309:7:8"
+              }
+            ],
+            "id": 706,
+            "name": "InheritanceSpecifier",
+            "src": "309:7:8"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "Debug",
+                  "referencedDeclaration": 87,
+                  "type": "contract Debug"
+                },
+                "id": 707,
+                "name": "UserDefinedTypeName",
+                "src": "318:5:8"
+              }
+            ],
+            "id": 708,
+            "name": "InheritanceSpecifier",
+            "src": "318:5:8"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "paratiiRegistry",
+              "scope": 828,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "contract ParatiiRegistry",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "ParatiiRegistry",
+                  "referencedDeclaration": 536,
+                  "type": "contract ParatiiRegistry"
+                },
+                "id": 709,
+                "name": "UserDefinedTypeName",
+                "src": "331:15:8"
+              }
+            ],
+            "id": 710,
+            "name": "VariableDeclaration",
+            "src": "331:31:8"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "LogBuyVideo"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "videoId",
+                      "scope": 718,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 711,
+                        "name": "ElementaryTypeName",
+                        "src": "394:7:8"
+                      }
+                    ],
+                    "id": 712,
+                    "name": "VariableDeclaration",
+                    "src": "394:15:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "buyer",
+                      "scope": 718,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 713,
+                        "name": "ElementaryTypeName",
+                        "src": "417:7:8"
+                      }
+                    ],
+                    "id": 714,
+                    "name": "VariableDeclaration",
+                    "src": "417:13:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "price",
+                      "scope": 718,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 715,
+                        "name": "ElementaryTypeName",
+                        "src": "438:4:8"
+                      }
+                    ],
+                    "id": 716,
+                    "name": "VariableDeclaration",
+                    "src": "438:10:8"
+                  }
+                ],
+                "id": 717,
+                "name": "ParameterList",
+                "src": "386:68:8"
+              }
+            ],
+            "id": 718,
+            "name": "EventDefinition",
+            "src": "369:86:8"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": true,
+              "modifiers": [
+                null
+              ],
+              "name": "VideoStore",
+              "payable": false,
+              "scope": 828,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_paratiiRegistry",
+                      "scope": 728,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract ParatiiRegistry",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "ParatiiRegistry",
+                          "referencedDeclaration": 536,
+                          "type": "contract ParatiiRegistry"
+                        },
+                        "id": 719,
+                        "name": "UserDefinedTypeName",
+                        "src": "481:15:8"
+                      }
+                    ],
+                    "id": 720,
+                    "name": "VariableDeclaration",
+                    "src": "481:32:8"
+                  }
+                ],
+                "id": 721,
+                "name": "ParameterList",
+                "src": "480:34:8"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 722,
+                "name": "ParameterList",
+                "src": "515:0:8"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "contract ParatiiRegistry"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 710,
+                              "type": "contract ParatiiRegistry",
+                              "value": "paratiiRegistry"
+                            },
+                            "id": 723,
+                            "name": "Identifier",
+                            "src": "523:15:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 720,
+                              "type": "contract ParatiiRegistry",
+                              "value": "_paratiiRegistry"
+                            },
+                            "id": 724,
+                            "name": "Identifier",
+                            "src": "541:16:8"
+                          }
+                        ],
+                        "id": 725,
+                        "name": "Assignment",
+                        "src": "523:34:8"
+                      }
+                    ],
+                    "id": 726,
+                    "name": "ExpressionStatement",
+                    "src": "523:34:8"
+                  }
+                ],
+                "id": 727,
+                "name": "Block",
+                "src": "515:49:8"
+              }
+            ],
+            "id": 728,
+            "name": "FunctionDefinition",
+            "src": "461:103:8"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "",
+              "payable": false,
+              "scope": 828,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 729,
+                "name": "ParameterList",
+                "src": "648:2:8"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 730,
+                "name": "ParameterList",
+                "src": "651:0:8"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            null
+                          ],
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                null
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1268,
+                              "type": "function ()",
+                              "value": "revert"
+                            },
+                            "id": 731,
+                            "name": "Identifier",
+                            "src": "661:6:8"
+                          }
+                        ],
+                        "id": 732,
+                        "name": "FunctionCall",
+                        "src": "661:8:8"
+                      }
+                    ],
+                    "id": 733,
+                    "name": "ExpressionStatement",
+                    "src": "661:8:8"
+                  }
+                ],
+                "id": 734,
+                "name": "Block",
+                "src": "651:25:8"
+              }
+            ],
+            "id": 735,
+            "name": "FunctionDefinition",
+            "src": "639:37:8"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "buyVideo",
+              "payable": false,
+              "scope": 828,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "videoId",
+                      "scope": 816,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 736,
+                        "name": "ElementaryTypeName",
+                        "src": "750:7:8"
+                      }
+                    ],
+                    "id": 737,
+                    "name": "VariableDeclaration",
+                    "src": "750:15:8"
+                  }
+                ],
+                "id": 738,
+                "name": "ParameterList",
+                "src": "749:17:8"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 816,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 739,
+                        "name": "ElementaryTypeName",
+                        "src": "782:4:8"
+                      }
+                    ],
+                    "id": 740,
+                    "name": "VariableDeclaration",
+                    "src": "782:4:8"
+                  }
+                ],
+                "id": 741,
+                "name": "ParameterList",
+                "src": "781:6:8"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        743
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "videoRegistry",
+                          "scope": 816,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "contract VideoRegistry",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "contractScope": null,
+                              "name": "VideoRegistry",
+                              "referencedDeclaration": 697,
+                              "type": "contract VideoRegistry"
+                            },
+                            "id": 742,
+                            "name": "UserDefinedTypeName",
+                            "src": "906:13:8"
+                          }
+                        ],
+                        "id": 743,
+                        "name": "VariableDeclaration",
+                        "src": "906:27:8"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "contract VideoRegistry",
+                          "type_conversion": true
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 697,
+                              "type": "type(contract VideoRegistry)",
+                              "value": "VideoRegistry"
+                            },
+                            "id": 744,
+                            "name": "Identifier",
+                            "src": "936:13:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_stringliteral_e3614801fd6d70456f7913d54b05bb084cc967269f4e35202867e55dd37463ae",
+                                      "typeString": "literal_string \"VideoRegistry\""
+                                    }
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "getContract",
+                                  "referencedDeclaration": 479,
+                                  "type": "function (string memory) constant external returns (address)"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 710,
+                                      "type": "contract ParatiiRegistry",
+                                      "value": "paratiiRegistry"
+                                    },
+                                    "id": 745,
+                                    "name": "Identifier",
+                                    "src": "950:15:8"
+                                  }
+                                ],
+                                "id": 746,
+                                "name": "MemberAccess",
+                                "src": "950:27:8"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "hexvalue": "566964656f5265676973747279",
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "subdenomination": null,
+                                  "token": "string",
+                                  "type": "literal_string \"VideoRegistry\"",
+                                  "value": "VideoRegistry"
+                                },
+                                "id": 747,
+                                "name": "Literal",
+                                "src": "978:15:8"
+                              }
+                            ],
+                            "id": 748,
+                            "name": "FunctionCall",
+                            "src": "950:44:8"
+                          }
+                        ],
+                        "id": 749,
+                        "name": "FunctionCall",
+                        "src": "936:59:8"
+                      }
+                    ],
+                    "id": 750,
+                    "name": "VariableDeclarationStatement",
+                    "src": "906:89:8"
+                  },
+                  {
+                    "attributes": {
+                      "assignments": [
+                        752
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "paratiiAvatar",
+                          "scope": 816,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "contract ParatiiAvatar",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "contractScope": null,
+                              "name": "ParatiiAvatar",
+                              "referencedDeclaration": 381,
+                              "type": "contract ParatiiAvatar"
+                            },
+                            "id": 751,
+                            "name": "UserDefinedTypeName",
+                            "src": "1004:13:8"
+                          }
+                        ],
+                        "id": 752,
+                        "name": "VariableDeclaration",
+                        "src": "1004:27:8"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "contract ParatiiAvatar",
+                          "type_conversion": true
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 381,
+                              "type": "type(contract ParatiiAvatar)",
+                              "value": "ParatiiAvatar"
+                            },
+                            "id": 753,
+                            "name": "Identifier",
+                            "src": "1034:13:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_stringliteral_413379dd217b9e6ef8f1674b1bdb206a6ff52871eb36d7c50668d717460cf319",
+                                      "typeString": "literal_string \"ParatiiAvatar\""
+                                    }
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "getContract",
+                                  "referencedDeclaration": 479,
+                                  "type": "function (string memory) constant external returns (address)"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 710,
+                                      "type": "contract ParatiiRegistry",
+                                      "value": "paratiiRegistry"
+                                    },
+                                    "id": 754,
+                                    "name": "Identifier",
+                                    "src": "1048:15:8"
+                                  }
+                                ],
+                                "id": 755,
+                                "name": "MemberAccess",
+                                "src": "1048:27:8"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "hexvalue": "50617261746969417661746172",
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "subdenomination": null,
+                                  "token": "string",
+                                  "type": "literal_string \"ParatiiAvatar\"",
+                                  "value": "ParatiiAvatar"
+                                },
+                                "id": 756,
+                                "name": "Literal",
+                                "src": "1076:15:8"
+                              }
+                            ],
+                            "id": 757,
+                            "name": "FunctionCall",
+                            "src": "1048:44:8"
+                          }
+                        ],
+                        "id": 758,
+                        "name": "FunctionCall",
+                        "src": "1034:59:8"
+                      }
+                    ],
+                    "id": 759,
+                    "name": "VariableDeclarationStatement",
+                    "src": "1004:89:8"
+                  },
+                  {
+                    "attributes": {
+                      "assignments": [
+                        760,
+                        761
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "owner",
+                          "scope": 816,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "address",
+                          "typeName": null,
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [],
+                        "id": 760,
+                        "name": "VariableDeclaration",
+                        "src": "1107:5:8"
+                      },
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "price",
+                          "scope": 816,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "uint256",
+                          "typeName": null,
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [],
+                        "id": 761,
+                        "name": "VariableDeclaration",
+                        "src": "1114:5:8"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple(address,uint256)",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bytes32",
+                                  "typeString": "bytes32"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "videos",
+                              "referencedDeclaration": 636,
+                              "type": "function (bytes32) constant external returns (address,uint256)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 743,
+                                  "type": "contract VideoRegistry",
+                                  "value": "videoRegistry"
+                                },
+                                "id": 762,
+                                "name": "Identifier",
+                                "src": "1123:13:8"
+                              }
+                            ],
+                            "id": 763,
+                            "name": "MemberAccess",
+                            "src": "1123:20:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 737,
+                              "type": "bytes32",
+                              "value": "videoId"
+                            },
+                            "id": 764,
+                            "name": "Identifier",
+                            "src": "1144:7:8"
+                          }
+                        ],
+                        "id": 765,
+                        "name": "FunctionCall",
+                        "src": "1123:29:8"
+                      }
+                    ],
+                    "id": 766,
+                    "name": "VariableDeclarationStatement",
+                    "src": "1102:50:8"
+                  },
+                  {
+                    "attributes": {
+                      "assignments": [
+                        768
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "buyer",
+                          "scope": 816,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "address",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "address",
+                              "type": "address"
+                            },
+                            "id": 767,
+                            "name": "ElementaryTypeName",
+                            "src": "1161:7:8"
+                          }
+                        ],
+                        "id": 768,
+                        "name": "VariableDeclaration",
+                        "src": "1161:13:8"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "member_name": "sender",
+                          "referencedDeclaration": null,
+                          "type": "address"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1249,
+                              "type": "msg",
+                              "value": "msg"
+                            },
+                            "id": 769,
+                            "name": "Identifier",
+                            "src": "1177:3:8"
+                          }
+                        ],
+                        "id": 770,
+                        "name": "MemberAccess",
+                        "src": "1177:10:8"
+                      }
+                    ],
+                    "id": 771,
+                    "name": "VariableDeclarationStatement",
+                    "src": "1161:26:8"
+                  },
+                  {
+                    "attributes": {
+                      "assignments": [
+                        773
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "paratiiPart",
+                          "scope": 816,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "uint256",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "uint",
+                              "type": "uint256"
+                            },
+                            "id": 772,
+                            "name": "ElementaryTypeName",
+                            "src": "1196:4:8"
+                          }
+                        ],
+                        "id": 773,
+                        "name": "VariableDeclaration",
+                        "src": "1196:16:8"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "commonType": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "/",
+                          "type": "uint256"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isInlineArray": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "type": "uint256"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "commonType": {
+                                    "typeIdentifier": "t_uint256",
+                                    "typeString": "uint256"
+                                  },
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "operator": "*",
+                                  "type": "uint256"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 761,
+                                      "type": "uint256",
+                                      "value": "price"
+                                    },
+                                    "id": 774,
+                                    "name": "Identifier",
+                                    "src": "1216:5:8"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "arguments": [
+                                        null
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "isStructConstructorCall": false,
+                                      "lValueRequested": false,
+                                      "names": [
+                                        null
+                                      ],
+                                      "type": "uint256",
+                                      "type_conversion": false
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": [
+                                            null
+                                          ],
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 827,
+                                          "type": "function () returns (uint256)",
+                                          "value": "redistributionPoolShare"
+                                        },
+                                        "id": 775,
+                                        "name": "Identifier",
+                                        "src": "1224:23:8"
+                                      }
+                                    ],
+                                    "id": 776,
+                                    "name": "FunctionCall",
+                                    "src": "1224:25:8"
+                                  }
+                                ],
+                                "id": 777,
+                                "name": "BinaryOperation",
+                                "src": "1216:33:8"
+                              }
+                            ],
+                            "id": 778,
+                            "name": "TupleExpression",
+                            "src": "1215:35:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_rational_1000000000000000000_by_1",
+                                "typeString": "int_const 1000000000000000000"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "operator": "**",
+                              "type": "int_const 1000000000000000000"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "hexvalue": "3130",
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "subdenomination": null,
+                                  "token": "number",
+                                  "type": "int_const 10",
+                                  "value": "10"
+                                },
+                                "id": 779,
+                                "name": "Literal",
+                                "src": "1253:2:8"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "hexvalue": "3138",
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "subdenomination": null,
+                                  "token": "number",
+                                  "type": "int_const 18",
+                                  "value": "18"
+                                },
+                                "id": 780,
+                                "name": "Literal",
+                                "src": "1259:2:8"
+                              }
+                            ],
+                            "id": 781,
+                            "name": "BinaryOperation",
+                            "src": "1253:8:8"
+                          }
+                        ],
+                        "id": 782,
+                        "name": "BinaryOperation",
+                        "src": "1215:46:8"
+                      }
+                    ],
+                    "id": 783,
+                    "name": "VariableDeclarationStatement",
+                    "src": "1196:65:8"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "bool",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "transferFrom",
+                              "referencedDeclaration": 380,
+                              "type": "function (address,address,uint256) external returns (bool)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 752,
+                                  "type": "contract ParatiiAvatar",
+                                  "value": "paratiiAvatar"
+                                },
+                                "id": 784,
+                                "name": "Identifier",
+                                "src": "1270:13:8"
+                              }
+                            ],
+                            "id": 786,
+                            "name": "MemberAccess",
+                            "src": "1270:26:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 768,
+                              "type": "address",
+                              "value": "buyer"
+                            },
+                            "id": 787,
+                            "name": "Identifier",
+                            "src": "1297:5:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": true
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_contract$_ParatiiAvatar_$381",
+                                      "typeString": "contract ParatiiAvatar"
+                                    }
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "type": "type(address)",
+                                  "value": "address"
+                                },
+                                "id": 788,
+                                "name": "ElementaryTypeNameExpression",
+                                "src": "1304:7:8"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 752,
+                                  "type": "contract ParatiiAvatar",
+                                  "value": "paratiiAvatar"
+                                },
+                                "id": 789,
+                                "name": "Identifier",
+                                "src": "1312:13:8"
+                              }
+                            ],
+                            "id": 790,
+                            "name": "FunctionCall",
+                            "src": "1304:22:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 773,
+                              "type": "uint256",
+                              "value": "paratiiPart"
+                            },
+                            "id": 791,
+                            "name": "Identifier",
+                            "src": "1329:11:8"
+                          }
+                        ],
+                        "id": 792,
+                        "name": "FunctionCall",
+                        "src": "1270:71:8"
+                      }
+                    ],
+                    "id": 793,
+                    "name": "ExpressionStatement",
+                    "src": "1270:71:8"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "bool",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "transferFrom",
+                              "referencedDeclaration": 380,
+                              "type": "function (address,address,uint256) external returns (bool)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 752,
+                                  "type": "contract ParatiiAvatar",
+                                  "value": "paratiiAvatar"
+                                },
+                                "id": 794,
+                                "name": "Identifier",
+                                "src": "1350:13:8"
+                              }
+                            ],
+                            "id": 796,
+                            "name": "MemberAccess",
+                            "src": "1350:26:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 768,
+                              "type": "address",
+                              "value": "buyer"
+                            },
+                            "id": 797,
+                            "name": "Identifier",
+                            "src": "1377:5:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": true
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_address",
+                                      "typeString": "address"
+                                    }
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "type": "type(address)",
+                                  "value": "address"
+                                },
+                                "id": 798,
+                                "name": "ElementaryTypeNameExpression",
+                                "src": "1384:7:8"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 760,
+                                  "type": "address",
+                                  "value": "owner"
+                                },
+                                "id": 799,
+                                "name": "Identifier",
+                                "src": "1392:5:8"
+                              }
+                            ],
+                            "id": 800,
+                            "name": "FunctionCall",
+                            "src": "1384:14:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "-",
+                              "type": "uint256"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 761,
+                                  "type": "uint256",
+                                  "value": "price"
+                                },
+                                "id": 801,
+                                "name": "Identifier",
+                                "src": "1400:5:8"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 773,
+                                  "type": "uint256",
+                                  "value": "paratiiPart"
+                                },
+                                "id": 802,
+                                "name": "Identifier",
+                                "src": "1408:11:8"
+                              }
+                            ],
+                            "id": 803,
+                            "name": "BinaryOperation",
+                            "src": "1400:19:8"
+                          }
+                        ],
+                        "id": 804,
+                        "name": "FunctionCall",
+                        "src": "1350:70:8"
+                      }
+                    ],
+                    "id": 805,
+                    "name": "ExpressionStatement",
+                    "src": "1350:70:8"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bytes32",
+                                  "typeString": "bytes32"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 718,
+                              "type": "function (bytes32,address,uint256) constant",
+                              "value": "LogBuyVideo"
+                            },
+                            "id": 806,
+                            "name": "Identifier",
+                            "src": "1429:11:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 737,
+                              "type": "bytes32",
+                              "value": "videoId"
+                            },
+                            "id": 807,
+                            "name": "Identifier",
+                            "src": "1441:7:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "sender",
+                              "referencedDeclaration": null,
+                              "type": "address"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1249,
+                                  "type": "msg",
+                                  "value": "msg"
+                                },
+                                "id": 808,
+                                "name": "Identifier",
+                                "src": "1450:3:8"
+                              }
+                            ],
+                            "id": 809,
+                            "name": "MemberAccess",
+                            "src": "1450:10:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 761,
+                              "type": "uint256",
+                              "value": "price"
+                            },
+                            "id": 810,
+                            "name": "Identifier",
+                            "src": "1462:5:8"
+                          }
+                        ],
+                        "id": 811,
+                        "name": "FunctionCall",
+                        "src": "1429:39:8"
+                      }
+                    ],
+                    "id": 812,
+                    "name": "ExpressionStatement",
+                    "src": "1429:39:8"
+                  },
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 741
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "hexvalue": "74727565",
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "subdenomination": null,
+                          "token": "bool",
+                          "type": "bool",
+                          "value": "true"
+                        },
+                        "id": 813,
+                        "name": "Literal",
+                        "src": "1484:4:8"
+                      }
+                    ],
+                    "id": 814,
+                    "name": "Return",
+                    "src": "1477:11:8"
+                  }
+                ],
+                "id": 815,
+                "name": "Block",
+                "src": "789:706:8"
+              }
+            ],
+            "id": 816,
+            "name": "FunctionDefinition",
+            "src": "732:763:8"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "redistributionPoolShare",
+              "payable": false,
+              "scope": 828,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 817,
+                "name": "ParameterList",
+                "src": "1533:2:8"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 827,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 818,
+                        "name": "ElementaryTypeName",
+                        "src": "1553:4:8"
+                      }
+                    ],
+                    "id": 819,
+                    "name": "VariableDeclaration",
+                    "src": "1553:4:8"
+                  }
+                ],
+                "id": 820,
+                "name": "ParameterList",
+                "src": "1552:6:8"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 820
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "uint256",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_stringliteral_3c910653081477075993249719a0455a01128c4f6e3381bd692d78afd4bbdac3",
+                                  "typeString": "literal_string \"VideoRedistributionPoolShare\""
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "getNumber",
+                              "referencedDeclaration": 535,
+                              "type": "function (string memory) constant external returns (uint256)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 710,
+                                  "type": "contract ParatiiRegistry",
+                                  "value": "paratiiRegistry"
+                                },
+                                "id": 821,
+                                "name": "Identifier",
+                                "src": "1624:15:8"
+                              }
+                            ],
+                            "id": 822,
+                            "name": "MemberAccess",
+                            "src": "1624:25:8"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "hexvalue": "566964656f5265646973747269627574696f6e506f6f6c5368617265",
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "subdenomination": null,
+                              "token": "string",
+                              "type": "literal_string \"VideoRedistributionPoolShare\"",
+                              "value": "VideoRedistributionPoolShare"
+                            },
+                            "id": 823,
+                            "name": "Literal",
+                            "src": "1650:30:8"
+                          }
+                        ],
+                        "id": 824,
+                        "name": "FunctionCall",
+                        "src": "1624:57:8"
+                      }
+                    ],
+                    "id": 825,
+                    "name": "Return",
+                    "src": "1617:64:8"
+                  }
+                ],
+                "id": 826,
+                "name": "Block",
+                "src": "1559:129:8"
+              }
+            ],
+            "id": 827,
+            "name": "FunctionDefinition",
+            "src": "1501:187:8"
+          }
+        ],
+        "id": 828,
+        "name": "ContractDefinition",
+        "src": "286:1404:8"
+      }
+    ],
+    "id": 829,
+    "name": "SourceUnit",
+    "src": "0:1691:8"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2017-09-19T10:39:17.087Z"
+}

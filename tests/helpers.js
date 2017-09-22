@@ -7,7 +7,7 @@ export function login (browser) {
   browser.click('#at-btn')
 }
 
-export function getSomeEth (amount) {
+export function getSomeETH (amount) {
   const wallet = require('./imports/lib/ethereum/wallet.js')
   const accounts = web3.eth.accounts
   console.log('send transaction')

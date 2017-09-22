@@ -28,9 +28,7 @@ export async function getContractAddress (name) {
   } else {
     console.log(`getting address of the contract "${name}" from the registry`)
     try {
-      console.log('124')
       console.log(getParatiiRegistry())
-      console.log('456')
       let address = await getParatiiRegistry().getContract(name)
       console.log(`contract ${name} is located at ${address}`)
       return address
