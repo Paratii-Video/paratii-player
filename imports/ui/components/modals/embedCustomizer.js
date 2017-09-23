@@ -3,6 +3,7 @@ import Clipboard from 'clipboard'
 import './embedCustomizer.html'
 
 let clipboard
+
 Template.embedCustomizer.onCreated(function () {
   clipboard = new Clipboard('#copy_to_clipboard')
   clipboard.on('success', function (e) {
