@@ -1,11 +1,14 @@
 /* globals Ipfs */
 'use strict'
 import { Meteor } from 'meteor/meteor'
+import { getUserPTIAddress } from '/imports/api/users.js'
+import Protocol from 'paratii-protocol'
 
 const REPO_PATH = 'paratii-ipfs-repo'
 function noop () {}
 
 const paratiiIPFS = {
+  protocol: null,
   /**
   * initIPFS - initiates Ipfs instance
   *
@@ -107,7 +110,17 @@ const paratiiIPFS = {
           window.ipfs.id().then((id) => {
             let peerInfo = id
             console.log('[IPFS] id: ', peerInfo)
-            callback()
+            let ptiAddress = getUserPTIAddress() || 'no_address'
+            paratiiIPFS.protocol = new Protocol(
+              window.ipfs._libp2pNode,
+              window.ipfs._repo.blocks,
+              // add ETH Address here.
+              ptiAddress
+            )
+
+            paratiiIPFS.protocol.start(callback)
+
+            // callback()
           })
         })
 
