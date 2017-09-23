@@ -1,6 +1,10 @@
 import { Template } from 'meteor/templating'
+import Clipboard from 'clipboard'
 import './embedCustomizer.html'
 
+Template.embedCustomizer.onCreated(function () {
+  new Clipboard('#copy_to_clipboard')
+})
 Template.embedCustomizer.helpers({
   embedBaseUrl () {
     return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + 'embed/' + this.videoId
@@ -16,6 +20,7 @@ Template.embedCustomizer.helpers({
   }
 })
 Template.embedCustomizer.events({
-  'click #clipboard' (event) {
+  'click #copy_to_clipboard' (event) {
+
   }
 })
