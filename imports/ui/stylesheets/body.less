@@ -17,8 +17,8 @@ h3 {
 #app-container {
   position: absolute;
   height: 100%;
-  width: ~"calc(100% - 60px)";
-  left: 60px;
+  width: 100%;
+  left: 0px;
   top: 0px;
   background-color: white;
   border-right: .1rem solid lightgray;
@@ -26,11 +26,10 @@ h3 {
   border-bottom: .1rem solid lightgray;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  overflow-y: auto;
-  overflow-y: visible;
-  &.playing {
-    // overflow-y: visible;
-  }
+}
+
+.app-content {
+  margin-left: 60px;
 }
 
 .nav-overlay {
@@ -133,4 +132,8 @@ h3 {
 
 .about-container {
   margin-left: 20px;
+}
+
+.no-transition {
+  transition: none;
 }

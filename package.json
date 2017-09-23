@@ -29,6 +29,7 @@
     "meteor-node-stubs": "~0.2.4",
     "moment": "^2.18.1",
     "multihashes": "^0.4.9",
+    "paratii-protocol": "github:ya7ya/paratii-protocol#master",
     "pretty-bytes": "^4.0.2",
     "promisify-node": "^0.4.0",
     "pull-filereader": "^1.0.1",
