@@ -12,11 +12,17 @@ import '/imports/ui/components/modals/embedCustomizer.js'
 
 import './player.html'
 
-let fullscreenOn = false
 let controlsHandler
 let volumeHandler
 let previousVolume = 100
 let _video
+
+const fullscreen = () => {
+  return document.fullscreenElement ||
+    document.mozFullScreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement
+}
 
 function getVideo () {
   const videoId = FlowRouter.getParam('_id')
@@ -107,24 +113,14 @@ Template.player.onDestroyed(function () {
 })
 
 Template.player.helpers({
-
   isLocked () {
     return Template.instance().playerState.get('locked')
-  },
-  canAutoplay () {
-    const locked = Template.instance().playerState.get('locked')
-    if (!locked) {
-      // Template.instance().navState.set('closed');
-      return 'autoplay'
-    } else {
-      return ''
-    }
   },
   playPause () {
     return Template.instance().playerState.get('playing') ? 'pause' : 'play'
   },
   playPauseIcon () {
-    const state = Template.instance().playerState.get('layeplaying')
+    const state = Template.instance().playerState.get('playing')
     return (state) ? '/img/pause-icon.svg' : '/img/play-icon.svg'
   },
   currentTime () {
@@ -276,12 +272,10 @@ Template.player.events({
   },
   'click #fullscreen-button' (event, instance) {
     const videoPlayer = instance.find('#player-container')
-    if (fullscreenOn) {
+    if (fullscreen()) {
       requestCancelFullscreen(document)
-      fullscreenOn = false
     } else {
       requestFullscreen(videoPlayer)
-      fullscreenOn = true
     }
   },
   'timeupdate' (event, instance) {
