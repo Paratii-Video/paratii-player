@@ -2,7 +2,7 @@
 /* eslint no-global-assign: 0 */
 import Web3 from 'web3'
 import { getUserPTIAddress } from '../../api/users.js'
-import { getContract, getContractAddress, setRegistryAddress, getContracts } from './contracts.js'
+import { getContract, getRegistryAddress, setRegistryAddress, getContracts } from './contracts.js'
 // TODO: store all this information in a settings.json object
 const DEFAULT_PROVIDER = Meteor.settings.public.http_provider
 
@@ -33,14 +33,13 @@ export async function updateSession () {
   if (web3.isConnected()) {
     Session.set('eth_isConnected', true)
     Session.set('eth_currentBlock', web3.eth.blockNumber)
+    Session.set('ParatiiRegistry', await getRegistryAddress())
     const ptiAddress = getUserPTIAddress()
-    getContractAddress('ParatiiToken').then(function (result) {
-      Session.set('ParatiiToken', result)
-    })
     if (ptiAddress) {
       // SET PTI BALANCE
-      const contract = await PTIContract()
+      const contract = await getContract('ParatiiToken')
       if (contract) {
+        Session.set('ParatiiToken', contract.address)
         const ptiBalance = await contract.balanceOf(ptiAddress)
         Session.set('pti_balance', ptiBalance.toNumber())
       }
@@ -52,8 +51,10 @@ export async function updateSession () {
           Session.set('eth_balance', result.toNumber())
         }
       })
+    }
 
-      // set the contracts in the Session object
+    // set the contracts in the Session object
+    if (getRegistryAddress()) {
       getContracts().then(function (contracts) {
         Session.set('contracts', contracts)
       })

@@ -136,14 +136,23 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
     let rawTx
     switch (type) {
       case 'Eth':
-        txOptions.to = add0x(recipient)
+        // next lines for a simple value transaction
+        // txOptions.to = add0x(recipient)
+        // txOptions.value = web3.toHex(value)
+        // txOptions.currency = 'eth'
+        // rawTx = lightwallet.txutils.valueTx(txOptions)
+        // break
+        let contract = getContract('SendEther')
+        txOptions.to = contract.address
+        // txOptions.currency = 'pti'
         txOptions.value = web3.toHex(value)
-        txOptions.currency = 'eth'
-        rawTx = lightwallet.txutils.valueTx(txOptions)
+        // TODO: add description
+        let description = 'TO DO..'
+        rawTx = lightwallet.txutils.functionTx(contract.abi, 'transfer', [recipient, description], txOptions)
         break
       case 'PTI':
         txOptions.to = getContractAddress('ParatiiToken')
-        txOptions.currency = 'pti'
+        txOptions.currency = 'pti' // ?????
         rawTx = lightwallet.txutils.functionTx(ParatiiToken.abi, 'transfer', [recipient, value], txOptions)
         break
       default:
@@ -163,6 +172,7 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
   })
 }
 
+// TODO: the "unsigned" transactions are used for debugging purposes only and should/could be moved to the helpers.js file
 function sendUnSignedTransaction (address, amount) {
   const toAddr = getUserPTIAddress()
   console.log('send unsigned transaction ')
