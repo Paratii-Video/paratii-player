@@ -287,7 +287,7 @@ Template.player.events({
     FlowRouter.go(pathDef, params)
   },
   'click #previous-video-button' (event, instance) {
-    if (instance.playerState.get('playedProgress') > 10) {
+    if (instance.playerState.get('currentTime') > 5) {
       const videoPlayer = instance.find('#video-player')
       videoPlayer.currentTime = 0
     } else {
