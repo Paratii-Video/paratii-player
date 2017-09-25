@@ -272,7 +272,7 @@ Template.player.events({
     }
   },
   'click #next-video-button' () {
-    const playlistId = FlowRouter.getParam('playlist_id')
+    const playlistId = FlowRouter.getQueryParam('playlist')
     const playlist = Playlists.findOne({ _id: playlistId })
     const videos = playlist.videos
     const currentIndex = videos.indexOf(getVideo()._id)
@@ -283,15 +283,16 @@ Template.player.events({
       nextId = videos[0]
     }
     const pathDef = 'player'
-    const params = { playlist_id: playlistId, _id: nextId }
-    FlowRouter.go(pathDef, params)
+    const params = { _id: nextId }
+    const queryParams = { playlist: playlistId }
+    FlowRouter.go(pathDef, params, queryParams)
   },
   'click #previous-video-button' (event, instance) {
     if (instance.playerState.get('currentTime') > 5) {
       const videoPlayer = instance.find('#video-player')
       videoPlayer.currentTime = 0
     } else {
-      const playlistId = FlowRouter.getParam('playlist_id')
+      const playlistId = FlowRouter.getQueryParam('playlist')
       const playlist = Playlists.findOne({ _id: playlistId })
       const videos = playlist.videos
       const currentIndex = videos.indexOf(getVideo()._id)
@@ -302,8 +303,9 @@ Template.player.events({
         previousId = videos[videos.length - 1]
       }
       const pathDef = 'player'
-      const params = { playlist_id: playlistId, _id: previousId }
-      FlowRouter.go(pathDef, params)
+      const params = { _id: previousId }
+      const queryParams = { playlist: playlistId }
+      FlowRouter.go(pathDef, params, queryParams)
     }
   },
   'click #fullscreen-button' (event, instance) {

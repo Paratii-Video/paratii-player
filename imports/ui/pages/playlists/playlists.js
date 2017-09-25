@@ -71,9 +71,10 @@ Template.playlists.helpers({
     }
   },
   videoPath (video) {
-    const pathDef = '/player/:playlist_id/:_id'
-    const params = { playlist_id: getCurrentPlaylistId(), _id: video._id }
-    const path = FlowRouter.path(pathDef, params)
+    const pathDef = 'player'
+    const params = { _id: video._id }
+    const queryParams = { playlist: getCurrentPlaylistId() }
+    const path = FlowRouter.path(pathDef, params, queryParams)
     return path
   }
 })
