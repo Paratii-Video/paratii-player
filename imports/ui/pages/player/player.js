@@ -171,6 +171,9 @@ Template.player.helpers({
   volumeIcon () {
     const state = Template.instance().playerState.get('muted')
     return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg'
+  },
+  hasPlaylistId () {
+    return FlowRouter.getQueryParam('playlist') != null
   }
 })
 
