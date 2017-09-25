@@ -4,7 +4,7 @@ import { Accounts } from 'meteor/accounts-base'
 import { add0x } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { web3, GAS_PRICE, GAS_LIMIT } from './connection.js'
-import { getContractAddress } from './contracts.js'
+import { getContractAddress, getContract } from './contracts.js'
 import ParatiiToken from './contracts/ParatiiToken.json'
 
 // createKeystore will create a new keystore
@@ -153,12 +153,12 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
       if (err) {
         throw err
       }
-      txOptions.from = fromAddr
-      txOptions.description = description
-      txOptions.value = value
-      txOptions.transactionHash = hash
-      Object.assign(txOptions, extraInfo) // If there are options they are merged in the transation object
-      Meteor.call('addTXToCollection', txOptions)
+      // txOptions.from = fromAddr
+      // txOptions.description = description
+      // txOptions.value = value
+      // txOptions.transactionHash = hash
+      // Object.assign(txOptions, extraInfo) // If there are options they are merged in the transation object
+      // Meteor.call('addTXToCollection', txOptions)
     })
   })
 }
@@ -175,11 +175,11 @@ function sendUnSignedTransaction (address, amount) {
   })
 }
 
-async function sendUnSignedContractTransaction (address, value) {
-  const contractAddress = await getContractAddress('ParatiiToken')
+async function sendUnSignedContractTransaction (fromAddress, value) {
   const toAddr = getUserPTIAddress()
-  const contract = web3.eth.contract(ParatiiToken.abi).at(contractAddress)
-  let result = await contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: address })
+  const contract = await getContract('ParatiiToken')
+  console.log(`Sending ${value} PTI from ${fromAddress} to ${toAddr} using contract ${contract}`)
+  let result = await contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: fromAddress })
   return result
 }
 

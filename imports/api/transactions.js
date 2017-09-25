@@ -4,6 +4,7 @@ import {
   PTIContract
 } from '/imports/lib/ethereum/connection.js'
 
+import { getContract } from '../lib/ethereum/contracts.js'
 import { Settings } from '/imports/api/settings.js'
 
 /*****************************
@@ -23,13 +24,10 @@ export const TransactionSyncHistory = new Mongo.Collection('transactionSyncHisto
 export const UserTransactions = new Mongo.Collection('userTransactions')
 
 if (Meteor.isServer) {
-  Meteor.methods({
-    'addTXToCollection' (tx) {
-      addAppTransaction(tx)
-    }
-  })
-
   Meteor.publish('userTransactions', function (userPTIAddress) {
+    if (!userPTIAddress) {
+      return []
+    }
     check(userPTIAddress, String)
 
     // Publish all transactions where I find userPTIAddress and blockNumber exist
@@ -39,7 +37,6 @@ if (Meteor.isServer) {
       }, {
         from: userPTIAddress
       }]
-      // blockNumber: {$ne: null}
     }
 
     // Aggregate transactions with same hash as ID and group data
@@ -61,7 +58,7 @@ if (Meteor.isServer) {
       }
       }
     ],
-      {clientCollection: 'userTransactions'})
+    {clientCollection: 'userTransactions'})
   })
 }
 
@@ -214,14 +211,19 @@ async function watchTransactions () {
 
 function watchETHTransactions () {
   console.log('Watching for ETH Transactions')
-  web3.eth.filter('latest', function (error, result) {
+  let filter = getContract('SendEther').LogSendEther({}, {
+    fromBlock: 'latest',
+    toBlock: 'latest'
+  })
+
+  filter.watch(function (error, log) {
     if (error) {
       // TODO: proper error handling
       console.log('Error setting filter')
       console.log(error)
       return
     }
-    syncBlockWithDB(result)
+    addETHTransaction(log)
   })
 };
 
@@ -257,47 +259,61 @@ function addPTITransaction (log) {
   transaction.logIndex = log.logIndex
   transaction.blockNumber = log.blockNumber
   transaction.to = log.args.to
-  transaction.currency = 'pti'
+  transaction.currency = 'PTI'
   transaction.source = 'event'
   console.log('Add event to collection: ', transaction.hash)
   return addOrUpdateTransaction(transaction)
 }
 
-function addETHTransaction (tx) {
+function addETHTransaction (log) {
   // add some info from native ETH transactions
-  if (tx.value.toNumber() > 0) {
-    const transaction = {}
-    transaction.blockNumber = tx.blockNumber
-    transaction.currency = 'eth'
-    transaction.from = tx.from
-    transaction.value = tx.value.toNumber()
-    transaction.to = tx.to
-    transaction.hash = tx.hash
-    transaction.nonce = tx.nonce
-    transaction.source = 'blockchain'
-    console.log('Add ETH transaction to collection: ', transaction.hash)
-    return addOrUpdateTransaction(transaction)
-  }
-}
-
-function addAppTransaction (tx) {
-  // add information from the application to the Transaction history
-  check(tx, Object)
-  const transaction = {
-    nonce: web3.toDecimal(tx.nonce),
-    from: tx.from,
-    to: tx.to,
-    description: tx.description,
-    source: 'app',
-    // value: tx.value,
-    currency: tx.currency,
-    date: new Date(),
-    hash: tx.hash
-  }
-
-  console.log('Inserting Transaction from  Client Application', transaction)
+  // if (tx.value.toNumber() > 0) {
+  //   const transaction = {}
+  //   transaction.blockNumber = tx.blockNumber
+  //   transaction.currency = 'eth'
+  //   transaction.from = tx.from
+  //   transaction.value = tx.value.toNumber()
+  //   transaction.to = tx.to
+  //   transaction.hash = tx.hash
+  //   transaction.nonce = tx.nonce
+  //   transaction.source = 'blockchain'
+  //   console.log('Add ETH transaction to collection: ', transaction.hash)
+  //   return addOrUpdateTransaction(transaction)
+  // }
+  console.log('Adding ETH Transaction')
+  console.log(log.logIndex)
+  const transaction = {}
+  transaction.value = log.args.value.toNumber()
+  transaction.from = log.args.from
+  // transaction.hash = log.topics[0]
+  transaction.hash = log.transactionHash
+  transaction.logIndex = log.logIndex
+  transaction.blockNumber = log.blockNumber
+  transaction.to = log.args.to
+  transaction.currency = 'ETH'
+  transaction.source = 'event'
+  console.log('Add event to collection: ', transaction.hash)
   return addOrUpdateTransaction(transaction)
 }
+
+// function addAppTransaction (tx) {
+//   // add information from the application to the Transaction history
+//   check(tx, Object)
+//   const transaction = {
+//     nonce: web3.toDecimal(tx.nonce),
+//     from: tx.from,
+//     to: tx.to,
+//     description: tx.description,
+//     source: 'app',
+//     // value: tx.value,
+//     currency: tx.currency,
+//     date: new Date(),
+//     hash: tx.hash
+//   }
+//
+//   console.log('Inserting Transaction from  Client Application', transaction)
+//   return addOrUpdateTransaction(transaction)
+// }
 
 function getLatestSyncedBlockNumber () {
   // return the number of the latest block that has been synced to the db
@@ -314,7 +330,6 @@ function getLatestSyncedBlockNumber () {
 }
 
 export {
-  addAppTransaction,
   addETHTransaction,
   addPTITransaction,
   syncTransactions,

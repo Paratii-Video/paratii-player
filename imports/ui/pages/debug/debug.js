@@ -1,25 +1,28 @@
 /* eslint-disable no-console */
 import { web3, updateSession } from '/imports/lib/ethereum/connection.js'
-import { getRegistryAddress } from '/imports/lib/ethereum/contracts.js'
-import { getKeystore, sendUnSignedContractTransaction } from '/imports/lib/ethereum/wallet.js'
+import { getRegistryAddress, setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
+import { getKeystore, sendUnSignedContractTransaction, sendUnSignedTransaction } from '/imports/lib/ethereum/wallet.js'
 import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { Template } from 'meteor/templating'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import './debug.html'
 
 Template.debug.events({
-  'click #deploy-parati-test-contract' () {
-    // deployTestContract(web3.eth.accounts[0])
-    // sendUnSignedContractTransaction(web3.eth.accounts[0], 100)
-  },
   'click #get-some-PTI' () {
-    sendUnSignedContractTransaction(web3.eth.accounts[0], 100)
+    sendUnSignedContractTransaction(web3.eth.accounts[0], 10)
+  },
+  'click #get-some-ETH' () {
+    sendUnSignedTransaction(web3.eth.accounts[0], 10)
   },
   'click #update-Session' () {
     updateSession()
   },
   'click #deploy-contracts' () {
-    deployParatiiContracts()
+    deployParatiiContracts().then(function (contracts) {
+      setRegistryAddress(contracts['ParatiiRegistry'].address)
+      Session.set('contracts', contracts)
+      updateSession()
+    })
   }
 })
 Template.debug.helpers({
@@ -40,7 +43,7 @@ Template.debug.helpers({
     return Session.get('privateKey')
   },
   contractAddress () {
-    return Session.get('ParatiiToken')
+    return Session.get('contracts')['ParatiiToken']
   },
   ParatiiRegistryAddress () {
     return getRegistryAddress()
@@ -62,7 +65,7 @@ Template.debug.helpers({
     return getUserPTIAddress()
   },
   contracts () {
-    return Session.get('contracts')
+    Session.get('contracts')
   },
   eth_balance () {
     const balance = Session.get('eth_balance')

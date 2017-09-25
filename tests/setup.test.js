@@ -1,7 +1,7 @@
 // Test the setup code used for testing :-)
 
-import { resetDb, mustBeTestChain, createUserAndLogin } from './helpers.js'
-import { deployParatiiContracts, setRegistryAddress } from '../imports/lib/ethereum/helpers.js'
+import { resetDb, mustBeTestChain, createUserAndLogin, setRegistryAddress } from './helpers.js'
+import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
 
 describe('test setup:', function () {
   let contractAddresses

@@ -6,8 +6,8 @@ import ParatiiTokenSpec from './contracts/ParatiiToken.json'
 import SendEtherSpec from './contracts/SendEther.json'
 import VideoRegistrySpec from './contracts/VideoRegistry.json'
 import VideoStoreSpec from './contracts/VideoStore.json'
+
 var promisify = require('promisify-node')
-let contracts = require('./contracts.js')
 
 export let web3 = new Web3()
 let DEFAULT_PROVIDER = 'http://localhost:8545'
@@ -58,9 +58,6 @@ export async function deployParatiiContracts () {
   await paratiiRegistry.registerContract('VideoRegistry', videoRegistry.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('VideoStore', videoStore.address, {from: web3.eth.accounts[0]})
 
-  // set the registry address
-  contracts.setRegistryAddress(paratiiRegistry.address)
-
   let result = {
     ParatiiAvatar: paratiiAvatar,
     ParatiiRegistry: paratiiRegistry,
@@ -70,13 +67,4 @@ export async function deployParatiiContracts () {
     VideoStore: videoStore
   }
   return result
-}
-
-export function setRegistryAddress (browser, address) {
-  console.log('setting registry address to', address)
-  browser.execute(function (address) {
-    const contracts = require('./imports/lib/ethereum/contracts.js')
-    contracts.setRegistryAddress(address)
-    Meteor.settings.public.ParatiiRegistry = address
-  }, contracts.PARATII_REGISTRY_ADDRESS)
 }
