@@ -56,7 +56,7 @@ describe('account workflow', function () {
     browser.waitForExist('.walletContainer')
   })
 
-  it('try to register a new account with an used email', function () {
+  it('try to register a new account with a used email', function () {
     server.execute(createUser)
     browser.url('http://localhost:3000/profile')
     // we should see the login form, we click on the register link
@@ -78,7 +78,7 @@ describe('account workflow', function () {
     assert.equal(error, 'Email already exists.')
   })
 
-  it('do not overwrite a user address if failed to register a new user with an used email', function () {
+  it('do not overwrite a user address if failed to register a new user with a used email', function () {
     createUserAndLogin(browser)
     browser.waitForVisible('#public_address', 5000)
     const address = browser.getText('#public_address')
@@ -116,12 +116,14 @@ describe('account workflow', function () {
     browser.waitForVisible('#btn-eth-close')
     browser.click('#btn-eth-close')
   })
-  it('sends ether', function () {
+
+  it('sends ether dialog is visible', function () {
     createUserAndLogin(browser)
     browser.waitForExist('#send-eth', 5000)
     browser.click('#send-eth')
     browser.waitForExist('.modal-dialog', 5000)
   })
+
   it('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
     browser.waitForExist('#show-seed', 5000)
