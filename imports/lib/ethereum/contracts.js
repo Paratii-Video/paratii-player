@@ -37,3 +37,11 @@ export async function getContractAddress (name) {
     }
   }
 }
+
+export async function getContracts () {
+  let contracts = {}
+  contracts.ParatiiRegistry = {
+    address: getRegistryAddress()
+  }
+  return contracts
+}

@@ -3,7 +3,7 @@
 import Web3 from 'web3'
 import { getUserPTIAddress } from '../../api/users.js'
 import ParatiiToken from './contracts/ParatiiToken.json'
-import { getContractAddress, setRegistryAddress } from './contracts.js'
+import { getContractAddress, setRegistryAddress, getContracts } from './contracts.js'
 // TODO: store all this information in a settings.json object
 const DEFAULT_PROVIDER = Meteor.settings.public.http_provider
 
@@ -24,7 +24,7 @@ export async function PTIContract () {
 
 export async function updateSession () {
   /* update Session variables with latest information from the blockchain */
-  console.log('update Sesssion')
+  console.log('updating Sesssion')
   Session.set('eth_host', web3.currentProvider.host)
 
   /* if Web3 is running over testrpc test contract is deployed
@@ -56,6 +56,11 @@ export async function updateSession () {
         if (result !== undefined) {
           Session.set('eth_balance', result.toNumber())
         }
+      })
+
+      // set the contracts in the Session object
+      getContracts().then(function (contracts) {
+        Session.set('contracts', contracts)
       })
     }
   } else {

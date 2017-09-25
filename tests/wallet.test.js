@@ -1,5 +1,5 @@
 import { resetDb, mustBeTestChain, createUserAndLogin, getSomeETH, getSomePTI } from './helpers.js'
-import { web3, deployParatiiContracts, setRegistryAddress } from './deployContracts.js'
+import { web3, deployParatiiContracts, setRegistryAddress } from '../imports/lib/ethereum/helpers.js'
 
 describe('wallet', function () {
   let contractAddresses

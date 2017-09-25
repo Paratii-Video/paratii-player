@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { web3, updateSession } from '/imports/lib/ethereum/connection.js'
 import { getRegistryAddress } from '/imports/lib/ethereum/contracts.js'
 import { getKeystore, sendUnSignedContractTransaction } from '/imports/lib/ethereum/wallet.js'
+import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { Template } from 'meteor/templating'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import './debug.html'
@@ -13,6 +14,12 @@ Template.debug.events({
   },
   'click #get-some-PTI' () {
     sendUnSignedContractTransaction(web3.eth.accounts[0], 100)
+  },
+  'click #update-Session' () {
+    updateSession()
+  },
+  'click #deploy-contracts' () {
+    deployParatiiContracts()
   }
 })
 Template.debug.helpers({
@@ -53,6 +60,9 @@ Template.debug.helpers({
   },
   ptiAddress () {
     return getUserPTIAddress()
+  },
+  contracts () {
+    return Session.get('contracts')
   },
   eth_balance () {
     const balance = Session.get('eth_balance')
