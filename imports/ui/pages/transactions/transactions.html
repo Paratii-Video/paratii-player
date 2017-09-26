@@ -31,7 +31,7 @@
         <td>{{ blockNumber}}</td>
         <td>
           {{#if description}}
-            description: <span class="description">{{ description }}</span>
+            description: <span class="transaction-description">{{ description }}</span>
             <br>
           {{/if}}
 
@@ -41,14 +41,14 @@
           {{/if}}
 
           from: {{ from }}
-          <br>to: {{ to }}
+          <br>to: <span class="transaction-to">{{ to }}</span>
           <br>transactionHash: {{ _id }}
           <br>currency: {{ currency }}
           <br>source: {{ source }}
           <br>date: {{ date }}
           <br><br><br>
         </td>
-        {{#if equals currency 'eth'}}
+        {{#if equals currency 'ETH'}}
           <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>
           <td></td>
         {{else}}
