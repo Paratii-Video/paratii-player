@@ -37,7 +37,6 @@ Template.transactions.onCreated(function () {
   template.searching = new ReactiveVar(false)
 
   const userPTIAddress = getUserPTIAddress()
-  // template.bitTransactions = getBitTransactions()
   Meteor.subscribe('userTransactions', userPTIAddress)
 })
 

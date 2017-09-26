@@ -1,6 +1,8 @@
 {
   "public" : {
     "http_provider": "http://localhost:8545",
-    "first_block": 0
+    "first_block": 0,
+    "isTestEnv": true,
+    "isProduction": false
   }
 }
