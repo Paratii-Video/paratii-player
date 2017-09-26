@@ -36,7 +36,8 @@ describe('Transactions', () => {
           args: {
             value: new BigNumber(12345566),
             from: '0x12345',
-            to: '0x23445'
+            to: '0x23445',
+            description: 'a description'
           }
         }
 

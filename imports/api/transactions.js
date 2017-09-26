@@ -266,20 +266,6 @@ function addPTITransaction (log) {
 }
 
 function addETHTransaction (log) {
-  // add some info from native ETH transactions
-  // if (tx.value.toNumber() > 0) {
-  //   const transaction = {}
-  //   transaction.blockNumber = tx.blockNumber
-  //   transaction.currency = 'eth'
-  //   transaction.from = tx.from
-  //   transaction.value = tx.value.toNumber()
-  //   transaction.to = tx.to
-  //   transaction.hash = tx.hash
-  //   transaction.nonce = tx.nonce
-  //   transaction.source = 'blockchain'
-  //   console.log('Add ETH transaction to collection: ', transaction.hash)
-  //   return addOrUpdateTransaction(transaction)
-  // }
   console.log('Adding ETH Transaction')
   console.log(log.logIndex)
   console.log(log.args)
@@ -291,7 +277,7 @@ function addETHTransaction (log) {
   transaction.logIndex = log.logIndex
   transaction.blockNumber = log.blockNumber
   transaction.to = log.args.to
-  transaction.description = log.args.description
+  transaction.description = log.args.description || ''
   transaction.currency = 'ETH'
   transaction.source = 'event'
   console.log('Add event to collection: ', transaction.hash)
