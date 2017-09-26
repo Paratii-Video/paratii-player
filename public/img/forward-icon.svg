@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="12px" viewBox="0 0 18 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>forward-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="player_v01" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="mvp-paused-logged-bought" transform="translate(-201.000000, -376.000000)" fill="#FFFFFF">
+            <g id="player-control" transform="translate(93.000000, 324.000000)">
+                <g id="slide">
+                    <path d="M108,64 L116.5,58 L108,52 L108,64 L108,64 Z M117,52 L117,64 L125.5,58 L117,52 L117,52 Z" id="forward-icon"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

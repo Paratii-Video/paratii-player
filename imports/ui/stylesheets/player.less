@@ -1,11 +1,12 @@
 #player-container {
   position: absolute;
   top: 0px;
-  left: -60px;
-  width: ~"calc(100% + 60px)";
+  left: 0px;
+  width: 100%;
   height: 100%;
   background-color: black;
   border-radius: 10px;
+  transition: 0.5s;
 }
 
 .embed_code{
@@ -27,7 +28,7 @@
   z-index: 50;
   // border-bottom-right-radius: 10px;
   // border-top-right-radius: 10px;
-  transition: 0.5s;
+  transition: inherit;
   div {
     transition: inherit;
   }
@@ -143,10 +144,11 @@
   padding: 10px 20px 20px 80px;
   z-index: 100;
   position: absolute;
-  left: 0;
+  left: 0px;
+  width: "100%";
   box-sizing: border-box;
   bottom: 0px;
-  transition: 0.5s;
+  transition: inherit;
   &.pause{
     background-color: rgba(0,0,0,0.5);
   }

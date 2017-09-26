@@ -69,6 +69,13 @@ Template.playlists.helpers({
       const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
       return playlist.description
     }
+  },
+  videoPath (video) {
+    const pathDef = 'player'
+    const params = { _id: video._id }
+    const queryParams = { playlist: getCurrentPlaylistId() }
+    const path = FlowRouter.path(pathDef, params, queryParams)
+    return path
   }
 })
 
