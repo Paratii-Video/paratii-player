@@ -1,73 +1,75 @@
 <template name="transactions">
-  <div class="clearfix">
-    <div class="titleContainer" id="wallet-title">
-      <span>Transaction History</span>
-    </div>
-    {{#if userPTIAddress}}
-      <div class="float-right address-container">
-        <div class="address-identicon">{{> dapp_identicon identity=userPTIAddress class="dapp-tiny"}}</div>
-        <span class="address">This is your address: <span id="public_address">{{ userPTIAddress }}</span></span>
+  <div class="app-content">
+    <div class="clearfix">
+      <div class="titleContainer" id="wallet-title">
+        <span>Transaction History</span>
       </div>
-    {{/if}}
-  </div>
-  <div class="line"></div>
-  <div class="container">
-      <input id="#search" class="form-control" name="search" type="text" placeholder="Search by address, hash, description or currency"/>
+      {{#if userPTIAddress}}
+        <div class="float-right address-container">
+          <div class="address-identicon">{{> dapp_identicon identity=userPTIAddress class="dapp-tiny"}}</div>
+          <span class="address">This is your address: <span id="public_address">{{ userPTIAddress }}</span></span>
+        </div>
+      {{/if}}
+    </div>
+    <div class="line"></div>
+    <div class="container">
+        <input id="#search" class="form-control" name="search" type="text" placeholder="Search by address, hash, description or currency"/>
 
-  </div>
-  <div class="container">
-    <table class="table table-striped">
-      <tr>
+    </div>
+    <div class="container">
+      <table class="table table-striped">
+        <tr>
 
-        <th>Blocknumer</th>
-        <th>Description</th>
-        <th>ETH</th>
-        <th>PTI</th>
-      </tr>
-      {{#each transactions}}
-      <tr class="{{#if equals from userPTIAddress}}send{{else}}received{{/if}}">
-        <!-- <td>{{ id }}</td> -->
-        <!-- <td>{{formatDate datetime }}</td> -->
-        <td>{{ blockNumber}}</td>
-        <td>
-          {{#if description}}
-            description: <span class="transaction-description">{{ description }}</span>
-            <br>
+          <th>Blocknumer</th>
+          <th>Description</th>
+          <th>ETH</th>
+          <th>PTI</th>
+        </tr>
+        {{#each transactions}}
+        <tr class="{{#if equals from userPTIAddress}}send{{else}}received{{/if}}">
+          <!-- <td>{{ id }}</td> -->
+          <!-- <td>{{formatDate datetime }}</td> -->
+          <td>{{ blockNumber}}</td>
+          <td>
+            {{#if description}}
+              description: <span class="transaction-description">{{ description }}</span>
+              <br>
+            {{/if}}
+
+            {{#if videoid}}
+              videoid: <b>{{ videoid }}</b>
+              <br>
+            {{/if}}
+
+            from: {{ from }}
+            <br>to: <span class="transaction-to">{{ to }}</span>
+            <br>transactionHash: {{ _id }}
+            <br>currency: {{ currency }}
+            <br>source: {{ source }}
+            <br>date: {{ date }}
+            <br><br><br>
+          </td>
+          {{#if equals currency 'eth'}}
+            <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>
+            <td></td>
+          {{else}}
+            <td></td>
+            <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>
           {{/if}}
+        </tr>
+        {{/each}}
+      </table>
+    </div>
 
-          {{#if videoid}}
-            videoid: <b>{{ videoid }}</b>
-            <br>
-          {{/if}}
-
-          from: {{ from }}
-          <br>to: <span class="transaction-to">{{ to }}</span>
-          <br>transactionHash: {{ _id }}
-          <br>currency: {{ currency }}
-          <br>source: {{ source }}
-          <br>date: {{ date }}
-          <br><br><br>
-        </td>
-        {{#if equals currency 'ETH'}}
-          <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>
-          <td></td>
-        {{else}}
-          <td></td>
-          <td class="amountTrans">{{#if equals from userPTIAddress}} - {{/if}} {{ toEther value }}</td>
-        {{/if}}
-      </tr>
-      {{/each}}
-    </table>
-  </div>
-
-  <div class="container">
-    <ul class="bit-transactions-list">
-        <!-- <li> peer | bytesSent | bytesRecv </li> -->
-      {{#each bitTransaction}}
-        <li>
-          {{ peer }} | {{ bytesSent }} | {{ bytesRecv }}
-        </li>
-      {{/each}}
-    </ul>
+    <div class="container">
+      <ul class="bit-transactions-list">
+          <!-- <li> peer | bytesSent | bytesRecv </li> -->
+        {{#each bitTransaction}}
+          <li>
+            {{ peer }} | {{ bytesSent }} | {{ bytesRecv }}
+          </li>
+        {{/each}}
+      </ul>
+    </div>
   </div>
 </template>

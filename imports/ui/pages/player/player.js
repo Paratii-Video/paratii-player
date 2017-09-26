@@ -4,7 +4,8 @@ import { sprintf } from 'meteor/sgi:sprintfjs'
 
 import { formatNumber } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-import { UserTransactions } from '/imports/api/transactions.js'
+// import { UserTransactions } from '/imports/api/transactions.js'
+import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import { createIPFSPlayer } from './ipfs.js'
@@ -12,11 +13,17 @@ import '/imports/ui/components/modals/embedCustomizer.js'
 
 import './player.html'
 
-let fullscreenOn = false
 let controlsHandler
 let volumeHandler
 let previousVolume = 100
-let _video
+let _video = new ReactiveVar()
+
+const fullscreen = () => {
+  return document.fullscreenElement ||
+    document.mozFullScreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement
+}
 
 function getVideo () {
   const videoId = FlowRouter.getParam('_id')
@@ -24,11 +31,12 @@ function getVideo () {
     _video = Videos.findOne({ _id: videoId })
   }
   return _video
-};
+  // return Template.instance().currentVideo.get()
+}
 
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
-  const currentVideo = getVideo()
+  const currentVideo = instance.currentVideo.get()
   console.log('currentvideo', currentVideo)
   console.log('instance', instance)
   if (currentVideo.src.startsWith('magnet:')) {
@@ -53,6 +61,8 @@ Template.player.onCreated(function () {
   const instance = Template.instance()
   const bodyView = Blaze.getView('Template.App_body')
 
+  this.currentVideo = new ReactiveVar()
+
   // this makes the tests work
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized')
 
@@ -74,30 +84,36 @@ Template.player.onCreated(function () {
   if (userPTIAddress) {
     Meteor.subscribe('userTransactions', userPTIAddress)
   }
-  Meteor.subscribe('videoPlay', FlowRouter.getParam('_id'))
-
-  let query = UserTransactions.find({videoid: FlowRouter.getParam('_id')})
-  query.observeChanges({
-    added: function (id, fields) {
-      console.log('added')
-      console.log(id)
-      console.log(fields)
-      self.playerState.set('locked', false)
-    },
-    changed: function (id, fields) {
-      console.log('changed')
-      console.log(id)
-      console.log(fields)
-      // self.playerState.set('locked', false);
-    }
+  const videoId = FlowRouter.getParam('_id')
+  Meteor.subscribe('videoPlay', videoId, function () {
+    self.currentVideo.set(Videos.findOne({ _id: videoId }))
+    renderVideoElement(instance)
   })
+
+  Meteor.subscribe('playlists')
+
+  // let query = UserTransactions.find({videoid: FlowRouter.getParam('_id')})
+  // query.observeChanges({
+  //   added: function (id, fields) {
+  //     console.log('added')
+  //     console.log(id)
+  //     console.log(fields)
+  //     self.playerState.set('locked', false)
+  //   },
+  //   changed: function (id, fields) {
+  //     console.log('changed')
+  //     console.log(id)
+  //     console.log(fields)
+  //     // self.playerState.set('locked', false);
+  //   }
+  // })
 
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id'), getUserPTIAddress(), function (err, results) {
     if (err) {
       throw err
     } else {
       self.playerState.set('locked', results)
-      renderVideoElement(instance)
+      // renderVideoElement(instance)
     }
   })
 })
@@ -107,24 +123,14 @@ Template.player.onDestroyed(function () {
 })
 
 Template.player.helpers({
-
   isLocked () {
     return Template.instance().playerState.get('locked')
-  },
-  canAutoplay () {
-    const locked = Template.instance().playerState.get('locked')
-    if (!locked) {
-      // Template.instance().navState.set('closed');
-      return 'autoplay'
-    } else {
-      return ''
-    }
   },
   playPause () {
     return Template.instance().playerState.get('playing') ? 'pause' : 'play'
   },
   playPauseIcon () {
-    const state = Template.instance().playerState.get('layeplaying')
+    const state = Template.instance().playerState.get('playing')
     return (state) ? '/img/pause-icon.svg' : '/img/play-icon.svg'
   },
   currentTime () {
@@ -174,6 +180,9 @@ Template.player.helpers({
   volumeIcon () {
     const state = Template.instance().playerState.get('muted')
     return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg'
+  },
+  hasPlaylistId () {
+    return FlowRouter.getQueryParam('playlist') != null
   }
 })
 
@@ -274,14 +283,49 @@ Template.player.events({
       }, 3000)
     }
   },
+  'click #next-video-button' () {
+    const playlistId = FlowRouter.getQueryParam('playlist')
+    const playlist = Playlists.findOne({ _id: playlistId })
+    const videos = playlist.videos
+    const currentIndex = videos.indexOf(getVideo()._id)
+    var nextId
+    if (videos[currentIndex + 1] != null) {
+      nextId = videos[currentIndex + 1]
+    } else {
+      nextId = videos[0]
+    }
+    const pathDef = 'player'
+    const params = { _id: nextId }
+    const queryParams = { playlist: playlistId }
+    FlowRouter.go(pathDef, params, queryParams)
+  },
+  'click #previous-video-button' (event, instance) {
+    if (instance.playerState.get('currentTime') > 5) {
+      const videoPlayer = instance.find('#video-player')
+      videoPlayer.currentTime = 0
+    } else {
+      const playlistId = FlowRouter.getQueryParam('playlist')
+      const playlist = Playlists.findOne({ _id: playlistId })
+      const videos = playlist.videos
+      const currentIndex = videos.indexOf(getVideo()._id)
+      var previousId
+      if (videos[currentIndex - 1] != null) {
+        previousId = videos[currentIndex - 1]
+      } else {
+        previousId = videos[videos.length - 1]
+      }
+      const pathDef = 'player'
+      const params = { _id: previousId }
+      const queryParams = { playlist: playlistId }
+      FlowRouter.go(pathDef, params, queryParams)
+    }
+  },
   'click #fullscreen-button' (event, instance) {
     const videoPlayer = instance.find('#player-container')
-    if (fullscreenOn) {
+    if (fullscreen()) {
       requestCancelFullscreen(document)
-      fullscreenOn = false
     } else {
       requestFullscreen(videoPlayer)
-      fullscreenOn = true
     }
   },
   'timeupdate' (event, instance) {

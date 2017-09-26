@@ -3,7 +3,8 @@ module.exports = {
     "globals": {
         "Meteor": false,
         "FlowRouter": false,
-        "Modal": false
+        "Modal": false,
+        "Clipboard": false
     },
     "env": {
       "meteor": true
