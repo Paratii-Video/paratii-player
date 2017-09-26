@@ -30,6 +30,7 @@ export function resetDb () {
   Playlists.remove({'_id': '98765'})
   const { Transactions } = require('/imports/api/transactions')
   Transactions.remove({'_id': '5000'})
+  Transactions.remove({})
 }
 
 export function createUser () {

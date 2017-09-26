@@ -4,7 +4,7 @@ import { Accounts } from 'meteor/accounts-base'
 import { add0x } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { web3, GAS_PRICE, GAS_LIMIT } from './connection.js'
-import { getContractAddress, getContract } from './contracts.js'
+import { getContract } from './contracts.js'
 import ParatiiToken from './contracts/ParatiiToken.json'
 
 // createKeystore will create a new keystore
@@ -122,9 +122,13 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
   const fromAddr = getUserPTIAddress()
   const nonce = web3.eth.getTransactionCount(fromAddr)
   const value = parseInt(web3.toWei(amount, 'ether'), 10)
+  if (!description) {
+    description = ''
+  }
 
   const keystore = getKeystore()
-  keystore.keyFromPassword(password, function (error, pwDerivedKey) {
+  keystore.keyFromPassword(password, async function (error, pwDerivedKey) {
+    let contract
     if (error) throw error
     // sign the transaction
     const txOptions = {
@@ -142,16 +146,15 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
         // txOptions.currency = 'eth'
         // rawTx = lightwallet.txutils.valueTx(txOptions)
         // break
-        let contract = getContract('SendEther')
+        contract = await getContract('SendEther')
         txOptions.to = contract.address
         // txOptions.currency = 'pti'
         txOptions.value = web3.toHex(value)
-        // TODO: add description
-        let description = 'TO DO..'
         rawTx = lightwallet.txutils.functionTx(contract.abi, 'transfer', [recipient, description], txOptions)
         break
       case 'PTI':
-        txOptions.to = getContractAddress('ParatiiToken')
+        contract = await getContract('ParatiiToken')
+        txOptions.to = contract.address
         txOptions.currency = 'pti' // ?????
         rawTx = lightwallet.txutils.functionTx(ParatiiToken.abi, 'transfer', [recipient, value], txOptions)
         break

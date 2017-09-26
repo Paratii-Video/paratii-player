@@ -209,9 +209,9 @@ async function watchTransactions () {
   watchETHTransactions()
 }
 
-function watchETHTransactions () {
+async function watchETHTransactions () {
   console.log('Watching for ETH Transactions')
-  let filter = getContract('SendEther').LogSendEther({}, {
+  let filter = (await getContract('SendEther')).LogSendEther({}, {
     fromBlock: 'latest',
     toBlock: 'latest'
   })
@@ -230,7 +230,7 @@ function watchETHTransactions () {
 async function watchPTITransactions () {
   // set a filter for ALL PTI transactions
   console.log('Watching for PTI Transactions')
-  let filter = PTIContract().Transfer({}, {
+  let filter = (await PTIContract()).Transfer({}, {
     fromBlock: 'latest',
     toBlock: 'latest'
   })
@@ -282,6 +282,7 @@ function addETHTransaction (log) {
   // }
   console.log('Adding ETH Transaction')
   console.log(log.logIndex)
+  console.log(log.args)
   const transaction = {}
   transaction.value = log.args.value.toNumber()
   transaction.from = log.args.from
@@ -290,6 +291,7 @@ function addETHTransaction (log) {
   transaction.logIndex = log.logIndex
   transaction.blockNumber = log.blockNumber
   transaction.to = log.args.to
+  transaction.description = log.args.description
   transaction.currency = 'ETH'
   transaction.source = 'event'
   console.log('Add event to collection: ', transaction.hash)

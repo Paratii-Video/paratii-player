@@ -38,6 +38,11 @@ Meteor.startup(async function () {
         console.log('  Meteor.settings.public.ParatiiRegistry:', Meteor.settings.public.ParatiiRegistry)
         setRegistryAddress(contracts['ParatiiRegistry'].address)
         watchTransactions()
+        Meteor.methods({
+          getRegistryAddress: function () {
+            return Meteor.settings.public.ParatiiRegistry
+          }
+        })
       })
     } else {
       watchTransactions()
