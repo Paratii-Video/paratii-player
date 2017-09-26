@@ -22,7 +22,7 @@
       {{# each videos }}
         <div class="videoCardContainer">
           <div class="videoThumbContent">
-            <a href="{{pathFor route='player' _id=this._id}}">
+            <a href="{{videoPath this}}">
               {{#if thumb}}
                 <img src="{{thumb}}"/>
               {{else}}
@@ -36,7 +36,7 @@
               <div class="videoCardPrice">✓</div>
             {{/if}}
           </div>
-          <div class="videoCardTitle"><a href="{{pathFor route='player' _id=this._id}}">{{title}}</a></div>
+          <div class="videoCardTitle"><a href="{{videoPath this}}">{{title}}</a></div>
           <div class="videoCardViews">{{formatNumber stats.views}} views</div>
           <div class="videoCardLikes">
             <img src= "/img/likesmall-icon.svg"/>

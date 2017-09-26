@@ -5,6 +5,7 @@ import { sprintf } from 'meteor/sgi:sprintfjs'
 import { formatNumber } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { UserTransactions } from '/imports/api/transactions.js'
+import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import { createIPFSPlayer } from './ipfs.js'
@@ -81,7 +82,7 @@ Template.player.onCreated(function () {
     Meteor.subscribe('userTransactions', userPTIAddress)
   }
   Meteor.subscribe('videoPlay', FlowRouter.getParam('_id'))
-
+  Meteor.subscribe('playlists')
   let query = UserTransactions.find({videoid: FlowRouter.getParam('_id')})
   query.observeChanges({
     added: function (id, fields) {
@@ -170,6 +171,9 @@ Template.player.helpers({
   volumeIcon () {
     const state = Template.instance().playerState.get('muted')
     return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg'
+  },
+  hasPlaylistId () {
+    return FlowRouter.getQueryParam('playlist') != null
   }
 })
 
@@ -268,6 +272,43 @@ Template.player.events({
           dict.set('hideControls', true)
         }
       }, 3000)
+    }
+  },
+  'click #next-video-button' () {
+    const playlistId = FlowRouter.getQueryParam('playlist')
+    const playlist = Playlists.findOne({ _id: playlistId })
+    const videos = playlist.videos
+    const currentIndex = videos.indexOf(getVideo()._id)
+    var nextId
+    if (videos[currentIndex + 1] != null) {
+      nextId = videos[currentIndex + 1]
+    } else {
+      nextId = videos[0]
+    }
+    const pathDef = 'player'
+    const params = { _id: nextId }
+    const queryParams = { playlist: playlistId }
+    FlowRouter.go(pathDef, params, queryParams)
+  },
+  'click #previous-video-button' (event, instance) {
+    if (instance.playerState.get('currentTime') > 5) {
+      const videoPlayer = instance.find('#video-player')
+      videoPlayer.currentTime = 0
+    } else {
+      const playlistId = FlowRouter.getQueryParam('playlist')
+      const playlist = Playlists.findOne({ _id: playlistId })
+      const videos = playlist.videos
+      const currentIndex = videos.indexOf(getVideo()._id)
+      var previousId
+      if (videos[currentIndex - 1] != null) {
+        previousId = videos[currentIndex - 1]
+      } else {
+        previousId = videos[videos.length - 1]
+      }
+      const pathDef = 'player'
+      const params = { _id: previousId }
+      const queryParams = { playlist: playlistId }
+      FlowRouter.go(pathDef, params, queryParams)
     }
   },
   'click #fullscreen-button' (event, instance) {
