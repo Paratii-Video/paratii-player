@@ -10,9 +10,19 @@
         <div id="scrubber" style="left: {{scrubberTranslate}}%"></div>
       </div>
       <br />
+      {{#if hasPlaylistId}}
+        <button id="previous-video-button" title="previous video">
+          <img src="/img/rewind-icon.svg">
+        </button>
+      {{/if}}
       <button id="play-pause-button" title="{{playPause}}">
         <img src= "{{playPauseIcon}}">
       </button>
+      {{#if hasPlaylistId}}
+        <button id="next-video-button" title="next video">
+          <img src="/img/forward-icon.svg">
+        </button>
+      {{/if}}
       <button id="volume-button" title="volume">
         <img src={{ volumeIcon }} />
       </button>
@@ -27,7 +37,6 @@
       <button id="fullscreen-button" title="{{fullscreen}}">
         <img src= "/img/fullscreen-icon.svg">
       </button>
-
     </div>
     {{/unless }}
 

@@ -71,9 +71,11 @@ FlowRouter.route('/upload', {
   }
 })
 
-FlowRouter.route('/player/:_id', {
+FlowRouter.route('/play/:_id', {
   name: 'player',
   action () {
+    // previous/next buttons: need a reset to refresh the video tag
+    BlazeLayout.reset()
     BlazeLayout.render('App_body', { main: 'player' })
   }
 })
