@@ -89,7 +89,7 @@ function addToIPFS (files) {
             pull.through((chunk) => updateProgress(chunk.length))
           )
         }]),
-        window.ipfs.files.createAddPullStream(),
+        window.ipfs.files.createAddPullStream({chunkerOptions: {maxChunkSize: 64048}}), // default size 262144
         pull.collect((err, res) => {
           if (err) {
             return cb(err)

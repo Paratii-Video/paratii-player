@@ -207,6 +207,26 @@ export const populateVideos = () => {
       tags: ['IPFS', 'Fragmented Mp4'],
       src: '/ipfs/QmR6QvFUBhHQ288VmpHQboqzLmDrrC2fcTUyT4hSMCwFyj',
       mimetype: 'video/mp4'
+    }, {
+      _id: '9',
+      title: '[IPFS][browser-optimized] Big Buck Bunny',
+      description: 'IPFS EXAMPLE video, NOTE: you have to upload the frag_bunny.mp4 file using the browser uploader to seed this file.',
+      duration: '01:00',
+      price: 0,
+      uploader: {
+        address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
+        name: 'Paratii',
+        avatar: 'http://i.pravatar.cc/150?img=4'
+      },
+      stats: {
+        likes_percentage: 98,
+        views: 2244245,
+        likes: 2345555,
+        dislikes: 7
+      },
+      tags: ['IPFS', 'Fragmented Mp4', 'Browser to Browser stream'],
+      src: '/ipfs/Qmb3eFpLCNGg1NrPcY5RcHhznibVGuPT28fzZQ7egTzv37',
+      mimetype: 'video/mp4'
     }
   ]
 
@@ -248,7 +268,7 @@ export const populatePlaylist = () => {
     title: 'Mother Life',
     description: 'A awesome playlist about Nature!',
     url: 'mother-life',
-    videos: [Videos.find().fetch()[2]._id, Videos.find().fetch()[7]._id]
+    videos: [Videos.find().fetch()[2]._id, Videos.find().fetch()[7]._id, Videos.find().fetch()[8]._id]
   }
 
   // if (Playlists.find().count() === 0) {
