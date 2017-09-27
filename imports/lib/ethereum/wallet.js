@@ -5,7 +5,6 @@ import { add0x } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { web3, GAS_PRICE, GAS_LIMIT } from './connection.js'
 import { getContract } from './contracts.js'
-import ParatiiToken from './contracts/ParatiiToken.json'
 
 // createKeystore will create a new keystore
 // save it in the session object and in local storage
@@ -115,16 +114,17 @@ function getSeed (password, callback) {
 function restoreWallet (password, seedPhrase, cb) {
   return createKeystore(password, seedPhrase, cb)
 }
+// function buyVideo (videoId) {
+//   doTx(password, 'VideoStore', [videoId])
+// }
 
-function doTx (amount, recipient, password, type, description, extraInfo) {
+function doTx (password, contractName, functionName, args = [], value = 0) {
   // send some ETH or PTI
-  // the type argument can either be ETH or PTI
+  // @param value The amount of ETH to transfer (expressed in Wei)
+  //
   const fromAddr = getUserPTIAddress()
   const nonce = web3.eth.getTransactionCount(fromAddr)
-  const value = parseInt(web3.toWei(amount, 'ether'), 10)
-  if (!description) {
-    description = ''
-  }
+  // const value = parseInt(web3.toWei(amount, 'ether'), 10)
 
   const keystore = getKeystore()
   keystore.keyFromPassword(password, async function (error, pwDerivedKey) {
@@ -138,39 +138,20 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
     }
 
     let rawTx
-    switch (type) {
-      case 'Eth':
-        // next lines for a simple value transaction
-        // txOptions.to = add0x(recipient)
-        // txOptions.value = web3.toHex(value)
-        // txOptions.currency = 'eth'
-        // rawTx = lightwallet.txutils.valueTx(txOptions)
-        // break
-        contract = await getContract('SendEther')
-        txOptions.to = contract.address
-        // txOptions.currency = 'pti'
-        txOptions.value = web3.toHex(value)
-        rawTx = lightwallet.txutils.functionTx(contract.abi, 'transfer', [recipient, description], txOptions)
-        break
-      case 'PTI':
-        contract = await getContract('ParatiiToken')
-        txOptions.to = contract.address
-        txOptions.currency = 'pti' // ?????
-        rawTx = lightwallet.txutils.functionTx(ParatiiToken.abi, 'transfer', [recipient, value], txOptions)
-        break
-      default:
-    }
+    contract = await getContract(contractName)
+    txOptions.to = contract.address
+    txOptions.value = web3.toHex(value)
+    rawTx = lightwallet.txutils.functionTx(contract.abi, functionName, args, txOptions)
+    // rawTx = lightwallet.txutils.functionTx(contract.abi, functionName, [recipient, description], txOptions)
+    // contract = await getContract('ParatiiToken')
+    // txOptions.to = contract.address
+    // txOptions.currency = 'pti' // ?????
+    // rawTx = lightwallet.txutils.functionTx(ParatiiToken.abi, 'transfer', [recipient, value], txOptions)
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr)
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
       if (err) {
         throw err
       }
-      // txOptions.from = fromAddr
-      // txOptions.description = description
-      // txOptions.value = value
-      // txOptions.transactionHash = hash
-      // Object.assign(txOptions, extraInfo) // If there are options they are merged in the transation object
-      // Meteor.call('addTXToCollection', txOptions)
     })
   })
 }

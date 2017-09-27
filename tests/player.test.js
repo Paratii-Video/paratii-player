@@ -1,7 +1,7 @@
 import { assert } from 'chai'
 import { createVideo, resetDb, createPlaylist } from './helpers.js'
 
-describe('player workflow @watch', function () {
+describe('player workflow', function () {
   afterEach(function () {
     server.execute(resetDb)
   })

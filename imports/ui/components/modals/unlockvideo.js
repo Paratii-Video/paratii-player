@@ -4,9 +4,9 @@ import { web3 } from '/imports/lib/ethereum/connection.js'
 import { checkPassword } from '/imports/api/users.js'
 
 import '/imports/lib/validate.js'
-import './doTransaction.html'
+import './unlockVideo.html'
 
-Template.doTransaction.helpers({
+Template.unlockVideo.helpers({
   ima () {
     return Session.get('dataUrl')
   },
@@ -19,12 +19,12 @@ Template.doTransaction.helpers({
   }
 })
 
-Template.doTransaction.events({
-  async 'submit #form-doTransaction' (event) {
+Template.unlockVideo.events({
+  async 'submit #form-unlockVideo' (event) {
     event.preventDefault()
     const extraInfo = {}
     const type = this.type // Get the context from Template
-    let amount = event.target.wallet_amount.value
+    const amount = event.target.wallet_amount.value
     const recipient = event.target.wallet_friend_number.value
     const password = event.target.user_password.value
     const description = event.target.tx_description.value
@@ -61,18 +61,8 @@ Template.doTransaction.events({
     })
     Session.set('checkTransaction', check)
     if (errors === undefined) {
-      Modal.hide('doTransaction')
-      switch (type) {
-        case 'Eth':
-          let value = web3.toWei(amount, 'ether')
-          doTx(password, 'SendEther', 'transfer', [recipient, description], value)
-          break
-        case 'PTI':
-          amount = web3.toWei(amount, 'ether')
-          doTx(password, 'ParatiiToken', 'transfer', [recipient, amount])
-          break
-        default:
-      }
+      Modal.hide('unlockVideo')
+      doTx(amount, recipient, password, type, description, extraInfo)
     }
   }
 })

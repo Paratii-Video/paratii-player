@@ -40,7 +40,7 @@ describe('wallet', function () {
     done()
   })
 
-  it('should be able to send some PTI, update the balance and transaction history  @watch', function (done) {
+  it('should be able to send some PTI, update the balance and transaction history', function (done) {
     let description = 'Here is some PTI for you'
     let toAddress = web3.eth.accounts[2]
     browser.waitForExist('#public_address', 3000)
@@ -111,6 +111,10 @@ describe('wallet', function () {
     browser.waitForExist('.transaction-description', 5000)
     assert.equal(browser.getText('.transaction-description'), description)
 
+    done()
+  })
+
+  it('should be possible to buy (and unlock) a video [TODO]', function (done) {
     done()
   })
 })
