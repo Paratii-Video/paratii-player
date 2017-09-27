@@ -1,18 +1,20 @@
 /* eslint-disable no-console */
 import { web3, updateSession } from '/imports/lib/ethereum/connection.js'
 import { setRegistryAddress, getContractAddress } from '/imports/lib/ethereum/contracts.js'
-import { getKeystore, sendUnSignedContractTransaction, sendUnSignedTransaction } from '/imports/lib/ethereum/wallet.js'
-import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
+import { getKeystore } from '/imports/lib/ethereum/wallet.js'
+import { deployParatiiContracts, sendSomeETH, sendSomePTI } from '/imports/lib/ethereum/helpers.js'
 import { Template } from 'meteor/templating'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import './debug.html'
 
 Template.debug.events({
   'click #get-some-PTI' () {
-    sendUnSignedContractTransaction(web3.eth.accounts[0], 10)
+    let beneficiary = getUserPTIAddress()
+    sendSomePTI(beneficiary, 10)
   },
   'click #get-some-ETH' () {
-    sendUnSignedTransaction(web3.eth.accounts[0], 10)
+    let beneficiary = getUserPTIAddress()
+    sendSomeETH(beneficiary, 10)
   },
   'click #update-Session' () {
     updateSession()

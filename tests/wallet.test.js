@@ -1,7 +1,7 @@
 import { resetDb, mustBeTestChain, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress } from './helpers.js'
 import { web3, deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
 
-describe('wallet', function () {
+describe('wallet @watch', function () {
   let contractAddresses
 
   before(async function (done) {
@@ -115,7 +115,7 @@ describe('wallet', function () {
     done()
   })
 
-  it('should be possible to buy (and unlock) a video [TODO] @watch', function (done) {
+  it('should be possible to buy (and unlock) a video [TODO]', function (done) {
     browser.waitForExist('#public_address', 5000)
     browser.execute(getSomeETH, 3)
     browser.waitForExist('#eth_amount', 5000)
@@ -130,6 +130,7 @@ describe('wallet', function () {
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#send_trans_btn')
+    // TODO: check if the video has actually been acquired!
     done()
   })
 })

@@ -9,16 +9,18 @@ export function login (browser) {
 }
 
 export function getSomeETH (amount) {
-  const wallet = require('./imports/lib/ethereum/wallet.js')
-  const accounts = web3.eth.accounts
+  const helpers = require('./imports/lib/ethereum/helpers.js')
+  const users = require('./imports/api/users.js')
   console.log('send transaction')
-  wallet.sendUnSignedTransaction(accounts[0], amount)
+  let beneficiary = users.getUserPTIAddress()
+  helpers.sendSomeETH(beneficiary, amount)
 }
 
 export function getSomePTI (amount) {
-  const wallet = require('./imports/lib/ethereum/wallet.js')
-  const accounts = web3.eth.accounts
-  wallet.sendUnSignedContractTransaction(accounts[0], amount)
+  const helpers = require('./imports/lib/ethereum/helpers.js')
+  const users = require('./imports/api/users.js')
+  let beneficiary = users.getUserPTIAddress()
+  helpers.sendSomePTI(beneficiary, amount)
 }
 
 export function resetDb () {

@@ -161,25 +161,4 @@ function doTx (password, contractName, functionName, args, value, callback) {
   })
 }
 
-// TODO: the "unsigned" transactions are used for debugging purposes only and should/could be moved to the helpers.js file
-function sendUnSignedTransaction (address, amount) {
-  const toAddr = getUserPTIAddress()
-  console.log('send unsigned transaction ')
-  web3.eth.sendTransaction({ from: add0x(address), to: add0x(toAddr), value: web3.toWei(amount, 'ether'), gas: 21000, gasPrice: 20000000000 }, function (error, result) {
-    console.log('result...')
-    if (error) {
-      console.log(error)
-    }
-    console.log(result)
-  })
-}
-
-async function sendUnSignedContractTransaction (fromAddress, value) {
-  const toAddr = getUserPTIAddress()
-  const contract = await getContract('ParatiiToken')
-  console.log(`Sending ${value} PTI from ${fromAddress} to ${toAddr} using contract ${contract}`)
-  let result = await contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: fromAddress })
-  return result
-}
-
-export { createKeystore, restoreWallet, doTx, getSeed, sendUnSignedTransaction, sendUnSignedContractTransaction, saveKeystore }
+export { createKeystore, restoreWallet, doTx, getSeed, saveKeystore }

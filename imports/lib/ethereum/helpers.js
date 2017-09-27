@@ -1,3 +1,8 @@
+/*
+ * These are helpers for the end-to-end tests in /tests
+ * (they would be beter places in /tests/helpers.js, but we are using these in the debug.js screen)
+ */
+
 import { add0x } from '../utils.js'
 import Web3 from 'web3'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'
@@ -6,6 +11,7 @@ import ParatiiTokenSpec from './contracts/ParatiiToken.json'
 import SendEtherSpec from './contracts/SendEther.json'
 import VideoRegistrySpec from './contracts/VideoRegistry.json'
 import VideoStoreSpec from './contracts/VideoStore.json'
+import { getContract } from './contracts.js'
 
 var promisify = require('promisify-node')
 
@@ -74,5 +80,25 @@ export async function deployParatiiContracts () {
     VideoRegistry: videoRegistry,
     VideoStore: videoStore
   }
+  return result
+}
+
+export async function sendSomeETH (beneficiary, amount) {
+  let fromAddress = web3.eth.accounts[0]
+  web3.eth.sendTransaction({ from: add0x(fromAddress), to: add0x(beneficiary), value: web3.toWei(amount, 'ether'), gas: 21000, gasPrice: 20000000000 }, function (error, result) {
+    console.log('result...')
+    if (error) {
+      console.log(error)
+    }
+    console.log(result)
+  })
+}
+
+export async function sendSomePTI (beneficiary, amount) {
+  const contract = await getContract('ParatiiToken')
+  let fromAddress = web3.eth.accounts[0]
+  let value = amount
+  console.log(`Sending ${value} PTI from ${fromAddress} to ${beneficiary} using contract ${contract}`)
+  let result = await contract.transfer(beneficiary, web3.toWei(value, 'ether'), { gas: 200000, from: fromAddress })
   return result
 }
