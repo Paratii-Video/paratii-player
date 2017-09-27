@@ -10,7 +10,7 @@ import VideoStoreSpec from './contracts/VideoStore.json'
 var promisify = require('promisify-node')
 
 export let web3 = new Web3()
-let DEFAULT_PROVIDER = Meteor.settings.public.http_provider
+let DEFAULT_PROVIDER = 'http://localhost:8545'
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
 let owner = web3.eth.accounts[0]
 
