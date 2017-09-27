@@ -6,17 +6,15 @@ import '../imports/startup/both'
 import '../imports/api/users.js'
 import { watchTransactions, syncTransactions } from '/imports/api/transactions.js'
 import { web3 } from '/imports/lib/ethereum/connection.js'
+import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
+import { setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
 
 const DEFAULT_PROVIDER = Meteor.settings.public.http_provider
-let FIRST_BLOCK = 0 // First block we consider when searching for transaction history etc.
 
 if (Meteor.settings.public.first_block === undefined) {
-  FIRST_BLOCK = 0
-} else {
-  FIRST_BLOCK = Meteor.settings.public.first_block
+  Meteor.settings.public.first_block = 0
 }
 
-console.log('FIRST_BLOCK', FIRST_BLOCK)
 web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
 
 Meteor.startup(async function () {
@@ -30,7 +28,24 @@ Meteor.startup(async function () {
     }
   })
   Meteor.defer(function () {
-    // now keep watching for blocks
-    watchTransactions()
+    if (Meteor.settings.public.isTestEnv) {
+      // if we are in a test environment, we will deploy the contracts before starting to watch
+      console.log('Test environment: deploying contracts on startup')
+      deployParatiiContracts().then(function (contracts) {
+        console.log(`${contracts.length} contracts deployed`)
+        console.log(contracts['ParatiiRegistry'].address)
+        Meteor.settings.public.ParatiiRegistry = contracts['ParatiiRegistry'].address
+        console.log('  Meteor.settings.public.ParatiiRegistry:', Meteor.settings.public.ParatiiRegistry)
+        setRegistryAddress(contracts['ParatiiRegistry'].address)
+        watchTransactions()
+        Meteor.methods({
+          getRegistryAddress: function () {
+            return Meteor.settings.public.ParatiiRegistry
+          }
+        })
+      })
+    } else {
+      watchTransactions()
+    }
   })
 })

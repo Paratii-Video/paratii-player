@@ -1,4 +1,5 @@
 /* global localStorage */
+
 export function login (browser) {
   browser.url('http://localhost:3000/profile')
   browser.waitForExist('[name="at-field-email"]', 2000)
@@ -7,7 +8,7 @@ export function login (browser) {
   browser.click('#at-btn')
 }
 
-export function getSomeEth (amount) {
+export function getSomeETH (amount) {
   const wallet = require('./imports/lib/ethereum/wallet.js')
   const accounts = web3.eth.accounts
   console.log('send transaction')
@@ -20,18 +21,6 @@ export function getSomePTI (amount) {
   wallet.sendUnSignedContractTransaction(accounts[0], amount)
 }
 
-export function getContractAddress () {
-  const contracts = require('./imports/lib/ethereum/contracts.js')
-  return contracts.getContractAddress()
-}
-
-// async function setContractAddress (address) {
-//   PARATII_TOKEN_ADDRESS = address
-//   if (Meteor.isClient) {
-//     Session.set('pti_contract_address', address)
-//   }
-// }
-
 export function resetDb () {
   Meteor.users.remove({ 'profile.name': 'Guildenstern' })
   Meteor.users.remove({ 'emails.address': 'guildenstern@rosencrantz.com' })
@@ -42,6 +31,7 @@ export function resetDb () {
   Playlists.remove({'_id': '98765'})
   const { Transactions } = require('/imports/api/transactions')
   Transactions.remove({'_id': '5000'})
+  Transactions.remove({})
 }
 
 export function createUser () {
@@ -153,4 +143,13 @@ export function mustBeTestChain () {
     let msg = `These tests can only be run on a local test node (e.g. ${localNodes})- your app is using ${host} instead.`
     throw Error(msg)
   }
+}
+
+export function setRegistryAddress (browser, address) {
+  console.log('setting registry address to', address)
+  browser.execute(function (address) {
+    const contracts = require('./imports/lib/ethereum/contracts.js')
+    contracts.setRegistryAddress(address)
+    Meteor.settings.public.ParatiiRegistry = address
+  }, address)
 }

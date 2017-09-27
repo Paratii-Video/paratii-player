@@ -2,8 +2,7 @@
 /* eslint no-global-assign: 0 */
 import Web3 from 'web3'
 import { getUserPTIAddress } from '../../api/users.js'
-import ParatiiToken from './contracts/ParatiiToken.json'
-import { getContractAddress, setRegistryAddress } from './contracts.js'
+import { getContract, getRegistryAddress, setRegistryAddress, getContracts } from './contracts.js'
 // TODO: store all this information in a settings.json object
 const DEFAULT_PROVIDER = Meteor.settings.public.http_provider
 
@@ -15,16 +14,12 @@ web3 = new Web3()
 
 export async function PTIContract () {
   // return a web3.eth.contract instance for the PTI Contract
-  let address = await getContractAddress('ParatiiToken')
-  if (address) {
-    const contract = web3.eth.contract(ParatiiToken.abi).at(address)
-    return contract
-  }
+  return getContract('ParatiiToken')
 }
 
 export async function updateSession () {
   /* update Session variables with latest information from the blockchain */
-  console.log('update Sesssion')
+  console.log('updating Sesssion')
   Session.set('eth_host', web3.currentProvider.host)
 
   /* if Web3 is running over testrpc test contract is deployed
@@ -38,14 +33,13 @@ export async function updateSession () {
   if (web3.isConnected()) {
     Session.set('eth_isConnected', true)
     Session.set('eth_currentBlock', web3.eth.blockNumber)
+    Session.set('ParatiiRegistry', await getRegistryAddress())
     const ptiAddress = getUserPTIAddress()
-    getContractAddress('ParatiiToken').then(function (result) {
-      Session.set('ParatiiToken', result)
-    })
     if (ptiAddress) {
       // SET PTI BALANCE
-      const contract = await PTIContract()
+      const contract = await getContract('ParatiiToken')
       if (contract) {
+        Session.set('ParatiiToken', contract.address)
         const ptiBalance = await contract.balanceOf(ptiAddress)
         Session.set('pti_balance', ptiBalance.toNumber())
       }
@@ -56,6 +50,13 @@ export async function updateSession () {
         if (result !== undefined) {
           Session.set('eth_balance', result.toNumber())
         }
+      })
+    }
+
+    // set the contracts in the Session object
+    if (getRegistryAddress()) {
+      getContracts().then(function (contracts) {
+        Session.set('contracts', contracts)
       })
     }
   } else {
@@ -71,7 +72,6 @@ web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
 
 export const initConnection = function () {
   console.log('initializing connection..')
-  Session.set('eth_testContractDeployed', false)
   web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
 
   setRegistryAddress(Meteor.settings.public.ParatiiRegistry)

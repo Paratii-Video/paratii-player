@@ -23,10 +23,23 @@
           <li>Your Paratii balance (in PTI): {{ pti_balance }} </li>
 
         </li>
-        <li>ParatiiRegistry: {{ contractAddress }}
+        <li>
+          {{#if ParatiiRegistryAddress }}
+              ParatiiRegistry: {{ ParatiiRegistryAddress }}
+          {{else }}
+            <b>The address of the ParatiRegistry address is not known. If you are a developer working with a local chain or testRPC, you can deploy the Parati contracts using
+              the button below</b>
+          {{/if}}
+          <br>
         </li>
         <li>
           The paratii contract address: {{ contractAddress }}
+        </li>
+        <li>
+          Contracts (from the session object): {{ contracts }}
+          {{#each contract in contracts }}
+            {{ contract }}
+          {{/each}}
         </li>
         <li>
           {{#if eth_isConnected }}
@@ -36,9 +49,10 @@
         </li>
         {{#if isTestRPC}}
         <li>
-
-          <button id="deploy-parati-test-contract" class="btn">Deploy Test Contract [wont work]</button>
+          <button id="deploy-contracts" class="btn">Deploy Test Contracts</button>
           <button id="get-some-PTI" class="btn">Get Some PTI</button>
+          <button id="get-some-ETH" class="btn">Get Some ETH</button>
+          <button id="update-Session" class="btn">Update the Session object..</button>
 
         </li>
         {{/if}}

@@ -4,7 +4,7 @@ import { Accounts } from 'meteor/accounts-base'
 import { add0x } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { web3, GAS_PRICE, GAS_LIMIT } from './connection.js'
-import { getContractAddress } from './contracts.js'
+import { getContract } from './contracts.js'
 import ParatiiToken from './contracts/ParatiiToken.json'
 
 // createKeystore will create a new keystore
@@ -122,9 +122,13 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
   const fromAddr = getUserPTIAddress()
   const nonce = web3.eth.getTransactionCount(fromAddr)
   const value = parseInt(web3.toWei(amount, 'ether'), 10)
+  if (!description) {
+    description = ''
+  }
 
   const keystore = getKeystore()
-  keystore.keyFromPassword(password, function (error, pwDerivedKey) {
+  keystore.keyFromPassword(password, async function (error, pwDerivedKey) {
+    let contract
     if (error) throw error
     // sign the transaction
     const txOptions = {
@@ -136,14 +140,22 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
     let rawTx
     switch (type) {
       case 'Eth':
-        txOptions.to = add0x(recipient)
+        // next lines for a simple value transaction
+        // txOptions.to = add0x(recipient)
+        // txOptions.value = web3.toHex(value)
+        // txOptions.currency = 'eth'
+        // rawTx = lightwallet.txutils.valueTx(txOptions)
+        // break
+        contract = await getContract('SendEther')
+        txOptions.to = contract.address
+        // txOptions.currency = 'pti'
         txOptions.value = web3.toHex(value)
-        txOptions.currency = 'eth'
-        rawTx = lightwallet.txutils.valueTx(txOptions)
+        rawTx = lightwallet.txutils.functionTx(contract.abi, 'transfer', [recipient, description], txOptions)
         break
       case 'PTI':
-        txOptions.to = getContractAddress('ParatiiToken')
-        txOptions.currency = 'pti'
+        contract = await getContract('ParatiiToken')
+        txOptions.to = contract.address
+        txOptions.currency = 'pti' // ?????
         rawTx = lightwallet.txutils.functionTx(ParatiiToken.abi, 'transfer', [recipient, value], txOptions)
         break
       default:
@@ -153,16 +165,17 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
       if (err) {
         throw err
       }
-      txOptions.from = fromAddr
-      txOptions.description = description
-      txOptions.value = value
-      txOptions.transactionHash = hash
-      Object.assign(txOptions, extraInfo) // If there are options they are merged in the transation object
-      Meteor.call('addTXToCollection', txOptions)
+      // txOptions.from = fromAddr
+      // txOptions.description = description
+      // txOptions.value = value
+      // txOptions.transactionHash = hash
+      // Object.assign(txOptions, extraInfo) // If there are options they are merged in the transation object
+      // Meteor.call('addTXToCollection', txOptions)
     })
   })
 }
 
+// TODO: the "unsigned" transactions are used for debugging purposes only and should/could be moved to the helpers.js file
 function sendUnSignedTransaction (address, amount) {
   const toAddr = getUserPTIAddress()
   console.log('send unsigned transaction ')
@@ -175,11 +188,11 @@ function sendUnSignedTransaction (address, amount) {
   })
 }
 
-async function sendUnSignedContractTransaction (address, value) {
-  const contractAddress = await getContractAddress('ParatiiToken')
+async function sendUnSignedContractTransaction (fromAddress, value) {
   const toAddr = getUserPTIAddress()
-  const contract = web3.eth.contract(ParatiiToken.abi).at(contractAddress)
-  let result = await contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: address })
+  const contract = await getContract('ParatiiToken')
+  console.log(`Sending ${value} PTI from ${fromAddress} to ${toAddr} using contract ${contract}`)
+  let result = await contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: fromAddress })
   return result
 }
 
