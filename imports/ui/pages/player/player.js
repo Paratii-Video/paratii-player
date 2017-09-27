@@ -1,15 +1,16 @@
 import { Template } from 'meteor/templating'
 import { Blaze } from 'meteor/blaze'
+import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
-
 import { formatNumber } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-// import { UserTransactions } from '/imports/api/transactions.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import { createIPFSPlayer } from './ipfs.js'
+import { keystoresCheck, createAnonymousKeystore } from '/imports/lib/ethereum/wallet.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
+import '/imports/ui/components/modals/login.js'
 
 import './player.html'
 
@@ -37,8 +38,6 @@ function getVideo () {
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = instance.currentVideo.get()
-  console.log('currentvideo', currentVideo)
-  console.log('instance', instance)
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo)
     instance.playerState.set('torrent', true)
@@ -48,7 +47,6 @@ function renderVideoElement (instance) {
   } else {
     const videoElement = $('#video-player')
     const sourceElement = document.createElement('source')
-    console.log(currentVideo.src)
     sourceElement.src = currentVideo.src
     sourceElement.type = currentVideo.mimetype
     videoElement.append(sourceElement)
@@ -60,6 +58,23 @@ Template.player.onCreated(function () {
   const userPTIAddress = getUserPTIAddress()
   const instance = Template.instance()
   const bodyView = Blaze.getView('Template.App_body')
+
+  // If user is not logged in
+  if (Accounts.userId() === null) {
+    const keystores = keystoresCheck()
+    console.log(keystores)
+    if (keystores.users > 0) {
+      // There is at least one User keystore
+      // TODO: propose to login if not create anonymous keystore
+      Modal.show('login')
+    } else {
+      // If there is no User keystore
+      console.log('no user keystore')
+      Session.set('wallet-state', 'generating')
+      // Create anonymouse keystore with 'password'
+      createAnonymousKeystore()
+    }
+  }
 
   this.currentVideo = new ReactiveVar()
 

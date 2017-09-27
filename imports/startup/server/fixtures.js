@@ -107,7 +107,7 @@ export const populateVideos = () => {
       uploader: {
         address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
         name: 'Paratii',
-        avatar: 'http://i.pravatar.cc/150?img=4'
+        avatar: '/img/icon/apple-touch-icon.png'
       },
       stats: {
         likes_percentage: 98,
@@ -129,7 +129,7 @@ export const populateVideos = () => {
       uploader: {
         address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
         name: 'Paratii',
-        avatar: 'http://i.pravatar.cc/150?img=4'
+        avatar: '/img/icon/apple-touch-icon.png'
       },
       stats: {
         likes_percentage: 98,
@@ -151,7 +151,7 @@ export const populateVideos = () => {
       uploader: {
         address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
         name: 'Paratii',
-        avatar: 'http://i.pravatar.cc/150?img=4'
+        avatar: '/img/icon/apple-touch-icon.png'
       },
       stats: {
         likes_percentage: 98,
@@ -174,7 +174,7 @@ export const populateVideos = () => {
       uploader: {
         address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
         name: 'Paratii',
-        avatar: 'http://i.pravatar.cc/150?img=4'
+        avatar: '/img/icon/apple-touch-icon.png'
       },
       stats: {
         likes_percentage: 98,
@@ -196,7 +196,7 @@ export const populateVideos = () => {
       uploader: {
         address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
         name: 'Paratii',
-        avatar: 'http://i.pravatar.cc/150?img=4'
+        avatar: '/img/icon/apple-touch-icon.png'
       },
       stats: {
         likes_percentage: 98,

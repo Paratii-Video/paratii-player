@@ -46,7 +46,7 @@ function createKeystore (password, seedPhrase, cb) {
       } else {
         // else, save in a temporary session variable
         Session.set('tempSeed', seedPhrase)
-        Session.set(`tempKeystore`, keystore.serialize())
+        Session.set('tempKeystore', keystore.serialize())
         Session.set('tempAddress', add0x(address))
       }
       Session.set('generating-keystore', false)
@@ -59,13 +59,36 @@ function createKeystore (password, seedPhrase, cb) {
 
 // save the seed, keystore and address in the session
 function saveKeystore (seedPhrase, keystore, address) {
+  const userId = Accounts.userId()
+  // If the user is not logged in
+  // if (userId === null) {
+  //   userId = 'anonymous'
+  // }
   Session.set('seed', seedPhrase)
-  RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore)
-  Session.set(`keystore-${Accounts.userId()}`, keystore)
+  RLocalStorage.setItem(`keystore-${userId}`, keystore)
+  Session.set(`keystore-${userId}`, keystore)
 
   Session.set('userPTIAddress', add0x(address))
   // TODO: we do not seem to be using this anymore...
   Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
+}
+
+function createAnonymousKeystore () {
+  const keystores = keystoresCheck()
+  // If there isn't anonyous keystore
+  if (keystores.anonymous === 0) {
+    createKeystore('password', undefined, function (err, seedPhrase) {
+      if (err) {
+        throw err
+      }
+      Session.set('wallet-state', '')
+      // Need to save keystore
+      const keystore = Session.get('tempKeystore')
+      RLocalStorage.setItem(`keystore-anonymous`, keystore)
+      Session.set(`keystore-anonymous`, keystore)
+      Session.set('tempKeystore', null)
+    })
+  }
 }
 
 // getKeystore tries to load the keystore from the Session,
@@ -73,11 +96,16 @@ function saveKeystore (seedPhrase, keystore, address) {
 // If no keystore can be found, it returns undefined.
 export function getKeystore () {
   let serializedKeystore
-  serializedKeystore = Session.get(`keystore-${Accounts.userId()}`)
+  let userId = Accounts.userId()
+  // If the user is not logged in
+  if (userId === null) {
+    userId = 'anonymous'
+  }
+  serializedKeystore = Session.get(`keystore-${userId}`)
   if (serializedKeystore === undefined) {
-    serializedKeystore = RLocalStorage.getItem(`keystore-${Accounts.userId()}`)
+    serializedKeystore = RLocalStorage.getItem(`keystore-${userId}`)
     if (serializedKeystore !== null) {
-      Session.set(`keystore-${Accounts.userId()}`, serializedKeystore)
+      Session.set(`keystore-${userId}`, serializedKeystore)
     }
   }
   // using lightwallet to deserialize the keystore
@@ -88,6 +116,22 @@ export function getKeystore () {
     return keystore
   }
   return null
+}
+
+export function keystoresCheck () {
+  let keystores = {}
+  keystores.users = 0
+  keystores.anonymous = 0
+  const storageList = Object.keys(window.localStorage)
+  storageList.some(function (element) {
+    if (element.indexOf('keystore') >= 0 && element.indexOf('keystore-anonymous') < 0) {
+      keystores.users++
+    }
+    if (element.indexOf('keystore-anonymous') >= 0) {
+      keystores.anonymous++
+    }
+  })
+  return keystores
 }
 
 // returns the seed of the keystore
@@ -183,4 +227,4 @@ async function sendUnSignedContractTransaction (address, value) {
   return result
 }
 
-export { createKeystore, restoreWallet, doTx, getSeed, sendUnSignedTransaction, sendUnSignedContractTransaction, saveKeystore }
+export { createKeystore, restoreWallet, doTx, getSeed, sendUnSignedTransaction, sendUnSignedContractTransaction, saveKeystore, createAnonymousKeystore }
