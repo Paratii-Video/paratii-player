@@ -4,12 +4,12 @@ import { sprintf } from 'meteor/sgi:sprintfjs'
 
 import { formatNumber } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-// import { UserTransactions } from '/imports/api/transactions.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
+import '/imports/ui/components/modals/unlockVideo.js'
 
 import './player.html'
 
@@ -250,7 +250,7 @@ const setLoadedProgress = (instance) => {
 
 Template.player.events({
   'click #unlock-video' (event) {
-    Modal.show('doTransaction', {
+    Modal.show('unlockVideo', {
       type: 'PTI',
       label: 'Unlock this video',
       action: 'unlock_video',

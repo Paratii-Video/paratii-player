@@ -1,7 +1,7 @@
 /* global localStorage */
 
 export function login (browser) {
-  browser.url('http://localhost:3000/profile')
+  browser.url('http://127.0.0.1:3000/profile')
   browser.waitForExist('[name="at-field-email"]', 2000)
   browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
   browser.setValue('[name="at-field-password"]', 'password')
@@ -54,6 +54,15 @@ export function createUserAndLogin (browser) {
   server.execute(createUser)
   // now log in
   login(browser)
+  // browser.executeAsync(function (done) {
+  //   Meteor.loginWithPassword('guildenstern@rosencrantz.com', 'password', function (err) {
+  //     if (err) {
+  //       throw err
+  //     }
+  //     done()
+  //   })
+  // })
+
   browser.execute(createKeystore)
 }
 

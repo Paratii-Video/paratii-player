@@ -15,12 +15,12 @@ web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
 let owner = web3.eth.accounts[0]
 
 function _deploy (contractSpec, cb) {
-  console.log(`deploying contract ${contractSpec.contractName}`)
+  console.log(`deploying contract ${contractSpec.contractName || contractSpec.contract_name}`)
   let contract = web3.eth.contract(contractSpec.abi)
   let contractInstance = contract.new({
     from: add0x(owner),
     // data: contractSpec.unlinked_binary,
-    data: contractSpec.bytecode,
+    data: contractSpec.bytecode || contractSpec.unlinked_binary,
     gas: web3.toHex(4e6)
   },
   function (err, myContract) {
@@ -36,15 +36,16 @@ function _deploy (contractSpec, cb) {
     } else {
       cb(err, null)
     }
-  })
+  }
+  )
   return contractInstance
 }
+
 function deploy (contractSpec) {
   return promisify(_deploy)(contractSpec)
 }
 
 export async function deployParatiiContracts () {
-  console.log(await web3.eth.getBalance(web3.eth.accounts[0]))
   let paratiiAvatar = await deploy(ParatiiAvatarSpec)
   let paratiiToken = await deploy(ParatiiTokenSpec)
   let paratiiRegistry = await deploy(ParatiiRegistrySpec)
@@ -57,6 +58,13 @@ export async function deployParatiiContracts () {
   await paratiiRegistry.registerContract('SendEther', sendEther.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('VideoRegistry', videoRegistry.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('VideoStore', videoStore.address, {from: web3.eth.accounts[0]})
+
+  // register a video at the videoregistry
+  // TODO: we register video with id == 5, because that is what we use in the tests, and is in the fixture
+  // but this needs to be organized better
+  let videoId = '5'
+  let price = web3.toWei(14)
+  await videoRegistry.registerVideo(videoId, web3.eth.accounts[2], price, {from: web3.eth.accounts[1]})
 
   let result = {
     ParatiiAvatar: paratiiAvatar,

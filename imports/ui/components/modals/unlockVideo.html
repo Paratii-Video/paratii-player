@@ -1,0 +1,40 @@
+<template name="unlockVideo">
+  <div class="modal fade">
+    <form id="form-unlockVideo">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">{{ label }}</h4>
+          </div>
+          <!-- Body -->
+          <div class="modal-body {{ action }}">
+            <div class="form-group {{#if getErrors 'wallet_amount'}}has-error{{/if}}">
+              {{#if getErrors 'wallet_amount'}}<label class="control-label">{{ getErrors 'wallet_amount' }}</label>{{/if}}
+              <div class="input-group">
+                <span class="input-group-addon" id="sizing-addon3">{{ type }}</span>
+                {{#if action}}
+                  <input name="wallet_amount" type="text" value="{{price}}" class="form-control" aria-describedby="sizing-addon1" readonly>
+                {{/if}}
+              </div>
+            </div>
+            <tt>{{ videotitle }}</tt>
+            <div class="form-group {{#if getErrors 'user_password'}}has-error{{/if}}">
+              {{#if getErrors 'user_password'}}<label class="control-label">{{ getErrors 'user_password' }}</label>{{/if}}
+              <div class="input-group">
+                  <span class="input-group-addon" id="sizing-addon3">Password</span>
+                  <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
+              </div>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-trans-close">Close</button>
+            <input type="submit" id="send_trans_btn" class="btn btn-default blue-button" value="Buy this vid"/>
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</template>

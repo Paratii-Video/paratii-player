@@ -118,14 +118,19 @@ function restoreWallet (password, seedPhrase, cb) {
 //   doTx(password, 'VideoStore', [videoId])
 // }
 
-function doTx (password, contractName, functionName, args = [], value = 0) {
+function doTx (password, contractName, functionName, args, value, callback) {
   // send some ETH or PTI
   // @param value The amount of ETH to transfer (expressed in Wei)
   //
+  if (!value) {
+    value = 0
+  }
+  if (!args) {
+    args = []
+  }
+  console.log(`Sending transaction: ${contractName}.${functionName}(${args}), with value ${value}`)
   const fromAddr = getUserPTIAddress()
   const nonce = web3.eth.getTransactionCount(fromAddr)
-  // const value = parseInt(web3.toWei(amount, 'ether'), 10)
-
   const keystore = getKeystore()
   keystore.keyFromPassword(password, async function (error, pwDerivedKey) {
     let contract
@@ -142,15 +147,15 @@ function doTx (password, contractName, functionName, args = [], value = 0) {
     txOptions.to = contract.address
     txOptions.value = web3.toHex(value)
     rawTx = lightwallet.txutils.functionTx(contract.abi, functionName, args, txOptions)
-    // rawTx = lightwallet.txutils.functionTx(contract.abi, functionName, [recipient, description], txOptions)
-    // contract = await getContract('ParatiiToken')
-    // txOptions.to = contract.address
-    // txOptions.currency = 'pti' // ?????
-    // rawTx = lightwallet.txutils.functionTx(ParatiiToken.abi, 'transfer', [recipient, value], txOptions)
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr)
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
-      if (err) {
-        throw err
+      console.log('Transaction sent: calling callback', callback)
+      if (callback) {
+        callback(err, hash)
+      } else {
+        if (err) {
+          throw err
+        }
       }
     })
   })

@@ -13,8 +13,8 @@ describe('wallet', function () {
     })
     if (paratiiRegistryAddress.value) {
       // TODO: (optimization) we do not need to deploy the contracts - they are already deployed
-      contractAddresses = await deployParatiiContracts()
-      setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
+      // contractAddresses = await deployParatiiContracts()
+      setRegistryAddress(browser, paratiiRegistryAddress.value)
     } else {
       contractAddresses = await deployParatiiContracts()
       setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
@@ -83,7 +83,8 @@ describe('wallet', function () {
 
     done()
   })
-  it('should be able to send some ETH, update the balance and transaction history @watch', function (done) {
+
+  it('should be able to send some ETH, update the balance and transaction history', function (done) {
     let description = 'Here is some ETH for you'
     browser.waitForExist('#public_address', 5000)
     browser.execute(getSomeETH, 3)
@@ -114,7 +115,21 @@ describe('wallet', function () {
     done()
   })
 
-  it('should be possible to buy (and unlock) a video [TODO]', function (done) {
+  it('should be possible to buy (and unlock) a video [TODO] @watch', function (done) {
+    browser.waitForExist('#public_address', 5000)
+    browser.execute(getSomeETH, 3)
+    browser.waitForExist('#eth_amount', 5000)
+    browser.execute(getSomePTI, 300)
+    browser.click('a[href="#pti"]')
+    browser.waitForExist('#pti_amount', 5000)
+
+    browser.url('http://127.0.0.1:3000/play/5')
+    browser.waitForEnabled('#unlock-video', 5000)
+    browser.click('#unlock-video')
+    browser.waitForEnabled('[name="user_password"]')
+    browser.pause(1000)
+    browser.setValue('[name="user_password"]', 'password')
+    browser.click('#send_trans_btn')
     done()
   })
 })
