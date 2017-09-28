@@ -34,9 +34,11 @@
       <span class="slash">/</span>
       <span id="total-time">{{formatTime totalTime}}</span>
       {{ #if status }}<span id="status"><tt>STATUS: {{ status }}</tt></span>{{/if}}
+      {{ #if fullscreen}}
       <button id="fullscreen-button" title="{{fullscreen}}">
         <img src= "/img/fullscreen-icon.svg">
       </button>
+      {{/if}}
     </div>
     {{/unless }}
 

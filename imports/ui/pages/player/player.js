@@ -61,9 +61,11 @@ Template.player.onCreated(function () {
   const instance = Template.instance()
   const bodyView = Blaze.getView('Template.App_body')
 
+  // embed/extra parameters
   const autoplay = parseInt(FlowRouter.getQueryParam('autoplay'))
   const loop = parseInt(FlowRouter.getQueryParam('loop'))
   const playinline = parseInt(FlowRouter.getQueryParam('playinline'))
+  const fullscreen = parseInt(FlowRouter.getQueryParam('fullscreen'))
 
   this.currentVideo = new ReactiveVar()
 
@@ -88,6 +90,15 @@ Template.player.onCreated(function () {
   this.playerState.set('autoplay', autoplay === 1)
   this.playerState.set('loop', loop === 1)
   this.playerState.set('playinline', playinline === 1)
+
+  /* DETERMINED IF PLAYER IS EMBEDED */
+  if (window.top !== window.self) {
+    console.log('embedded')
+    this.playerState.set('fullscreen', fullscreen === 1)
+  } else {
+    console.log('not embedded')
+    this.playerState.set('fullscreen', true)
+  }
 
   if (userPTIAddress) {
     Meteor.subscribe('userTransactions', userPTIAddress)
@@ -197,12 +208,13 @@ Template.player.helpers({
     return Template.instance().playerState.get('autoplay') === true ? 'autoplay' : ''
   },
   loop () {
-    /* TODO: NEED TO CHECK IF IS IT BOUGHT */
     return Template.instance().playerState.get('loop') === true ? 'loop' : ''
   },
   playinline () {
-    /* TODO: NEED TO CHECK IF IS IT BOUGHT */
     return Template.instance().playerState.get('playinline') === true ? 'playinline' : ''
+  },
+  fullscreen () {
+    return Template.instance().playerState.get('fullscreen')
   }
 })
 
