@@ -67,7 +67,7 @@ if you get out-of-memory errors, setting TOOL_NODE_FLAGS may help:
     export TOOL_NODE_FLAGS="--max_old_space_size=4096"
 
 ## Embedding and Sharing the player and oEmbed service
-### Embeddiing
+### Embedding
 The player is optimized for **embedding** into iframe using a specific address:
 
 http://localhost:3000/embed/video_id
@@ -85,6 +85,7 @@ https://paratii-video.github.io/paratii-embed/
 ### Sharing
 
 **twitter card**
+
 **facebook og**
 
 More considerations and examples at
