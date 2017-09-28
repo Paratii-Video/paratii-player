@@ -90,7 +90,7 @@ describe('account workflow', function () {
     browser.$('#at-signUp').click()
 
     // fill in the form
-    browser.waitForExist('[name="at-field-name"]')
+    browser.waitForExist('[name="at-field-name"]', 6000)
     browser
       .setValue('[name="at-field-name"]', 'Guildenstern')
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
@@ -184,7 +184,7 @@ describe('account workflow', function () {
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('do not create a new wallet if the password is wrong', function () {
+  it('do not create a new wallet if the password is wrong @watch', function () {
     createUserAndLogin(browser)
     browser.execute(clearLocalStorage)
     browser.refresh()

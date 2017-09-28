@@ -90,7 +90,7 @@ describe('wallet', function () {
 
     done()
   })
-  it('should be able to send some ETH, update the balance and transaction history @watch', function (done) {
+  it('should be able to send some ETH, update the balance and transaction history', function (done) {
     let description = 'Here is some ETH for you'
     browser.waitForExist('#public_address', 5000)
     browser.execute(getSomeETH, 3)
