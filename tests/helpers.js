@@ -1,11 +1,13 @@
 /* global localStorage */
-
 export const SEED = 'road inherit leave arm unlock estate option merge mechanic rate blade dumb'
 export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
 
+export function getProvider () {
+  return Meteor.settings.public.http_provider
+}
 export function login (browser) {
-  browser.url('http://127.0.0.1:3000/profile')
-  browser.waitForExist('[name="at-field-email"]', 2000)
+  browser.url('http://localhost:3000/profile')
+  browser.waitForExist('[name="at-field-email"]', 5000)
   browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
   browser.setValue('[name="at-field-password"]', 'password')
   browser.click('#at-btn')

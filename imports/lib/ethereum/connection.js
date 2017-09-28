@@ -1,16 +1,14 @@
 /* globals web3 */
 /* eslint no-global-assign: 0 */
-import Web3 from 'web3'
+import { web3 } from './web3.js'
 import { getUserPTIAddress } from '../../api/users.js'
 import { getContract, getRegistryAddress, setRegistryAddress, getContracts } from './contracts.js'
-// TODO: store all this information in a settings.json object
-const DEFAULT_PROVIDER = Meteor.settings.public.http_provider
 
+// TODO: store all this information in a settings.json object
 const GAS_PRICE = 50000000000
 const GAS_LIMIT = 4e6
 
 // must not define this varable because ethereum-tools will trip
-web3 = new Web3()
 
 export async function PTIContract () {
   // return a web3.eth.contract instance for the PTI Contract
@@ -68,11 +66,11 @@ export async function updateSession () {
   }
 }
 
-web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
+web3.setProvider(new web3.providers.HttpProvider(Meteor.settings.public.http_provider))
 
 export const initConnection = function () {
   console.log('initializing connection..')
-  web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
+  web3.setProvider(new web3.providers.HttpProvider(Meteor.settings.public.http_provider))
 
   setRegistryAddress(Meteor.settings.public.ParatiiRegistry)
 

@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import { web3, updateSession } from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
+import { updateSession } from '/imports/lib/ethereum/connection.js'
 import { setRegistryAddress, getContractAddress } from '/imports/lib/ethereum/contracts.js'
 import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { deployParatiiContracts, sendSomeETH, sendSomePTI } from '/imports/lib/ethereum/helpers.js'

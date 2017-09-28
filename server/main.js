@@ -5,17 +5,15 @@ import '../imports/startup/server/fixtures.js'
 import '../imports/startup/both'
 import '../imports/api/users.js'
 import { watchTransactions, syncTransactions } from '/imports/api/transactions.js'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
-
-const DEFAULT_PROVIDER = Meteor.settings.public.http_provider
 
 if (Meteor.settings.public.first_block === undefined) {
   Meteor.settings.public.first_block = 0
 }
 
-web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
+web3.setProvider(new web3.providers.HttpProvider(Meteor.settings.public.http_provider))
 
 Meteor.startup(async function () {
   console.log('settings.public.http_provider: ', Meteor.settings.public.http_provider)

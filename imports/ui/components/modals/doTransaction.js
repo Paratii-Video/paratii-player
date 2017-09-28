@@ -1,11 +1,15 @@
 // TODO: refactoring: remove all refs to the buyvideo workflow from this modal (it's in 'unlockVideo.js' now)
 import { Template } from 'meteor/templating'
 import { doTx } from '/imports/lib/ethereum/wallet.js'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 import { checkPassword } from '/imports/api/users.js'
 
 import '/imports/lib/validate.js'
 import './doTransaction.html'
+
+Template.doTransaction.onCreated(function () {
+  console.log(web3)
+})
 
 Template.doTransaction.helpers({
   ima () {

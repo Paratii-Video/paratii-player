@@ -1,6 +1,6 @@
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { UserTransactions } from '/imports/api/transactions.js'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 
 import './transactions.html'
 

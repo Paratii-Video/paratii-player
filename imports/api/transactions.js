@@ -1,8 +1,6 @@
 /* globals ReactiveAggregate */
-import {
-  web3,
-  PTIContract
-} from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
+import { PTIContract } from '/imports/lib/ethereum/connection.js'
 
 import { getContract } from '../lib/ethereum/contracts.js'
 import { Settings } from '/imports/api/settings.js'
