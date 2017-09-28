@@ -16,12 +16,11 @@ import { getContract } from './contracts.js'
 var promisify = require('promisify-node')
 
 function _deploy (contractSpec, cb) {
-  console.log(`deploying contract ${contractSpec.contractName}`)
+  console.log(`deploying contract ${contractSpec.contractName || contractSpec.contract_name}`)
   let owner = web3.eth.accounts[0]
   let contract = web3.eth.contract(contractSpec.abi)
   let contractInstance = contract.new({
     from: add0x(owner),
-    // data: contractSpec.unlinked_binary,
     data: contractSpec.bytecode || contractSpec.unlinked_binary,
     gas: web3.toHex(4e6)
   },

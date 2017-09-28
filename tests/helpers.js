@@ -6,7 +6,7 @@ export function getProvider () {
   return Meteor.settings.public.http_provider
 }
 export function login (browser) {
-  browser.url('http://localhost:3000/profile')
+  browser.url('http://127.0.0.1:3000/profile')
   browser.waitForExist('[name="at-field-email"]', 5000)
   browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
   browser.setValue('[name="at-field-password"]', 'password')
@@ -20,6 +20,9 @@ export function getSomeETH (amount) {
   helpers.sendSomeETH(beneficiary, amount)
 }
 
+export function getSomeETH2 (amount) {
+
+}
 export function getSomePTI (amount) {
   const helpers = require('./imports/lib/ethereum/helpers.js')
   const users = require('./imports/api/users.js')

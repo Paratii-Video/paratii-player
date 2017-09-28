@@ -1,6 +1,6 @@
 // TODO: refactoring: remove all refs to the buyvideo workflow from this modal (it's in 'unlockVideo.js' now)
 import { Template } from 'meteor/templating'
-import { doTx } from '/imports/lib/ethereum/wallet.js'
+import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
 import { checkPassword } from '/imports/api/users.js'
 
@@ -70,11 +70,11 @@ Template.doTransaction.events({
       switch (type) {
         case 'Eth':
           let value = web3.toWei(amount, 'ether')
-          doTx(password, 'SendEther', 'transfer', [recipient, description], value)
+          sendTransaction(password, 'SendEther', 'transfer', [recipient, description], value)
           break
         case 'PTI':
           amount = web3.toWei(amount, 'ether')
-          doTx(password, 'ParatiiToken', 'transfer', [recipient, amount])
+          sendTransaction(password, 'ParatiiToken', 'transfer', [recipient, amount])
           break
         default:
       }

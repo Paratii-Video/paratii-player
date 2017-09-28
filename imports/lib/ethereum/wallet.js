@@ -116,10 +116,10 @@ function restoreWallet (password, seedPhrase, cb) {
   return createKeystore(password, seedPhrase, cb)
 }
 // function buyVideo (videoId) {
-//   doTx(password, 'VideoStore', [videoId])
+//   sendTransaction(password, 'VideoStore', [videoId])
 // }
 
-function doTx (password, contractName, functionName, args, value, callback) {
+function sendTransaction (password, contractName, functionName, args, value, callback) {
   // send some ETH or PTI
   // @param value The amount of ETH to transfer (expressed in Wei)
   //
@@ -162,4 +162,4 @@ function doTx (password, contractName, functionName, args, value, callback) {
   })
 }
 
-export { createKeystore, restoreWallet, doTx, getSeed, saveKeystore }
+export { createKeystore, restoreWallet, sendTransaction, getSeed, saveKeystore }

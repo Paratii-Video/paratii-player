@@ -2,7 +2,7 @@ import { resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress
 import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
 import { web3 } from '../imports/lib/ethereum/web3.js'
 
-describe('wallet @watch', function () {
+describe('wallet', function () {
   let contractAddresses
 
   before(async function (done) {
@@ -15,6 +15,7 @@ describe('wallet @watch', function () {
     paratiiRegistryAddress = await browser.execute(function () {
       return Meteor.settings.public.ParatiiRegistry
     })
+    console.log(paratiiRegistryAddress)
     if (paratiiRegistryAddress.value) {
       // TODO: (optimization) we do not need to deploy the contracts - they are already deployed
       console.log('1')
@@ -128,14 +129,15 @@ describe('wallet @watch', function () {
     done()
   })
 
-  it('should be possible to buy (and unlock) a video [TODO]', function (done) {
+  it('should be possible to buy (and unlock) a video [TODO]  @watch', function (done) {
     browser.waitForExist('#public_address', 5000)
     browser.execute(getSomeETH, 3)
     browser.waitForExist('#eth_amount', 5000)
     browser.execute(getSomePTI, 300)
     browser.click('a[href="#pti"]')
     browser.waitForExist('#pti_amount', 5000)
-
+    const amount = browser.getHTML('#pti_amount', false)
+    assert.equal(amount, 300)
     browser.url('http://127.0.0.1:3000/play/5')
     browser.waitForEnabled('#unlock-video', 5000)
     browser.click('#unlock-video')
@@ -144,6 +146,7 @@ describe('wallet @watch', function () {
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#send_trans_btn')
     // TODO: check if the video has actually been acquired!
+    browser.pause(4000)
     done()
   })
 })

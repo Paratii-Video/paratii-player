@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating'
-import { doTx } from '/imports/lib/ethereum/wallet.js'
+import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
 import { web3 } from '/imports/lib/ethereum/connection.js'
 import { getContract } from '/imports/lib/ethereum/contracts.js'
 import { checkPassword } from '/imports/api/users.js'
@@ -61,10 +61,9 @@ Template.unlockVideo.events({
       // the transaction has two steps - we first approve that the paratiiavatar can move `price`, and then instruct the videoStore to buy the video
       console.log(`approve ${price}`)
       let paratiiAvatar = await getContract('ParatiiAvatar')
-      let x = await promisify(doTx)(password, 'ParatiiToken', 'approve', [paratiiAvatar.address, price], 0)
-      console.log(x)
+      await promisify(sendTransaction)(password, 'ParatiiToken', 'approve', [paratiiAvatar.address, price], 0)
       console.log(`buyVideo ${videoId}`)
-      await promisify(doTx)(password, 'VideoStore', 'buyVideo', [videoId], 0)
+      await promisify(sendTransaction)(password, 'VideoStore', 'buyVideo', [videoId], 0)
     }
   }
 })
