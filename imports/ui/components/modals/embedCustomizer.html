@@ -26,7 +26,9 @@
             </div>
             <p> Code for embedding </p>
             <pre id="to_clip" class="embed_code">{{code}}</pre>
-            {{{code}}}
+            {{#unless embed}}
+              {{{code}}}
+            {{/unless}}
           </div>
           <!-- Footer -->
           <div class="modal-footer">

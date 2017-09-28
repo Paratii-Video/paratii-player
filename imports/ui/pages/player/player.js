@@ -463,7 +463,8 @@ Template.player.events({
     const videoId = _video._id
     Modal.show('embedCustomizer', {
       videoId: videoId,
-      label: 'Embed code'
+      label: 'Embed code',
+      embed: window.top !== window.self
     })
   }
 })
