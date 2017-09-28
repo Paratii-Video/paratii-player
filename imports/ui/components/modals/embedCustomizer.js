@@ -56,12 +56,16 @@ Template.embedCustomizer.helpers({
     if (Template.instance().iframe.get('loop')) {
       parameters.loop = 1
     }
+    if (Template.instance().iframe.get('playinline')) {
+      parameters.playinline = 1
+    }
 
     if (Template.instance().iframe.get('allowfullscreen')) {
       iframe.setAttribute('webkitallowfullscreen', true)
       iframe.setAttribute('mozallowfullscreen', true)
       iframe.setAttribute('allowfullscreen', true)
     }
+
     const src = buildUrl(Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/embed/' + this.videoId, parameters)
     iframe.src = 'srcplaceholder'
     iframe.width = Template.instance().iframe.get('size').width
@@ -90,6 +94,9 @@ Template.embedCustomizer.events({
   },
   'change .loop' (event) {
     Template.instance().iframe.set('loop', event.target.checked)
+  },
+  'change .playinline' (event) {
+    Template.instance().iframe.set('playinline', event.target.checked)
   }
 })
 
