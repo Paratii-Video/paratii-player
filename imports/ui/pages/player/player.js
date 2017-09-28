@@ -61,6 +61,10 @@ Template.player.onCreated(function () {
   const instance = Template.instance()
   const bodyView = Blaze.getView('Template.App_body')
 
+  const autoplay = parseInt(FlowRouter.getQueryParam('autoplay'))
+  const loop = parseInt(FlowRouter.getQueryParam('loop'))
+  const playinline = parseInt(FlowRouter.getQueryParam('playinline'))
+
   this.currentVideo = new ReactiveVar()
 
   // this makes the tests work
@@ -80,6 +84,10 @@ Template.player.onCreated(function () {
   this.playerState.set('volScrubberTranslate', 100)
   this.playerState.set('muted', false)
   this.playerState.set('locked', true)
+  /* EMBED CONTROLS */
+  this.playerState.set('autoplay', autoplay === 1)
+  this.playerState.set('loop', loop === 1)
+  this.playerState.set('playinline', playinline === 1)
 
   if (userPTIAddress) {
     Meteor.subscribe('userTransactions', userPTIAddress)
@@ -183,6 +191,18 @@ Template.player.helpers({
   },
   hasPlaylistId () {
     return FlowRouter.getQueryParam('playlist') != null
+  },
+  autoplay () {
+    /* TODO: NEED TO CHECK IF IS IT BOUGHT */
+    return Template.instance().playerState.get('autoplay') === true ? 'autoplay' : ''
+  },
+  loop () {
+    /* TODO: NEED TO CHECK IF IS IT BOUGHT */
+    return Template.instance().playerState.get('loop') === true ? 'loop' : ''
+  },
+  playinline () {
+    /* TODO: NEED TO CHECK IF IS IT BOUGHT */
+    return Template.instance().playerState.get('playinline') === true ? 'playinline' : ''
   }
 })
 
