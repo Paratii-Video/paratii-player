@@ -70,6 +70,7 @@ Template.embedCustomizer.helpers({
     iframe.src = 'srcplaceholder'
     iframe.width = Template.instance().iframe.get('size').width
     iframe.height = Template.instance().iframe.get('size').height
+    iframe.setAttribute('frameborder', 0)
     var iframeHtml = '' + iframe.outerHTML
     console.log(iframeHtml)
     iframeHtml = iframeHtml.replace('srcplaceholder', src)
