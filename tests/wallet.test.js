@@ -1,7 +1,6 @@
-var Web3 = require('web3')
-gobals.web3 = new Web3()
 import { resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress, getProvider } from './helpers.js'
 import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
+import { web3 } from '../imports/lib/ethereum/web3.js'
 
 describe('wallet', function () {
   let contractAddresses

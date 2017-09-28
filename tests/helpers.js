@@ -1,8 +1,5 @@
 /* global localStorage */
-var Web3 = require('web3')
-var web3 = new Web3()
 
-export {web3}
 export function getProvider () {
   return Meteor.settings.public.http_provider
 }
