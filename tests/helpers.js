@@ -1,5 +1,8 @@
 /* global localStorage */
 
+export const SEED = 'road inherit leave arm unlock estate option merge mechanic rate blade dumb'
+export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
+
 export function login (browser) {
   browser.url('http://127.0.0.1:3000/profile')
   browser.waitForExist('[name="at-field-email"]', 2000)
@@ -11,7 +14,6 @@ export function login (browser) {
 export function getSomeETH (amount) {
   const helpers = require('./imports/lib/ethereum/helpers.js')
   const users = require('./imports/api/users.js')
-  console.log('send transaction')
   let beneficiary = users.getUserPTIAddress()
   helpers.sendSomeETH(beneficiary, amount)
 }
@@ -43,9 +45,9 @@ export function createUser () {
   })
 }
 
-export function createKeystore () {
+export function createKeystore (seed) {
   const wallet = require('./imports/lib/ethereum/wallet.js')
-  wallet.createKeystore('password', null, function () {
+  wallet.createKeystore('password', seed, function () {
     // remove the seed from the Session to simulate the situation
     // where the user has seen and dismissed the dialog
     Session.set('seed', null)
@@ -65,7 +67,7 @@ export function createUserAndLogin (browser) {
   //   })
   // })
 
-  browser.execute(createKeystore)
+  browser.execute(createKeystore, SEED)
 }
 
 export function clearLocalStorage () {

@@ -1,5 +1,5 @@
-import { resetDb, mustBeTestChain, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress } from './helpers.js'
-import { web3, deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
+import { resetDb, mustBeTestChain, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress, USERADDRESS } from './helpers.js'
+import { web3, deployParatiiContracts, getBalance } from '../imports/lib/ethereum/helpers.js'
 
 describe('wallet @watch', function () {
   let contractAddresses
@@ -22,7 +22,7 @@ describe('wallet @watch', function () {
     done()
   })
 
-  beforeEach(async function () {
+  beforeEach(function () {
     server.execute(resetDb)
     createUserAndLogin(browser)
   })
@@ -31,11 +31,16 @@ describe('wallet @watch', function () {
 
   })
 
-  it('should show ETH balance', function (done) {
+  it('should show ETH balance', async function (done) {
     browser.waitForExist('#public_address', 5000)
+    console.log('getting balance of ', USERADDRESS)
+    let balance = await getBalance(USERADDRESS)
+    console.log(balance)
+
     browser.execute(getSomeETH, 3)
     browser.waitForExist('#eth_amount', 5000)
-    const amount = browser.getHTML('#eth_amount', false)
+    const amount = await browser.getHTML('#eth_amount', false)
+    console.log('2')
     assert.equal(amount, 3)
     done()
   })

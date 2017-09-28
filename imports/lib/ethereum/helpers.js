@@ -102,3 +102,7 @@ export async function sendSomePTI (beneficiary, amount) {
   let result = await contract.transfer(beneficiary, web3.toWei(value, 'ether'), { gas: 200000, from: fromAddress })
   return result
 }
+
+export async function getBalance (address) {
+  return web3.eth.getBalance(address)
+}
