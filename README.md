@@ -66,6 +66,25 @@ if you get out-of-memory errors, setting TOOL_NODE_FLAGS may help:
 
     export TOOL_NODE_FLAGS="--max_old_space_size=4096"
 
+## Embedding and Sharing the player and oEmbed service
+### Embeddiing
+The player is optimized for **embedding** into iframe using a specific address:
+
+http://localhost:3000/embed/video_id
+
+Embedding customizer is also available within the app (that manage fullscreen capability, autoplay, loop, sizes, playinline ecc.)
+
+	`<iframe webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" src="http://localhost:3000/embed/5?autoplay=1&loop=1" width="570" height="320"></iframe>`
+
+more considerations and examples at: https://github.com/Paratii-Video/paratii-embed
+
+### Sharing
+
+In development
+
+### oEmbed
+
+In development
 
 ## Troubleshooting
 
