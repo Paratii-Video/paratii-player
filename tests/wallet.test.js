@@ -39,9 +39,9 @@ describe('wallet @watch', function () {
 
   it('should show ETH balance', async function (done) {
     browser.waitForExist('#public_address', 5000)
-    console.log('getting balance of ', USERADDRESS)
-    let balance = await getBalance(USERADDRESS)
-    console.log(balance)
+    // console.log('getting balance of ', USERADDRESS)
+    // let balance = await getBalance(USERADDRESS)
+    // console.log(balance)
 
     browser.execute(getSomeETH, 3)
     browser.waitForExist('#eth_amount', 5000)

@@ -69,7 +69,7 @@ export function createUserAndLogin (browser) {
   //   })
   // })
 
-  browser.execute(createKeystore, SEED)
+  browser.execute(createKeystore)
 }
 
 export function clearLocalStorage () {
