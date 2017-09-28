@@ -67,37 +67,40 @@ if you get out-of-memory errors, setting TOOL_NODE_FLAGS may help:
     export TOOL_NODE_FLAGS="--max_old_space_size=4096"
 
 ## Embedding and Sharing the player and oEmbed service
-### Embedding
-The player is optimized for **embedding** into iframe using a specific address:
 
-http://localhost:3000/embed/video_id
+Deepen at:
+
+<a href="https://github.com/Paratii-Video/paratii-embed" target="_blank">https://github.com/Paratii-Video/paratii-embed</a>
+
+### Embedding
+The player is optimized for **embedding** into iframe using a specific address like:
+
+	http://localhost:3000/embed/video_id
 
 Embedding customizer is available within the app.
-The customizer manages: fullscreen capability, autoplay flag, loop flag, sizes type (mini or tiny), playinline (iOS) flag
+The customizer manages: **fullscreen capability**, **autoplay flag**, **loop flag**, **sizes type** (mini or tiny), **playinline** (iOS) flag
 
 	`<iframe webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" src="http://localhost:3000/embed/7?autoplay=1&loop=1&playinline=1" width="570" height="320"></iframe>`
 
-More considerations and examples at
+Showcases:
 
-https://github.com/Paratii-Video/paratii-embed
-
-https://paratii-video.github.io/paratii-embed/
+<a href="https://paratii-video.github.io/paratii-embed/embedding.html" target="_blank">https://paratii-video.github.io/paratii-embed/embedding.html</a>
 
 ### Sharing
 
-**twitter card**
+Supported / partially supported:
+- **twitter card**
+- **facebook og**
 
-**facebook og**
+Showcases:
 
-More considerations and examples at
-
-https://github.com/Paratii-Video/paratii-embed
-
-https://paratii-video.github.io/paratii-embed/
+<a href="https://paratii-video.github.io/paratii-embed/sharing.html" target="_blank">https://paratii-video.github.io/paratii-embed/sharing.html</a>
 
 ### oEmbed
 
-In development
+Showcases:
+
+<a href="https://paratii-video.github.io/paratii-embed/oEmbed.html" target="_blank">https://paratii-video.github.io/paratii-embed/oEmbed.html</a>
 
 ## Troubleshooting
 
