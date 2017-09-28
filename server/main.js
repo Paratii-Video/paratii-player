@@ -5,7 +5,7 @@ import '../imports/startup/server/fixtures.js'
 import '../imports/startup/both'
 import '../imports/api/users.js'
 import { watchTransactions, syncTransactions } from '/imports/api/transactions.js'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
 

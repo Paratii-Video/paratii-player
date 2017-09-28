@@ -1,10 +1,14 @@
 import { Template } from 'meteor/templating'
 import { doTx } from '/imports/lib/ethereum/wallet.js'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 import { checkPassword } from '/imports/api/users.js'
 
 import '/imports/lib/validate.js'
 import './doTransaction.html'
+
+Template.doTransaction.onCreated(function () {
+  console.log(web3)
+})
 
 Template.doTransaction.helpers({
   ima () {
@@ -23,7 +27,7 @@ Template.doTransaction.events({
   async 'submit #form-doTransaction' (event) {
     event.preventDefault()
     const extraInfo = {}
-    const type = this.type  // Get the context from Template
+    const type = this.type // Get the context from Template
     const amount = event.target.wallet_amount.value
     const recipient = event.target.wallet_friend_number.value
     const password = event.target.user_password.value

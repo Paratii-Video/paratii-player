@@ -1,3 +1,4 @@
+import { web3 } from './web3.js'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'
 import ParatiiRegistrySpec from './contracts/ParatiiRegistry.json'
 import ParatiiTokenSpec from './contracts/ParatiiToken.json'

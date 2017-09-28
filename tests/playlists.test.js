@@ -69,7 +69,7 @@ describe('price tag status', function () {
     assert.equal(browser.getText('.videoCardPrice'), '10 PTI')
   })
 
-  it('when the video was bought @watch [TODO]', () => {
+  it('when the video was bought [TODO]', () => {
     createUserAndLogin(browser)
     browser.waitForVisible('#public_address', 5000)
     const address = browser.getText('#public_address')

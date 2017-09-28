@@ -4,7 +4,8 @@ module.exports = {
         "Meteor": false,
         "FlowRouter": false,
         "Modal": false,
-        "Clipboard": false
+        "Clipboard": false,
+        "browser": false
     },
     "env": {
       "meteor": true
