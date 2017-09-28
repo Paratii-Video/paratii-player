@@ -84,7 +84,13 @@ https://paratii-video.github.io/paratii-embed/
 
 ### Sharing
 
-In development
+**twitter card**
+**facebook og**
+
+More considerations and examples at
+
+https://github.com/Paratii-Video/paratii-embed
+https://paratii-video.github.io/paratii-embed/
 
 ### oEmbed
 
