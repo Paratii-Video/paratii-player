@@ -1,4 +1,4 @@
-import { resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress, getProvider } from './helpers.js'
+import { resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress } from './helpers.js'
 import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
 import { web3 } from '../imports/lib/ethereum/web3.js'
 
@@ -7,11 +7,9 @@ describe('wallet', function () {
 
   before(async function (done) {
     // mustBeTestChain()
-
-    const provider = browser.execute(getProvider).value
-    console.log(provider)
-    web3.setProvider(new web3.providers.HttpProvider(provider))
-    console.log(web3.currentProvider)
+    // const provider = browser.execute(getProvider).value
+    // console.log(provider)
+    web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
     browser.url('http://127.0.0.1:3000')
     let paratiiRegistryAddress
     paratiiRegistryAddress = await browser.execute(function () {
@@ -19,9 +17,11 @@ describe('wallet', function () {
     })
     if (paratiiRegistryAddress.value) {
       // TODO: (optimization) we do not need to deploy the contracts - they are already deployed
+      console.log('1')
       contractAddresses = await deployParatiiContracts()
       setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
     } else {
+      console.log('2')
       contractAddresses = await deployParatiiContracts()
       setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
     }

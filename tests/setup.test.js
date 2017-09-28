@@ -2,9 +2,14 @@
 
 import { resetDb, mustBeTestChain, createUserAndLogin, setRegistryAddress } from './helpers.js'
 import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
+import { web3 } from '../imports/lib/ethereum/web3.js'
 
-describe('test setup:', function () {
+describe('test setup: @watch', function () {
   let contractAddresses
+  before(async function (done) {
+    web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
+    done()
+  })
 
   beforeEach(async function () {
     mustBeTestChain()
