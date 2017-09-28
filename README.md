@@ -72,11 +72,15 @@ The player is optimized for **embedding** into iframe using a specific address:
 
 http://localhost:3000/embed/video_id
 
-Embedding customizer is also available within the app (that manage fullscreen capability, autoplay, loop, sizes, playinline ecc.)
+Embedding customizer is available within the app.
+The customizer manages: fullscreen capability, autoplay flag, loop flag, sizes type (mini or tiny), playinline (iOS) flag
 
-	`<iframe webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" src="http://localhost:3000/embed/5?autoplay=1&loop=1" width="570" height="320"></iframe>`
+	`<iframe webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" src="http://localhost:3000/embed/7?autoplay=1&loop=1&playinline=1" width="570" height="320"></iframe>`
 
-more considerations and examples at: https://github.com/Paratii-Video/paratii-embed
+More considerations and examples at
+
+https://github.com/Paratii-Video/paratii-embed
+https://paratii-video.github.io/paratii-embed/
 
 ### Sharing
 
