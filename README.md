@@ -80,6 +80,7 @@ The customizer manages: fullscreen capability, autoplay flag, loop flag, sizes t
 More considerations and examples at
 
 https://github.com/Paratii-Video/paratii-embed
+
 https://paratii-video.github.io/paratii-embed/
 
 ### Sharing
@@ -91,6 +92,7 @@ https://paratii-video.github.io/paratii-embed/
 More considerations and examples at
 
 https://github.com/Paratii-Video/paratii-embed
+
 https://paratii-video.github.io/paratii-embed/
 
 ### oEmbed
