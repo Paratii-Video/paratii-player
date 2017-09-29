@@ -1,17 +1,12 @@
 import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress, getUserPTIAddressFromBrowser } from './helpers.js'
 import { sendSomeETH, deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
-describe('wallet', function () {
+describe('wallet @watch', function () {
   let contractAddresses, userAccount
 
   before(async function (done) {
     browser.url('http://127.0.0.1:3000')
     contractAddresses = await deployParatiiContracts()
     setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
-
-    // console.log('----------------------------------------')
-    // console.log(getRegistryAddressFromBrowser())
-    // console.log('22----------------------------------------')
-
     done()
   })
 

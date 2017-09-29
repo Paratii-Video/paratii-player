@@ -60,13 +60,6 @@ export async function deployParatiiContracts () {
   await paratiiRegistry.registerContract('VideoRegistry', videoRegistry.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('VideoStore', videoStore.address, {from: web3.eth.accounts[0]})
 
-  // register a video at the videoregistry
-  // TODO: we register video with id == 5, because that is what we use in the tests, and is in the fixture
-  // but this needs to be organized better
-  let videoId = '5'
-  let price = web3.toWei(14)
-  await videoRegistry.registerVideo(videoId, web3.eth.accounts[2], price, {from: web3.eth.accounts[1]})
-
   let result = {
     ParatiiAvatar: paratiiAvatar,
     ParatiiRegistry: paratiiRegistry,

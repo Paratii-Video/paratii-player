@@ -1,5 +1,4 @@
 /* globals web3 */
-/* eslint no-global-assign: 0 */
 import { web3 } from './web3.js'
 import { getUserPTIAddress } from '../../api/users.js'
 import { getContract, getRegistryAddress, setRegistryAddress, getContracts } from './contracts.js'
@@ -20,8 +19,7 @@ export async function updateSession () {
   console.log('updating Sesssion')
   Session.set('eth_host', web3.currentProvider.host)
 
-  /* if Web3 is running over testrpc test contract is deployed
-  and PARATII_TOKEN_ADDRESS ovverride */
+  /* if Web3 is running over testrpc test contract is deployed */
   if (web3.currentProvider.host.indexOf('localhost') !== -1) {
     Session.set('isTestRPC', true)
   } else {
@@ -65,8 +63,6 @@ export async function updateSession () {
     Session.set('pti_balance', null)
   }
 }
-
-web3.setProvider(new web3.providers.HttpProvider(Meteor.settings.public.http_provider))
 
 export const initConnection = function () {
   console.log('initializing connection..')
