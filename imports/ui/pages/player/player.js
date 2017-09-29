@@ -61,6 +61,12 @@ Template.player.onCreated(function () {
   const instance = Template.instance()
   const bodyView = Blaze.getView('Template.App_body')
 
+  // embed/extra parameters
+  const autoplay = parseInt(FlowRouter.getQueryParam('autoplay'))
+  const loop = parseInt(FlowRouter.getQueryParam('loop'))
+  const playinline = parseInt(FlowRouter.getQueryParam('playinline'))
+  const fullscreen = parseInt(FlowRouter.getQueryParam('fullscreen'))
+
   this.currentVideo = new ReactiveVar()
 
   // this makes the tests work
@@ -80,6 +86,19 @@ Template.player.onCreated(function () {
   this.playerState.set('volScrubberTranslate', 100)
   this.playerState.set('muted', false)
   this.playerState.set('locked', true)
+  /* EMBED CONTROLS */
+  this.playerState.set('autoplay', autoplay === 1)
+  this.playerState.set('loop', loop === 1)
+  this.playerState.set('playinline', playinline === 1)
+
+  /* DETERMINED IF PLAYER IS EMBEDED */
+  if (window.top !== window.self) {
+    console.log('embedded')
+    this.playerState.set('fullscreen', fullscreen === 1)
+  } else {
+    console.log('not embedded')
+    this.playerState.set('fullscreen', true)
+  }
 
   if (userPTIAddress) {
     Meteor.subscribe('userTransactions', userPTIAddress)
@@ -183,6 +202,19 @@ Template.player.helpers({
   },
   hasPlaylistId () {
     return FlowRouter.getQueryParam('playlist') != null
+  },
+  autoplay () {
+    /* TODO: NEED TO CHECK IF IS IT BOUGHT */
+    return Template.instance().playerState.get('autoplay') === true ? 'autoplay' : ''
+  },
+  loop () {
+    return Template.instance().playerState.get('loop') === true ? 'loop' : ''
+  },
+  playinline () {
+    return Template.instance().playerState.get('playinline') === true ? 'playinline' : ''
+  },
+  fullscreen () {
+    return Template.instance().playerState.get('fullscreen')
   }
 })
 
@@ -431,7 +463,8 @@ Template.player.events({
     const videoId = _video._id
     Modal.show('embedCustomizer', {
       videoId: videoId,
-      label: 'Embed code'
+      label: 'Embed code',
+      embed: window.top !== window.self
     })
   }
 })

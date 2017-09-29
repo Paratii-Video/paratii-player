@@ -1,6 +1,6 @@
 <template name="player">
   <div id="player-container">
-    <video id="video-player">
+    <video id="video-player" {{autoplay}} {{loop}} {{playinline}}>
     </video>
     {{#unless isLocked }}
     <div class="player-controls {{playPause}} {{hideControls}}">
@@ -34,9 +34,11 @@
       <span class="slash">/</span>
       <span id="total-time">{{formatTime totalTime}}</span>
       {{ #if status }}<span id="status"><tt>STATUS: {{ status }}</tt></span>{{/if}}
+      {{ #if fullscreen}}
       <button id="fullscreen-button" title="{{fullscreen}}">
         <img src= "/img/fullscreen-icon.svg">
       </button>
+      {{/if}}
     </div>
     {{/unless }}
 

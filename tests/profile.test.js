@@ -90,7 +90,7 @@ describe('account workflow', function () {
     browser.$('#at-signUp').click()
 
     // fill in the form
-    browser.waitForExist('[name="at-field-name"]')
+    browser.waitForExist('[name="at-field-name"]', 6000)
     browser
       .setValue('[name="at-field-name"]', 'Guildenstern')
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
@@ -103,7 +103,7 @@ describe('account workflow', function () {
     login(browser)
     browser.waitForVisible('#public_address', 5000)
     const address2 = browser.getText('#public_address')
-    assert.equal(address, address2, 'The address is not the same.')
+    assert.equal(address, address2, 'The address is not the same')
   })
 
   it('shows the seed', function () {

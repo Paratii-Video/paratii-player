@@ -21,6 +21,7 @@ const embedSizes = [
 
 Template.embedCustomizer.onCreated(function () {
   this.iframe = new ReactiveDict()
+  // default size
   this.iframe.set('size', embedSizes[0])
   this.iframe.set('allowfullscreen', false)
   this.iframe.set('autoplay', false)
@@ -64,12 +65,15 @@ Template.embedCustomizer.helpers({
       iframe.setAttribute('webkitallowfullscreen', true)
       iframe.setAttribute('mozallowfullscreen', true)
       iframe.setAttribute('allowfullscreen', true)
+      parameters.fullscreen = 1
     }
-
+    parameters.type = Template.instance().iframe.get('size').type
     const src = buildUrl(Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/embed/' + this.videoId, parameters)
     iframe.src = 'srcplaceholder'
+
     iframe.width = Template.instance().iframe.get('size').width
     iframe.height = Template.instance().iframe.get('size').height
+    iframe.setAttribute('frameborder', 0)
     var iframeHtml = '' + iframe.outerHTML
     console.log(iframeHtml)
     iframeHtml = iframeHtml.replace('srcplaceholder', src)

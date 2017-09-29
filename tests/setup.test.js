@@ -3,7 +3,7 @@
 import { resetDb, createUserAndLogin, setRegistryAddress } from './helpers.js'
 import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
 
-describe('test setup: ', function () {
+describe('test setup:', function () {
   let contractAddresses
   before(async function (done) {
     done()
