@@ -3,8 +3,9 @@ Thanks for reporting an issue!
 Have you searched for similar ones? If you visit our wiki and FAQ, you may find help without even having to submit here:
 Before submitting this issue, please visit our wiki for common ones: https://github.com/Paratii-Video/wiki/wiki
 If you look for more general support, please drop a line on our gitter chatroom: https://gitter.im/Paratii-Video/dev
+-->
 
--->### Description:
+### Description:
 
 <!--
 [Description of the issue]
