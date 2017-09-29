@@ -29,7 +29,7 @@ export async function updateSession () {
   if (web3.isConnected()) {
     Session.set('eth_isConnected', true)
     Session.set('eth_currentBlock', web3.eth.blockNumber)
-    Session.set('ParatiiRegistry', await getRegistryAddress())
+    Session.set('ParatiiRegistry', await Meteor.call('getRegistryAddress'))
     const ptiAddress = getUserPTIAddress()
     if (ptiAddress) {
       // SET PTI BALANCE

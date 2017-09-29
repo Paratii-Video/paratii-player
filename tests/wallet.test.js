@@ -1,6 +1,6 @@
 import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress, getUserPTIAddressFromBrowser } from './helpers.js'
 import { sendSomeETH, deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
-describe('wallet @watch', function () {
+describe('wallet', function () {
   let contractAddresses, userAccount
 
   before(async function (done) {
@@ -17,8 +17,9 @@ describe('wallet @watch', function () {
     userAccount = getUserPTIAddressFromBrowser()
   })
 
-  it('should show ETH balance', async function (done) {
-    sendSomeETH(userAccount, 3.1)
+  it('should show ETH balance @watch', async function (done) {
+    // sendSomeETH(userAccount, 3.1)
+    browser.execute(getSomeETH, 3.1)
     browser.waitForExist('#eth_amount', 5000)
     const amount = await browser.getHTML('#eth_amount', false)
     assert.equal(amount, 3.1)

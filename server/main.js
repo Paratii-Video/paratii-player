@@ -26,4 +26,10 @@ Meteor.startup(async function () {
       watchTransactions()
     }
   })
+
+  Meteor.methods({
+    getRegistryAddress: function () {
+      return Meteor.settings.public.ParatiiRegistry
+    }
+  })
 })
