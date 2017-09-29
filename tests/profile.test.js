@@ -103,7 +103,7 @@ describe('account workflow', function () {
     login(browser)
     browser.waitForVisible('#public_address', 5000)
     const address2 = browser.getText('#public_address')
-    assert.equal(address, address2, 'The address is not the same.')
+    assert.equal(address, address2, 'The address is not the same')
   })
 
   it('shows the seed', function () {
@@ -184,7 +184,7 @@ describe('account workflow', function () {
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('do not create a new wallet if the password is wrong @watch', function () {
+  it('do not create a new wallet if the password is wrong', function () {
     createUserAndLogin(browser)
     browser.execute(clearLocalStorage)
     browser.refresh()
