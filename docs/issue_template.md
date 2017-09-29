@@ -1,24 +1,40 @@
-### Description:
+<!--
+Thanks for reporting an issue!
+Have you searched for similar ones? If you visit our wiki and FAQ, you may find help without even having to submit here:
+Before submitting this issue, please visit our wiki for common ones: https://github.com/Paratii-Video/wiki/wiki
+If you look for more general support, please drop a line on our gitter chatroom: https://gitter.im/Paratii-Video/dev
 
-When such action is taken, certain consequence takes place. \
-However, these consequences could be worked on, and the overall user experience, improved.
+-->### Description:
+
+<!--
+[Description of the issue]
+-->
 
 #### Steps to Reproduce:
 
-- [ ] Do this
-- [ ] Then that
-- [ ] And this
-- [ ] And that
+<!--
+Add a series of steps to reproduce the problem. https://stackoverflow.com/help/mcve has a guide on how to create a mimimal, complete, and verifiable example.
+-->
+
+  1.
+  2.
+  3.
+  
+#### Actual result:
+
+<!--
+Add screenshots if needed
+-->
 
 #### Expected result:
 
-This is what should happen.
+<!--
+[Description of expected result]
+-->
 
-#### Actual result:
-
-But this is what is happening instead.
 
 #### Specifications and/or additional information
 
-This is happenning in platform `X`, OS `0`, and hardware `H`. \
-It is (or isn't) blocked by another(s) issue(s).
+<!--
+Any additional information, related issues, extra QA steps, configuration or data that might be necessary to reproduce the issue.
+-->
