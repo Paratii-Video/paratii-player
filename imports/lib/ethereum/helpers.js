@@ -80,7 +80,7 @@ export async function deployParatiiContracts () {
 
 export async function sendSomeETH (beneficiary, amount) {
   let fromAddress = web3.eth.accounts[0]
-  console.log(`Sending ${amount} ETH from ${fromAddress} to ${beneficiary}`)
+  console.log(`Sending ${amount} ETH from ${fromAddress} to ${beneficiary} `)
   let result = await web3.eth.sendTransaction({ from: add0x(fromAddress), to: add0x(beneficiary), value: web3.toWei(amount, 'ether'), gas: 21000, gasPrice: 20000000000 })
   return result
 }
