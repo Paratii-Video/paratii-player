@@ -1,4 +1,9 @@
 /* global localStorage */
+import { web3 } from '../imports/lib/ethereum/web3.js'
+
+web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
+export { web3 }
+
 export const SEED = 'road inherit leave arm unlock estate option merge mechanic rate blade dumb'
 export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
 
@@ -20,14 +25,26 @@ export function getSomeETH (amount) {
   helpers.sendSomeETH(beneficiary, amount)
 }
 
-export function getSomeETH2 (amount) {
-
-}
 export function getSomePTI (amount) {
   const helpers = require('./imports/lib/ethereum/helpers.js')
   const users = require('./imports/api/users.js')
   let beneficiary = users.getUserPTIAddress()
   helpers.sendSomePTI(beneficiary, amount)
+}
+
+export function getUserPTIAddressFromBrowser () {
+  return browser.execute(function () {
+    const users = require('./imports/api/users.js')
+    let address = users.getUserPTIAddress()
+    return address
+  }).value
+}
+
+export function getRegistryAddressFromBrowser () {
+  return browser.executeAsync(async function (done) {
+    const contracts = require('./imports/lib/ethereum/contracts.js')
+    return done(await contracts.getRegistryAddress())
+  })
 }
 
 export function resetDb () {
@@ -105,55 +122,6 @@ export function createPlaylist (id, title, videos) {
   Meteor.call('playlists.create', playlist)
 }
 
-export function deployTestContracts () {
-  console.log('deploying contracts...')
-
-  // const wallet = require('./imports/lib/ethereum/wallet.js')
-  // let ParatiiRegistry = require('./imports/lib/ethereum/contracts/ParatiiRegistry.json')
-  // console.log(ParatiiRegistry)
-  // owner = web3.eth.accounts[0]
-  // const ParatiiRegistryContract = web3.eth.contract(ParatiiRegistry.abi)
-  // let paratiiRegistryContract = await ParatiiRegistryContract.new({
-  //   from: add0x(owner),
-  //   data: ParatiiRegistry.unlinked_binary
-  // })
-  // console.log('deployed..')
-  // console.log(paratiiRegistryContract)
-  // return
-  // const MyContract = web3.eth.contract(ParatiiToken.abi)
-  // MyContract.new(
-  //   {
-  //     from: add0x(owner),
-  //     data: ParatiiToken.unlinked_binary,
-  //     gas: web3.toHex(GAS_LIMIT)
-  //   }, function (err, myContract) {
-  //   if (!err) {
-  //      // NOTE: The callback will fire twice!
-  //      // Once the contract has the transactionHash property set and once its deployed on an address.
-  //
-  //      // e.g. check tx hash on the first call (transaction send)
-  //     if (!myContract.address) {
-  //
-  //      // check address on the second call (contract deployed)
-  //     } else {
-  //       setContractAddress(myContract.address)
-  //       Meteor.call('resetFilter', {
-  //         contract: myContract.address
-  //       })
-  //     }
-  //
-  //      // Note that the returned "myContractReturned" === "myContract",
-  //      // so the returned "myContractReturned" object will also get the address set.
-  //   }
-  // })
-}
-
-// export function deployContracts () {
-//   const wallet = require('./imports/lib/ethereum/wallet.js')
-//   const accounts = web3.eth.accounts
-//   deployTestContract(accounts[0])
-// }
-
 export function mustBeTestChain () {
   let host = server.execute(function () { return web3.currentProvider.host })
   let localNodes = 'http://localhost:8545'
@@ -170,4 +138,5 @@ export function setRegistryAddress (browser, address) {
     contracts.setRegistryAddress(address)
     Meteor.settings.public.ParatiiRegistry = address
   }, address)
+  global.Meteor = {settings: {public: {ParatiiRegistry: address}}}
 }

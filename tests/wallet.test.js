@@ -1,71 +1,52 @@
-import { resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress } from './helpers.js'
-import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
-import { web3 } from '../imports/lib/ethereum/web3.js'
-
+import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress, getUserPTIAddressFromBrowser } from './helpers.js'
+import { sendSomeETH, deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
 describe('wallet', function () {
-  let contractAddresses
+  let contractAddresses, userAccount
 
   before(async function (done) {
-    // mustBeTestChain()
-    // const provider = browser.execute(getProvider).value
-    // console.log(provider)
-    web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
     browser.url('http://127.0.0.1:3000')
-    let paratiiRegistryAddress
-    paratiiRegistryAddress = await browser.execute(function () {
-      return Meteor.settings.public.ParatiiRegistry
-    })
-    console.log(paratiiRegistryAddress)
-    if (paratiiRegistryAddress.value) {
-      // TODO: (optimization) we do not need to deploy the contracts - they are already deployed
-      console.log('1')
-      contractAddresses = await deployParatiiContracts()
-      setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
-    } else {
-      console.log('2')
-      contractAddresses = await deployParatiiContracts()
-      setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
-    }
+    contractAddresses = await deployParatiiContracts()
+    setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
+
+    // console.log('----------------------------------------')
+    // console.log(getRegistryAddressFromBrowser())
+    // console.log('22----------------------------------------')
+
     done()
   })
 
   beforeEach(function () {
     server.execute(resetDb)
     createUserAndLogin(browser)
-  })
-
-  afterEach(function () {
-
+    browser.waitForExist('#public_address', 5000)
+    userAccount = getUserPTIAddressFromBrowser()
   })
 
   it('should show ETH balance', async function (done) {
-    browser.waitForExist('#public_address', 5000)
-    // console.log('getting balance of ', USERADDRESS)
-    // let balance = await getBalance(USERADDRESS)
-    // console.log(balance)
-
-    browser.execute(getSomeETH, 3)
+    sendSomeETH(userAccount, 3.1)
     browser.waitForExist('#eth_amount', 5000)
     const amount = await browser.getHTML('#eth_amount', false)
-    console.log('2')
-    assert.equal(amount, 3)
+    assert.equal(amount, 3.1)
+    done()
+  })
+
+  it('should show PTI balance', async function (done) {
+    sendSomeETH(userAccount, 1)
+    browser.execute(getSomePTI, 321)
+    browser.click('a[href="#pti"]')
+    browser.waitForExist('#pti_amount', 5000)
+    const amount = await browser.getHTML('#pti_amount', false)
+    assert.equal(amount, 321)
     done()
   })
 
   it('should be able to send some PTI, update the balance and transaction history', function (done) {
+    sendSomeETH(userAccount, 1)
     let description = 'Here is some PTI for you'
-
     let toAddress = web3.eth.accounts[2]
-    browser.waitForExist('#public_address', 3000)
-    browser.click('a[href="#pti"]')
     browser.execute(getSomePTI, 1412)
-    // also need some ETH to send the transaction
-    browser.execute(getSomeETH, 3)
-    browser.waitForExist('#pti_amount', 5000)
-    const amount = browser.getHTML('#pti_amount', false)
-    assert.equal(amount, 1412)
-
     // open the send PTI dialog
+    browser.click('a[href="#pti"]')
     browser.waitForExist('#send-pti', 5000)
     browser.click('#send-pti')
     browser.waitForEnabled('[name="wallet_friend_number"]', 5000)
@@ -88,7 +69,7 @@ describe('wallet', function () {
     browser.click('#transaction-history')
 
     browser.waitForExist('.transaction-to', 5000)
-    assert.equal(browser.getText('.transaction-to'), toAddress)
+    assert.equal(browser.getText('.transaction-to')[0], toAddress)
 
     // TODO: do the PTI transactions via a custom contact that logs the description, so we can get the description from there
     // browser.waitForExist('.transaction-description', 5000)
@@ -129,7 +110,7 @@ describe('wallet', function () {
     done()
   })
 
-  it('should be possible to buy (and unlock) a video [TODO]  @watch', function (done) {
+  it('should be possible to buy (and unlock) a video [TODO]', function (done) {
     browser.waitForExist('#public_address', 5000)
     browser.execute(getSomeETH, 3)
     browser.waitForExist('#eth_amount', 5000)
