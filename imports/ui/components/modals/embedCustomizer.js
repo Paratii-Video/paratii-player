@@ -26,6 +26,7 @@ Template.embedCustomizer.onCreated(function () {
   this.iframe.set('allowfullscreen', false)
   this.iframe.set('autoplay', false)
   this.iframe.set('loop', false)
+  this.iframe.set('playsinline', false)
 
   clipboard = new Clipboard('#copy_to_clipboard')
   clipboard.on('success', function (e) {
@@ -57,8 +58,8 @@ Template.embedCustomizer.helpers({
     if (Template.instance().iframe.get('loop')) {
       parameters.loop = 1
     }
-    if (Template.instance().iframe.get('playinline')) {
-      parameters.playinline = 1
+    if (Template.instance().iframe.get('playsinline')) {
+      parameters.playsinline = 1
     }
 
     if (Template.instance().iframe.get('allowfullscreen')) {
@@ -99,8 +100,8 @@ Template.embedCustomizer.events({
   'change .loop' (event) {
     Template.instance().iframe.set('loop', event.target.checked)
   },
-  'change .playinline' (event) {
-    Template.instance().iframe.set('playinline', event.target.checked)
+  'change .playsinline' (event) {
+    Template.instance().iframe.set('playsinline', event.target.checked)
   }
 })
 

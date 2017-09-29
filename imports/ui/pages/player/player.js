@@ -64,7 +64,7 @@ Template.player.onCreated(function () {
   // embed/extra parameters
   const autoplay = parseInt(FlowRouter.getQueryParam('autoplay'))
   const loop = parseInt(FlowRouter.getQueryParam('loop'))
-  const playinline = parseInt(FlowRouter.getQueryParam('playinline'))
+  const playsinline = parseInt(FlowRouter.getQueryParam('playsinline'))
   const fullscreen = parseInt(FlowRouter.getQueryParam('fullscreen'))
 
   this.currentVideo = new ReactiveVar()
@@ -89,7 +89,7 @@ Template.player.onCreated(function () {
   /* EMBED CONTROLS */
   this.playerState.set('autoplay', autoplay === 1)
   this.playerState.set('loop', loop === 1)
-  this.playerState.set('playinline', playinline === 1)
+  this.playerState.set('playsinline', playsinline === 1)
 
   /* DETERMINED IF PLAYER IS EMBEDED */
   if (window.top !== window.self) {
@@ -210,8 +210,8 @@ Template.player.helpers({
   loop () {
     return Template.instance().playerState.get('loop') === true ? 'loop' : ''
   },
-  playinline () {
-    return Template.instance().playerState.get('playinline') === true ? 'playinline' : ''
+  playsinline () {
+    return Template.instance().playerState.get('playsinline') === true ? 'playsinline' : ''
   },
   fullscreen () {
     return Template.instance().playerState.get('fullscreen')

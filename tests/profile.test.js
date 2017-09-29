@@ -1,4 +1,5 @@
 import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage, login } from './helpers.js'
+import { web3 } from '../imports/lib/ethereum/web3.js'
 
 describe('account workflow', function () {
   beforeEach(function () {
@@ -103,7 +104,8 @@ describe('account workflow', function () {
     login(browser)
     browser.waitForVisible('#public_address', 5000)
     const address2 = browser.getText('#public_address')
-    assert.equal(address, address2, 'The address is not the same')
+    assert.equal(web3.toChecksumAddress(address), address2, 'The address is not the same')
+    browser.pause(5000)
   })
 
   it('shows the seed', function () {
