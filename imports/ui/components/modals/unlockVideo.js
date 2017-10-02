@@ -65,9 +65,15 @@ Template.unlockVideo.events({
       console.log(`approve ${price}`, price)
       let videoInfo = await videoRegistry.getVideoInfo(videoId)
       console.log('VideoInfo from registry:', videoInfo)
+      if (videoInfo[0] === '0x0000000000000000000000000000000000000000') {
+        // the video was not registered
+        throw Error(`A video with id ${videoId} was not found in the registry`)
+      }
+
       console.log(`approve ${price}`, price)
       let paratiiAvatar = await getContract('ParatiiAvatar')
       await promisify(sendTransaction)(password, 'ParatiiToken', 'approve', [paratiiAvatar.address, web3.toWei(14)], 0)
+
       console.log(`buyVideo ${videoId}`)
 
       // let price = videoInfo[1]

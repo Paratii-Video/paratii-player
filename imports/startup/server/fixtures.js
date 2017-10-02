@@ -8,6 +8,7 @@ import { Playlists } from '../../api/playlists.js'
 import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { watchTransactions } from '/imports/api/transactions.js'
 import { setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 
 const videoList = [
   {
@@ -209,22 +210,22 @@ const videoList = [
   }
 ]
 
+async function deployContractsAndInstallFixtures () {
+  console.log('Test environment: deploying contracts on startup')
+  let contracts = await deployParatiiContracts()
+  await setRegistryAddress(contracts.ParatiiRegistry.address)
+  for (let i = 0; i < videoList.length; i++) {
+    let video = videoList[i]
+    await contracts.VideoRegistry.registerVideo(String(video._id), video.uploader.address, video.price, {from: web3.eth.accounts[0]})
+    console.log(`registered video ${video._id}`)
+  }
+}
+
 if (Meteor.settings.public.isTestEnv) {
   // if we are in a test environment, we will deploy the contracts before starting to watch
   // we can do all this easily, because accounts[0] is unlocked in testrpc, and has lots of Ether.
-  console.log('Test environment: deploying contracts on startup')
-  deployParatiiContracts().then(function (contracts) {
-    console.log(`Contracts deployed!`)
-    setRegistryAddress(contracts['ParatiiRegistry'].address)
-    console.log('Meteor.settings.public.ParatiiRegistry:', Meteor.settings.public.ParatiiRegistry)
-    watchTransactions()
-
-    // register the videos at the videoregistry
-    _.each(videoList, (video) => {
-      console.log(`registering video ${video._id}`)
-      contracts.videoRegistry.registerVideo(video._id, video.uploader.address, video.price)
-    })
-  })
+  watchTransactions()
+  deployContractsAndInstallFixtures()
 
   // Videos
   const populateVideos = () => {

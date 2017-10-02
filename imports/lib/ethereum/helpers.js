@@ -47,6 +47,7 @@ function deploy (contractSpec) {
 }
 
 export async function deployParatiiContracts () {
+  // TODO: this is basically a copy of the migration of the paratii-contracts repo. We need a way to deduplicate this code
   let paratiiAvatar = await deploy(ParatiiAvatarSpec)
   let paratiiToken = await deploy(ParatiiTokenSpec)
   let paratiiRegistry = await deploy(ParatiiRegistrySpec)
@@ -59,6 +60,8 @@ export async function deployParatiiContracts () {
   await paratiiRegistry.registerContract('SendEther', sendEther.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('VideoRegistry', videoRegistry.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('VideoStore', videoStore.address, {from: web3.eth.accounts[0]})
+  // await paratiiRegistry.registerNumber('VideoRedistributionPoolShare', web3.toWei(0.30))
+  // await paratiiAvatar.addToWhitelist(videoStore.address)
 
   let result = {
     ParatiiAvatar: paratiiAvatar,
@@ -68,6 +71,7 @@ export async function deployParatiiContracts () {
     VideoRegistry: videoRegistry,
     VideoStore: videoStore
   }
+
   return result
 }
 

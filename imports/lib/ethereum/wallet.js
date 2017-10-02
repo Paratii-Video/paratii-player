@@ -129,7 +129,7 @@ function sendTransaction (password, contractName, functionName, args, value, cal
   if (!args) {
     args = []
   }
-  console.log(`Sending transaction: ${contractName}.${functionName}(${args}), with value ${value}`)
+  console.log(`Sending transaction: ${contractName}.${functionName}(${args}), with value ${value} ETH`)
   const fromAddr = getUserPTIAddress()
   const nonce = web3.eth.getTransactionCount(fromAddr)
   const keystore = getKeystore()
