@@ -11,7 +11,7 @@ import ParatiiTokenSpec from './contracts/ParatiiToken.json'
 import SendEtherSpec from './contracts/SendEther.json'
 import VideoRegistrySpec from './contracts/VideoRegistry.json'
 import VideoStoreSpec from './contracts/VideoStore.json'
-import { getContract } from './contracts.js'
+import { getContract, getParatiiContracts } from './contracts.js'
 
 var promisify = require('promisify-node')
 
@@ -70,6 +70,8 @@ export async function deployParatiiContracts () {
   }
   return result
 }
+
+export { getParatiiContracts }
 
 export async function sendSomeETH (beneficiary, amount) {
   let fromAddress = web3.eth.accounts[0]

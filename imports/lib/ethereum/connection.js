@@ -48,13 +48,6 @@ export async function updateSession () {
         }
       })
     }
-
-    // set the contracts in the Session object
-    // if (getRegistryAddress()) {
-    //   getContracts().then(function (contracts) {
-    //     Session.set('contracts', contracts)
-    //   })
-    // }
   } else {
     Session.set('eth_isConnected', false)
     Session.set('eth_currentBlock', null)

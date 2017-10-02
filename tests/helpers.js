@@ -133,10 +133,11 @@ export function mustBeTestChain () {
 
 export function setRegistryAddress (browser, address) {
   console.log('setting registry address to', address)
+  global.Meteor = {settings: {public: {ParatiiRegistry: address}}}
+
   browser.execute(function (address) {
     const contracts = require('./imports/lib/ethereum/contracts.js')
     contracts.setRegistryAddress(address)
     Meteor.settings.public.ParatiiRegistry = address
   }, address)
-  global.Meteor = {settings: {public: {ParatiiRegistry: address}}}
 }

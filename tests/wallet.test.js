@@ -1,5 +1,7 @@
 import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress, getUserPTIAddressFromBrowser } from './helpers.js'
 import { sendSomeETH, deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
+// import { getContract } from '../imports/lib/ethereum/contracts.js'
+
 describe('wallet', function () {
   let contractAddresses, userAccount
 
@@ -17,7 +19,7 @@ describe('wallet', function () {
     userAccount = getUserPTIAddressFromBrowser()
   })
 
-  it('should show ETH balance @watch', async function (done) {
+  it('should show ETH balance', async function (done) {
     // sendSomeETH(userAccount, 3.1)
     browser.execute(getSomeETH, 3.1)
     browser.waitForExist('#eth_amount', 5000)
@@ -103,27 +105,6 @@ describe('wallet', function () {
     browser.waitForExist('.transaction-description', 5000)
     assert.equal(browser.getText('.transaction-description'), description)
 
-    done()
-  })
-
-  it('should be possible to buy (and unlock) a video [TODO]', function (done) {
-    browser.waitForExist('#public_address', 5000)
-    browser.execute(getSomeETH, 3)
-    browser.waitForExist('#eth_amount', 5000)
-    browser.execute(getSomePTI, 300)
-    browser.click('a[href="#pti"]')
-    browser.waitForExist('#pti_amount', 5000)
-    const amount = browser.getHTML('#pti_amount', false)
-    assert.equal(amount, 300)
-    browser.url('http://127.0.0.1:3000/play/5')
-    browser.waitForEnabled('#unlock-video', 5000)
-    browser.click('#unlock-video')
-    browser.waitForEnabled('[name="user_password"]')
-    browser.pause(1000)
-    browser.setValue('[name="user_password"]', 'password')
-    browser.click('#send_trans_btn')
-    // TODO: check if the video has actually been acquired!
-    browser.pause(4000)
     done()
   })
 })

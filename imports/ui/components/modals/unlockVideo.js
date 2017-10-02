@@ -25,7 +25,6 @@ Template.unlockVideo.events({
   async 'submit #form-unlockVideo' (event) {
     event.preventDefault()
     let amount = event.target.wallet_amount.value
-    let price = web3.toWei(amount)
     let videoId = this.videoid // Video id whne you unlock a video
     const password = event.target.user_password.value
     const check = Session.get('checkTransaction')
@@ -57,13 +56,24 @@ Template.unlockVideo.events({
     })
     Session.set('checkTransaction', check)
     if (errors === undefined) {
-      Modal.hide('unlockVideo')
       // the transaction has two steps - we first approve that the paratiiavatar can move `price`, and then instruct the videoStore to buy the video
-      console.log(`approve ${price}`)
+      // buyVideo(videoId)
+      // check if the video is registered
+      let price = web3.toWei(14)
+      let videoRegistry = await getContract('VideoRegistry')
+      console.log('videoRegistry located at:', videoRegistry.address)
+      console.log(`approve ${price}`, price)
+      let videoInfo = await videoRegistry.getVideoInfo(videoId)
+      console.log('VideoInfo from registry:', videoInfo)
+      console.log(`approve ${price}`, price)
       let paratiiAvatar = await getContract('ParatiiAvatar')
-      await promisify(sendTransaction)(password, 'ParatiiToken', 'approve', [paratiiAvatar.address, price], 0)
+      await promisify(sendTransaction)(password, 'ParatiiToken', 'approve', [paratiiAvatar.address, web3.toWei(14)], 0)
       console.log(`buyVideo ${videoId}`)
+
+      // let price = videoInfo[1]
+
       await promisify(sendTransaction)(password, 'VideoStore', 'buyVideo', [videoId], 0)
+      Modal.hide('unlockVideo')
     }
   }
 })
