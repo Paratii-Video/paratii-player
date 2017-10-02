@@ -80,7 +80,7 @@ export async function getContracts () {
   let contractNames = [
     'ParatiiAvatar',
     'ParatiiToken',
-    'PartiiRegistry',
+    'ParatiiRegistry',
     'SendEther',
     'VideoRegistry',
     'VideoStore'
