@@ -47,7 +47,7 @@ export function getParatiiRegistry () {
 // TODO: optimization: do not ask the contract addresses from the registry each time, only on startup/first access
 export async function getContractAddress (name) {
   if (name === 'ParatiiRegistry') {
-    return Meteor.settings.public.ParatiiRegistry
+    return getRegistryAddress()
   }
   // if (false && Session.get('contracts')) {
   //   return Session.get('contracts')[name]

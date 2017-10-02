@@ -1,7 +1,7 @@
 /* globals web3 */
 import { web3 } from './web3.js'
 import { getUserPTIAddress } from '../../api/users.js'
-import { getContract, getRegistryAddress, setRegistryAddress, getContracts } from './contracts.js'
+import { getContract, getRegistryAddress, setRegistryAddress } from './contracts.js'
 
 // TODO: store all this information in a settings.json object
 const GAS_PRICE = 50000000000
@@ -29,7 +29,7 @@ export async function updateSession () {
   if (web3.isConnected()) {
     Session.set('eth_isConnected', true)
     Session.set('eth_currentBlock', web3.eth.blockNumber)
-    Session.set('ParatiiRegistry', await Meteor.call('getRegistryAddress'))
+    Session.set('ParatiiRegistry', getRegistryAddress())
     const ptiAddress = getUserPTIAddress()
     if (ptiAddress) {
       // SET PTI BALANCE
@@ -50,11 +50,11 @@ export async function updateSession () {
     }
 
     // set the contracts in the Session object
-    if (getRegistryAddress()) {
-      getContracts().then(function (contracts) {
-        Session.set('contracts', contracts)
-      })
-    }
+    // if (getRegistryAddress()) {
+    //   getContracts().then(function (contracts) {
+    //     Session.set('contracts', contracts)
+    //   })
+    // }
   } else {
     Session.set('eth_isConnected', false)
     Session.set('eth_currentBlock', null)

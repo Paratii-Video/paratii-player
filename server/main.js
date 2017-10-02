@@ -28,7 +28,9 @@ Meteor.startup(async function () {
   })
 
   Meteor.methods({
-    getRegistryAddress: function () {
+    'getRegistryAddress' () {
+      console.log('Calling getRegistryAddress')
+      console.log(Meteor.settings.public.ParatiiRegistry)
       return Meteor.settings.public.ParatiiRegistry
     }
   })

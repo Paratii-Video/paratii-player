@@ -8,6 +8,17 @@ import { Template } from 'meteor/templating'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import './debug.html'
 
+Template.debug.onCreated(function () {
+  // Meteor.call('getRegistryAddress', function (error, result) {
+  //   Session.set('ParatiiRegistry', result)
+  // })
+  getContractAddress('ParatiiToken').then(function (result) {
+    Session.set('ParatiiToken', result)
+  })
+  getContractAddress('ParatiiRegistry').then(function (result) {
+    Session.set('ParatiiRegistry', result)
+  })
+})
 Template.debug.events({
   'click #get-some-PTI' () {
     let beneficiary = getUserPTIAddress()
@@ -28,6 +39,7 @@ Template.debug.events({
     })
   }
 })
+
 Template.debug.helpers({
   privateKey () {
     // not included in wallet because is unsafe
@@ -46,7 +58,7 @@ Template.debug.helpers({
     return Session.get('privateKey')
   },
   contractAddress () {
-    return getContractAddress('ParatiiToken')
+    return Session.get('ParatiiToken')
   },
   ParatiiRegistryAddress () {
     return Session.get('ParatiiRegistry')
@@ -67,9 +79,6 @@ Template.debug.helpers({
   ptiAddress () {
     return getUserPTIAddress()
   },
-  contracts () {
-    Session.get('contracts')
-  },
   eth_balance () {
     const balance = Session.get('eth_balance')
     if (balance !== undefined) {
@@ -84,7 +93,4 @@ Template.debug.helpers({
     }
     return ''
   }
-  // user() {
-  //  return Meteor.user();
-  // },
 })
