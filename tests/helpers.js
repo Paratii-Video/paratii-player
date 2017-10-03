@@ -80,16 +80,8 @@ export function createUserAndLogin (browser) {
   server.execute(createUser)
   // now log in
   login(browser)
-  // browser.executeAsync(function (done) {
-  //   Meteor.loginWithPassword('guildenstern@rosencrantz.com', 'password', function (err) {
-  //     if (err) {
-  //       throw err
-  //     }
-  //     done()
-  //   })
-  // })
-
   browser.execute(createKeystore)
+  browser.waitForExist('#public_address', 5000)
 }
 
 export function clearLocalStorage () {

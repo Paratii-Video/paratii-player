@@ -107,7 +107,7 @@ const videoList = [
     duration: '03:22',
     price: 14,
     uploader: {
-      address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
+      address: web3.eth.accounts[2],
       name: 'Paratii',
       avatar: 'http://i.pravatar.cc/150?img=4'
     },
@@ -214,15 +214,15 @@ async function deployContractsAndInstallFixtures () {
   console.log('Test environment: deploying contracts on startup')
   try {
     let contracts = await deployParatiiContracts()
-    await contracts.ParatiiRegistry.registerNumber('VideoRedistributionPoolShare', web3.toWei(0.30), {from: web3.eth.accounts[0]})
+    await contracts.ParatiiRegistry.registerNumber('VideoRedistributionPoolShare', web3.toWei(0.3), {from: web3.eth.accounts[0]})
     await contracts.ParatiiAvatar.addToWhitelist(contracts.VideoStore.address, {from: web3.eth.accounts[0]})
     console.log('ok..')
 
     for (let i = 0; i < videoList.length; i++) {
       console.log(i)
       let video = videoList[i]
-      await contracts.VideoRegistry.registerVideo(String(video._id), video.uploader.address, video.price, {from: web3.eth.accounts[0]})
-      console.log(`registered video ${video._id}`)
+      await contracts.VideoRegistry.registerVideo(String(video._id), video.uploader.address, Number(web3.toWei(video.price)), {from: web3.eth.accounts[0]})
+      console.log(`registered video ${video._id} with price ${web3.toWei(video.price)} and owner ${video.uploader.address}`)
     }
     console.log('done installing contracts!')
     return contracts

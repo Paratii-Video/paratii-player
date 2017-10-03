@@ -2,7 +2,7 @@ import { Template } from 'meteor/templating'
 import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
 import { web3 } from '/imports/lib/ethereum/connection.js'
 import { getContract } from '/imports/lib/ethereum/contracts.js'
-import { checkPassword } from '/imports/api/users.js'
+import { checkPassword, getUserPTIAddress } from '/imports/api/users.js'
 import '/imports/lib/validate.js'
 import './unlockVideo.html'
 
@@ -58,11 +58,10 @@ Template.unlockVideo.events({
     if (errors === undefined) {
       // the transaction has two steps - we first approve that the paratiiavatar can move `price`, and then instruct the videoStore to buy the video
       // buyVideo(videoId)
-      // check if the video is registered
+      // check if the video is known and get the price
       let price = web3.toWei(14)
       let videoRegistry = await getContract('VideoRegistry')
       console.log('videoRegistry located at:', videoRegistry.address)
-      console.log(`approve ${price}`, price)
       let videoInfo = await videoRegistry.getVideoInfo(videoId)
       console.log('VideoInfo from registry:', videoInfo)
       if (videoInfo[0] === '0x0000000000000000000000000000000000000000') {
@@ -70,14 +69,16 @@ Template.unlockVideo.events({
         throw Error(`A video with id ${videoId} was not found in the registry`)
       }
 
+      console.log(`price: ${Number(videoInfo[1])}`)
       console.log(`approve ${price}`, price)
       let paratiiAvatar = await getContract('ParatiiAvatar')
-      await promisify(sendTransaction)(password, 'ParatiiToken', 'approve', [paratiiAvatar.address, web3.toWei(14)], 0)
+      console.log(`approve ${price}`, price)
+      await promisify(sendTransaction)(password, 'ParatiiToken', 'approve', [paratiiAvatar.address, price], 0)
 
-      console.log(`buyVideo ${videoId}`)
+      let paratiiToken = await getContract('ParatiiToken')
+      console.log('allowance:', Number(await paratiiToken.allowance(getUserPTIAddress(), paratiiAvatar.address)))
 
-      // let price = videoInfo[1]
-
+      console.log(`now calling buyVideo ${videoId}`)
       await promisify(sendTransaction)(password, 'VideoStore', 'buyVideo', [videoId], 0)
       Modal.hide('unlockVideo')
     }

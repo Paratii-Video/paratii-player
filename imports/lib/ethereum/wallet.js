@@ -145,6 +145,8 @@ function sendTransaction (password, contractName, functionName, args, value, cal
     txOptions.to = contract.address
     txOptions.value = web3.toHex(value)
     rawTx = lightwallet.txutils.functionTx(contract.abi, functionName, args, txOptions)
+    console.log('Signing transaction')
+    console.log(fromAddr)
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr)
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
       console.log('Transaction sent: calling callback', callback)
