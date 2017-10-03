@@ -55,13 +55,13 @@ export async function deployParatiiContracts () {
   let videoRegistry = await deploy(VideoRegistrySpec)
   let videoStore = await deploy(VideoStoreSpec)
 
+  console.log('registering contracts at the ParatiiRegistry')
   await paratiiRegistry.registerContract('ParatiiAvatar', paratiiAvatar.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('ParatiiToken', paratiiToken.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('SendEther', sendEther.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('VideoRegistry', videoRegistry.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('VideoStore', videoStore.address, {from: web3.eth.accounts[0]})
-  // await paratiiRegistry.registerNumber('VideoRedistributionPoolShare', web3.toWei(0.30))
-  // await paratiiAvatar.addToWhitelist(videoStore.address)
+  console.log('registerd contracts done')
 
   let result = {
     ParatiiAvatar: paratiiAvatar,

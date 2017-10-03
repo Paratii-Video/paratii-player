@@ -236,7 +236,7 @@ async function watchPTITransactions () {
   filter.watch(function (error, log) {
     if (error) {
       // TODO: proper error handling
-      console.log('Error setting filter')
+      console.log('Error watching for PTI Transactions')
       console.log(error)
       return
     }

@@ -212,20 +212,34 @@ const videoList = [
 
 async function deployContractsAndInstallFixtures () {
   console.log('Test environment: deploying contracts on startup')
-  let contracts = await deployParatiiContracts()
-  await setRegistryAddress(contracts.ParatiiRegistry.address)
-  for (let i = 0; i < videoList.length; i++) {
-    let video = videoList[i]
-    await contracts.VideoRegistry.registerVideo(String(video._id), video.uploader.address, video.price, {from: web3.eth.accounts[0]})
-    console.log(`registered video ${video._id}`)
+  try {
+    let contracts = await deployParatiiContracts()
+    await contracts.ParatiiRegistry.registerNumber('VideoRedistributionPoolShare', web3.toWei(0.30), {from: web3.eth.accounts[0]})
+    await contracts.ParatiiAvatar.addToWhitelist(contracts.VideoStore.address, {from: web3.eth.accounts[0]})
+    console.log('ok..')
+
+    for (let i = 0; i < videoList.length; i++) {
+      console.log(i)
+      let video = videoList[i]
+      await contracts.VideoRegistry.registerVideo(String(video._id), video.uploader.address, video.price, {from: web3.eth.accounts[0]})
+      console.log(`registered video ${video._id}`)
+    }
+    console.log('done installing contracts!')
+    return contracts
+  } catch (error) {
+    // log the errors, otherwise they will just be ignored by useful meteor
+    console.log(error)
+    throw error
   }
 }
 
 if (Meteor.settings.public.isTestEnv) {
   // if we are in a test environment, we will deploy the contracts before starting to watch
   // we can do all this easily, because accounts[0] is unlocked in testrpc, and has lots of Ether.
-  watchTransactions()
-  deployContractsAndInstallFixtures()
+  deployContractsAndInstallFixtures().then(function (contracts) {
+    setRegistryAddress(contracts.ParatiiRegistry.address)
+    watchTransactions()
+  })
 
   // Videos
   const populateVideos = () => {
@@ -235,7 +249,6 @@ if (Meteor.settings.public.isTestEnv) {
     _.each(videoList, (video) => {
       Videos.insert(video)
     })
-    // }
   }
 
   // Playlists

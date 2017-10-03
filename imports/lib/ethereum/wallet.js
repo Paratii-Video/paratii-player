@@ -115,9 +115,6 @@ function getSeed (password, callback) {
 function restoreWallet (password, seedPhrase, cb) {
   return createKeystore(password, seedPhrase, cb)
 }
-// function buyVideo (videoId) {
-//   sendTransaction(password, 'VideoStore', [videoId])
-// }
 
 function sendTransaction (password, contractName, functionName, args, value, callback) {
   // send some ETH or PTI

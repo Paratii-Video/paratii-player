@@ -1,14 +1,24 @@
 import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress, getUserPTIAddressFromBrowser } from './helpers.js'
 import { sendSomeETH, deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
-// import { getContract } from '../imports/lib/ethereum/contracts.js'
+import { getParatiiContracts } from '../imports/lib/ethereum/contracts.js'
 
 describe('wallet', function () {
   let contractAddresses, userAccount
 
   before(async function (done) {
     browser.url('http://127.0.0.1:3000')
-    contractAddresses = await deployParatiiContracts()
-    setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
+    let paratiiRegistryAddress = await server.execute(function () {
+      return Meteor.settings.public.ParatiiRegistry
+    })
+    console.log(paratiiRegistryAddress)
+    if (paratiiRegistryAddress) {
+      console.log('registry already known, reading contact addresses')
+      setRegistryAddress(browser, paratiiRegistryAddress)
+      contractAddresses = await getParatiiContracts(paratiiRegistryAddress)
+    } else {
+      contractAddresses = await deployParatiiContracts()
+      setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
+    }
     done()
   })
 
