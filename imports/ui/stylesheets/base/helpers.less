@@ -1,0 +1,123 @@
+// Helpers
+
+.clearfix::after {
+  clear: both;
+  content: '';
+  display: table;
+}
+
+// Hide text while making it readable for screen readers. Needed in WebKit-based browsers because of an implementation bug. See https://code.google.com/p/chromium/issues/detail?id=457146
+
+.hide-text {
+  overflow: hidden;
+  padding: 0;
+  text-indent: 101%;
+  white-space: nowrap;
+}
+
+// Hide element while making it readable for screen readers. Shamelessly borrowed from HTML5Boilerplate: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css#L119-L133
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+// Hovers
+
+.hover-opacity {
+  transition: opacity .3s;
+
+  &:hover {
+    opacity: .5;
+  }
+}
+
+
+//
+
+.full-block {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.full-wh {
+  height: 100%;
+  width: 100%;
+}
+
+
+// Position
+
+.pos-a-full {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+// vertical middle
+.pos-a-center {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+
+}
+
+
+// Animations
+// Keyframes
+
+@keyframes shakeAnim {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    transform: translate3d(1px, 0, 0);
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    opacity: .75;
+  }
+
+  20%, 40%, 60%, 80% {
+    opacity: 1;
+  }
+}
+
+@keyframes dots {
+  0%, 100% {
+    content: ''
+  }
+
+  10%, 90% {
+    content: '.';
+  }
+
+  30%, 70% {
+    content: '..';
+  }
+
+  50% {
+    content: '...';
+  }
+}

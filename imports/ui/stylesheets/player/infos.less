@@ -1,0 +1,132 @@
+// Player Info
+
+.player-infos {
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  height: 100%;
+  left: 0px;
+  position: absolute;
+  padding: 10px 10px 10px 70px;
+  top: 0px;
+  transition: inherit;
+  width: 100%;
+  z-index: @zindex-player-infos;
+
+  &.pause {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  //
+
+  &-wrapper {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 20px;
+  }
+
+  // Tags
+
+  &-tag {
+    background-color: @color-red;
+    border-radius: 3px;
+    color: white;
+    display: inline-block;
+    font-size: 10px;
+    font-weight:bold;
+    position:relative;
+    left: 10px;
+    margin: 5px;
+    padding: 3px 6px;
+    top: 10px;
+  }
+
+  // Uploader
+
+  &-uploader {
+    font-weight: 300;
+    position:absolute;
+    font-size: 14px;
+    right: 20px;
+    top: 20px;
+
+    &-image {
+      background-size: cover;
+      border-radius: 50%;
+      display: inline-block;
+      height: 64px;
+      width: 64px;
+    }
+  }
+
+  // Title
+
+  &-title {
+    color: white;
+    font-weight: 100;
+    font-size: 30px;
+    margin-top: 10px;
+  }
+
+  // Statistics (views, likes, shares)
+
+  &-statistics {
+    margin-top: 10px;
+
+    &-item {
+      margin-right: 15px;
+    }
+
+    &-share {
+      li{
+        display: inline-block;
+
+        img {
+          color: white
+        }
+      }
+    }
+    
+    &-image {
+      margin-right: 5px;
+    }
+  }
+
+  // Description
+
+  &-description {
+    background-color: transparent;
+    border-radius: 3px;
+    color: white;
+    font-family:'Roboto';
+    font-weight: 300;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  // Price
+
+  &-price {
+    font-size: 10px;
+    margin-top: 10px;
+    padding: 12px;
+    color: white;
+    font-weight:bold;
+    background-color: #7d70ff;
+    border: 0;
+    border-radius: 3px;
+    position: relative;
+  }
+}
+
+
+//
+//
+//
+
+.player-infos {
+  div {
+    transition: inherit;
+  }
+}
