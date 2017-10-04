@@ -5,7 +5,8 @@ module.exports = {
         "FlowRouter": false,
         "Modal": false,
         "Clipboard": false,
-        "browser": false
+        "browser": false,
+        "Picker": false
     },
     "env": {
       "meteor": true
