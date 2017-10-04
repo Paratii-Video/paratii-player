@@ -66,13 +66,11 @@
       "meteor"
     ],
     "globals": [
-      "AccountsTemplates",
       "assert",
       "browser",
       "FlowRouter",
       "Modal",
       "server",
-      "web3",
       "Picker"
     ],
     "ignore": [

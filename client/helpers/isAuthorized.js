@@ -1,5 +1,5 @@
 
 Template.isAuthorized.helpers({
   isAuthorized: () =>
-        !!Meteor.user()
+    !!Meteor.user()
 })
