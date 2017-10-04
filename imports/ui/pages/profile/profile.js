@@ -23,7 +23,7 @@ Template.profile.helpers({
     return (getKeystore() !== undefined) ? getKeystore() : false
   },
   userPTIAddress () {
-    return getUserPTIAddress()
+    return web3.toChecksumAddress(getUserPTIAddress())
   },
   eth_balance () {
     const balance = Session.get('eth_balance')

@@ -8,6 +8,7 @@ import { Playlists } from '../../api/playlists.js'
 import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { watchTransactions } from '/imports/api/transactions.js'
 import { setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 
 const videoList = [
   {
@@ -106,7 +107,7 @@ const videoList = [
     duration: '03:22',
     price: 14,
     uploader: {
-      address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
+      address: web3.eth.accounts[2],
       name: 'Paratii',
       avatar: 'http://i.pravatar.cc/150?img=4'
     },
@@ -209,21 +210,35 @@ const videoList = [
   }
 ]
 
+async function deployContractsAndInstallFixtures () {
+  console.log('Test environment: deploying contracts on startup')
+  try {
+    let contracts = await deployParatiiContracts()
+    await contracts.ParatiiRegistry.registerNumber('VideoRedistributionPoolShare', web3.toWei(0.3), {from: web3.eth.accounts[0]})
+    await contracts.ParatiiAvatar.addToWhitelist(contracts.VideoStore.address, {from: web3.eth.accounts[0]})
+    console.log('ok..')
+
+    for (let i = 0; i < videoList.length; i++) {
+      console.log(i)
+      let video = videoList[i]
+      await contracts.VideoRegistry.registerVideo(String(video._id), video.uploader.address, Number(web3.toWei(video.price)), {from: web3.eth.accounts[0]})
+      console.log(`registered video ${video._id} with price ${web3.toWei(video.price)} and owner ${video.uploader.address}`)
+    }
+    console.log('done installing contracts!')
+    return contracts
+  } catch (error) {
+    // log the errors, otherwise they will just be ignored by useful meteor
+    console.log(error)
+    throw error
+  }
+}
+
 if (Meteor.settings.public.isTestEnv) {
   // if we are in a test environment, we will deploy the contracts before starting to watch
   // we can do all this easily, because accounts[0] is unlocked in testrpc, and has lots of Ether.
-  console.log('Test environment: deploying contracts on startup')
-  deployParatiiContracts().then(function (contracts) {
-    console.log(`Contracts deployed!`)
-    setRegistryAddress(contracts['ParatiiRegistry'].address)
-    console.log('Meteor.settings.public.ParatiiRegistry:', Meteor.settings.public.ParatiiRegistry)
+  deployContractsAndInstallFixtures().then(function (contracts) {
+    setRegistryAddress(contracts.ParatiiRegistry.address)
     watchTransactions()
-
-    // register the videos at the videoregistry
-    _.each(videoList, (video) => {
-      console.log(`registering video ${video._id}`)
-      contracts.videoRegistry.registerVideo(video._id, video.uploader.address, video.price)
-    })
   })
 
   // Videos
@@ -234,7 +249,6 @@ if (Meteor.settings.public.isTestEnv) {
     _.each(videoList, (video) => {
       Videos.insert(video)
     })
-    // }
   }
 
   // Playlists
