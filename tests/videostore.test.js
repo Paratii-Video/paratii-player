@@ -1,6 +1,4 @@
-import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser, setRegistryAddress } from './helpers.js'
-import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
-import { getParatiiContracts } from '../imports/lib/ethereum/contracts.js'
+import { web3, resetDb, createUserAndLogin, getOrDeployParatiiContracts, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
 
 describe('Video Store: ', function () {
   let contracts
@@ -9,32 +7,12 @@ describe('Video Store: ', function () {
   before(async function (done) {
     browser.url('http://127.0.0.1:3000')
 
-    let paratiiRegistryAddress = await server.execute(function () {
-      return Meteor.settings.public.ParatiiRegistry
-    })
-    if (paratiiRegistryAddress) {
-      console.log('registry already known, reading contact addresses')
-      setRegistryAddress(browser, paratiiRegistryAddress)
-      contracts = await getParatiiContracts(paratiiRegistryAddress)
-    } else {
-      contracts = await deployParatiiContracts()
-      setRegistryAddress(browser, contracts['ParatiiRegistry'].address)
-    }
-
+    contracts = await getOrDeployParatiiContracts(server, browser)
     // check sanity: the video we are testing with should have the right info
-    // let videoRegistry = await contracts['VideoRegistry']
-    // let videoInfo = await videoRegistry.getVideoInfo(videoId)
-    // // console.log('VideoInfo from registry:', videoInfo)
-    // assert.equal(videoInfo[0], owner)
-    // assert.equal(Number(videoInfo[1]), web3.toWei(14))
-    // also the `VideoRedistributionPoolShare` should be set to some reasonable number
-    // let share = await contracts.ParatiiRegistry.getNumber('VideoRedistributionPoolShare')
-    // assert.equal(share, web3.toWei(0.3))
-    // console.log(Number(share / (10 ** 18)))
-    // check if the VideoStore is whitelisted
-    // let isOnWhiteList = await contracts.ParatiiAvatar.isOnWhiteList(contracts.VideoStore.address)
-    // assert.equal(isOnWhiteList, true)
-    // console.log(web3.eth.defaultAccount)
+    let videoRegistry = await contracts.VideoRegistry
+    let videoInfo = await videoRegistry.getVideoInfo(videoId)
+    assert.equal(Number(videoInfo[1]), web3.toWei(14))
+
     done()
   })
 
@@ -142,7 +120,8 @@ describe('Video Store: ', function () {
     // console.log('ETHbalance of buyer:', web3.eth.getBalance(buyer))
     done()
   })
-  it('should be possible to buy (and unlock) a video [TODO] @watch', function (done) {
+
+  it('should be possible to buy (and unlock) a video [TODO]  @watch', function (done) {
     // check sanity
     // set up the test..
     browser.url(`http://localhost:3000/play/${videoId}`)

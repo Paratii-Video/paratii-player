@@ -1,5 +1,7 @@
 /* global localStorage */
 import { web3 } from '../imports/lib/ethereum/web3.js'
+import { getParatiiContracts } from '../imports/lib/ethereum/contracts.js'
+import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
 
 web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
 export { web3 }
@@ -10,6 +12,7 @@ export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
 export function getProvider () {
   return Meteor.settings.public.http_provider
 }
+
 export function login (browser) {
   browser.url('http://localhost:3000/profile')
   browser.waitForExist('[name="at-field-email"]', 10000)
@@ -58,6 +61,22 @@ export function resetDb () {
   const { Transactions } = require('/imports/api/transactions')
   Transactions.remove({'_id': '5000'})
   Transactions.remove({})
+}
+
+export async function getOrDeployParatiiContracts (server, browser) {
+  let contracts
+  let paratiiRegistryAddress = await server.execute(function () {
+    return Meteor.settings.public.ParatiiRegistry
+  })
+  if (paratiiRegistryAddress) {
+    console.log('registry already known, reading contact addresses')
+    setRegistryAddress(browser, paratiiRegistryAddress)
+    contracts = await getParatiiContracts(paratiiRegistryAddress)
+  } else {
+    contracts = await deployParatiiContracts()
+    setRegistryAddress(browser, contracts['ParatiiRegistry'].address)
+  }
+  return contracts
 }
 
 export function createUser () {

@@ -49,17 +49,13 @@ export async function getContractAddress (name) {
   if (name === 'ParatiiRegistry') {
     return getRegistryAddress()
   }
-  // if (false && Session.get('contracts')) {
-  //   return Session.get('contracts')[name]
-  // } else {
   try {
     let address = await getParatiiRegistry().getContract(name)
-    console.log(`contract ${name} is located at ${address}`)
+    // console.log(`contract ${name} is located at ${address}`)
     return address
   } catch (err) {
     console.log(err)
   }
-  // }
 }
 
 export async function getContract (name) {

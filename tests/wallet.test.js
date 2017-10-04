@@ -1,24 +1,12 @@
-import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, setRegistryAddress, getUserPTIAddressFromBrowser } from './helpers.js'
-import { sendSomeETH, deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
-import { getParatiiContracts } from '../imports/lib/ethereum/contracts.js'
+import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser, getOrDeployParatiiContracts } from './helpers.js'
+import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 
 describe('wallet', function () {
-  let contractAddresses, userAccount
+  let userAccount
 
   before(async function (done) {
     browser.url('http://127.0.0.1:3000')
-    let paratiiRegistryAddress = await server.execute(function () {
-      return Meteor.settings.public.ParatiiRegistry
-    })
-    console.log(paratiiRegistryAddress)
-    if (paratiiRegistryAddress) {
-      console.log('registry already known, reading contact addresses')
-      setRegistryAddress(browser, paratiiRegistryAddress)
-      contractAddresses = await getParatiiContracts(paratiiRegistryAddress)
-    } else {
-      contractAddresses = await deployParatiiContracts()
-      setRegistryAddress(browser, contractAddresses['ParatiiRegistry'].address)
-    }
+    await getOrDeployParatiiContracts(server, browser)
     done()
   })
 
@@ -48,7 +36,7 @@ describe('wallet', function () {
     done()
   })
 
-  it('should be able to send some PTI, update the balance and transaction history', function (done) {
+  it('should be able to send some PTI, update the balance and transaction history @watch', function (done) {
     sendSomeETH(userAccount, 1)
     let description = 'Here is some PTI for you'
     let toAddress = web3.eth.accounts[2]
@@ -58,7 +46,7 @@ describe('wallet', function () {
     browser.waitForExist('#send-pti', 5000)
     browser.click('#send-pti')
     browser.waitForEnabled('[name="wallet_friend_number"]', 5000)
-    browser.pause(2000)
+    browser.pause(1000)
     browser.setValue('[name="wallet_friend_number"]', toAddress)
     browser.setValue('[name="wallet_amount"]', '5')
     browser.setValue('[name="tx_description"]', description)
@@ -77,6 +65,7 @@ describe('wallet', function () {
     browser.click('#transaction-history')
 
     browser.waitForExist('.transaction-to', 5000)
+    browser.pause(1000)
     assert.equal(browser.getText('.transaction-to')[0], toAddress)
 
     // TODO: do the PTI transactions via a custom contact that logs the description, so we can get the description from there
