@@ -1,11 +1,68 @@
-
 <template name="App_body">
-  <div style="width: 100%; height: 100%; position: absolute; overflow-y: hidden;" class="{{getRoute}}">
+  <div class="main-app {{getRoute}}">
+
+    <div class="main-modal">
+      <div class="main-modal-wrapper">
+        <!-- #buy -->
+        <form class="main-modal-content main-modal-content--buy" action="">
+          <h2 class="main-modal-title">Around the Block - Episode 6</h2>
+
+          <div class="main-modal-buy-info">
+            <div class="main-modal-avatar">
+              <img class="main-modal-avatar-image" src="https://scontent.fcgh10-1.fna.fbcdn.net/v/t1.0-1/p320x320/19399089_10155553304868010_6057071577605879971_n.jpg?oh=2e3194c11d536f4a6400993334f1eaff&oe=5A4F0961"/>
+            </div>
+            <div class="main-modal-buy-status">
+              <img src="/img/rewind-icon.svg">
+              <p class="value-bold">10US$</p>
+              <p class="player-tooltip player-tooltip--small">20 pti</p>
+            </div>
+            <div class="main-modal-avatar">
+              <img class="main-modal-avatar-image" src="https://scontent.fcgh10-1.fna.fbcdn.net/v/t1.0-1/p320x320/19399089_10155553304868010_6057071577605879971_n.jpg?oh=2e3194c11d536f4a6400993334f1eaff&oe=5A4F0961"/>
+            </div>
+          </div>
+
+          <label class="main-modal-label">
+            <input class="main-modal-input password" autocomplete="off" type="password" placeholder="password" />
+            <button class="main-modal-button main-modal-button--password password" type="button">Show</button>
+          </label>
+          <p class="main-modal-text-small"><a class="main-modal-link-forgot" href="#" target="_blank">Forgot password?</a></p>
+
+          <div class="main-modal-footer">
+            <button class="main-modal-button main-modal-button--cancel cancel" type="button">Cancel</button>
+            <button class="main-modal-button main-modal-button--confirm confirm" type="submit">Confirm</button>
+          </div>
+        </form>
+        <!-- /buy -->
+        <!-- #login/signup -->
+        <form class="main-modal-content main-modal-content--log" action="">
+          <h2 class="main-modal-title">You must sign in or sign up</h2>
+
+          <label class="main-modal-label">
+            <input class="main-modal-input username" autocomplete="off" type="text" placeholder="username" />
+          </label>
+          <label class="main-modal-label">
+            <input class="main-modal-input email" autocomplete="off" type="email" placeholder="email" />
+          </label>
+          <label class="main-modal-label">
+            <input class="main-modal-input password" autocomplete="off" type="password" placeholder="password" />
+            <button class="main-modal-button main-modal-button--password password" type="button">Show</button>
+          </label>
+          <p class="main-modal-text-small"><a class="main-modal-link-forgot" href="#" target="_blank">Forgot password?</a></p>
+
+          <div class="main-modal-footer">
+            <button class="main-modal-button main-modal-button--cancel cancel" type="button">Cancel</button>
+            <button class="main-modal-button main-modal-button--confirm signin" type="submit">Sign in</button>
+            <button class="main-modal-button main-modal-button--confirm signup" type="submit">Sign up</button>
+          </div>
+        </form>
+        <!-- /login/signup -->
+      </div>
+    </div>
+
     <div class="nav-overlay {{light}}"></div>
     {{> navigation }}
-    <div id="app-container" >
+    <div id="app-container" class="app-container">
       {{> Template.dynamic template=main}}
     </div>
   </div>
-
 </template>

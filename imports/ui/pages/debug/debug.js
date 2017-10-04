@@ -18,6 +18,9 @@ Template.debug.onCreated(function () {
   getContractAddress('ParatiiRegistry').then(function (result) {
     Session.set('ParatiiRegistry', result)
   })
+  getContractAddress('VideoRegistry').then(function (result) {
+    Session.set('VideoRegistry', result)
+  })
 })
 Template.debug.events({
   'click #get-some-PTI' () {
@@ -63,7 +66,9 @@ Template.debug.helpers({
   ParatiiRegistryAddress () {
     return Session.get('ParatiiRegistry')
   },
-
+  VideoRegistryAddress () {
+    return Session.get('VideoRegistry')
+  },
   isTestRPC () {
     return Session.get('isTestRPC')
   },

@@ -11,54 +11,79 @@ import ParatiiTokenSpec from './contracts/ParatiiToken.json'
 import SendEtherSpec from './contracts/SendEther.json'
 import VideoRegistrySpec from './contracts/VideoRegistry.json'
 import VideoStoreSpec from './contracts/VideoStore.json'
-import { getContract } from './contracts.js'
+import { getContract, getParatiiContracts } from './contracts.js'
 
 var promisify = require('promisify-node')
 
-function _deploy (contractSpec, cb) {
+function _deploy (contractSpec, param1, cb) {
   console.log(`deploying contract ${contractSpec.contractName || contractSpec.contract_name}`)
   let owner = web3.eth.accounts[0]
   let contract = web3.eth.contract(contractSpec.abi)
-  let contractInstance = contract.new({
-    from: add0x(owner),
-    data: contractSpec.bytecode || contractSpec.unlinked_binary,
-    gas: web3.toHex(4e6)
-  },
-  function (err, myContract) {
-    if (!err) {
-      // NOTE: The callback will fire twice!
-      // Once the contract has the transactionHash property set and once its deployed on an address.
-      // e.g. check tx hash on the first call (transaction send)
-      if (!myContract.address) {
-        // check address on the second call (contract deployed)
+  let contractInstance
+  if (param1) {
+    contractInstance = contract.new(param1, {
+      from: add0x(owner),
+      data: contractSpec.bytecode || contractSpec.unlinked_binary,
+      gas: web3.toHex(4e6)
+    },
+    function (err, myContract) {
+      if (!err) {
+        // NOTE: The callback will fire twice!
+        // Once the contract has the transactionHash property set and once its deployed on an address.
+        // e.g. check tx hash on the first call (transaction send)
+        if (!myContract.address) {
+          // check address on the second call (contract deployed)
+        } else {
+          cb(null, myContract)
+        }
       } else {
-        cb(null, myContract)
+        cb(err, null)
       }
-    } else {
-      cb(err, null)
-    }
+    })
+  } else {
+    contractInstance = contract.new({
+      from: add0x(owner),
+      data: contractSpec.bytecode || contractSpec.unlinked_binary,
+      gas: web3.toHex(4e6)
+    },
+    function (err, myContract) {
+      if (!err) {
+        // NOTE: The callback will fire twice!
+        // Once the contract has the transactionHash property set and once its deployed on an address.
+        // e.g. check tx hash on the first call (transaction send)
+        if (!myContract.address) {
+          // check address on the second call (contract deployed)
+        } else {
+          cb(null, myContract)
+        }
+      } else {
+        cb(err, null)
+      }
+    })
   }
-  )
   return contractInstance
 }
 
-function deploy (contractSpec) {
-  return promisify(_deploy)(contractSpec)
+function deploy (contractSpec, param1) {
+  return promisify(_deploy)(contractSpec, param1)
 }
 
 export async function deployParatiiContracts () {
-  let paratiiAvatar = await deploy(ParatiiAvatarSpec)
-  let paratiiToken = await deploy(ParatiiTokenSpec)
+  // TODO: this is basically a copy of the migration of the paratii-contracts repo. We need a way to deduplicate this code
   let paratiiRegistry = await deploy(ParatiiRegistrySpec)
+  let paratiiAvatar = await deploy(ParatiiAvatarSpec, paratiiRegistry.address)
+  let paratiiToken = await deploy(ParatiiTokenSpec)
   let sendEther = await deploy(SendEtherSpec)
   let videoRegistry = await deploy(VideoRegistrySpec)
-  let videoStore = await deploy(VideoStoreSpec)
+  let videoStore = await deploy(VideoStoreSpec, paratiiRegistry.address)
 
+  console.log(`registering contracts at the ParatiiRegistry at ${paratiiRegistry.address}`)
   await paratiiRegistry.registerContract('ParatiiAvatar', paratiiAvatar.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('ParatiiToken', paratiiToken.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('SendEther', sendEther.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('VideoRegistry', videoRegistry.address, {from: web3.eth.accounts[0]})
   await paratiiRegistry.registerContract('VideoStore', videoStore.address, {from: web3.eth.accounts[0]})
+  console.log('registering contracts done')
 
   let result = {
     ParatiiAvatar: paratiiAvatar,
@@ -68,8 +93,11 @@ export async function deployParatiiContracts () {
     VideoRegistry: videoRegistry,
     VideoStore: videoStore
   }
+
   return result
 }
+
+export { getParatiiContracts }
 
 export async function sendSomeETH (beneficiary, amount) {
   let fromAddress = web3.eth.accounts[0]
@@ -83,11 +111,15 @@ export async function sendSomePTI (beneficiary, amount) {
   let fromAddress = web3.eth.accounts[0]
   let value = amount
   console.log(`Sending ${value} PTI from ${fromAddress} to ${beneficiary} using contract ${contract}`)
-  let result = await contract.transfer(beneficiary, web3.toWei(value, 'ether'), { gas: 200000, from: fromAddress })
-  console.log(result)
+  let result = await contract.transfer(beneficiary, Number(web3.toWei(value)), { gas: 200000, from: fromAddress })
   return result
 }
 
 export async function getBalance (address) {
   return web3.eth.getBalance(address)
+}
+
+export async function getPTIBalance (address) {
+  const contract = await getContract('ParatiiToken')
+  return contract.balanceOf(address)
 }

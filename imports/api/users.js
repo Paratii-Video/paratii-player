@@ -4,7 +4,6 @@ import { Accounts } from 'meteor/accounts-base'
 import { check } from 'meteor/check'
 import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { add0x } from '/imports/lib/utils.js'
-import { web3 } from '/imports/lib/ethereum/web3.js'
 
 const Promise = require('bluebird')
 
@@ -106,8 +105,8 @@ export function getUserPTIAddress () {
     if (keystore !== null) {
       const addresses = keystore.getAddresses()
       if (addresses.length > 0) {
-        Session.set('userPTIAddress', web3.toChecksumAddress(add0x(addresses[0])))
-        return web3.toChecksumAddress(add0x(addresses[0]))
+        Session.set('userPTIAddress', add0x(addresses[0]))
+        return add0x(addresses[0])
       }
     }
   }

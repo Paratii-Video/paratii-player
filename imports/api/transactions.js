@@ -205,6 +205,7 @@ async function syncBlockWithDB (blockHashOrNumber) {
 async function watchTransactions () {
   watchPTITransactions()
   watchETHTransactions()
+  // watchVideoStore()
 }
 
 async function watchETHTransactions () {
@@ -236,13 +237,33 @@ async function watchPTITransactions () {
   filter.watch(function (error, log) {
     if (error) {
       // TODO: proper error handling
-      console.log('Error setting filter')
+      console.log('Error watching for PTI Transactions')
       console.log(error)
       return
     }
     addPTITransaction(log)
   })
 }
+//
+// async function watchVideoStore () {
+//   console.log('Watching the VideoStore')
+//   let filter = (await getContract('VideoStore')).LogBuyVideo({}, {
+//     fromBlock: 'latest',
+//     toBlock: 'latest'
+//   })
+//
+//   filter.watch(function (error, log) {
+//     if (error) {
+//       // TODO: proper error handling
+//       console.log('Error setting filter')
+//       console.log(error)
+//       return
+//     }
+//     log.args.from = log.args.buyer
+//     console.log(log.args)
+//     addPTITransaction(log)
+//   })
+// };
 
 function addPTITransaction (log) {
   // add a transaction to the collection that derives from Transfer Event from PTI contract
@@ -252,11 +273,12 @@ function addPTITransaction (log) {
   const transaction = {}
   transaction.value = log.args.value.toNumber()
   transaction.from = log.args.from
+  transaction.to = log.args.to
+  transaction.description = log.args.description || ''
   // transaction.hash = log.topics[0]
   transaction.hash = log.transactionHash
   transaction.logIndex = log.logIndex
   transaction.blockNumber = log.blockNumber
-  transaction.to = log.args.to
   transaction.currency = 'PTI'
   transaction.source = 'event'
   console.log('Add event to collection: ', transaction.hash)

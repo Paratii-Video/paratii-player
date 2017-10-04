@@ -52,7 +52,6 @@ export async function getContractAddress (name) {
   // if (false && Session.get('contracts')) {
   //   return Session.get('contracts')[name]
   // } else {
-  console.log(`getting address of the contract "${name}" from the registry`)
   try {
     let address = await getParatiiRegistry().getContract(name)
     console.log(`contract ${name} is located at ${address}`)
@@ -75,7 +74,7 @@ export async function getContract (name) {
   }
 }
 
-export async function getContracts () {
+export async function getParatiiContracts () {
   let contracts = {}
   let contractNames = [
     'ParatiiAvatar',
@@ -86,7 +85,7 @@ export async function getContracts () {
     'VideoStore'
   ]
   for (let i = 0; i < contractNames.length; i++) {
-    contracts[contractNames[i]] = await getContractAddress(contractNames[i])
+    contracts[contractNames[i]] = await getContract(contractNames[i])
   }
   return contracts
 }

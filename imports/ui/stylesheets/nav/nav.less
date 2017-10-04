@@ -1,0 +1,30 @@
+// Nav
+
+// Overlay
+
+.nav-overlay {
+  background-color: black;
+  height: 100%;
+  opacity: .7;
+  position: absolute;
+  transition: 0.5s;
+  width: 100%;
+  z-index: @zindex-nav-overlay;
+
+  &.toggleFade {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.main-nav {
+  background-color: #fff;
+  box-sizing: border-box;
+  color: #fff;
+  height: 100%;
+  position: fixed;
+  overflow-x: hidden;
+  transition: 0.5s;
+  white-space: nowrap;
+  z-index: @zindex-main-nav;
+}

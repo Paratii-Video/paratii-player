@@ -115,9 +115,6 @@ function getSeed (password, callback) {
 function restoreWallet (password, seedPhrase, cb) {
   return createKeystore(password, seedPhrase, cb)
 }
-// function buyVideo (videoId) {
-//   sendTransaction(password, 'VideoStore', [videoId])
-// }
 
 function sendTransaction (password, contractName, functionName, args, value, callback) {
   // send some ETH or PTI
@@ -129,7 +126,7 @@ function sendTransaction (password, contractName, functionName, args, value, cal
   if (!args) {
     args = []
   }
-  console.log(`Sending transaction: ${contractName}.${functionName}(${args}), with value ${value}`)
+  console.log(`Sending transaction: ${contractName}.${functionName}(${args}), with value ${value} ETH`)
   const fromAddr = getUserPTIAddress()
   const nonce = web3.eth.getTransactionCount(fromAddr)
   const keystore = getKeystore()
@@ -148,6 +145,8 @@ function sendTransaction (password, contractName, functionName, args, value, cal
     txOptions.to = contract.address
     txOptions.value = web3.toHex(value)
     rawTx = lightwallet.txutils.functionTx(contract.abi, functionName, args, txOptions)
+    console.log('Signing transaction')
+    console.log(fromAddr)
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr)
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
       console.log('Transaction sent: calling callback', callback)

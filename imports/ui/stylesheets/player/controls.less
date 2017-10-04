@@ -1,0 +1,214 @@
+// Player Controls
+
+.player-controls {
+  bottom: 0px;
+  left: 0px;
+  padding: 10px 20px 20px 80px;
+  position: absolute;
+  transition: inherit;
+  width: 100%;
+  z-index: @zindex-player-controls;
+
+  &.pause{
+    background-color: rgba(0,0,0,0.5);
+  }
+}
+
+// Progress
+
+.player-progress {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  height: 5px;
+  margin: 10px auto 30px;
+  position: relative;
+  width: 100%;
+
+  &-played {
+    background: @color-purple;
+    border-radius: 10px;
+    height: 5px;
+    margin: -5px 0;
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    width: 100%;
+  }
+
+  &-loaded {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    height: 5px;
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    width: 100%;
+  }
+
+  &-scrubber {
+    background: rgba(0,0,0,0);
+    height: 15px;
+    left: 0;
+    margin: -8px 0 0 -8px;
+    position: absolute;
+    top: 3px;
+    transform: translateZ(0);
+    width: 15px;
+
+    &:before,
+    &:after {
+        border-radius: 50%;
+        content: '';
+        display: block;
+        position: absolute;
+    }
+
+    &:before {
+        background: @color-purple;
+        height: 15px;
+        width: 15px;
+    }
+  }
+}
+
+// Buttons
+
+.player-button {
+  background-color: transparent;
+  border: 0;
+  color: white;
+  float: left;
+  margin: 0 10px;
+  outline: none;
+  position: relative;
+  transition: 0.5s;
+
+  &-fullscreen {
+    float: right;
+  }
+}
+
+// Time
+
+.player-time {
+
+  &-current {
+    color: #fff;
+    margin-left: 10px;
+  }
+
+  &-total,
+  &-slash {
+    color: #aaa;
+  }
+}
+
+// Volume
+
+.player-volume-control {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  float: left;
+  height: 5px;
+  margin: 10px;
+  position: relative;
+  width: 10%;
+
+  &-bar {
+    background: @color-purple;
+    border-radius: 10px;
+    height: 5px;
+    margin: 0;
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+  }
+
+  &-scrubber {
+    background: rgba(0,0,0,0);
+    height: 15px;
+    left: 0;
+    margin: -8px 0 0 -8px;
+    position: absolute;
+    top: 3px;
+    transform: translateZ(0);
+    width: 15px;
+
+    &:before,
+    &:after {
+        border-radius: 50%;
+        content: '';
+        display: block;
+        position: absolute;
+    }
+
+    &:before {
+        background: @color-purple;
+        height: 15px;
+        width: 15px;
+    }
+  }
+}
+
+//
+//
+//
+
+.player-controls {
+  input {
+    position: relative;
+    float: left;
+    margin: 0 10px;
+    transition: 0.5s;
+    outline: none;
+  }
+
+  /* Firefox */
+  /* remove dotted outline form input FF */
+  input[type=range]::-moz-focus-outer {
+    border: 0;
+  }
+
+  /* after the thumb */
+  input[type=range]::-moz-range-track {
+    background: rgba(255, 255, 255, 0.3);
+    height: 5px;
+    border: none;
+    border-radius: 3px;
+  }
+
+  /* before the thumb */
+  input[type="range"]::-moz-range-progress {
+    background: #FFF;
+    height: 5px;
+    border-radius: 3px;
+  }
+
+  input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  /* Webkit */
+  input[type=range]{
+    -webkit-appearance: none;
+  }
+
+  input[type=range]::-webkit-slider-runnable-track {
+    height: 5px;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: e-resize;
+    border: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background: white;
+    margin-top: -5px;
+    // box-shadow: -9999px 0 0 9999px #FFF;
+  }
+}
