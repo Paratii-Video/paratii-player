@@ -1,41 +1,41 @@
 <template name="player">
-  <div id="player-container">
-    <video id="video-player" {{autoplay}} {{loop}} {{playsinline}}>
+  <div id="player-container" class="player-container">
+    <video id="video-player" class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
     </video>
     {{#unless isLocked }}
     <div class="player-controls {{playPause}} {{hideControls}}">
-      <div id="video-progress">
-        <div id="loaded-bar" style="width: {{loadedProgress}}%"></div>
-        <div id="played-bar" style="width: {{playedProgress}}%"></div>
-        <div id="scrubber" style="left: {{scrubberTranslate}}%"></div>
+      <div id="video-progress" class="player-progress">
+        <div id="loaded-bar" class="player-progress-loaded" style="width: {{loadedProgress}}%"></div>
+        <div id="played-bar" class="player-progress-played" style="width: {{playedProgress}}%"></div>
+        <div id="scrubber" class="player-progress-scrubber" style="left: {{scrubberTranslate}}%"></div>
       </div>
       <br />
       {{#if hasPlaylistId}}
-        <button id="previous-video-button" title="previous video">
+        <button id="previous-video-button" class="player-button player-button-play" title="previous video">
           <img src="/img/rewind-icon.svg">
         </button>
       {{/if}}
-      <button id="play-pause-button" title="{{playPause}}">
-        <img src= "{{playPauseIcon}}">
+      <button id="play-pause-button" class="player-button player-button-pause" title="{{playPause}}">
+        <img src="{{playPauseIcon}}">
       </button>
       {{#if hasPlaylistId}}
-        <button id="next-video-button" title="next video">
+        <button id="next-video-button" class="player-button player-button-next" title="next video">
           <img src="/img/forward-icon.svg">
         </button>
       {{/if}}
-      <button id="volume-button" title="volume">
+      <button id="volume-button" class="player-button player-button-volume" title="volume">
         <img src={{ volumeIcon }} />
       </button>
-      <div id="vol-control" class="{{ volumeClass }}">
-        <div id="volume-value" style="width: {{ volumeValue }}%"></div>
-        <div id="vol-scrubber" style="left: {{volScrubberTranslate}}%"></div>
+      <div id="vol-control" class="player-volume-control {{ volumeClass }}">
+        <div id="volume-value" class="player-volume-control-bar" style="width: {{ volumeValue }}%"></div>
+        <div id="vol-scrubber" class="player-volume-control-scrubber" style="left: {{volScrubberTranslate}}%"></div>
       </div>
-      <span id="current-time">{{formatTime currentTime}}</span>
-      <span class="slash">/</span>
-      <span id="total-time">{{formatTime totalTime}}</span>
+      <span id="current-time" class="player-time-current">{{formatTime currentTime}}</span>
+      <span class="slash player-time-slash">/</span>
+      <span id="total-time" class="player-time-total">{{formatTime totalTime}}</span>
       {{ #if status }}<span id="status"><tt>STATUS: {{ status }}</tt></span>{{/if}}
       {{ #if fullscreen}}
-      <button id="fullscreen-button" title="{{fullscreen}}">
+      <button id="fullscreen-button" class="player-button player-button-fullscreen" title="{{fullscreen}}">
         <img src= "/img/fullscreen-icon.svg">
       </button>
       {{/if}}
@@ -43,31 +43,32 @@
     {{/unless }}
 
     {{#with video}}
-    <div class="player-overlay {{playPause}}">
+    <div class="player-overlay player-infos {{playPause}}">
       {{#each tag in tags }}
-        <div class="primary-tag">{{ tag }}</div>
+        <div class="primary-tag player-infos-tag">{{ tag }}</div>
       {{/each}}
 
-      <div class="player-uploader">{{ uploader.name }} <img src="{{ uploader.avatar }}"/></div>
-      <div class="player-info">
-        <div class="player-title">{{ title }}</div>
+      <div class="player-uploader player-infos-uploader">{{ uploader.name }} <img class="player-infos-uploader-image" src="{{ uploader.avatar }}"/></div>
 
-        <div class="player-related">Related to:
+      <div class="player-info player-infos-wrapper">
+        <div class="player-title player-infos-title">{{ title }}</div>
+
+        <div class="player-related player-infos-related">Related to:
           {{#each tag in tags }}
-            <span>{{ tag }}</span>
+            <span class="player-infos-related-tag">{{ tag }}</span>
           {{/each}}
         </div>
         <div class="player-uploader-name">By: {{ uploader.name }}</div>
-        <div class="player-statistics">
-          <span class="statistic-text"><img src= "/img/view-icon.svg">{{formatNumber stats.views}}</span>
-          <span class="statistic-text" id="button-like"><img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
-          <span class="statistic-text" id="button-dislike"><img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
-          <span class="sharing-actions" id="embed"><img src= "/img/share.svg"/></span>
+        <div class="player-statistics player-infos-statistics">
+          <span class="statistic-text player-infos-statistics-item"><img class="player-infos-statistics-image" src="/img/view-icon.svg">{{formatNumber stats.views}}</span>
+          <span class="statistic-text player-infos-statistics-item" id="button-like"><img class="player-infos-statistics-image" src="/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
+          <span class="statistic-text player-infos-statistics-item" id="button-dislike"><img class="player-infos-statistics-image" src="/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
+          <span class="sharing-actions player-infos-statistics-item player-infos-statistics-share" id="embed"><img class="player-infos-statistics-image" src="/img/share.svg"/></span>
         </div>
         <div class="player-description">{{ description }}</div>
 
         {{#if isLocked }}
-          <button id="unlock-video" class="player-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
+          <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
         {{/if}}
       </div>
     </div>

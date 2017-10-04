@@ -1,0 +1,35 @@
+// App
+// html/body
+
+html,
+body,
+#__blaze-root {
+  &:extend(.full-wh all);
+}
+
+
+//
+
+.main-app {
+  &:extend(.pos-a-full all);
+}
+
+
+
+#app-container {
+  &:extend(.pos-a-full all);
+
+  background-color: white;
+  z-index: @zindex-app-container;
+
+  // &.playing {
+  //   overflow-y: visible;
+  // }
+
+  // .query-tiny({
+  //   border: 0;
+  //   border-radius: 0;
+  //   left: 0;  
+  //   width: 100%;
+  // });
+}
