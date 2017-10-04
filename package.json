@@ -72,7 +72,8 @@
       "FlowRouter",
       "Modal",
       "server",
-      "web3"
+      "web3",
+      "Picker"
     ],
     "ignore": [
       "imports/lib/ethereum/from-ethereum-wallet",

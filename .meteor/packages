@@ -60,3 +60,4 @@ percolate:synced-cron
 simple:reactive-method
 jcbernack:reactive-aggregate
 shell-server@0.2.4
+meteorhacks:picker
