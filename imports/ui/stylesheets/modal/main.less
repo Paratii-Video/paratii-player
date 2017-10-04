@@ -1,5 +1,193 @@
 // Modal
 
+// Vars
+
+@size-modal-wrapper-height: 280px;
+@size-modal-wrapper-width: 310px;
+
+// Main
+
 .main-modal {
-  display: none;
+  &:extend(.pos-a-full all);
+
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  z-index: @zindex-modal;
+
+
+  // Bg
+
+  &::before {
+    &:extend(.pos-a-full all);
+
+    background-color: black;
+    content: '';
+    opacity: .85;
+    z-index: 1;
+  }
+
+
+  // Containers
+
+  &-wrapper {
+    background-color: white;
+    border-radius: 3px;
+    height: @size-modal-wrapper-height;
+    padding: 20px;
+    position: relative;
+    transition: transform .5s @ease-smooth;
+    width: @size-modal-wrapper-width;
+    z-index: 2;
+  }
+
+  &-content {
+    &:extend(.full-wh all);
+
+    color: @color-grey;
+    position: relative;
+
+    &--log {
+      display: none;
+    }
+  }
+
+
+  // Title
+
+  &-title {
+    color: @color-grey;
+    font-size: 20px;
+    font-weight: 500;
+
+    .main-modal-content & {
+      margin-bottom: 20px;
+    }
+  }
+
+
+  // Texts
+
+  &-text {
+    &-small {
+      font-size: 12px;
+    }
+  }
+
+
+  // Input forms
+
+  &-label {
+    display: block;
+    position: relative;
+    width: 100%;
+  }
+
+  &-input {
+    background: 0;
+    border-bottom: 1px solid @color-grey;
+    display: block;
+    height: 35px;
+    padding: 0 33px 0 0;
+    transition: border-color .3s;
+    width: 100%;
+
+    &.error {
+      animation: shakeAnim .5s @ease-smooth;
+      border-color: @color-red;
+    }
+
+    &.success {
+      border-color: @color-green;
+    }
+
+    &,
+    &::placeholder,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill {
+      color: @color-grey-light;
+      font-size: 14px;
+      font-weight: 300;
+      -webkit-box-shadow: 0 0 0px 1000px white inset;
+      -webkit-text-fill-color: @color-grey-light;
+    }
+
+    &.password {
+      margin: 10px 0 0;
+    }
+  }
+
+
+  // Buttons/anchors
+
+  &-button {
+    &:extend(.hover-opacity all);
+
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: opacity .25s;
+    
+    &--confirm {
+      color: @color-purple;
+    }
+
+    &--cancel,
+    &--password {
+      color: @color-grey-light;
+    }
+
+    &--password {
+      &:extend(.pos-a-v all);
+
+      right: 0;
+    }
+
+    .main-modal-footer & {
+      margin-left: 10px;
+    }
+  }
+
+  &-link {
+    &-forgot {
+      &:extend(.hover-opacity all);
+
+      &,
+      &:hover {
+        color: @color-grey-light;
+      }
+    }
+  }
+
+
+  // Avatars
+
+  &-avatar {
+    border-radius: 50%;
+    height: 50px;
+    overflow: hidden;
+    width: 50px;
+
+    &.big {
+      height: 100px;
+      width: 100px;
+    }
+
+    &-image {
+      &:extend(.full-block all);
+    }
+  }
+
+
+  // Footer (buttons)
+
+  &-footer {
+    bottom: 0;
+    display: flex;
+    left: 0;
+    justify-content: flex-end;
+    position: absolute;
+    width: 100%;
+  }
 }
