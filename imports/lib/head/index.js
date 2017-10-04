@@ -3,13 +3,35 @@ function setHead () {
     console.log('calling home')
     // console.log(params)
     // console.log(req)
-    basicHead(req)
+    basicHead(params, req, res, next)
+
+    next()
+  })
+
+  Picker.route('/play/:_id', (params, req, res, next) => {
+    console.log('calling home')
+    // console.log(params)
+    // console.log(req)
+    basicHead(params, req, res, next)
+    twitterCardHead(params, req, res, next)
 
     next()
   })
 }
+function twitterCardHead (params, req, res, next) {
+  req.dynamicHead = (req.dynamicHead || '')
+  var videoID = params._id
+  req.dynamicHead += '<meta property="twitter:card" content="player" />'
+  req.dynamicHead += '<meta property="twitter:title" content="Custom player inside a twitter card" />'
+  req.dynamicHead += '<meta property="twitter:site" content="https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg">'
+  req.dynamicHead += '<meta property="twitter:player:width" content="500" />'
+  req.dynamicHead += '<meta property="twitter:player:height" content="500" />'
+  req.dynamicHead += '<meta property="twitter:image" content="/img/icon/apple-touch-icon.png" />'
+  req.dynamicHead += '<meta property="twitter:player:stream" content="https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg" />'
+  req.dynamicHead += '<meta property="twitter:player" content="/player/' + videoID + '" />'
+}
 
-function basicHead (req) {
+function basicHead (params, req, res, next) {
   req.dynamicHead = (req.dynamicHead || '')
   req.dynamicHead += '<title>Paratii Media Player</title>'
 
