@@ -7,7 +7,7 @@ import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
-import { createIPFSPlayer } from './ipfs.js'
+import { createIPFSPlayer } from './ipfs_hls.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 
