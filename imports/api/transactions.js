@@ -1,9 +1,6 @@
 /* globals ReactiveAggregate */
-import { web3 } from '/imports/lib/ethereum/web3.js'
 import { PTIContract } from '/imports/lib/ethereum/connection.js'
-
 import { getContract } from '../lib/ethereum/contracts.js'
-import { Settings } from '/imports/api/settings.js'
 
 /*****************************
 Transactions data model looks like this.
@@ -18,7 +15,6 @@ Transactions data model looks like this.
 *********************************/
 
 export const Transactions = new Mongo.Collection('transactions')
-export const TransactionSyncHistory = new Mongo.Collection('transactionSyncHistory')
 export const UserTransactions = new Mongo.Collection('userTransactions')
 
 if (Meteor.isServer) {
@@ -128,84 +124,10 @@ async function addOrUpdateTransaction (transaction) {
   // }
 }
 
-async function syncTransactions () {
-  // syncs all transactions in the blockchain that are not in the database yet
-  let fromBlock = (await getLatestSyncedBlockNumber()) + 1
-  let toBlock = web3.eth.blockNumber
-  console.log(`syncing transactions from Block ${fromBlock}`)
-  for (let i = fromBlock; i <= toBlock; i++) {
-    let synchistory = TransactionSyncHistory.findOne(i)
-    if (synchistory) {
-      console.log(` block ${i} exists in db - skipping`)
-    } else {
-      await syncPTITransactions(i, i + 1)
-      await syncETHTransactions(i, i + 1)
-    }
-  }
-}
-
-async function syncPTITransactions (fromBlock = 0, toBlock) {
-  // set a filter for ALL PTI transactions
-  console.log('PTI SYNC FROM', fromBlock, 'TO', toBlock)
-  let filter = PTIContract().Transfer({}, {
-    fromBlock,
-    toBlock
-  })
-
-  filter.get(function (error, logs) {
-    if (error) {
-      console.log(error)
-      throw error
-    }
-    logs.forEach(function (log) {
-      try {
-        addPTITransaction(log)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
-    })
-  })
-}
-
-// Itseems the only way to get the ETH transaction is by searching each block separately
-// next function adapted from https://ethereum.stackexchange.com/questions/2531/common-useful-javascript-snippets-for-geth/3478#3478
-// NB: this is *very expensive* as it makes a request for each block to be searched
-async function syncETHTransactions (fromBlock, toBlock) {
-  console.log('ETH SYNC FROM', fromBlock, 'TO', toBlock)
-  for (let i = fromBlock; i <= toBlock; i += 1) {
-    await syncBlockWithDB(i)
-  }
-};
-
-async function syncBlockWithDB (blockHashOrNumber) {
-  // get the block given blockHashOrNumber, find its transactions and write them to the DB
-
-  await Meteor.wrapAsync(web3.eth.getBlock, web3.eth)(blockHashOrNumber, true, function (error, block) {
-    if (error) {
-      throw error
-    }
-    console.log('got block', block.number)
-    if (block != null && block.transactions != null) {
-      block.transactions.forEach(function (transaction) {
-        try {
-          addETHTransaction(web3.eth.getTransaction(transaction.hash))
-        } catch (err) {
-          console.log(err)
-          throw err
-        }
-      })
-    }
-    TransactionSyncHistory.upsert(block.number, {'isSynced': true})
-
-    // Settings.update('latestSyncedBlockNumber', { value: block.number })
-  })
-}
-
 async function watchTransactions () {
   watchPTITransactions()
   watchETHTransactions()
-  // watchVideoStore()
+  watchVideoStore()
 }
 
 async function watchETHTransactions () {
@@ -245,25 +167,29 @@ async function watchPTITransactions () {
   })
 }
 //
-// async function watchVideoStore () {
-//   console.log('Watching the VideoStore')
-//   let filter = (await getContract('VideoStore')).LogBuyVideo({}, {
-//     fromBlock: 'latest',
-//     toBlock: 'latest'
-//   })
-//
-//   filter.watch(function (error, log) {
-//     if (error) {
-//       // TODO: proper error handling
-//       console.log('Error setting filter')
-//       console.log(error)
-//       return
-//     }
-//     log.args.from = log.args.buyer
-//     console.log(log.args)
-//     addPTITransaction(log)
-//   })
-// };
+async function watchVideoStore () {
+  console.log('Watching the VideoStore')
+  let filter = (await getContract('VideoStore')).LogBuyVideo({}, {
+    fromBlock: 'latest',
+    toBlock: 'latest'
+  })
+
+  filter.watch(function (error, log) {
+    console.log('Adding a BuyVideo ')
+    if (error) {
+      // TODO: proper error handling
+      console.log('Error setting filter')
+      console.log(error)
+      return
+    }
+    log.args.from = log.args.buyer
+    log.args.description = `Bought video ${log.args.videoId}`
+    log.args.value = log.args.price
+    log.args.to = ''
+    console.log(log.args)
+    addPTITransaction(log)
+  })
+};
 
 function addPTITransaction (log) {
   // add a transaction to the collection that derives from Transfer Event from PTI contract
@@ -271,7 +197,7 @@ function addPTITransaction (log) {
   console.log('Adding PTI Transaction')
   console.log(log.logIndex)
   const transaction = {}
-  transaction.value = log.args.value.toNumber()
+  transaction.value = log.args.value && log.args.value.toNumber()
   transaction.from = log.args.from
   transaction.to = log.args.to
   transaction.description = log.args.description || ''
@@ -304,42 +230,8 @@ function addETHTransaction (log) {
   return addOrUpdateTransaction(transaction)
 }
 
-// function addAppTransaction (tx) {
-//   // add information from the application to the Transaction history
-//   check(tx, Object)
-//   const transaction = {
-//     nonce: web3.toDecimal(tx.nonce),
-//     from: tx.from,
-//     to: tx.to,
-//     description: tx.description,
-//     source: 'app',
-//     // value: tx.value,
-//     currency: tx.currency,
-//     date: new Date(),
-//     hash: tx.hash
-//   }
-//
-//   console.log('Inserting Transaction from  Client Application', transaction)
-//   return addOrUpdateTransaction(transaction)
-// }
-
-function getLatestSyncedBlockNumber () {
-  // return the number of the latest block that has been synced to the db
-  // TODO: a block may have more than one transaction - this function should return
-  // the latest block in which *all* transactions have been synced
-  let latestBlock
-
-  latestBlock = Settings.findOne('latestSyncedBlockNumber')
-  if (latestBlock) {
-    return latestBlock.value
-  } else {
-    return 0
-  }
-}
-
 export {
   addETHTransaction,
   addPTITransaction,
-  syncTransactions,
   watchTransactions
 }

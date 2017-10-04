@@ -36,7 +36,7 @@ describe('test setup:', function () {
     assert.equal(result.value, contracts.ParatiiToken.address)
   })
 
-  it('should have sane default settings @watch', function () {
+  it('should have sane default settings', function () {
     // the `VideoRedistributionPoolShare` should be set to some reasonable number
     let share = contracts.ParatiiRegistry.getNumber('VideoRedistributionPoolShare')
     console.log(share)

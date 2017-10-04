@@ -143,7 +143,7 @@ export function mustBeTestChain () {
 }
 
 export function setRegistryAddress (browser, address) {
-  console.log('setting registry address to', address)
+  // console.log('setting registry address to', address)
   global.Meteor = {settings: {public: {ParatiiRegistry: address}}}
 
   browser.execute(function (address) {
