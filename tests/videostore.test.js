@@ -12,7 +12,6 @@ describe('Video Store: ', function () {
     let paratiiRegistryAddress = await server.execute(function () {
       return Meteor.settings.public.ParatiiRegistry
     })
-    console.log(paratiiRegistryAddress)
     if (paratiiRegistryAddress) {
       console.log('registry already known, reading contact addresses')
       setRegistryAddress(browser, paratiiRegistryAddress)
@@ -54,7 +53,7 @@ describe('Video Store: ', function () {
     assert.equal(amount, 300)
   })
 
-  it('test individual steps @watch', function (done) {
+  it('test individual steps', function (done) {
     let buyer = web3.eth.accounts[1]
     let tx
     // console.log(`transfer some PTI to ${buyer}`)
@@ -68,7 +67,7 @@ describe('Video Store: ', function () {
     // tx = contracts.ParatiiToken.approve(web3.eth.accounts[0], 0, {from: buyer})
     // console.log(tx)
     // console.log(`approve ${web3.toWei(2000)} to ${web3.eth.accounts[0]}`)
-    // tx = contracts.ParatiiToken.approve(web3.eth.accounts[0], Number(web3.toWei(2000)), {from: buyer})
+    // tx = contracts.ParatiiToken.approve(web3.eth.accounts[0], NumgetBalanceber(web3.toWei(2000)), {from: buyer})
     // console.log(tx)
     // console.log(`ParatiiToken.transferFrom ${buyer} to ${contracts.ParatiiAvatar.address} a total of ${web3.toWei(3)}`)
     // tx = contracts.ParatiiToken.transferFrom(buyer, contracts.ParatiiAvatar.address, Number(web3.toWei(3)), {from: web3.eth.accounts[0]})
@@ -143,7 +142,7 @@ describe('Video Store: ', function () {
     // console.log('ETHbalance of buyer:', web3.eth.getBalance(buyer))
     done()
   })
-  it('should be possible to buy (and unlock) a video [TODO]', function (done) {
+  it('should be possible to buy (and unlock) a video [TODO] @watch', function (done) {
     // check sanity
     // set up the test..
     browser.url(`http://localhost:3000/play/${videoId}`)
@@ -154,7 +153,13 @@ describe('Video Store: ', function () {
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#send_trans_btn')
     // TODO: check if the video has actually been acquired!
-    browser.pause(4000)
+    // (for now, we just check if the balance has been lowered..)
+    let userAccount = getUserPTIAddressFromBrowser()
+    browser.waitUntil(function () {
+      let balance = contracts.ParatiiToken.balanceOf(userAccount)
+      // the price was 14 PTI, so the users balance should be equal to 300 - 14
+      return Number(balance) === Number(web3.toWei(300 - 14))
+    }, 10000)
     done()
   })
 

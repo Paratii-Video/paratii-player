@@ -118,3 +118,8 @@ export async function sendSomePTI (beneficiary, amount) {
 export async function getBalance (address) {
   return web3.eth.getBalance(address)
 }
+
+export async function getPTIBalance (address) {
+  const contract = await getContract('ParatiiToken')
+  return contract.balanceOf(address)
+}
