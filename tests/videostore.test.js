@@ -141,6 +141,10 @@ describe('Video Store: ', function () {
       return Number(balance) === Number(web3.toWei(300 - 14))
     }, 10000)
     browser.url('http://localhost:3000/transactions')
+    let description = 'Bought video 5'
+    browser.waitForExist('.transaction-description', 5000)
+    assert.equal(browser.getText('.transaction-description'), description)
+
     done()
   })
 

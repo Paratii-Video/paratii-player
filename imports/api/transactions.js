@@ -58,6 +58,11 @@ if (Meteor.isServer) {
 
 async function addOrUpdateTransaction (transaction) {
   // add (or update) a transaction in the collection
+  // transaction is a json object similar to a transaction log - cf the check() invocation below
+  // transactions are identified by transaction.hash
+  console.log('Add event to collection: ', transaction.hash)
+  console.log(transaction)
+
   transaction.logIndex = transaction.logIndex || undefined
   try {
     check(transaction, {
@@ -78,28 +83,9 @@ async function addOrUpdateTransaction (transaction) {
     throw err
   }
 
-  let existingTransaction
-  if (transaction.hash) {
-    existingTransaction = await Transactions.findOne({
-      hash: transaction.hash,
-      logIndex: transaction.logIndex
-    })
-  } else {
-    existingTransaction = await Transactions.findOne({
-      nonce: transaction.nonce,
-      from: transaction.from,
-      source: transaction.source
-    })
-  }
-
-  let txId
-  if (existingTransaction) {
-    txId = existingTransaction._id
-    console.log('Transaction already exists  - not added')
-  } else {
-    txId = Transactions.insert(transaction)
-    console.log('Transaction added')
-  }
+  transaction._id = transaction.hash
+  let txId = Transactions.insert(transaction)
+  console.log('Transaction added')
   return txId
 
   // const txToValidate = await Transactions.findOne({
@@ -207,7 +193,6 @@ function addPTITransaction (log) {
   transaction.blockNumber = log.blockNumber
   transaction.currency = 'PTI'
   transaction.source = 'event'
-  console.log('Add event to collection: ', transaction.hash)
   return addOrUpdateTransaction(transaction)
 }
 

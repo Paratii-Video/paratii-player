@@ -71,33 +71,33 @@ describe('Transactions', () => {
         assert.equal(Transactions.find().count(), 1)
       })
 
-      // it('insert an App transaction', async () => {
-      //   assert.equal(Transactions.find().count(), 0)
-      //   let tx = {
-      //     nonce: 2,
-      //     blockNumber: 1,
-      //     hash: '0x1245',
-      //     from: '0x12345',
-      //     to: '0x12345',
-      //     args: {
-      //       value: new BigNumber(333),
-      //       from: '0x12345',
-      //       to: '0x23445'
-      //     },
-      //     topics: ['0x1232143'],
-      //     description: 'Here is an addition description',
-      //     currency: 'pti'
-      //   }
-      //
-      //   await addAppTransaction(tx)
-      //   // Transactions.insert(tx)
-      //   assert.equal(Transactions.find().count(), 1)
-      //   // if we try to add an ETH transaction with the same hash a second time, it will fail silently
-      //   addPTITransaction(tx)
-      //   assert.equal(Transactions.find().count(), 1)
-      //   let transaction = Transactions.findOne()
-      //   assert.equal(transaction.source, 'app')
-      // })
+      it('insert an BuyVideo transaction [TODO]', async () => {
+        assert.equal(Transactions.find().count(), 0)
+        // let tx = {
+        //   nonce: 2,
+        //   blockNumber: 1,
+        //   hash: '0x1245',
+        //   from: '0x12345',
+        //   to: '0x12345',
+        //   args: {
+        //     value: new BigNumber(333),
+        //     from: '0x12345',
+        //     to: '0x23445'
+        //   },
+        //   topics: ['0x1232143'],
+        //   description: 'Here is an addition description',
+        //   currency: 'pti'
+        // }
+        //
+        // await addAppTransaction(tx)
+        // // Transactions.insert(tx)
+        // assert.equal(Transactions.find().count(), 1)
+        // // if we try to add an ETH transaction with the same hash a second time, it will fail silently
+        // addPTITransaction(tx)
+        // assert.equal(Transactions.find().count(), 1)
+        // let transaction = Transactions.findOne()
+        // assert.equal(transaction.source, 'app')
+      })
     })
   }
 })
