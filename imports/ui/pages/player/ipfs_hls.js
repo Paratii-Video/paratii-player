@@ -102,21 +102,20 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
     }, 10000)
     // -----------------------------------------------------------------------
 
-
     if (Hls.isSupported()) {
       const video = document.getElementById('video-player')
       const hls = new Hls()
 
       // Events monitoring
-      hls.on(Hls.Events.MEDIA_ATTACHED , (event,data) => {
+      hls.on(Hls.Events.MEDIA_ATTACHED, (event, data) => {
         templateDict.set('status', 'HLS mediaSource Attached')
       })
 
-      hls.on(Hls.Events.BUFFER_CREATED , (event,data) => {
+      hls.on(Hls.Events.BUFFER_CREATED, (event, data) => {
         templateDict.set('status', 'HLS Buffer Created. awaiting chunks....')
       })
 
-      hls.on(Hls.Events.BUFFER_APPENDING, (event,data) => {
+      hls.on(Hls.Events.BUFFER_APPENDING, (event, data) => {
         templateDict.set('status', 'HLS Appending Chunk')
         console.log('buffer Appending : ', data)
 
@@ -151,26 +150,25 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
                          'Connected Peers: ' + connectedPeers)
       })
 
-      hls.on(Hls.Events.ERROR, (event,data) => {
+      hls.on(Hls.Events.ERROR, (event, data) => {
         templateDict.set('status', 'HLS ERROR - Check Console')
         console.log('HLS ERROR : ', data)
       })
 
-      hls.on(Hls.Events.FRAG_LOADING, (event,data) => {
+      hls.on(Hls.Events.FRAG_LOADING, (event, data) => {
         // templateDict.set('status', 'HLS FRAG_LOADING')
         console.log('HLS FRAG_LOADING  : ', data)
       })
 
-      hls.on(Hls.Events.FRAG_LOADING_PROGRESS, (event,data) => {
+      hls.on(Hls.Events.FRAG_LOADING_PROGRESS, (event, data) => {
         // templateDict.set('status', 'HLS FRAG_LOAD_PROGRESS')
         console.log('HLS FRAG_LOAD_PROGRESS: ', data)
       })
 
-      hls.on(Hls.Events.FRAG_LOADED, (event,data) => {
+      hls.on(Hls.Events.FRAG_LOADED, (event, data) => {
         // templateDict.set('status', 'HLS FRAG_LOADED')
         console.log('HLS FRAG_LOADED: ', data)
       })
-
 
       hls.config.ipfs = window.ipfs
       hls.config.ipfsHash = splitPath(currentVideo.src)[0]
@@ -180,6 +178,5 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
         // video.play()
       })
     }
-
   })
 }
