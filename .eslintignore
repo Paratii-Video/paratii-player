@@ -1,0 +1,3 @@
+imports/lib/ethereum/from-ethereum-wallet
+public/test/files/index.js
+public/test/files/index.min.js

@@ -6,9 +6,11 @@ module.exports = {
         "Modal": false,
         "Clipboard": false,
         "browser": false,
-        "Picker": false
+        "Picker": false,
+        "server": false
     },
     "env": {
-      "meteor": true
+      "meteor": true,
+      "mocha": true
     }
 };

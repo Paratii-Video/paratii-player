@@ -2,6 +2,7 @@
 
 import { resetDb, createUserAndLogin, setRegistryAddress } from './helpers.js'
 import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
+import { assert } from 'chai'
 
 describe('test setup:', function () {
   let contractAddresses

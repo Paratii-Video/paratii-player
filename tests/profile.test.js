@@ -1,5 +1,6 @@
 import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage, login } from './helpers.js'
 import { web3 } from '../imports/lib/ethereum/web3.js'
+import { assert } from 'chai'
 
 describe('account workflow', function () {
   beforeEach(function () {

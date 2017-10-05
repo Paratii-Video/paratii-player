@@ -1,4 +1,3 @@
-/* globals web3 */
 import { web3 } from './web3.js'
 import { getUserPTIAddress } from '../../api/users.js'
 import { getContract, getRegistryAddress, setRegistryAddress } from './contracts.js'
