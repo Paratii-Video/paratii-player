@@ -5,9 +5,12 @@ module.exports = {
         "FlowRouter": false,
         "Modal": false,
         "Clipboard": false,
-        "browser": false
+        "browser": false,
+        "Picker": false,
+        "server": false
     },
     "env": {
-      "meteor": true
+      "meteor": true,
+      "mocha": true
     }
 };

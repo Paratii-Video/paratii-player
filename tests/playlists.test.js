@@ -1,4 +1,5 @@
 import { resetDb, clearLocalStorage, createUserAndLogin } from './helpers.js'
+import { assert } from 'chai'
 
 function createVideo (price) {
   const video = {

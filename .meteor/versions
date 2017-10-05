@@ -76,6 +76,7 @@ meteor-base@1.1.0
 meteor-tool@1.5.2
 meteorhacks:aggregate@1.3.0
 meteorhacks:collection-utils@1.2.0
+meteorhacks:picker@1.0.3
 meteorspark:util@0.2.0
 minifier-css@1.2.16
 minifier-js@2.1.3

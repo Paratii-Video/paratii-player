@@ -4,11 +4,15 @@ import '../imports/startup/server'
 import '../imports/startup/both'
 import '../imports/startup/server/fixtures.js'
 import '../imports/api/users.js'
+import { setHead } from '/imports/lib/head'
+
 import { watchTransactions, syncTransactions } from '/imports/api/transactions.js'
 
 if (Meteor.settings.public.first_block === undefined) {
   Meteor.settings.public.first_block = 0
 }
+// SETTING THE HEAD
+setHead()
 
 Meteor.startup(async function () {
   Meteor.defer(function () {
@@ -29,8 +33,6 @@ Meteor.startup(async function () {
 
   Meteor.methods({
     'getRegistryAddress' () {
-      console.log('Calling getRegistryAddress')
-      console.log(Meteor.settings.public.ParatiiRegistry)
       return Meteor.settings.public.ParatiiRegistry
     }
   })
