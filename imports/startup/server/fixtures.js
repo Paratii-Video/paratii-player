@@ -6,7 +6,7 @@ import { Meteor } from 'meteor/meteor'
 import { Videos } from '../../api/videos.js'
 import { Playlists } from '../../api/playlists.js'
 import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
-import { watchTransactions } from '/imports/api/transactions.js'
+import { watchEvents } from '/imports/api/transactions.js'
 import { setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
 
@@ -237,7 +237,7 @@ if (Meteor.settings.public.isTestEnv) {
   // we can do all this easily, because accounts[0] is unlocked in testrpc, and has lots of Ether.
   deployContractsAndInstallFixtures().then(function (contracts) {
     setRegistryAddress(contracts.ParatiiRegistry.address)
-    watchTransactions()
+    watchEvents()
   })
 
   // Videos

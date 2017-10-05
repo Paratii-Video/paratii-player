@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { assert } from 'chai'
-import { Transactions, addETHTransaction, addPTITransaction } from '../transactions.js'
+import { Transactions, addOrUpdateTransaction } from '../transactions.js'
 
 const BigNumber = require('bignumber.js')
 
@@ -29,7 +29,7 @@ describe('Transactions', () => {
 
       it('insert an ETH transaction', async () => {
         assert.equal(Transactions.find().count(), 0)
-        let tx = {
+        let log = {
           transactionHash: '0xabdafe',
           nonce: 2,
           blockNumber: 22,
@@ -40,17 +40,27 @@ describe('Transactions', () => {
             description: 'a description'
           }
         }
-
-        await addETHTransaction(tx)
+        const transaction = {
+          blockNumber: log.blockNumber,
+          currency: 'ETH',
+          description: log.args.description || '',
+          from: log.args.from,
+          hash: log.transactionHash,
+          logIndex: log.logIndex,
+          to: log.args.to,
+          source: 'SendEther.LogSendEther',
+          value: log.args.value.toNumber()
+        }
+        await addOrUpdateTransaction(transaction)
         assert.equal(Transactions.find().count(), 1)
-        // if we try to add an ETH transaction with the same hash a second time, it will fail silently
-        addETHTransaction(tx)
+        // if we try to add the transaction with the same hash a second time, it will fail silently
+        await addOrUpdateTransaction(transaction)
         assert.equal(Transactions.find().count(), 1)
       })
 
-      it('insert a PTI transaction', async () => {
+      it('insert a ParatiiToken Transfer transaction', async () => {
         assert.equal(Transactions.find().count(), 0)
-        let tx = {
+        let log = {
           nonce: 2,
           blockNumber: 1,
           // hash: 0x1245,
@@ -62,41 +72,53 @@ describe('Transactions', () => {
           },
           topics: [0x1232143]
         }
-
-        await addPTITransaction(tx)
-        // Transactions.insert(tx)
+        const transaction = {
+          blockNumber: log.blockNumber,
+          currency: 'PTI',
+          description: log.args.description || '',
+          from: log.args.from,
+          hash: log.transactionHash,
+          logIndex: log.logIndex,
+          source: 'PTIContract.Transfer',
+          to: log.args.to,
+          value: log.args.value && log.args.value.toNumber()
+        }
+        await addOrUpdateTransaction(transaction)
         assert.equal(Transactions.find().count(), 1)
-        // if we try to add an ETH transaction with the same hash a second time, it will fail silently
-        addPTITransaction(tx)
+        // if we try to add the transaction with the same hash a second time, it will fail silently
+        await addOrUpdateTransaction(transaction)
         assert.equal(Transactions.find().count(), 1)
       })
 
-      it('insert an BuyVideo transaction [TODO]', async () => {
+      it('insert an BuyVideo transaction', async () => {
         assert.equal(Transactions.find().count(), 0)
-        // let tx = {
-        //   nonce: 2,
-        //   blockNumber: 1,
-        //   hash: '0x1245',
-        //   from: '0x12345',
-        //   to: '0x12345',
-        //   args: {
-        //     value: new BigNumber(333),
-        //     from: '0x12345',
-        //     to: '0x23445'
-        //   },
-        //   topics: ['0x1232143'],
-        //   description: 'Here is an addition description',
-        //   currency: 'pti'
-        // }
-        //
-        // await addAppTransaction(tx)
-        // // Transactions.insert(tx)
-        // assert.equal(Transactions.find().count(), 1)
-        // // if we try to add an ETH transaction with the same hash a second time, it will fail silently
-        // addPTITransaction(tx)
-        // assert.equal(Transactions.find().count(), 1)
-        // let transaction = Transactions.findOne()
-        // assert.equal(transaction.source, 'app')
+        let log = {
+          nonce: 2,
+          blockNumber: 1,
+          // hash: 0x1245,
+          transactionHash: '0x1245',
+          args: {
+            price: new BigNumber(333),
+            buyer: '0x12345',
+            videoId: '0xThe-Video-id'
+          },
+          topics: [0x1232143]
+        }
+        const transaction = {
+          blockNumber: log.blockNumber,
+          currency: 'PTI',
+          description: `Bought video ${log.args.videoId}`,
+          from: log.args.buyer,
+          hash: log.transactionHash,
+          logIndex: log.logIndex,
+          source: 'VideoStore.BuyVideo',
+          to: '',
+          value: log.args.price && log.args.price.toNumber()
+        }
+        await addOrUpdateTransaction(transaction)
+        assert.equal(Transactions.find().count(), 1)
+        // if we try to add the transaction with the same hash a second time, it will fail silently
+        await addOrUpdateTransaction(transaction)
       })
     })
   }

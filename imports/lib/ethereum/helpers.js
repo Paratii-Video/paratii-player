@@ -101,7 +101,7 @@ export { getParatiiContracts }
 
 export async function sendSomeETH (beneficiary, amount) {
   let fromAddress = web3.eth.accounts[0]
-  console.log(`Sending ${amount} ETH from ${fromAddress} to ${beneficiary} `)
+  // console.log(`Sending ${amount} ETH from ${fromAddress} to ${beneficiary} `)
   let result = await web3.eth.sendTransaction({ from: add0x(fromAddress), to: add0x(beneficiary), value: web3.toWei(amount, 'ether'), gas: 21000, gasPrice: 20000000000 })
   return result
 }
@@ -110,7 +110,7 @@ export async function sendSomePTI (beneficiary, amount) {
   const contract = await getContract('ParatiiToken')
   let fromAddress = web3.eth.accounts[0]
   let value = amount
-  console.log(`Sending ${value} PTI from ${fromAddress} to ${beneficiary} using contract ${contract}`)
+  // console.log(`Sending ${value} PTI from ${fromAddress} to ${beneficiary} using contract ${contract}`)
   let result = await contract.transfer(beneficiary, Number(web3.toWei(value)), { gas: 200000, from: fromAddress })
   return result
 }

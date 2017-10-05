@@ -69,7 +69,6 @@ export async function getOrDeployParatiiContracts (server, browser) {
     return Meteor.settings.public.ParatiiRegistry
   })
   if (paratiiRegistryAddress) {
-    console.log('registry already known, reading contact addresses')
     setRegistryAddress(browser, paratiiRegistryAddress)
     contracts = await getParatiiContracts(paratiiRegistryAddress)
   } else {

@@ -6,7 +6,7 @@ import '../imports/startup/server/fixtures.js'
 import '../imports/api/users.js'
 import { setHead } from '/imports/lib/head'
 
-import { watchTransactions, syncTransactions } from '/imports/api/transactions.js'
+import { watchEvents, syncTransactions } from '/imports/api/transactions.js'
 
 if (Meteor.settings.public.first_block === undefined) {
   Meteor.settings.public.first_block = 0
@@ -27,7 +27,7 @@ Meteor.startup(async function () {
       // if we are in a test environment, we need to set the wathcer only after deploying the contracts
       // this happens in fixtures.js
     } else {
-      watchTransactions()
+      watchEvents()
     }
   })
 
