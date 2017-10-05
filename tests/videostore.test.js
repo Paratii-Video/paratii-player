@@ -1,5 +1,6 @@
 import { web3, resetDb, createUserAndLogin, getOrDeployParatiiContracts, getUserPTIAddressFromBrowser } from './helpers.js'
 import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
+import { assert } from 'chai'
 
 describe('Video Store: ', function () {
   let contracts

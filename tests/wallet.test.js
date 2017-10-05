@@ -1,5 +1,6 @@
 import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser, getOrDeployParatiiContracts } from './helpers.js'
 import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
+import { assert } from 'chai'
 
 describe('wallet', function () {
   let userAccount

@@ -133,18 +133,18 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
         console.log('bitswap stat: ', window.ipfs.bitswap.stat())
         if (latestStat.dupDataReceived) {
           console.log('[IPFS]\nmeter: ', metrics.received, ' bytes\n',
-          'dup Ratio: ', metrics.dupRatio, '%\n',
-          'metrics.overallRate: ', metrics.overallRate, '\n',
-          'metrics.rates: ', metrics.rates)
+            'dup Ratio: ', metrics.dupRatio, '%\n',
+            'metrics.overallRate: ', metrics.overallRate, '\n',
+            'metrics.rates: ', metrics.rates)
 
           templateDict.set('status', 'Download: ' + (metrics.overallRate / 1000) + 'KB/s | ' +
                            'duplication Ratio: ' + metrics.dupRatio.toFixed(2) + '% | ' +
                            'Connected Peers: ' + latestStat.peers.length)
         } else {
           console.log('[IPFS]\nmeter: ', metrics.received, ' bytes\n',
-          'dup Ratio: ', 0, '%\n',
-          'metrics.overallRate: ', metrics.overallRate, '\n',
-          'metrics.rates: ', metrics.rates)
+            'dup Ratio: ', 0, '%\n',
+            'metrics.overallRate: ', metrics.overallRate, '\n',
+            'metrics.rates: ', metrics.rates)
 
           templateDict.set('status', 'Download: ' + (metrics.overallRate / 1000) + 'KB/s | ' +
                            'duplication Ratio: ' + 0 + '% | ' +
