@@ -185,15 +185,14 @@ async function watchVideoStoreBuyVideoEvents () {
   })
 
   filter.watch(function (error, log) {
-    console.log('Adding a BuyVideo ')
+    console.log('Adding a BuyVideo to event log ')
     if (error) {
-      // TODO: proper error handling
-      console.log('Error setting filter')
-      console.log(error)
-      return
+      log(error)
+      throw(error)
     }
-    console.log(log)
-    console.log(log.args)
+    /* register the sale in the user collection */
+    
+    /* add the transaction to the transaction history */
     const transaction = {
       blockNumber: log.blockNumber,
       currency: 'PTI',
