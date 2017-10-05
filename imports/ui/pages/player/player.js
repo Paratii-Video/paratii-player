@@ -93,6 +93,8 @@ Template.player.onCreated(function () {
   this.playerState.set('playsinline', playsinline === 1)
   this.playerState.set('type', type === 1)
 
+  console.log('navState:', this.navState.get())
+
   /* DETERMINED IF PLAYER IS EMBEDED */
   if (window.top !== window.self) {
     console.log('embedded')
@@ -134,7 +136,12 @@ Template.player.onCreated(function () {
       throw err
     } else {
       self.playerState.set('locked', results)
-      // renderVideoElement(instance)
+      // hide everything if the video is unlocked and autoplay is true
+      if (self.playerState.get('autoplay') && !self.playerState.get('locked')) {
+        self.playerState.set('playing', true)
+        self.playerState.set('hideControls', true)
+        self.navState.set('closed')
+      }
     }
   })
 })
@@ -206,7 +213,7 @@ Template.player.helpers({
     return FlowRouter.getQueryParam('playlist') != null
   },
   autoplay () {
-    /* TODO: NEED TO CHECK IF IS IT BOUGHT */
+    if (Template.instance().playerState.get('locked')) return ''
     return Template.instance().playerState.get('autoplay') === true ? 'autoplay' : ''
   },
   loop () {
@@ -254,6 +261,21 @@ const pauseVideo = (instance) => {
   Meteor.clearTimeout(controlsHandler)
   instance.playerState.set('hideControls', false)
   $('#app-container').removeClass('playing')
+}
+
+const playVideo = (instance) => {
+  const dict = instance.playerState
+  const navState = instance.navState
+  const videoPlayer = instance.find('#video-player')
+  dict.set('playing', true)
+  navState.set('closed')
+  videoPlayer.play()
+  $('#app-container').addClass('playing')
+  controlsHandler = Meteor.setTimeout(() => {
+    if (!videoPlayer.paused) {
+      dict.set('hideControls', true)
+    }
+  }, 3000)
 }
 
 // Set a value (0 ~ 1) to the player volume and volume UX
@@ -304,20 +326,10 @@ Template.player.events({
   },
   'click #play-pause-button' (event, instance) {
     const dict = instance.playerState
-    const navState = instance.navState
-    const videoPlayer = instance.find('#video-player')
     if (dict.get('playing')) {
       pauseVideo(instance)
     } else {
-      dict.set('playing', true)
-      navState.set('closed')
-      videoPlayer.play()
-      $('#app-container').addClass('playing')
-      controlsHandler = Meteor.setTimeout(() => {
-        if (!videoPlayer.paused) {
-          dict.set('hideControls', true)
-        }
-      }, 3000)
+      playVideo(instance)
     }
   },
   'click #next-video-button' () {
