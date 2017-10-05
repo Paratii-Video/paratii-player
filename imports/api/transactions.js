@@ -35,6 +35,7 @@ if (Meteor.isServer) {
 
     // Aggregate transactions with same hash as ID and group data
     // new collections userTransactions will be published with this structures
+    // TODO: SIMPLIFY ThIS
     ReactiveAggregate(this, Transactions, [
       { $match: query },
       { $group: {
@@ -52,9 +53,10 @@ if (Meteor.isServer) {
       }
       }
     ],
-    {clientCollection: 'userTransactions'})
+      {clientCollection: 'userTransactions'}
+    )
   })
-}
+} // this bracket closes Meteor.isServer()
 
 export async function addOrUpdateTransaction (transaction) {
   // add (or update) a transaction in the collection
@@ -63,16 +65,15 @@ export async function addOrUpdateTransaction (transaction) {
   console.log('Add event to collection: ', transaction.hash)
   console.log(transaction)
 
-  transaction.logIndex = transaction.logIndex || undefined
   try {
     check(transaction, {
-      blockNumber: Match.Maybe(Number),
+      blockNumber: Match.Integer,
       currency: String,
       date: Match.Maybe(Date),
       description: Match.Maybe(String),
       from: String,
       hash: String,
-      logIndex: Number,
+      logIndex: Match.Integer,
       nonce: Match.Maybe(Number),
       source: String,
       to: String,
@@ -91,7 +92,8 @@ export async function addOrUpdateTransaction (transaction) {
    * { _id: transactionHash,
    *   blockNumber: ..
    *   (and other blocklevel info...)
-   *   events: {
+   *   events: {    console.log(log.args)
+
    *    2: { // this is the logIndex
    *       description: ..
    *       from: ..
@@ -101,19 +103,22 @@ export async function addOrUpdateTransaction (transaction) {
    *
    */
   if (transaction.source === 'PTIContract.Transfer') {
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log(transaction.hash)
+    console.log(transaction.source)
     let existingTransaction = Transactions.findOne({ hash: transaction.hash, source: 'VideoStore.BuyVideo' })
+    console.log(existingTransaction)
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
     if (existingTransaction) {
       // Dont add a PTIContract.transfer event if we already have a buyvideo event in the same transaction
       return
     }
   }
   // -----------------end of terrible hack ----
-
-  let txId = Transactions.upsert(transaction.hash, transaction)
-  return txId
+  Transactions.upsert(transaction.hash, transaction)
 }
 
-export async function watchEvents () {
+export function watchEvents () {
   watchPTIContractTransferEvents()
   watchSendEtherEvents()
   watchVideoStoreBuyVideoEvents()
@@ -128,9 +133,7 @@ async function watchSendEtherEvents () {
 
   filter.watch(function (error, log) {
     if (error) {
-      // TODO: proper error handling
       console.log(error)
-      return
     }
     const transaction = {
       blockNumber: log.blockNumber,
@@ -148,7 +151,8 @@ async function watchSendEtherEvents () {
 };
 
 async function watchPTIContractTransferEvents () {
-  // set a filter for ALL PTI transactions
+  // set a filter for ALL PTI transactions    console.log(log.args)
+
   console.log('Watching for PTI Transactions')
   let filter = (await PTIContract()).Transfer({}, {
     fromBlock: 'latest',
@@ -184,27 +188,38 @@ async function watchVideoStoreBuyVideoEvents () {
     toBlock: 'latest'
   })
 
-  filter.watch(function (error, log) {
-    console.log('Adding a BuyVideo to event log ')
-    if (error) {
-      log(error)
-      throw(error)
-    }
-    /* register the sale in the user collection */
-    
-    /* add the transaction to the transaction history */
-    const transaction = {
-      blockNumber: log.blockNumber,
-      currency: 'PTI',
-      description: `Bought video ${log.args.videoId}`,
-      from: log.args.buyer,
-      hash: log.transactionHash,
-      logIndex: log.logIndex,
-      source: 'VideoStore.BuyVideo',
-      to: '',
-      // to: log.args.owner,
-      value: log.args.price && log.args.price.toNumber()
-    }
-    return addOrUpdateTransaction(transaction)
-  })
+  filter.watch(Meteor.bindEnvironment(
+    function (error, log) {
+      console.log('Adding a BuyVideo to event log ')
+      if (error) {
+        console.log(error)
+        throw (error)
+      }
+      /* register the sale in the user collection */
+      // find our user
+      let user = Meteor.users.findOne({'profile.ptiAddress': log.args.buyer})
+      if (!user) {
+        console.log(`No user found with account ${log.args.buyer}!`)
+        // so we create a new user object to at least have some trace of the sale
+      } else {
+        let videos = user.profile.videos || {}
+        videos[log.args.videoId] = { acquired: log.transactionHash }
+        Meteor.users.update(user._id, {$set: {'profile.videos': videos}})
+      }
+
+      /* add the transaction to the transaction history */
+      const transaction = {
+        blockNumber: log.blockNumber,
+        currency: 'PTI',
+        description: `Bought video ${log.args.videoId}`,
+        from: log.args.buyer,
+        hash: log.transactionHash,
+        logIndex: log.logIndex,
+        source: 'VideoStore.BuyVideo',
+        to: '',
+        value: log.args.price && log.args.price.toNumber()
+      }
+      addOrUpdateTransaction(transaction)
+    })
+  )
 };

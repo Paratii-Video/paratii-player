@@ -38,16 +38,15 @@ if (Meteor.isServer) {
   })
 
   Meteor.methods({
-    'videos.isLocked' (videoid, userAddress) {
-      const video = Videos.findOne({ _id: videoid })
+    'videos.isLocked' (videoId, userAddress) {
+      const video = Videos.findOne({ _id: videoId })
       if (video && video.price === 0) {
         return false // Video is free, it doesn't have a price
       } else {
-        // const videoUnlocked = Transactions.findOne({ videoid: videoid, from: userAddress, blockNumber: {$ne: null} })
-        // if (videoUnlocked) {
-        //   return false
-        // }
-        // TODO: look at the VideoContract to check if the video has been bought by the user
+        let user = Meteor.users.findOne({'profile.ptiAddress': userAddress})
+        if (user && user.profile && user.profile.videos && (videoId in user.profile.videos)) {
+          return false
+        }
         return true
       }
     }

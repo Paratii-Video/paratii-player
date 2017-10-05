@@ -69,6 +69,8 @@
 
         {{#if isLocked }}
           <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
+        {{ else }}
+          <button id="video-is-unlocked">you bought this video</button>
         {{/if}}
       </div>
     </div>

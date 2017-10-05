@@ -237,7 +237,11 @@ if (Meteor.settings.public.isTestEnv) {
   // we can do all this easily, because accounts[0] is unlocked in testrpc, and has lots of Ether.
   deployContractsAndInstallFixtures().then(function (contracts) {
     setRegistryAddress(contracts.ParatiiRegistry.address)
-    watchEvents()
+    Meteor.startup(
+      function () {
+        watchEvents()
+      }
+    )
   })
 
   // Videos

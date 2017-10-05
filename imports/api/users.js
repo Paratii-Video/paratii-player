@@ -30,6 +30,7 @@ if (Meteor.isServer) {
 if (Meteor.isClient) {
   Meteor.subscribe('userData')
 }
+
 if (Meteor.isServer) {
   Meteor.methods({
     'users.create' (options) {

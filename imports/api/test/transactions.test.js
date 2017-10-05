@@ -33,6 +33,7 @@ describe('Transactions', () => {
           transactionHash: '0xabdafe',
           nonce: 2,
           blockNumber: 22,
+          logIndex: 0,
           args: {
             value: new BigNumber(12345566),
             from: '0x12345',
@@ -63,8 +64,8 @@ describe('Transactions', () => {
         let log = {
           nonce: 2,
           blockNumber: 1,
-          // hash: 0x1245,
           transactionHash: '0x1245',
+          logIndex: 2,
           args: {
             value: new BigNumber(333),
             from: '0x12345',
@@ -95,6 +96,7 @@ describe('Transactions', () => {
         let log = {
           nonce: 2,
           blockNumber: 1,
+          logIndex: 2,
           // hash: 0x1245,
           transactionHash: '0x1245',
           args: {
