@@ -1,7 +1,6 @@
 // Test the setup code used for testing :-)
 
 import { resetDb, createUserAndLogin, setRegistryAddress, getOrDeployParatiiContracts, web3 } from './helpers.js'
-import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
 describe('test setup:', function () {

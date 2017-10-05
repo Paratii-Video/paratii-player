@@ -1,4 +1,5 @@
 import { PTIContract } from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 import { Settings } from './settings.js'
 import { addETHTransaction, addPTITransaction } from './transaction.js'
 
