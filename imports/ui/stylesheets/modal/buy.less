@@ -1,5 +1,17 @@
 // Modal buy
 
+.main-modal-content-buy {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--buy & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+//
+
 .main-modal-buy {
   &-info {
     align-items: center;
@@ -9,6 +21,7 @@
   }
 
   &-status {
+    align-items: center;
     display: flex;
     flex-direction: column;
   }
@@ -23,14 +36,16 @@
 
 .player-tooltip {
   background-color: @color-purple;
+  border-radius: 3px;
   color: white;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px 3px;
   text-align: center;
   text-transform: uppercase;
 
   &--small {
-    border-radius: 3px;
     font-size: 10px;
-    font-weight: 500;
-    padding: 1px 0 0;
+    padding: 2px 4px 1px;
   } 
 }

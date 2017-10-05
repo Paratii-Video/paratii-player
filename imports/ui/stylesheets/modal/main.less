@@ -2,7 +2,7 @@
 
 // Vars
 
-@size-modal-wrapper-height: 280px;
+@size-modal-wrapper-height: 290px;
 @size-modal-wrapper-width: 310px;
 
 // Main
@@ -10,13 +10,18 @@
 .main-modal {
   &:extend(.pos-a-full all);
 
-
   align-items: center;
   display: flex;
   justify-content: center;
+  pointer-events: none;
   z-index: @zindex-modal;
 
-  display: none;
+  .open-modal &,
+  .open-modal--signin &,
+  .open-modal--signup &,
+  .open-modal--confirm & {
+    pointer-events: initial;
+  }
 
   // Bg
 
@@ -25,8 +30,17 @@
 
     background-color: black;
     content: '';
-    opacity: .85;
+    opacity: 0;
+    transition: opacity .35s linear .35s;
     z-index: 1;
+
+    .open-modal &,
+    .open-modal--signin &,
+    .open-modal--signup &,
+    .open-modal--confirm & {
+      opacity: .85;
+      transition: opacity .35s;
+    }
   }
 
 
@@ -36,11 +50,21 @@
     background-color: white;
     border-radius: 3px;
     height: @size-modal-wrapper-height;
+    overflow: hidden;
     padding: 20px;
     position: relative;
+    transform: scaleY(0);
     transition: transform .5s @ease-smooth;
     width: @size-modal-wrapper-width;
     z-index: 2;
+
+    .open-modal &,
+    .open-modal--signin &,
+    .open-modal--signup &,
+    .open-modal--confirm & {
+      transform: scaleY(1);
+      transition: transform .75s @ease-smooth .3s;
+    }
   }
 
   &-content {
@@ -48,10 +72,6 @@
 
     color: @color-grey;
     position: relative;
-
-    &--log {
-      display: none;
-    }
   }
 
 
@@ -61,9 +81,13 @@
     color: @color-grey;
     font-size: 20px;
     font-weight: 500;
+    margin-bottom: 25px;
 
-    .main-modal-content & {
-      margin-bottom: 20px;
+    .open-modal &,
+    .open-modal--signin &,
+    .open-modal--signup &,
+    .open-modal--confirm & {
+      // animation: fromTop .8s @ease-smooth forwards .6s;
     }
   }
 
@@ -71,87 +95,33 @@
   // Texts
 
   &-text {
+    color: @color-grey-light;
+    font-size: 14px;
+    font-weight: 300;
+
     &-small {
       font-size: 12px;
     }
   }
 
-
-  // Input forms
-
-  &-label {
-    display: block;
-    position: relative;
-    width: 100%;
-  }
-
-  &-input {
-    background: 0;
-    border-bottom: 1px solid @color-grey;
-    display: block;
-    height: 35px;
-    padding: 0 33px 0 0;
-    transition: border-color .3s;
-    width: 100%;
-
-    &.error {
-      animation: shakeAnim .5s @ease-smooth;
-      border-color: @color-red;
-    }
-
-    &.success {
-      border-color: @color-green;
-    }
-
-    &,
-    &::placeholder,
-    &:-webkit-autofill:hover,
-    &:-webkit-autofill:focus,
-    &:-webkit-autofill {
-      color: @color-grey-light;
-      font-size: 14px;
-      font-weight: 300;
-      -webkit-box-shadow: 0 0 0px 1000px white inset;
-      -webkit-text-fill-color: @color-grey-light;
-    }
-
-    &.password {
-      margin: 10px 0 0;
-    }
-  }
-
-
   // Buttons/anchors
 
   &-button {
-    &:extend(.hover-opacity all);
-
-    font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
-    transition: opacity .25s;
-    
-    &--confirm {
-      color: @color-purple;
-    }
-
-    &--cancel,
-    &--password {
-      color: @color-grey-light;
-    }
-
-    &--password {
-      &:extend(.pos-a-v all);
-
-      right: 0;
-    }
 
     .main-modal-footer & {
-      margin-left: 10px;
+      margin-left: 20px;
     }
   }
 
   &-link {
+    color: @color-grey;
+    font-weight: 500;
+    transition: color .3s;
+
+    &:hover {
+      color: @color-grey-light;
+    }
+
     &-forgot {
       &:extend(.hover-opacity all);
 

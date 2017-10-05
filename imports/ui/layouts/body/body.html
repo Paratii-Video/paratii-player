@@ -1,63 +1,69 @@
 <template name="App_body">
   <div class="main-app {{getRoute}}">
 
+    <!-- #Modal -->
     <div class="main-modal">
       <div class="main-modal-wrapper">
-        <!-- #buy -->
-        <form class="main-modal-content main-modal-content--buy" action="">
-          <h2 class="main-modal-title">Around the Block - Episode 6</h2>
-
-          <div class="main-modal-buy-info">
-            <div class="main-modal-avatar">
-              <img class="main-modal-avatar-image" src="https://scontent.fcgh10-1.fna.fbcdn.net/v/t1.0-1/p320x320/19399089_10155553304868010_6057071577605879971_n.jpg?oh=2e3194c11d536f4a6400993334f1eaff&oe=5A4F0961"/>
+        <!-- #signin -->
+        <div class="main-modal-content main-modal-content-signin">
+          <h2 class="main-modal-title">Sign in</h2>
+          <form class="main-modal-form" action="">
+            <div class="main-form-label">
+              <input class="main-form-input email" autocomplete="off" type="email" placeholder="email" />
             </div>
-            <div class="main-modal-buy-status">
-              <img src="/img/rewind-icon.svg">
-              <p class="value-bold">10US$</p>
-              <p class="player-tooltip player-tooltip--small">20 pti</p>
+            <div class="main-form-label password">
+              <input class="main-form-input main-form-input-password password" autocomplete="off" type="password" placeholder="password" />
+              <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
             </div>
-            <div class="main-modal-avatar">
-              <img class="main-modal-avatar-image" src="https://scontent.fcgh10-1.fna.fbcdn.net/v/t1.0-1/p320x320/19399089_10155553304868010_6057071577605879971_n.jpg?oh=2e3194c11d536f4a6400993334f1eaff&oe=5A4F0961"/>
+            <a class="button-text button-text--grey-light button-text--lower main-form-button-forgot" href="#" target="_blank">Forgot password?</a>
+            <div class="main-modal-footer">
+              <button class="button-text button-text--grey-light main-modal-button cancel" type="button">Sign up</button>
+              <button class="button-text main-modal-button main-modal-button signin" type="submit">Sign in</button>
             </div>
-          </div>
+          </form>
+        </div>
+        <!-- /signin -->
 
-          <label class="main-modal-label">
-            <input class="main-modal-input password" autocomplete="off" type="password" placeholder="password" />
-            <button class="main-modal-button main-modal-button--password password" type="button">Show</button>
-          </label>
-          <p class="main-modal-text-small"><a class="main-modal-link-forgot" href="#" target="_blank">Forgot password?</a></p>
+        <!-- #signup -->
+        <div class="main-modal-content main-modal-content-signup">
+          <h2 class="main-modal-title">Sign up</h2>
+          <form class="main-modal-form" action="">
+            <div class="main-form-label username">
+              <input class="main-form-input username" autocomplete="off" type="text" placeholder="username" />
+            </div>
+            <div class="main-form-label">
+              <input class="main-form-input email" autocomplete="off" type="email" placeholder="email" />
+            </div>
+            <div class="main-form-label password">
+              <input class="main-form-input main-form-input-password password" autocomplete="off" type="password" placeholder="password" />
+              <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
+            </div>
+            <div class="main-modal-footer">
+              <button class="button-text button-text--grey-light main-modal-button cancel" type="button">Sign in</button>
+              <button class="button-text main-modal-button main-modal-button signup" type="submit">Sign up</button>
+            </div>
+          </form>
+        </div>
+        <!-- /signup -->
 
-          <div class="main-modal-footer">
-            <button class="main-modal-button main-modal-button--cancel cancel" type="button">Cancel</button>
-            <button class="main-modal-button main-modal-button--confirm confirm" type="submit">Confirm</button>
-          </div>
-        </form>
-        <!-- /buy -->
-        <!-- #login/signup -->
-        <form class="main-modal-content main-modal-content--log" action="">
-          <h2 class="main-modal-title">You must sign in or sign up</h2>
+        <!-- #confirm -->
+        <div class="main-modal-content main-modal-content-confirm">
+          <h2 class="main-modal-title">We are almost there</h2>
+          <p class="main-modal-text">Your account has been created, please confirm your email to activate your PTI wallet. When you confirm, you will  win 10 PTI in your test network. <a class="main-modal-link" href="">Send email again</a> <strong class="text-success">Email Confirmed</strong></p>
+          <button class="button-text button-text--grey-dark">
+            PTI address
+              <svg class="button-text-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+                <path d="M17.8 8.4H8.7c-.5 0-.9.2-1.3.5-.3.3-.5.8-.5 1.3v13c0 .5.2.9.5 1.3.4.3.8.5 1.3.5h9.1c.5 0 .9-.2 1.3-.5s.5-.8.5-1.3v-13c0-.5-.2-.9-.5-1.3-.4-.3-.8-.5-1.3-.5zm.2 1.8v13c0 .1 0 .1-.1.2 0 0-.1.1-.2.1h-9c-.1 0-.1 0-.2-.1 0 0-.1-.1-.1-.2v-13c0-.1 0-.1.1-.2 0 0 .1-.1.2-.1h9.1c.1 0 .1 0 .2.1v.2z"/>
+                <path d="M22.5 5.5c-.3-.3-.7-.5-1.2-.5h-9.1c-.5 0-.9.2-1.3.5-.3.3-.5.8-.5 1.3 0 .2.1.4.2.5.1.1.3.2.5.2s.4-.1.5-.2c.3-.1.4-.3.4-.5 0-.1 0-.1.1-.2 0 0 .1-.1.2-.1h9.1c.1 0 .1 0 .2.1 0 0 .1.1.1.2v13c0 .1 0 .1-.1.2 0 0-.1.1-.2.1-.2 0-.4.1-.5.2-.1.1-.2.3-.2.5s.1.4.2.5c.1.1.3.2.5.2.5 0 .9-.2 1.3-.5.3-.3.5-.8.5-1.3v-13c-.1-.4-.3-.8-.7-1.2z"/>
+              </svg>
+          </button>
+          <input class="confirm-code" value="0x4882C7Ad656b716c6d476bA0e8c49E7456267C96" />
+        </div>
+        <!-- /confirm -->
 
-          <label class="main-modal-label">
-            <input class="main-modal-input username" autocomplete="off" type="text" placeholder="username" />
-          </label>
-          <label class="main-modal-label">
-            <input class="main-modal-input email" autocomplete="off" type="email" placeholder="email" />
-          </label>
-          <label class="main-modal-label">
-            <input class="main-modal-input password" autocomplete="off" type="password" placeholder="password" />
-            <button class="main-modal-button main-modal-button--password password" type="button">Show</button>
-          </label>
-          <p class="main-modal-text-small"><a class="main-modal-link-forgot" href="#" target="_blank">Forgot password?</a></p>
-
-          <div class="main-modal-footer">
-            <button class="main-modal-button main-modal-button--cancel cancel" type="button">Cancel</button>
-            <button class="main-modal-button main-modal-button--confirm signin" type="submit">Sign in</button>
-            <button class="main-modal-button main-modal-button--confirm signup" type="submit">Sign up</button>
-          </div>
-        </form>
-        <!-- /login/signup -->
       </div>
     </div>
+    <!-- /Modal -->
 
     <div class="nav-overlay {{light}}"></div>
     {{> navigation }}

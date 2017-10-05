@@ -1,0 +1,67 @@
+// Modal log
+
+.main-modal-content-signin,
+.main-modal-content-signup,
+.main-modal-content-confirm, {
+  display: none;
+  pointer-events: none;
+
+}
+
+.main-modal-content-signin,
+.main-modal-content-signup {
+  .main-form-label {
+    margin: 0 0 25px;
+  }
+}
+
+// Sign in
+
+.main-modal-content-signin {
+  .open-modal--signin & {
+    display: block;
+    pointer-events: initial;
+  }
+
+  .main-form-label {
+    &.password {
+      margin: 0 0 8px;
+    }
+  }
+}
+
+// Sign up
+
+.main-modal-content-signup {
+  .open-modal--signup & {
+    display: block;
+    pointer-events: initial;
+  }
+
+  .main-form-label {
+    &.password {
+      margin: 0;
+    }
+  }
+}
+
+// Confirm
+
+.main-modal-content-confirm {
+  .open-modal--confirm & {
+    display: block;
+    pointer-events: initial;
+  }
+
+  .button-text {
+    margin: 30px 0 10px;
+  }
+
+  .confirm-code {
+    color: @color-grey-light;
+    display: block;
+    font-size: 12px;
+    font-weight: 300;
+    width: 100%;
+  }
+}
