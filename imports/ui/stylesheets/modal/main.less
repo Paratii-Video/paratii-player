@@ -17,6 +17,7 @@
   z-index: @zindex-modal;
 
   .open-modal &,
+  .open-modal--buy &,
   .open-modal--signin &,
   .open-modal--signup &,
   .open-modal--confirm & {
@@ -35,6 +36,7 @@
     z-index: 1;
 
     .open-modal &,
+    .open-modal--buy &,
     .open-modal--signin &,
     .open-modal--signup &,
     .open-modal--confirm & {
@@ -59,6 +61,7 @@
     z-index: 2;
 
     .open-modal &,
+    .open-modal--buy &,
     .open-modal--signin &,
     .open-modal--signup &,
     .open-modal--confirm & {
@@ -84,6 +87,7 @@
     margin-bottom: 25px;
 
     .open-modal &,
+    .open-modal--buy &,
     .open-modal--signin &,
     .open-modal--signup &,
     .open-modal--confirm & {
@@ -161,5 +165,16 @@
     justify-content: flex-end;
     position: absolute;
     width: 100%;
+
+    &-loading {
+      display: none;
+      font-weight: 500;
+      text-transform: uppercase;
+
+      .loading & {
+        animation: blink .5s linear infinite;
+        display: block;
+      }
+    }
   }
 }

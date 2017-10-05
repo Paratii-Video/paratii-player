@@ -16,23 +16,105 @@
   &-info {
     align-items: center;
     display: flex;
+    height: 90px;
     justify-content: space-between;
-    margin: 20px 0;
+    margin: 0 0 10px;
   }
 
   &-status {
-    align-items: center;
     display: flex;
     flex-direction: column;
+
+    &-content {
+      align-items: center;
+      display: none;
+      flex-direction: column;
+    }
+
+    &-start {
+      display: flex;
+
+      .success &,
+      .error & {
+        display: none;
+      }
+    }
+
+    &-success {
+      .success & {
+        display: flex;
+      }
+    }
+
+    &-error {
+      .error & {
+        display: flex;
+      }
+    }
+
+  }
+
+  &-icon {
+    fill: @color-grey-light;
+    width: 40px;
+
+    .success & {
+      fill: @color-green;
+    }
+
+    .error & {
+      fill: @color-red;
+    }
+  }
+
+  &-text {
+    color: @color-purple;
+    font-size: 16px;
+    font-weight: 500;
+
+    .success & {
+      color: @color-green;
+    }
+
+    .error & {
+      color: @color-red;
+    }
+  }
+}
+
+.main-modal-content-buy {
+  .main-form-label {
+    .success & {
+      display: none;
+    }
+  }
+
+  .main-form-button-forgot {
+    .success & {
+      display: none;
+    }
+  }
+
+  .button-text {
+    &.confirm {
+
+      .loading &,
+      .success & {
+        display: none;
+      }
+    }
+
+    &.watch {
+      display: none;
+
+      .success & {
+        display: block;
+      }
+    }
   }
 }
 
 //
-.value-bold {
-  color: @color-purple;
-  font-size: 16px;
-  font-weight: 500;
-}
 
 .player-tooltip {
   background-color: @color-purple;
@@ -42,7 +124,6 @@
   font-weight: 500;
   padding: 4px 8px 3px;
   text-align: center;
-  text-transform: uppercase;
 
   &--small {
     font-size: 10px;
