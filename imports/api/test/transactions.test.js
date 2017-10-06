@@ -27,7 +27,7 @@ describe('Transactions', () => {
         }
       })
 
-      it('insert an ETH transaction', async () => {
+      it('insert an ETH event', async () => {
         assert.equal(Transactions.find().count(), 0)
         let log = {
           transactionHash: '0xabdafe',
@@ -41,7 +41,7 @@ describe('Transactions', () => {
             description: 'a description'
           }
         }
-        const transaction = {
+        const event = {
           blockNumber: log.blockNumber,
           currency: 'ETH',
           description: log.args.description || '',
@@ -52,14 +52,17 @@ describe('Transactions', () => {
           source: 'SendEther.LogSendEther',
           value: log.args.value.toNumber()
         }
-        await addOrUpdateTransaction(transaction)
+        await addOrUpdateTransaction(event)
         assert.equal(Transactions.find().count(), 1)
         // if we try to add the transaction with the same hash a second time, it will fail silently
-        await addOrUpdateTransaction(transaction)
+        await addOrUpdateTransaction(event)
         assert.equal(Transactions.find().count(), 1)
+        let eventId = `${event.hash}/${event.logIndex}`
+        let doc = Transactions.findOne(eventId)
+        assert.equal(doc.hash, event.hash)
       })
 
-      it('insert a ParatiiToken Transfer transaction', async () => {
+      it('insert a ParatiiToken Transfer event', async () => {
         assert.equal(Transactions.find().count(), 0)
         let log = {
           nonce: 2,
@@ -73,7 +76,7 @@ describe('Transactions', () => {
           },
           topics: [0x1232143]
         }
-        const transaction = {
+        const event = {
           blockNumber: log.blockNumber,
           currency: 'PTI',
           description: log.args.description || '',
@@ -84,14 +87,14 @@ describe('Transactions', () => {
           to: log.args.to,
           value: log.args.value && log.args.value.toNumber()
         }
-        await addOrUpdateTransaction(transaction)
+        await addOrUpdateTransaction(event)
         assert.equal(Transactions.find().count(), 1)
         // if we try to add the transaction with the same hash a second time, it will fail silently
-        await addOrUpdateTransaction(transaction)
+        await addOrUpdateTransaction(event)
         assert.equal(Transactions.find().count(), 1)
       })
 
-      it('insert an BuyVideo transaction', async () => {
+      it('insert an BuyVideo event', async () => {
         assert.equal(Transactions.find().count(), 0)
         let log = {
           nonce: 2,
@@ -106,7 +109,7 @@ describe('Transactions', () => {
           },
           topics: [0x1232143]
         }
-        const transaction = {
+        const event = {
           blockNumber: log.blockNumber,
           currency: 'PTI',
           description: `Bought video ${log.args.videoId}`,
@@ -117,10 +120,10 @@ describe('Transactions', () => {
           to: '',
           value: log.args.price && log.args.price.toNumber()
         }
-        await addOrUpdateTransaction(transaction)
+        await addOrUpdateTransaction(event)
         assert.equal(Transactions.find().count(), 1)
         // if we try to add the transaction with the same hash a second time, it will fail silently
-        await addOrUpdateTransaction(transaction)
+        await addOrUpdateTransaction(event)
       })
     })
   }

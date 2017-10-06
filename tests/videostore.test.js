@@ -54,7 +54,8 @@ describe('Video Store: ', function () {
     browser.url('http://localhost:3000/transactions')
     let description = 'Bought video 5'
     browser.waitForExist('.transaction-description', 5000)
-    assert.equal(browser.getText('.transaction-description'), description)
+    let msg = `Expected to find ${description} in the first from ${browser.getText('.transaction-description')}`
+    assert.isOk(browser.getText('.transaction-description')[0].indexOf(description) > -1, msg)
 
     // the video should be unlocked now
     browser.url(`http://localhost:3000/play/${videoId}`)

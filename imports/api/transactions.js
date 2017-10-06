@@ -45,7 +45,7 @@ if (Meteor.isServer) {
         from: {$first: '$from'},
         to: {$first: '$to'},
         currency: {$first: '$currency'},
-        description: {$first: '$description'},
+        description: {$push: '$description'},
         value: {$first: '$value'},
         // transactions: { $push: "$$ROOT" }
         videoid: { $push: '$videoid' }
@@ -84,38 +84,29 @@ export async function addOrUpdateTransaction (transaction) {
     throw err
   }
 
-  /*
-   * TODO:
-   * lines up to //--------------------------- are a TEMPORART HACK
-   *   what we really want is to save each Event in the database, I (jelle) think like this
-   *
-   * { _id: transactionHash,
-   *   blockNumber: ..
-   *   (and other blocklevel info...)
-   *   events: {    console.log(log.args)
-
-   *    2: { // this is the logIndex
-   *       description: ..
-   *       from: ..
-  *     [here all event ]
-   *   }
-   * }
-   *
-   */
-  if (transaction.source === 'PTIContract.Transfer') {
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-    console.log(transaction.hash)
-    console.log(transaction.source)
-    let existingTransaction = Transactions.findOne({ hash: transaction.hash, source: 'VideoStore.BuyVideo' })
-    console.log(existingTransaction)
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-    if (existingTransaction) {
-      // Dont add a PTIContract.transfer event if we already have a buyvideo event in the same transaction
-      return
-    }
-  }
-  // -----------------end of terrible hack ----
-  Transactions.upsert(transaction.hash, transaction)
+  /** * NEXT LINES REPRESENT ANOTHER DATE MODEL
+  Transactions.upsert(transaction.hash, {
+    blockNumber: transaction.blockNumber,
+    data: transaction.date,
+    hash: transaction.hash,
+    nonce: transaction.nonce,
+  })
+  Transactions.update(transaction.hash, {
+    '$addToSet': {
+      'events': {
+        currency: transaction.currency,
+        description: transaction.description,
+        from: transaction.from,
+        logIndex: transaction.logIndex,
+        source: transaction.source,
+        to: transaction.to,
+        value: transaction.value
+      }
+    },
+  })
+  ************************************/
+  let eventId = `${transaction.hash}/${transaction.logIndex}`
+  Transactions.upsert(eventId, transaction)
 }
 
 export function watchEvents () {
