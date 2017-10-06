@@ -113,9 +113,12 @@
   &-button {
 
     &-close {
+      &:extend(.hover-opacity all);
+
       right: 20px;
       position: absolute;
       top: 23px;
+      z-index: 2;
 
       &-svg {
         display: block;
