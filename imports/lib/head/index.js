@@ -19,6 +19,7 @@ function setHead () {
   })
 }
 function twitterCardHead (params, req, res, next) {
+  var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
   req.dynamicHead = (req.dynamicHead || '')
   var videoID = params._id
   req.dynamicHead += '<meta property="twitter:card" content="player" />'
@@ -26,9 +27,9 @@ function twitterCardHead (params, req, res, next) {
   req.dynamicHead += '<meta property="twitter:site" content="https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg">'
   req.dynamicHead += '<meta property="twitter:player:width" content="500" />'
   req.dynamicHead += '<meta property="twitter:player:height" content="500" />'
-  req.dynamicHead += '<meta property="twitter:image" content="/img/icon/apple-touch-icon.png" />'
+  req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + '/img/icon/apple-touch-icon.png" />'
   req.dynamicHead += '<meta property="twitter:player:stream" content="https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg" />'
-  req.dynamicHead += '<meta property="twitter:player" content="/player/' + videoID + '" />'
+  req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoID + '" />'
 }
 
 function basicHead (params, req, res, next) {
