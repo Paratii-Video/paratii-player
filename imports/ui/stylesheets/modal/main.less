@@ -24,7 +24,8 @@
   .open-modal--confirmed &,
   .open-modal--sharevideo &,
   .open-modal--addplaylist &,
-  .open-modal--createplaylist & {
+  .open-modal--createplaylist &,
+  .open-modal--earn & {
     pointer-events: initial;
   }
 
@@ -47,7 +48,8 @@
     .open-modal--confirmed &,
     .open-modal--sharevideo &,
     .open-modal--addplaylist &,
-    .open-modal--createplaylist & {
+    .open-modal--createplaylist &,
+    .open-modal--earn & {
       opacity: .85;
       transition: opacity .35s;
     }
@@ -75,7 +77,8 @@
     .open-modal--confirmed &,
     .open-modal--sharevideo &,
     .open-modal--addplaylist &,
-    .open-modal--createplaylist & {
+    .open-modal--createplaylist &,
+    .open-modal--earn & {
       transform: scaleY(1);
       transition: transform .75s @ease-smooth .3s;
     }
@@ -86,6 +89,32 @@
 
     color: @color-grey;
     position: relative;
+  }
+
+  &-step {
+    &-1,
+    &-2,
+    &-3 {
+      &:extend(.simple-hidden all);
+    }
+
+    &-1 {
+      .step-1 & {
+        &:extend(.simple-unhidden all);
+      }
+    }
+
+    &-2 {
+      .step-2 & {
+        &:extend(.simple-unhidden all);
+      }
+    }
+
+    &-3 {
+      .step-3 & {
+        &:extend(.simple-unhidden all);
+      }
+    }
   }
 
   // Main title
@@ -109,7 +138,8 @@
     .open-modal--confirmed &,
     .open-modal--sharevideo &,
     .open-modal--addplaylist &,
-    .open-modal--createplaylist & {
+    .open-modal--createplaylist &,
+    .open-modal--earn & {
       // animation: fromTop .8s @ease-smooth forwards .6s;
     }
   }
@@ -226,5 +256,94 @@
         display: block;
       }
     }
+  }
+}
+
+// Modals
+
+.main-modal-content-buy {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--buy & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.main-modal-content-addplaylist {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--addplaylist & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.main-modal-content-createplaylist {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--createplaylist & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.main-modal-content-signin,
+.main-modal-content-signup,
+.main-modal-content-confirm,
+.main-modal-content-confirmed, {
+  display: none;
+  pointer-events: none;
+
+}
+
+.main-modal-content-signin {
+  .open-modal--signin & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.main-modal-content-signup {
+  .open-modal--signup & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.main-modal-content-confirm {
+  .open-modal--confirm & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.main-modal-content-confirmed {
+  .open-modal--confirmed & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.main-modal-content-sharevideo {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--sharevideo & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.main-modal-content-earn {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--earn & {
+    display: block;
+    pointer-events: initial;
   }
 }

@@ -1,15 +1,6 @@
 // Modal log
 
 .main-modal-content-signin,
-.main-modal-content-signup,
-.main-modal-content-confirm,
-.main-modal-content-confirmed, {
-  display: none;
-  pointer-events: none;
-
-}
-
-.main-modal-content-signin,
 .main-modal-content-signup {
   .main-form-label {
     margin: 0 0 20px;
@@ -19,11 +10,6 @@
 // Sign in
 
 .main-modal-content-signin {
-  .open-modal--signin & {
-    display: block;
-    pointer-events: initial;
-  }
-
   .main-form-label {
     &.password {
       margin: 0 0 8px;
@@ -34,11 +20,6 @@
 // Sign up
 
 .main-modal-content-signup {
-  .open-modal--signup & {
-    display: block;
-    pointer-events: initial;
-  }
-
   .main-form-label {
     &.password {
       margin: 0;
@@ -46,58 +27,10 @@
   }
 }
 
-// Confirm
-
-.main-modal-content-confirm {
-  .open-modal--confirm & {
-    display: block;
-    pointer-events: initial;
-  }
-}
-
 // Confirmed
 
 .main-modal-content-confirmed {
-  .open-modal--confirmed & {
-    display: block;
-    pointer-events: initial;
-  }
-
   .button-text {
     margin: 17px 0 10px;
-  }
-}
-
-.main-modal-confirmed {
-  &-step-1,
-  &-step-2,
-  &-step-3 {
-    pointer-events: none;
-    position: absolute;
-    visibility: hidden;
-  }
-
-  &-step-1 {
-    .step-1 & {
-      pointer-events: initial;
-      position: relative;
-      visibility: initial;
-    }
-  }
-
-  &-step-2 {
-    .step-2 & {
-      pointer-events: initial;
-      position: relative;
-      visibility: initial;
-    }
-  }
-
-  &-step-3 {
-    .step-3 & {
-      pointer-events: initial;
-      position: relative;
-      visibility: initial;
-    }
   }
 }
