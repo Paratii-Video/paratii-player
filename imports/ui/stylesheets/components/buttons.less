@@ -10,7 +10,7 @@
     font-weight: 500;
     text-transform: uppercase;
 
-    //
+    // Colors
 
     &--grey {
       color: @color-grey;
@@ -28,7 +28,7 @@
       text-transform: lowercase;
     }
 
-    //
+    // Icon
 
     &-icon {
       fill: @color-purple;
@@ -46,6 +46,11 @@
 
       .button-text--grey-dark & {
         fill: @color-grey-dark;
+      }
+
+      &--small {
+        height: 12px;
+        transform: translateY(-1px);
       }
     }
   }

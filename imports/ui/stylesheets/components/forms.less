@@ -6,8 +6,50 @@
 
   &-label {
     display: block;
+    font-size: 14px;
+    font-weight: 300;
     position: relative;
     width: 100%;
+
+    margin-bottom: 0;
+
+    &-checkbox {
+      color: @color-grey-light;
+      cursor: pointer;
+      padding: 0 0 0 20px;
+      position: relative;
+
+      &::before,
+      &::after {
+        &:extend(.pos-a-v all);
+
+        content: '';
+      }
+
+      &::before {
+        border-radius: 2px;
+        border: 1px solid @color-grey;
+        height: 13px;
+        left: 0;
+        width: 13px;
+      }
+
+      &::after {
+
+        border-radius: 1px;
+        background: @color-purple;
+        left: 1px;
+        height: 11px;
+        opacity: 0;
+        width: 11px;
+      }
+
+      &.active {
+        &::after {
+          opacity: 1;
+        }
+      }
+    }
   }
 
   // Input
@@ -55,6 +97,10 @@
   &-textarea {
     padding: 0;
     resize: none;
+  }
+
+  &-checkbox {
+    &:extend(.visually-hidden);
   }
 
   // Buttons
