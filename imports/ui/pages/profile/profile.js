@@ -26,7 +26,11 @@ Template.profile.helpers({
     return web3.toChecksumAddress(getUserPTIAddress())
   },
   eth_balance () {
+    const connected = Session.get('eth_isConnected')
     const balance = Session.get('eth_balance')
+    if (!connected) {
+      return 'Not connected to blockchain'
+    }
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
@@ -38,7 +42,11 @@ Template.profile.helpers({
     return 'Connecting to blockchain...'
   },
   pti_balance () {
+    const connected = Session.get('eth_isConnected')
     const balance = Session.get('pti_balance')
+    if (!connected) {
+      return 'Not connected to blockchain'
+    }
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
