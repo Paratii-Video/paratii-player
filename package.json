@@ -4,10 +4,9 @@
   "scripts": {
     "start": "meteor run --settings settings-prod.json",
     "dev": "meteor run --settings settings-dev.json",
-    "testrpc": "npm run testrpc",
+    "testrpc": "testrpc",
     "dev-concurrently": "concurrently --kill-others \"npm run testrpc\" \"meteor run --settings settings-dev.json\"",
     "test": "meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754",
-    "testrpc": "testrpc",
     "lint": "standard",
     "lint-fix": "standard --fix",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
