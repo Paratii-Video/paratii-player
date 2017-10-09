@@ -2,7 +2,7 @@
 
 // Vars
 
-@size-modal-wrapper-height: 290px;
+@size-modal-wrapper-height: 280px;
 @size-modal-wrapper-width: 310px;
 
 // Main
@@ -20,7 +20,8 @@
   .open-modal--buy &,
   .open-modal--signin &,
   .open-modal--signup &,
-  .open-modal--confirm & {
+  .open-modal--confirm &,
+  .open-modal--confirmed & {
     pointer-events: initial;
   }
 
@@ -39,12 +40,12 @@
     .open-modal--buy &,
     .open-modal--signin &,
     .open-modal--signup &,
-    .open-modal--confirm & {
+    .open-modal--confirm &,
+    .open-modal--confirmed & {
       opacity: .85;
       transition: opacity .35s;
     }
   }
-
 
   // Containers
 
@@ -64,7 +65,8 @@
     .open-modal--buy &,
     .open-modal--signin &,
     .open-modal--signup &,
-    .open-modal--confirm & {
+    .open-modal--confirm &,
+    .open-modal--confirmed & {
       transform: scaleY(1);
       transition: transform .75s @ease-smooth .3s;
     }
@@ -77,11 +79,9 @@
     position: relative;
   }
 
-
-  // Title
+  // Main title
 
   &-title {
-    color: @color-grey;
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 25px;
@@ -90,11 +90,18 @@
     .open-modal--buy &,
     .open-modal--signin &,
     .open-modal--signup &,
-    .open-modal--confirm & {
+    .open-modal--confirm &,
+    .open-modal--confirmed & {
       // animation: fromTop .8s @ease-smooth forwards .6s;
     }
   }
 
+  // Titles
+
+  &-subtitle {
+    font-size: 16px;
+    font-weight: 500;
+  }
 
   // Texts
 

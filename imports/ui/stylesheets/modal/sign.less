@@ -2,7 +2,8 @@
 
 .main-modal-content-signin,
 .main-modal-content-signup,
-.main-modal-content-confirm, {
+.main-modal-content-confirm,
+.main-modal-content-confirmed, {
   display: none;
   pointer-events: none;
 
@@ -52,9 +53,18 @@
     display: block;
     pointer-events: initial;
   }
+}
+
+// Confirmed
+
+.main-modal-content-confirmed {
+  .open-modal--confirmed & {
+    display: block;
+    pointer-events: initial;
+  }
 
   .button-text {
-    margin: 30px 0 10px;
+    margin: 17px 0 10px;
   }
 
   .confirm-code {
@@ -63,5 +73,39 @@
     font-size: 12px;
     font-weight: 300;
     width: 100%;
+  }
+}
+
+.main-modal-confirmed {
+  &-step-1,
+  &-step-2,
+  &-step-3 {
+    pointer-events: none;
+    position: absolute;
+    visibility: hidden;
+  }
+
+  &-step-1 {
+    .step-1 & {
+      pointer-events: initial;
+      position: relative;
+      visibility: initial;
+    }
+  }
+
+  &-step-2 {
+    .step-2 & {
+      pointer-events: initial;
+      position: relative;
+      visibility: initial;
+    }
+  }
+
+  &-step-3 {
+    .step-3 & {
+      pointer-events: initial;
+      position: relative;
+      visibility: initial;
+    }
   }
 }
