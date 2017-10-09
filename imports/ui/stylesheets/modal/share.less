@@ -1,0 +1,22 @@
+// Modal share
+
+.main-modal-content-sharevideo {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--sharevideo & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.modal-share {
+  &-embed {
+    margin-top: 25px;
+
+    .main-form-input {
+      height: 50px;
+      margin: 10px 0 0;
+    }
+  }
+}

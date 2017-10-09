@@ -21,7 +21,8 @@
   .open-modal--signin &,
   .open-modal--signup &,
   .open-modal--confirm &,
-  .open-modal--confirmed & {
+  .open-modal--confirmed &,
+  .open-modal--sharevideo & {
     pointer-events: initial;
   }
 
@@ -41,7 +42,8 @@
     .open-modal--signin &,
     .open-modal--signup &,
     .open-modal--confirm &,
-    .open-modal--confirmed & {
+    .open-modal--confirmed &,
+    .open-modal--sharevideo & {
       opacity: .85;
       transition: opacity .35s;
     }
@@ -66,7 +68,8 @@
     .open-modal--signin &,
     .open-modal--signup &,
     .open-modal--confirm &,
-    .open-modal--confirmed & {
+    .open-modal--confirmed &,
+    .open-modal--sharevideo & {
       transform: scaleY(1);
       transition: transform .75s @ease-smooth .3s;
     }
@@ -85,13 +88,19 @@
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 22px;
+    overflow: hidden;
+    padding: 0 25px 0 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
 
     .open-modal &,
     .open-modal--buy &,
     .open-modal--signin &,
     .open-modal--signup &,
     .open-modal--confirm &,
-    .open-modal--confirmed & {
+    .open-modal--confirmed &,
+    .open-modal--sharevideo & {
       // animation: fromTop .8s @ease-smooth forwards .6s;
     }
   }
@@ -156,6 +165,16 @@
         color: @color-grey-light;
       }
     }
+  }
+
+  // Inputs
+
+  .input-copy-code {
+    color: @color-grey-light;
+    display: block;
+    font-size: 12px;
+    font-weight: 300;
+    width: 100%;
   }
 
 
