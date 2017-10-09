@@ -12,15 +12,19 @@
 
   // Input
   
-  &-input {
+  &-input,
+  &-textarea {
     background: 0;
     border-bottom: 1px solid @color-grey;
     display: block;
     font-size: 14px;
-    height: 35px;
-    padding: 0 5px 0 0;
     transition: border-color .3s;
     width: 100%;
+  }
+
+  &-input {
+    height: 35px;
+    padding: 0 5px 0 0;
 
     &.error {
       animation: shakeAnim .5s @ease-smooth;
@@ -46,6 +50,11 @@
     &-password {
       padding: 0 48px 0 0;
     }
+  }
+
+  &-textarea {
+    padding: 0;
+    resize: none;
   }
 
   // Buttons
