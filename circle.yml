@@ -25,7 +25,7 @@ test:
     - sleep 10
     - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
         timeout: 1020
-    - npm run dev:
+    - npm run dev-concurrently:
         background: true
     - sleep 60
     - npm run chimp-test
