@@ -45,20 +45,11 @@
           </div>
           <div class="tab-content wallet-tab-content">
             <div class="tab-pane active" id="eth">
-              {{#if eth_balance }}
-                <h3> You own <b id="eth_amount">{{ eth_balance }}</b> Ether</h3>
-              {{else}}
-                <h3> You don't own Ether</h3>
-              {{/if}}
+              <h3>{{{ eth_balance }}}</h3>
               <button class="btn btn-default blue-button btn-block" id="send-eth">Send Ether</button>
             </div>
             <div class="tab-pane" id="pti">
-              {{#if pti_balance }}
-                <h3> You own <b id="pti_amount">{{ pti_balance }}</b> PTI</h3>
-              {{else}}
-                <h3> You don't own Paratii</h3>
-              {{/if}}
-
+              <h3>{{{ pti_balance }}}</h3>
               <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button>
             </div>
             <a href="/transactions" class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</a>

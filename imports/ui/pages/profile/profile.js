@@ -27,17 +27,27 @@ Template.profile.helpers({
   },
   eth_balance () {
     const balance = Session.get('eth_balance')
-    if (balance !== undefined && balance > 0) {
-      return web3.fromWei(balance, 'ether')
+    if (balance !== undefined) {
+      if (balance > 0) {
+        const amount = web3.fromWei(balance, 'ether')
+        return 'You own <b id="eth_amount">' + amount + '</b> Ether'
+      } else {
+        return 'You don\'t own Ether'
+      }
     }
-    return false
+    return 'Connecting to blockchain...'
   },
   pti_balance () {
     const balance = Session.get('pti_balance')
-    if (balance !== undefined && balance > 0) {
-      return web3.fromWei(balance, 'ether')
+    if (balance !== undefined) {
+      if (balance > 0) {
+        const amount = web3.fromWei(balance, 'ether')
+        return 'You own <b id="pti_amount">' + amount + '</b> PTI'
+      } else {
+        return 'You don\'t own Paratii'
+      }
     }
-    return false
+    return 'Connecting to blockchain...'
   },
   wallet_is_generating () {
     return Session.get('wallet-state') === 'generating'
