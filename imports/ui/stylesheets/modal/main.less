@@ -25,7 +25,8 @@
   .open-modal--sharevideo &,
   .open-modal--addplaylist &,
   .open-modal--createplaylist &,
-  .open-modal--earn & {
+  .open-modal--earn &,
+  .open-modal--sendcrypto & {
     pointer-events: initial;
   }
 
@@ -49,7 +50,8 @@
     .open-modal--sharevideo &,
     .open-modal--addplaylist &,
     .open-modal--createplaylist &,
-    .open-modal--earn & {
+    .open-modal--earn &,
+    .open-modal--sendcrypto & {
       opacity: .85;
       transition: opacity .35s;
     }
@@ -78,7 +80,8 @@
     .open-modal--sharevideo &,
     .open-modal--addplaylist &,
     .open-modal--createplaylist &,
-    .open-modal--earn & {
+    .open-modal--earn &,
+    .open-modal--sendcrypto & {
       transform: scaleY(1);
       transition: transform .75s @ease-smooth .3s;
     }
@@ -139,7 +142,8 @@
     .open-modal--sharevideo &,
     .open-modal--addplaylist &,
     .open-modal--createplaylist &,
-    .open-modal--earn & {
+    .open-modal--earn &,
+    .open-modal--sendcrypto & {
       // animation: fromTop .8s @ease-smooth forwards .6s;
     }
   }
@@ -159,6 +163,10 @@
     font-weight: 300;
 
     &-small {
+      font-size: 12px;
+    }
+
+    &--small {
       font-size: 12px;
     }
   }
@@ -259,23 +267,24 @@
   }
 }
 
-// Modals
 
-.main-modal-content-buy {
-  display: none;
-  pointer-events: none;
-
-  .open-modal--buy & {
-    display: block;
-    pointer-events: initial;
-  }
-}
+// Show modals
 
 .main-modal-content-addplaylist {
   display: none;
   pointer-events: none;
 
   .open-modal--addplaylist & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.main-modal-content-buy {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--buy & {
     display: block;
     pointer-events: initial;
   }
@@ -300,20 +309,6 @@
 
 }
 
-.main-modal-content-signin {
-  .open-modal--signin & {
-    display: block;
-    pointer-events: initial;
-  }
-}
-
-.main-modal-content-signup {
-  .open-modal--signup & {
-    display: block;
-    pointer-events: initial;
-  }
-}
-
 .main-modal-content-confirm {
   .open-modal--confirm & {
     display: block;
@@ -328,6 +323,26 @@
   }
 }
 
+.main-modal-content-earn {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--earn & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
+.main-modal-content-sendcrypto {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--sendcrypto & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
 .main-modal-content-sharevideo {
   display: none;
   pointer-events: none;
@@ -337,12 +352,15 @@
     pointer-events: initial;
   }
 }
+.main-modal-content-signin {
+  .open-modal--signin & {
+    display: block;
+    pointer-events: initial;
+  }
+}
 
-.main-modal-content-earn {
-  display: none;
-  pointer-events: none;
-
-  .open-modal--earn & {
+.main-modal-content-signup {
+  .open-modal--signup & {
     display: block;
     pointer-events: initial;
   }
