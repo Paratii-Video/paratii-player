@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "start": "meteor run --settings settings-prod.json",
-    "dev": "concurrently --kill-others \"npm run testrpc\" \"meteor run --settings settings-dev.json\"",
+    "dev": "meteor run --settings settings-dev.json",
+    "testrpc": "npm run testrpc",
+    "dev-concurrently": "concurrently --kill-others \"npm run testrpc\" \"meteor run --settings settings-dev.json\"",
     "test": "meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754",
     "testrpc": "testrpc",
     "lint": "standard",

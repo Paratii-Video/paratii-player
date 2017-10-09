@@ -35,6 +35,7 @@ if (Meteor.isServer) {
 
     // Aggregate transactions with same hash as ID and group data
     // new collections userTransactions will be published with this structures
+    // TODO: SIMPLIFY ThIS
     ReactiveAggregate(this, Transactions, [
       { $match: query },
       { $group: {
@@ -44,35 +45,35 @@ if (Meteor.isServer) {
         from: {$first: '$from'},
         to: {$first: '$to'},
         currency: {$first: '$currency'},
-        description: {$first: '$description'},
+        description: {$push: '$description'},
         value: {$first: '$value'},
         // transactions: { $push: "$$ROOT" }
-        videoid: { $push: '$videoid' },
-        data: {$push: '$date'}
+        videoid: { $push: '$videoid' }
+        // data: {$push: '$date'}
       }
       }
     ],
-    {clientCollection: 'userTransactions'})
+      {clientCollection: 'userTransactions'}
+    )
   })
-}
+} // this bracket closes Meteor.isServer()
 
-async function addOrUpdateTransaction (transaction) {
+export async function addOrUpdateTransaction (transaction) {
   // add (or update) a transaction in the collection
   // transaction is a json object similar to a transaction log - cf the check() invocation below
   // transactions are identified by transaction.hash
   console.log('Add event to collection: ', transaction.hash)
   console.log(transaction)
 
-  transaction.logIndex = transaction.logIndex || undefined
   try {
     check(transaction, {
-      blockNumber: Match.Maybe(Number),
+      blockNumber: Match.Integer,
       currency: String,
       date: Match.Maybe(Date),
       description: Match.Maybe(String),
       from: String,
       hash: String,
-      logIndex: Match.Maybe(Match.OneOf(Number, undefined)),
+      logIndex: Match.Integer,
       nonce: Match.Maybe(Number),
       source: String,
       to: String,
@@ -83,40 +84,38 @@ async function addOrUpdateTransaction (transaction) {
     throw err
   }
 
-  transaction._id = transaction.hash
-  let txId = Transactions.insert(transaction)
-  console.log('Transaction added')
-  return txId
-
-  // const txToValidate = await Transactions.findOne({
-  //   blockNumber: null,
-  //   nonce: transaction.nonce,
-  //   from: transaction.from,
-  //   source: 'client'
-  // })
-  //
-  // if (txToValidate) {
-  //   Transactions.update({_id: txToValidate._id}, { $set: { blockNumber: transaction.blockNumber, hash: transaction.hash } })
-  // } else {
-  //   const txValidated = await Transactions.findOne({
-  //     blockNumber: {$ne: null},
-  //     nonce: transaction.nonce,
-  //     from: transaction.from,
-  //     source: {$ne: 'client'}
-  //   })
-  //   if (txValidated) {
-  //     Transactions.update({ _id: newTxId }, { $set: { blockNumber: txValidated.blockNumber, hash: txValidated.hash } })
-  //   }
-  // }
+  /** * NEXT LINES REPRESENT ANOTHER DATE MODEL
+  Transactions.upsert(transaction.hash, {
+    blockNumber: transaction.blockNumber,
+    data: transaction.date,
+    hash: transaction.hash,
+    nonce: transaction.nonce,
+  })
+  Transactions.update(transaction.hash, {
+    '$addToSet': {
+      'events': {
+        currency: transaction.currency,
+        description: transaction.description,
+        from: transaction.from,
+        logIndex: transaction.logIndex,
+        source: transaction.source,
+        to: transaction.to,
+        value: transaction.value
+      }
+    },
+  })
+  ************************************/
+  let eventId = `${transaction.hash}/${transaction.logIndex}`
+  Transactions.upsert(eventId, transaction)
 }
 
-async function watchTransactions () {
-  watchPTITransactions()
-  watchETHTransactions()
-  watchVideoStore()
+export function watchEvents () {
+  watchPTIContractTransferEvents()
+  watchSendEtherEvents()
+  watchVideoStoreBuyVideoEvents()
 }
 
-async function watchETHTransactions () {
+async function watchSendEtherEvents () {
   console.log('Watching for ETH Transactions')
   let filter = (await getContract('SendEther')).LogSendEther({}, {
     fromBlock: 'latest',
@@ -125,17 +124,26 @@ async function watchETHTransactions () {
 
   filter.watch(function (error, log) {
     if (error) {
-      // TODO: proper error handling
-      console.log('Error setting filter')
       console.log(error)
-      return
     }
-    addETHTransaction(log)
+    const transaction = {
+      blockNumber: log.blockNumber,
+      currency: 'ETH',
+      description: log.args.description || '',
+      from: log.args.from,
+      hash: log.transactionHash,
+      logIndex: log.logIndex,
+      to: log.args.to,
+      source: 'SendEther.LogSendEther',
+      value: log.args.value.toNumber()
+    }
+    return addOrUpdateTransaction(transaction)
   })
 };
 
-async function watchPTITransactions () {
-  // set a filter for ALL PTI transactions
+async function watchPTIContractTransferEvents () {
+  // set a filter for ALL PTI transactions    console.log(log.args)
+
   console.log('Watching for PTI Transactions')
   let filter = (await PTIContract()).Transfer({}, {
     fromBlock: 'latest',
@@ -149,74 +157,60 @@ async function watchPTITransactions () {
       console.log(error)
       return
     }
-    addPTITransaction(log)
+    const transaction = {
+      blockNumber: log.blockNumber,
+      currency: 'PTI',
+      description: log.args.description || '',
+      from: log.args.from,
+      hash: log.transactionHash,
+      logIndex: log.logIndex,
+      source: 'PTIContract.Transfer',
+      to: log.args.to,
+      value: log.args.value && log.args.value.toNumber()
+    }
+    return addOrUpdateTransaction(transaction)
   })
 }
 //
-async function watchVideoStore () {
+async function watchVideoStoreBuyVideoEvents () {
   console.log('Watching the VideoStore')
   let filter = (await getContract('VideoStore')).LogBuyVideo({}, {
     fromBlock: 'latest',
     toBlock: 'latest'
   })
 
-  filter.watch(function (error, log) {
-    console.log('Adding a BuyVideo ')
-    if (error) {
-      // TODO: proper error handling
-      console.log('Error setting filter')
-      console.log(error)
-      return
-    }
-    log.args.from = log.args.buyer
-    log.args.description = `Bought video ${log.args.videoId}`
-    log.args.value = log.args.price
-    log.args.to = ''
-    console.log(log.args)
-    addPTITransaction(log)
-  })
+  filter.watch(Meteor.bindEnvironment(
+    function (error, log) {
+      console.log('Adding a BuyVideo to event log ')
+      if (error) {
+        console.log(error)
+        throw (error)
+      }
+      /* register the sale in the user collection */
+      // find our user
+      let user = Meteor.users.findOne({'profile.ptiAddress': log.args.buyer})
+      if (!user) {
+        console.log(`No user found with account ${log.args.buyer}!`)
+        // so we create a new user object to at least have some trace of the sale
+      } else {
+        let videos = user.profile.videos || {}
+        videos[log.args.videoId] = { acquired: log.transactionHash }
+        Meteor.users.update(user._id, {$set: {'profile.videos': videos}})
+      }
+
+      /* add the transaction to the transaction history */
+      const transaction = {
+        blockNumber: log.blockNumber,
+        currency: 'PTI',
+        description: `Bought video ${log.args.videoId}`,
+        from: log.args.buyer,
+        hash: log.transactionHash,
+        logIndex: log.logIndex,
+        source: 'VideoStore.BuyVideo',
+        to: '',
+        value: log.args.price && log.args.price.toNumber()
+      }
+      addOrUpdateTransaction(transaction)
+    })
+  )
 };
-
-function addPTITransaction (log) {
-  // add a transaction to the collection that derives from Transfer Event from PTI contract
-  // const tx = web3.eth.getTransaction(log.transactionHash)
-  console.log('Adding PTI Transaction')
-  console.log(log.logIndex)
-  const transaction = {}
-  transaction.value = log.args.value && log.args.value.toNumber()
-  transaction.from = log.args.from
-  transaction.to = log.args.to
-  transaction.description = log.args.description || ''
-  // transaction.hash = log.topics[0]
-  transaction.hash = log.transactionHash
-  transaction.logIndex = log.logIndex
-  transaction.blockNumber = log.blockNumber
-  transaction.currency = 'PTI'
-  transaction.source = 'event'
-  return addOrUpdateTransaction(transaction)
-}
-
-function addETHTransaction (log) {
-  console.log('Adding ETH Transaction')
-  console.log(log.logIndex)
-  console.log(log.args)
-  const transaction = {}
-  transaction.value = log.args.value.toNumber()
-  transaction.from = log.args.from
-  // transaction.hash = log.topics[0]
-  transaction.hash = log.transactionHash
-  transaction.logIndex = log.logIndex
-  transaction.blockNumber = log.blockNumber
-  transaction.to = log.args.to
-  transaction.description = log.args.description || ''
-  transaction.currency = 'ETH'
-  transaction.source = 'event'
-  console.log('Add event to collection: ', transaction.hash)
-  return addOrUpdateTransaction(transaction)
-}
-
-export {
-  addETHTransaction,
-  addPTITransaction,
-  watchTransactions
-}

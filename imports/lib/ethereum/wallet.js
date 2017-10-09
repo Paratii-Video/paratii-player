@@ -64,7 +64,6 @@ function saveKeystore (seedPhrase, keystore, address) {
   Session.set(`keystore-${Accounts.userId()}`, keystore)
 
   Session.set('userPTIAddress', add0x(address))
-  // TODO: we do not seem to be using this anymore...
   Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
 }
 

@@ -115,22 +115,6 @@ Template.player.onCreated(function () {
 
   Meteor.subscribe('playlists')
 
-  // let query = UserTransactions.find({videoid: FlowRouter.getParam('_id')})
-  // query.observeChanges({
-  //   added: function (id, fields) {
-  //     console.log('added')
-  //     console.log(id)
-  //     console.log(fields)
-  //     self.playerState.set('locked', false)
-  //   },
-  //   changed: function (id, fields) {
-  //     console.log('changed')
-  //     console.log(id)
-  //     console.log(fields)
-  //     // self.playerState.set('locked', false);
-  //   }
-  // })
-
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id'), getUserPTIAddress(), function (err, results) {
     if (err) {
       throw err

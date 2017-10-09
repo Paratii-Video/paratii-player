@@ -1,6 +1,6 @@
 function setHead () {
   Picker.route('/', (params, req, res, next) => {
-    console.log('calling home')
+    // console.log('calling home')
     // console.log(params)
     // console.log(req)
     basicHead(params, req, res, next)
@@ -9,7 +9,7 @@ function setHead () {
   })
 
   Picker.route('/play/:_id', (params, req, res, next) => {
-    console.log('calling home')
+    // console.log('calling home')
     // console.log(params)
     // console.log(req)
     basicHead(params, req, res, next)
