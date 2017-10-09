@@ -56,8 +56,8 @@
             <a class="button-text button-text--grey-light button-text--lower main-form-button-forgot" href="#" target="_blank">Forgot password?</a>
             <div class="main-modal-footer">
               <span class="main-modal-footer-loading">Loading...</span>
-              <button class="button-text main-modal-button main-modal-button confirm" type="submit">Confirm</button>
-              <button class="button-text main-modal-button main-modal-button watch" type="button">Watch the video</button>
+              <button class="button-text main-modal-button confirm" type="submit">Confirm</button>
+              <button class="button-text main-modal-button watch" type="button">Watch the video</button>
             </div>
           </form>
         </div>
@@ -77,7 +77,7 @@
             <a class="button-text button-text--grey-light button-text--lower main-form-button-forgot" href="#" target="_blank">Forgot password?</a>
             <div class="main-modal-footer">
               <button class="button-text button-text--grey-light main-modal-button cancel" type="button">Sign up</button>
-              <button class="button-text main-modal-button main-modal-button signin" type="submit">Sign in</button>
+              <button class="button-text main-modal-button signin" type="submit">Sign in</button>
             </div>
           </form>
         </div>
@@ -99,7 +99,7 @@
             </div>
             <div class="main-modal-footer">
               <button class="button-text button-text--grey-light main-modal-button cancel" type="button">Sign in</button>
-              <button class="button-text main-modal-button main-modal-button signup" type="submit">Sign up</button>
+              <button class="button-text main-modal-button signup" type="submit">Sign up</button>
             </div>
           </form>
         </div>
@@ -140,7 +140,7 @@
             <p class="main-modal-text"><strong>mirror - soap - ship - soda - spple - skateboard - piano - color - danger - float - pluck - group</strong></p>
           </div>
           <div class="main-modal-footer">
-            <button class="button-text main-modal-button main-modal-button signup" type="button">Next</button>
+            <button class="button-text main-modal-button signup" type="button">Next</button>
           </div>
         </div>
         <!-- /confirmed -->
@@ -179,14 +179,31 @@
             <label class="main-form-label main-form-label-checkbox">Post Modern Surf <input class="main-form-checkbox" type="checkbox" name="addplaylist" value="Post Modern Surf"></label>
             <label class="main-form-label main-form-label-checkbox">Post Modern Surf <input class="main-form-checkbox" type="checkbox" name="addplaylist" value="Post Modern Surf"></label>
             
-            <button class="button-text main-modal-button main-modal-button addmore" type="button"><svg class="button-text-icon button-text-icon--small" viewBox="577 412 9.415 10"><path d="M5.83,3.819H9.415v2.1H5.83V10H3.6V5.915H0v-2.1H3.6V0H5.819V3.819Z" transform="translate(577 412)"/></svg>New playlist</button>
+            <button class="button-text button-text--nocase main-modal-button addmore" type="button"><svg class="button-text-icon button-text-icon--small" viewBox="577 412 9.415 10"><path d="M5.83,3.819H9.415v2.1H5.83V10H3.6V5.915H0v-2.1H3.6V0H5.819V3.819Z" transform="translate(577 412)"/></svg>New playlist</button>
 
             <div class="main-modal-footer">
-              <button class="button-text main-modal-button main-modal-button confirm" type="submit">Confirm</button>
+              <button class="button-text main-modal-button confirm" type="submit">Confirm</button>
             </div>
           </form>
         </div>
         <!-- /add playlist -->
+
+        <!-- #create playlist -->
+        <div class="main-modal-content main-modal-content-createplaylist">
+          <h3 class="main-modal-title">Create a new playlist</h3>
+          <form class="main-modal-form" action="">
+            <div class="main-form-label main-form-label-playlistname playlistname">
+              <input class="main-form-input playlistname" type="text" placeholder="playlist name" />
+            </div>
+
+            <label class="main-form-label main-form-label-checkbox active">Public playlist (everyone can see it) <input class="main-form-checkbox" type="radio" name="createplaylist" value="Public playlist ( everyone can see it )"></label>
+            <label class="main-form-label main-form-label-checkbox">Private playlist (only you can see it ) <input class="main-form-checkbox" type="radio" name="createplaylist" value="Private playlist (only you can see it )"></label>
+            <div class="main-modal-footer">
+              <button class="button-text main-modal-button create" type="submit">Create playlist</button>
+            </div>
+          </form>
+        </div>
+        <!-- /create playlist -->
       </div>
     </div>
     <!-- /Modal -->

@@ -10,6 +10,16 @@
   }
 }
 
+.main-modal-content-createplaylist {
+  display: none;
+  pointer-events: none;
+
+  .open-modal--createplaylist & {
+    display: block;
+    pointer-events: initial;
+  }
+}
+
 //
 
 .main-modal-content-addplaylist {
@@ -18,9 +28,23 @@
   }
 
   .main-modal-form {
-    .button-text {
-      text-transform: initial;
+
+    .button-text-icon {
+      margin-right: 10px;
     }
+  }
+}
+
+.main-modal-content-createplaylist {
+  .main-form-label-playlistname {
+    margin-bottom: 30px;
+  }
+
+  .main-form-label-checkbox {
+    margin-bottom: 10px;
+  }
+
+  .main-modal-form {
 
     .button-text-icon {
       margin-right: 10px;
