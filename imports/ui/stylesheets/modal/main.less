@@ -16,17 +16,7 @@
   pointer-events: none;
   z-index: @zindex-modal;
 
-  .open-modal &,
-  .open-modal--buy &,
-  .open-modal--signin &,
-  .open-modal--signup &,
-  .open-modal--confirm &,
-  .open-modal--confirmed &,
-  .open-modal--sharevideo &,
-  .open-modal--addplaylist &,
-  .open-modal--createplaylist &,
-  .open-modal--earn &,
-  .open-modal--sendcrypto & {
+  .open-modal & {
     pointer-events: initial;
   }
 
@@ -41,17 +31,7 @@
     transition: opacity .35s linear .35s;
     z-index: 1;
 
-    .open-modal &,
-    .open-modal--buy &,
-    .open-modal--signin &,
-    .open-modal--signup &,
-    .open-modal--confirm &,
-    .open-modal--confirmed &,
-    .open-modal--sharevideo &,
-    .open-modal--addplaylist &,
-    .open-modal--createplaylist &,
-    .open-modal--earn &,
-    .open-modal--sendcrypto & {
+    .open-modal & {
       opacity: .85;
       transition: opacity .35s;
     }
@@ -71,17 +51,7 @@
     width: @size-modal-wrapper-width;
     z-index: 2;
 
-    .open-modal &,
-    .open-modal--buy &,
-    .open-modal--signin &,
-    .open-modal--signup &,
-    .open-modal--confirm &,
-    .open-modal--confirmed &,
-    .open-modal--sharevideo &,
-    .open-modal--addplaylist &,
-    .open-modal--createplaylist &,
-    .open-modal--earn &,
-    .open-modal--sendcrypto & {
+    .open-modal & {
       transform: scaleY(1);
       transition: transform .75s @ease-smooth .3s;
     }
@@ -91,7 +61,14 @@
     &:extend(.full-wh all);
 
     color: @color-grey;
+    display: none;
     position: relative;
+    pointer-events: none;
+
+    &.active {
+      display: block;
+      pointer-events: initial;
+    }
   }
 
   &-step {
@@ -133,17 +110,7 @@
     white-space: nowrap;
     width: 100%;
 
-    .open-modal &,
-    .open-modal--buy &,
-    .open-modal--signin &,
-    .open-modal--signup &,
-    .open-modal--confirm &,
-    .open-modal--confirmed &,
-    .open-modal--sharevideo &,
-    .open-modal--addplaylist &,
-    .open-modal--createplaylist &,
-    .open-modal--earn &,
-    .open-modal--sendcrypto & {
+    .active & {
       // animation: fromTop .8s @ease-smooth forwards .6s;
     }
   }
@@ -162,8 +129,9 @@
     font-size: 14px;
     font-weight: 300;
 
-    &-small {
-      font-size: 12px;
+    &--alert {
+      color: @color-red;
+      text-transform: uppercase; 
     }
 
     &--small {
@@ -270,98 +238,98 @@
 
 // Show modals
 
-.main-modal-content-addplaylist {
-  display: none;
-  pointer-events: none;
+// .main-modal-content-addplaylist {
+//   display: none;
+//   pointer-events: none;
 
-  .open-modal--addplaylist & {
-    display: block;
-    pointer-events: initial;
-  }
-}
+//   .open-modal--addplaylist & {
+//     display: block;
+//     pointer-events: initial;
+//   }
+// }
 
-.main-modal-content-buy {
-  display: none;
-  pointer-events: none;
+// .main-modal-content-buy {
+//   display: none;
+//   pointer-events: none;
 
-  .open-modal--buy & {
-    display: block;
-    pointer-events: initial;
-  }
-}
+//   .open-modal--buy & {
+//     display: block;
+//     pointer-events: initial;
+//   }
+// }
 
-.main-modal-content-createplaylist {
-  display: none;
-  pointer-events: none;
+// .main-modal-content-createplaylist {
+//   display: none;
+//   pointer-events: none;
 
-  .open-modal--createplaylist & {
-    display: block;
-    pointer-events: initial;
-  }
-}
+//   .open-modal--createplaylist & {
+//     display: block;
+//     pointer-events: initial;
+//   }
+// }
 
-.main-modal-content-signin,
-.main-modal-content-signup,
-.main-modal-content-confirm,
-.main-modal-content-confirmed, {
-  display: none;
-  pointer-events: none;
+// .main-modal-content-signin,
+// .main-modal-content-signup,
+// .main-modal-content-confirm,
+// .main-modal-content-confirmed, {
+//   display: none;
+//   pointer-events: none;
 
-}
+// }
 
-.main-modal-content-confirm {
-  .open-modal--confirm & {
-    display: block;
-    pointer-events: initial;
-  }
-}
+// .main-modal-content-confirm {
+//   .open-modal--confirm & {
+//     display: block;
+//     pointer-events: initial;
+//   }
+// }
 
-.main-modal-content-confirmed {
-  .open-modal--confirmed & {
-    display: block;
-    pointer-events: initial;
-  }
-}
+// .main-modal-content-confirmed {
+//   .open-modal--confirmed & {
+//     display: block;
+//     pointer-events: initial;
+//   }
+// }
 
-.main-modal-content-earn {
-  display: none;
-  pointer-events: none;
+// .main-modal-content-earn {
+//   display: none;
+//   pointer-events: none;
 
-  .open-modal--earn & {
-    display: block;
-    pointer-events: initial;
-  }
-}
+//   .open-modal--earn & {
+//     display: block;
+//     pointer-events: initial;
+//   }
+// }
 
-.main-modal-content-sendcrypto {
-  display: none;
-  pointer-events: none;
+// .main-modal-content-sendcrypto {
+//   display: none;
+//   pointer-events: none;
 
-  .open-modal--sendcrypto & {
-    display: block;
-    pointer-events: initial;
-  }
-}
+//   .open-modal--sendcrypto & {
+//     display: block;
+//     pointer-events: initial;
+//   }
+// }
 
-.main-modal-content-sharevideo {
-  display: none;
-  pointer-events: none;
+// .main-modal-content-sharevideo {
+//   display: none;
+//   pointer-events: none;
 
-  .open-modal--sharevideo & {
-    display: block;
-    pointer-events: initial;
-  }
-}
-.main-modal-content-signin {
-  .open-modal--signin & {
-    display: block;
-    pointer-events: initial;
-  }
-}
+//   .open-modal--sharevideo & {
+//     display: block;
+//     pointer-events: initial;
+//   }
+// }
+// .main-modal-content-signin {
+//   .open-modal--signin & {
+//     display: block;
+//     pointer-events: initial;
+//   }
+// }
 
-.main-modal-content-signup {
-  .open-modal--signup & {
-    display: block;
-    pointer-events: initial;
-  }
-}
+// .main-modal-content-signup {
+//   .open-modal--signup & {
+//     display: block;
+//     pointer-events: initial;
+//   }
+// }
