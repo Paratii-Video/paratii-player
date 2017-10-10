@@ -10,7 +10,7 @@
     font-weight: 500;
     text-transform: uppercase;
 
-    //
+    // Colors
 
     &--grey {
       color: @color-grey;
@@ -24,16 +24,20 @@
       color: @color-grey-dark;
     }
 
-    &--lower {
+    &--nocase {
+      text-transform: none;
+    }
+
+    &--lowercase {
       text-transform: lowercase;
     }
 
-    //
+    // Icon
 
     &-icon {
       fill: @color-purple;
       height: 32px;
-      transition: transform .25s @ease-smooth;
+      transform: translateY(-2px);
       vertical-align: middle;
 
       .button-text--grey & {
@@ -46,6 +50,11 @@
 
       .button-text--grey-dark & {
         fill: @color-grey-dark;
+      }
+
+      &--small {
+        height: 12px;
+        transform: translateY(-1px);
       }
     }
   }

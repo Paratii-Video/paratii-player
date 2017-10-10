@@ -6,21 +6,66 @@
 
   &-label {
     display: block;
+    font-size: 14px;
+    font-weight: 300;
+    margin: 0 0 20px;
     position: relative;
     width: 100%;
+
+    &-checkbox {
+      color: @color-grey-light;
+      cursor: pointer;
+      padding: 0 0 0 20px;
+      position: relative;
+
+      &::before,
+      &::after {
+        &:extend(.pos-a-v all);
+
+        content: '';
+      }
+
+      &::before {
+        border-radius: 2px;
+        border: 1px solid @color-grey;
+        height: 13px;
+        left: 0;
+        width: 13px;
+      }
+
+      &::after {
+
+        border-radius: 1px;
+        background: @color-purple;
+        left: 1px;
+        height: 11px;
+        opacity: 0;
+        width: 11px;
+      }
+
+      &.active {
+        &::after {
+          opacity: 1;
+        }
+      }
+    }
   }
 
   // Input
   
-  &-input {
+  &-input,
+  &-textarea {
     background: 0;
     border-bottom: 1px solid @color-grey;
     display: block;
     font-size: 14px;
-    height: 35px;
-    padding: 0 5px 0 0;
     transition: border-color .3s;
     width: 100%;
+  }
+
+  &-input {
+    height: 35px;
+    padding: 0 5px 0 0;
 
     &.error {
       animation: shakeAnim .5s @ease-smooth;
@@ -48,6 +93,15 @@
     }
   }
 
+  &-textarea {
+    padding: 0;
+    resize: none;
+  }
+
+  &-checkbox {
+    &:extend(.visually-hidden);
+  }
+
   // Buttons
 
   &-button {
@@ -56,6 +110,17 @@
 
       font-size: 10px;
       right: 0;
+    }
+    
+    &-qrcode {
+      &:extend(.pos-a-v all);
+
+      right: 0;
+
+      &-svg {
+        fill: @color-grey-light;
+        width: 20px;
+      }
     }
 
     &-forgot {
