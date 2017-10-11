@@ -6,27 +6,17 @@
 @size-modal-wrapper-width: 310px;
 
 // Main
-.modal.fade{
-  transform: scaleY(0);
-  transition: all .75s @ease-smooth .3s;
-}
 
-.modal.fade.in{
-  transform: scaleY(1);
-  transition: all .75s @ease-smooth .3s;
-}
 .main-modal {
   &:extend(.pos-a-full all);
 
   align-items: center;
   display: flex;
   justify-content: center;
+  opacity: 1 !important;
   pointer-events: none;
+  transition: .8s @ease-smooth;
   z-index: @zindex-modal;
-  pointer-events: initial;
-  &.open-modal {
-
-  }
 
   // Bg
 
@@ -36,92 +26,108 @@
     background-color: black;
     content: '';
     opacity: 0;
-    transition: opacity .35s linear .35s;
+    transition: opacity .35s linear;
     z-index: 1;
-
-    .open-modal & {
-      opacity: .85;
-      transition: opacity .35s;
-    }
   }
 
-  // Containers
-
-  &-wrapper {
-    background-color: white;
-    border-radius: 3px;
-    height: @size-modal-wrapper-height;
-    overflow: hidden;
-    padding: 20px;
-    position: relative;
-    // transform: scaleY(0);
-    transition: transform .5s @ease-smooth;
-    width: @size-modal-wrapper-width;
-    z-index: 2;
-
-    .open-modal & {
-      transform: scaleY(1);
-      transition: transform .75s @ease-smooth .3s;
-    }
-  }
-
-  &-content {
-    &:extend(.full-wh all);
-
-    color: @color-grey;
-    display: none;
-    position: relative;
-    pointer-events: none;
-
-    &.active {
-      display: block;
+  &.fade {
+    &.in {
       pointer-events: initial;
-    }
-  }
 
-  &-step {
-    &-1,
-    &-2,
-    &-3 {
-      &:extend(.simple-hidden all);
-    }
-
-    &-1 {
-      .step-1 & {
-        &:extend(.simple-unhidden all);
-      }
-    }
-
-    &-2 {
-      .step-2 & {
-        &:extend(.simple-unhidden all);
-      }
-    }
-
-    &-3 {
-      .step-3 & {
-        &:extend(.simple-unhidden all);
+      &::before {
+        opacity: .8;
+        transition: opacity .35s;
       }
     }
   }
+}
 
-  // Main title
+// Containers
 
-  &-title {
-    color: @color-grey;
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 22px;
-    overflow: hidden;
-    padding: 0 25px 0 0;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
+.main-modal-wrapper {
+  background-color: white;
+  border-radius: 3px;
+  height: @size-modal-wrapper-height;
+  overflow: hidden;
+  padding: 20px;
+  position: relative;
+  transform: scaleY(0);
+  transition: transform .3s @ease-smooth;
+  width: @size-modal-wrapper-width;
+  z-index: 2;
 
-    .active & {
-      // animation: fromTop .8s @ease-smooth forwards .6s;
+  .fade.in & {
+    pointer-events: initial;
+    transform: scaleY(1);
+    transition: transform .75s @ease-smooth .3s;
+  }
+}
+
+// Content
+
+.main-modal-content {
+  &:extend(.full-wh all);
+
+  color: @color-grey;
+  opacity: 0;
+  transition: opacity .2s;
+  position: relative;
+
+  .fade.in & {
+    opacity: 1;
+    transition: opacity .3s linear .8s;
+  }
+}
+
+// Steps
+
+.main-modal-step {
+  &-1,
+  &-2,
+  &-3 {
+    &:extend(.simple-hidden all);
+  }
+
+  &-1 {
+    .step-1 & {
+      &:extend(.simple-unhidden all);
     }
   }
+
+  &-2 {
+    .step-2 & {
+      &:extend(.simple-unhidden all);
+    }
+  }
+
+  &-3 {
+    .step-3 & {
+      &:extend(.simple-unhidden all);
+    }
+  }
+}
+
+// Title
+
+.main-modal-title {
+  color: @color-grey;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 22px;
+  overflow: hidden;
+  padding: 0 25px 0 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+
+  .active & {
+    // animation: fromTop .8s @ease-smooth forwards .6s;
+  }
+}
+
+//
+
+.main-modal {
 
   // Titles
 
@@ -241,6 +247,12 @@
       }
     }
   }
+}
+
+// Modal Background
+
+.modal-backdrop {
+  display: none;
 }
 
 
