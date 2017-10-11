@@ -92,6 +92,8 @@ Template.player.onCreated(function () {
   this.playerState.set('loop', loop === 1)
   this.playerState.set('playsinline', playsinline === 1)
   this.playerState.set('type', type === 1)
+  // Description
+  this.playerState.set('showDescription', false)
 
   console.log('navState:', this.navState.get())
 
@@ -211,7 +213,10 @@ Template.player.helpers({
   },
   type () {
     return Template.instance().playerState.get('type')
-  }
+  },
+  descriptionClass () {
+    return Template.instance().playerState.get('showDescription') ? 'show-description' : ''
+  },
 })
 
 const requestFullscreen = (element) => {
@@ -245,6 +250,7 @@ const pauseVideo = (instance) => {
   Meteor.clearTimeout(controlsHandler)
   instance.playerState.set('hideControls', false)
   $('#app-container').removeClass('playing')
+  $('div.main-app').removeClass('hide-nav')
 }
 
 const playVideo = (instance) => {
@@ -255,6 +261,7 @@ const playVideo = (instance) => {
   navState.set('closed')
   videoPlayer.play()
   $('#app-container').addClass('playing')
+  $('div.main-app').addClass('hide-nav')
   controlsHandler = Meteor.setTimeout(() => {
     if (!videoPlayer.paused) {
       dict.set('hideControls', true)
@@ -467,5 +474,8 @@ Template.player.events({
       label: 'Embed code',
       embed: window.top !== window.self
     })
+  },
+  'click .player-infos-button-description' (event, instance) {
+    instance.playerState.set('showDescription', !instance.playerState.get('showDescription'))
   }
 })

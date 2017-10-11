@@ -11,6 +11,7 @@
   left: 0px;
   padding: 20px 20px 10px 90px;
   position: absolute;
+  transition: padding .65s @ease-smooth;
   width: 100%;
   z-index: @zindex-player-controls;
 
@@ -19,6 +20,7 @@
   });
 
   .hide-nav & {
+    transition: padding .8s @ease-smooth;
     padding: 20px;
   }
 
@@ -109,7 +111,7 @@
   }
 
   &-fullscreen {
-    bottom: 24px;
+    bottom: 16px;
     position: absolute;
     right: 20px;
     z-index: @zindex-player-button-fullscreen;

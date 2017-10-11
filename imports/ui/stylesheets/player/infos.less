@@ -16,7 +16,7 @@
     &:extend(.pos-a-m all);
 
     padding: 0 20px 0 90px;
-    transition: opacity .25s linear .2s;
+    transition: opacity .25s linear .2s, padding .8s @ease-smooth;
     width: 100%;
     z-index: @zindex-player-infos;
 
@@ -24,16 +24,16 @@
       left: 0;
       top: 30px;
       transform: translate3d(0, 0, 0);
-      width: 100%;
     });
 
     .hide-nav & {
+      transition: opacity .25s, padding .8s @ease-smooth;
       padding: 0 20px;
     }
 
     .playing & {
       opacity: 0;
-      transition: opacity .25s;
+      transition: opacity .25s, padding .8s @ease-smooth;
       pointer-events: none;
     }
   }
@@ -94,6 +94,26 @@
       width: 50px;
     }
   }
+
+  //
+
+  &-content {
+    position: relative;
+  }
+
+  //
+
+  &-holder {
+    position: relative;
+    transition: opacity .3s linear .2s;
+
+    .show-description & {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+  }
+
   // Releated tags
 
   &-related {
@@ -142,16 +162,20 @@
   // Description
 
   &-description {
-    background-color: transparent;
-    border-radius: 3px;
-    color: white;
-    display: none;
     font-family:'Roboto';
     font-weight: 300;
     font-size: 14px;
+    left: 0;
+    opacity: 0;
+    transition: opacity .3s;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
 
     .show-description & {
-      display: block;
+      opacity: 1;
+      pointer-events: initial;
+      transition: opacity .3s linear .2s;
     }
   }
 

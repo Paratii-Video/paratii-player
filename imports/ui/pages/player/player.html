@@ -1,5 +1,5 @@
 <template name="player">
-  <div id="player-container" class="player-container">
+  <div id="player-container" class="player-container {{ descriptionClass }}">
     <video id="video-player" class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
     </video>
     {{#unless isLocked }}
@@ -53,24 +53,30 @@
 
       <div class="player-info player-infos-wrapper">
         <div class="player-title player-infos-title">{{ title }}</div>
-
-        <div class="player-related player-infos-related">
-          {{#each tag in tags }}
-            <span class="player-infos-related-tag">{{ tag }}</span>
-          {{/each}}
+        <div class="player-infos-content">
+          <div class="player-description player-infos-description">
+            <p class="player-description-text">{{ description }}</p>
+            <button class="button-text button-text--white button-text--nocase player-infos-button-description" type="button">Hide description</button>
+          </div>
+          <div class="player-infos-holder">
+            <div class="player-related player-infos-related">
+              {{#each tag in tags }}
+                <span class="player-infos-related-tag">{{ tag }}</span>
+              {{/each}}
+            </div>
+            <div class="player-uploader-name player-infos-uploader-name">By <strong>{{ uploader.name }}</strong></div>
+            <div class="player-statistics player-infos-statistics">
+              <span class="statistic-text player-infos-statistics-item"><img class="player-infos-statistics-image" src="/img/view-icon.svg">{{formatNumber stats.views}}</span>
+              <span class="statistic-text player-infos-statistics-item" id="button-like"><img class="player-infos-statistics-image" src="/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
+              <span class="statistic-text player-infos-statistics-item" id="button-dislike"><img class="player-infos-statistics-image" src="/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
+              <span class="sharing-actions player-infos-statistics-item player-infos-statistics-share" id="embed"><img class="player-infos-statistics-image" src="/img/share.svg"/></span>
+            </div>
+            <button class="button-text button-text--white button-text--nocase player-infos-button-description" type="button">Show description</button>
+          </div>
+          {{#if isShowDescription}}
+          {{else}}
+          {{/if}}
         </div>
-        <div class="player-uploader-name player-infos-uploader-name">By <strong>{{ uploader.name }}</strong></div>
-        <div class="player-statistics player-infos-statistics">
-          <span class="statistic-text player-infos-statistics-item"><img class="player-infos-statistics-image" src="/img/view-icon.svg">{{formatNumber stats.views}}</span>
-          <span class="statistic-text player-infos-statistics-item" id="button-like"><img class="player-infos-statistics-image" src="/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
-          <span class="statistic-text player-infos-statistics-item" id="button-dislike"><img class="player-infos-statistics-image" src="/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
-          <span class="sharing-actions player-infos-statistics-item player-infos-statistics-share" id="embed"><img class="player-infos-statistics-image" src="/img/share.svg"/></span>
-        </div>
-          <div class="player-description player-infos-description {{ descriptionClass }}">{{ description }}</div>
-          <button id="button-showdescription" class="button-text button-text--white button-text--nocase player-infos-button-description" type="button">Show description</button>
-        {{#if isShowDescription}}
-        {{else}}
-        {{/if}}
         {{#if isLocked }}
           <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
         {{/if}}
