@@ -5,14 +5,14 @@
 // Player
 
 .query-tiny(@rules) {
-    // @media only screen and (max-width: @screen-tiny-width) and (max-height: @screen-tiny-height) {
-    @media only screen and (max-width: @screen-tiny-width) {
+    @media only screen and (max-width: @screen-tiny-width) and (max-height: @screen-tiny-height) {
         @rules();
     }
 }
 
 .query-mini(@rules) {
-    @media only screen and (max-width: @screen-mini-width) and (max-height: @screen-mini-height) {
+    // @media only screen and (max-width: @screen-mini-width) and (max-height: @screen-mini-height) {
+    @media only screen and (max-width: @screen-mini-width) {
         @rules();
     }
 }

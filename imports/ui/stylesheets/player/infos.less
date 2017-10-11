@@ -1,29 +1,56 @@
 // Player Info
 
-.player-infos {
-  background-color: rgba(0,0,0,0.5);
-  color: white;
-  height: 100%;
-  left: 0px;
-  position: absolute;
-  padding: 10px 10px 10px 70px;
-  top: 0px;
-  transition: inherit;
-  width: 100%;
-  z-index: @zindex-player-infos;
+// Vars
 
-  &.pause {
-    opacity: 0;
-    visibility: hidden;
-  }
+@size-player-infos-max-width: 1240px;
+
+//
+
+.player-infos {
+  color: @color-white;
+  z-index: @zindex-player-infos;
 
   //
 
   &-wrapper {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-left: 20px;
+    &:extend(.pos-a-m all);
+
+    padding: 0 20px 0 90px;
+    transition: opacity .25s linear .2s;
+    width: 100%;
+    z-index: @zindex-player-infos;
+
+    .query-mini({
+      left: 0;
+      top: 30px;
+      transform: translate3d(0, 0, 0);
+      width: 100%;
+    });
+
+    .hide-nav & {
+      padding: 0 20px;
+    }
+
+    .playing & {
+      opacity: 0;
+      transition: opacity .25s;
+      pointer-events: none;
+    }
+  }
+
+  // Title
+
+  &-title {
+    color: white;
+    display: block;
+    font-size: 3.5vw;
+    font-weight: 300;
+    margin: 0;
+    padding-right: 20px;
+
+    .query-mini({
+      font-size: 5vw;
+    });
   }
 
   // Tags
@@ -40,6 +67,10 @@
     margin: 5px;
     padding: 3px 6px;
     top: 10px;
+
+    .query-mini({
+      .visually-hidden;
+    });
   }
 
   // Uploader
@@ -51,6 +82,10 @@
     right: 20px;
     top: 20px;
 
+    .query-mini({
+      display: none;
+    });
+
     &-image {
       background-size: cover;
       border-radius: 50%;
@@ -59,26 +94,37 @@
       width: 50px;
     }
   }
+  // Releated tags
 
-  // Title
+  &-related {
+    margin: 0 0 3px;
 
-  &-title {
-    color: white;
-    font-weight: 100;
-    font-size: 30px;
-    margin-top: 10px;
+    &-tag {
+      color: @color-purple;
+      font-size: 16px;
+      font-weight: 500;
+    }
   }
+
+  // Uploader name
+
+  &-uploader-name {
+    font-weight: 300;
+    margin: 0 0 3px;
+  }
+
 
   // Statistics (views, likes, shares)
 
   &-statistics {
-    margin-top: 10px;
+    margin-bottom: 10px;
 
     &-item {
       margin-right: 15px;
     }
 
     &-share {
+
       li{
         display: inline-block;
 
@@ -99,10 +145,14 @@
     background-color: transparent;
     border-radius: 3px;
     color: white;
+    display: none;
     font-family:'Roboto';
     font-weight: 300;
     font-size: 14px;
-    margin-top: 10px;
+
+    .show-description & {
+      display: block;
+    }
   }
 
   // Price
@@ -117,16 +167,5 @@
     border: 0;
     border-radius: 3px;
     position: relative;
-  }
-}
-
-
-//
-//
-//
-
-.player-infos {
-  div {
-    transition: inherit;
   }
 }

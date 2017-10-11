@@ -1,31 +1,71 @@
 // Player Controls
 
+//Vars
+
+@size-player-controls-button: 15px;
+
+//
+
 .player-controls {
   bottom: 0px;
   left: 0px;
-  padding: 10px 20px 20px 80px;
+  padding: 20px 20px 10px 90px;
   position: absolute;
-  transition: inherit;
   width: 100%;
   z-index: @zindex-player-controls;
 
-  &.pause{
-    background-color: rgba(0,0,0,0.5);
+  .query-mini({
+    padding: 20px 20px 20px 90px;
+  });
+
+  .hide-nav & {
+    padding: 20px;
+  }
+
+  //
+
+  &-wrapper {
+    align-items: center;
+    display: flex;
+    position: relative;
+    transition: transform .8s @ease-smooth;
+    width: 100%;
+  }
+
+  // Buttons
+
+  &-buttons {
+    align-items: center;
+    display: flex;
+  }
+
+  // TIme
+
+  &-time {
+    display: flex;
+    margin-right: 30px;
+
+    .query-mini({
+      margin-right: 0;
+    });
   }
 }
 
 // Progress
 
 .player-progress {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, .3);
   height: 5px;
-  margin: 10px auto 30px;
+  margin: 0 10px;
   position: relative;
   width: 100%;
 
+  .query-mini({
+    margin: 0 10px;
+  });
+
   &-played {
-    background: @color-purple;
+    background: rgba(255, 255, 255, .6);
     border-radius: 10px;
     height: 5px;
     margin: -5px 0;
@@ -35,115 +75,118 @@
   }
 
   &-loaded {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, .3);
     border-radius: 10px;
     height: 5px;
     transform-origin: 0 0;
     -webkit-transform-origin: 0 0;
     width: 100%;
   }
-
-  &-scrubber {
-    background: rgba(0,0,0,0);
-    height: 15px;
-    left: 0;
-    margin: -8px 0 0 -8px;
-    position: absolute;
-    top: 3px;
-    transform: translateZ(0);
-    width: 15px;
-
-    &:before,
-    &:after {
-        border-radius: 50%;
-        content: '';
-        display: block;
-        position: absolute;
-    }
-
-    &:before {
-        background: @color-purple;
-        height: 15px;
-        width: 15px;
-    }
-  }
 }
+
 
 // Buttons
 
 .player-button {
-  background-color: transparent;
-  border: 0;
-  color: white;
-  float: left;
-  margin: 0 10px;
-  outline: none;
-  position: relative;
-  transition: 0.5s;
+  &:extend(.hover-opacity all);
+
+  height: @size-player-controls-button;
+  width: @size-player-controls-button;
+
+  .player-controls-buttons & {
+    margin-right: 10px;
+  }
+
+
+  &-svg {
+    &:extend(.full-block all);
+  }
+
+  &-volume {
+    .query-mini({
+      display: none;
+    });
+  }
 
   &-fullscreen {
-    float: right;
+    bottom: 24px;
+    position: absolute;
+    right: 20px;
+    z-index: @zindex-player-button-fullscreen;
+
+    .query-mini({
+      bottom: auto;
+      height: 20px;
+      width: 20px;
+      top: 40px;
+    });
+
+    .playing & {
+    }
+  }
+}
+
+.player-scrubber {
+  background: rgba(0,0,0,0);
+  height: 15px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translate3d(-5px, -5px, 0);
+  width: 15px;
+
+  .query-mini({
+    transform: translate3d(-3px, -3px, 0);
+    height: 10px;
+    width: 10px;
+  });
+
+  &:before {
+    background: @color-white;
+    border-radius: 50%;
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
   }
 }
 
 // Time
 
 .player-time {
-
-  &-current {
-    color: #fff;
-    margin-left: 10px;
-  }
-
+  &-current,
   &-total,
   &-slash {
-    color: #aaa;
+    color: @color-white;
+    font-size: 14px;
+  }
+
+  &-current {
+    margin-left: 10px;
   }
 }
 
 // Volume
 
 .player-volume-control {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, .3);
   border-radius: 10px;
   float: left;
   height: 5px;
   margin: 10px;
   position: relative;
-  width: 10%;
+  width: 50px;
+
+  .query-mini({
+    display: none;
+  });
 
   &-bar {
-    background: @color-purple;
+    background: rgba(255, 255, 255, .3);
     border-radius: 10px;
     height: 5px;
     margin: 0;
     transform-origin: 0 0;
-    -webkit-transform-origin: 0 0;
-  }
-
-  &-scrubber {
-    background: rgba(0,0,0,0);
-    height: 15px;
-    left: 0;
-    margin: -8px 0 0 -8px;
-    position: absolute;
-    top: 3px;
-    transform: translateZ(0);
-    width: 15px;
-
-    &:before,
-    &:after {
-        border-radius: 50%;
-        content: '';
-        display: block;
-        position: absolute;
-    }
-
-    &:before {
-        background: @color-purple;
-        height: 15px;
-        width: 15px;
-    }
   }
 }
 

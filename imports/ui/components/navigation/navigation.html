@@ -2,7 +2,7 @@
   <div id="nav" class="nav main-nav {{navState}}">
     {{#if currentUser }}
       <li class="{{isActivePath '/profile'}} main">
-        <a href="/profile" class="textNav">
+        <a href="/profile" class="textNav main-nav-link">
 
           {{#if currentUser.profile.image }}
             <span id="avatar" class="dapp-identicon dapp-tiny" style="background-image: url( {{ currentUser.profile.image }} )"></span>
@@ -11,10 +11,10 @@
           {{/if}}
 
           {{#if isMaximized}}
-          <span class="nav-text">
+          <span class="nav-text main-nav-text">
             {{ currentUser.profile.name}}
           </span>
-          <span class="nav-text nav-text2">{{ pti_balance }} PTI</span>
+          <span class="nav-text main-nav-text nav-text2">{{ pti_balance }} PTI</span>
           {{else}}
           {{/if}}
         </a>
@@ -23,7 +23,7 @@
 
     {{ else }}
       <li class="{{isActivePath '/profile'}} main">
-        <a href="/profile" class="textNav">
+        <a href="/profile" class="textNav main-nav-link">
           <img src= "/img/avatar_img.svg" class="svg">
           {{#if isMaximized}}
           <span class="nav-text nav-text3">Sign up or login</span>
@@ -33,12 +33,12 @@
     {{/if}}
     {{#each navLinks}}
       <li class="{{isActivePath path}}" id="{{ id }}">
-        <a href="{{path}}" class="textNav {{#if locked}}locked{{/if}}">
+        <a href="{{path}}" class="textNav main-nav-link {{#if locked}}locked{{/if}}">
           <img src= "{{icon}}" class="svg">
           {{#if isMaximized}}
-            <span class="nav-text">{{text}}</span>
+            <span class="nav-text main-nav-text">{{text}}</span>
             {{#if locked}}
-              <img src="/img/lock_icon.svg" class="locked-nav" />
+              <img src="/img/lock_icon.svg" class="locked-nav main-nav-icon-locked" />
             {{/if}}
           {{/if}}
         </a>
@@ -47,10 +47,10 @@
 
     {{#with aboutLink}}
       <li class="{isActivePath path }}">
-        <a href="{{path}}" class="textNav">
+        <a href="{{path}}" class="textNav main-nav-link">
           <img src= "{{icon}}" class="svg">
           {{#if isMaximized}}
-          <span class="nav-text">{{text}}</span>
+          <span class="nav-text main-nav-text">{{text}}</span>
           {{/if}}
         </a>
       </li>
