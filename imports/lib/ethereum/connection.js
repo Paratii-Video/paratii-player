@@ -44,6 +44,8 @@ export async function updateSession () {
         if (err) { throw err }
         if (result !== undefined) {
           Session.set('eth_balance', result.toNumber())
+        } else {
+          Session.set('eth_balance', 0)
         }
       })
     }
