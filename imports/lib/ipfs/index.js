@@ -37,7 +37,7 @@ const paratiiIPFS = {
             config: {
               Addresses: {
                 Swarm: [
-                  '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
+                  // '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
                   // run our own star-signal server.
                   // https://github.com/libp2p/js-libp2p-webrtc-star
                   // '/ip4/34.213.133.148/tcp/42000/wss/p2p-webrtc-star'
@@ -112,6 +112,7 @@ const paratiiIPFS = {
 
           window.ipfs.id().then((id) => {
             let peerInfo = id
+            paratiiIPFS.id = id
             console.log('[IPFS] id: ', peerInfo)
             let ptiAddress = getUserPTIAddress() || 'no_address'
             paratiiIPFS.protocol = new Protocol(
@@ -120,6 +121,10 @@ const paratiiIPFS = {
               // add ETH Address here.
               ptiAddress
             )
+
+            paratiiIPFS.protocol.notifications.on('message:new', (peerId, msg) => {
+              console.log('[paratii-protocol] ', peerId.toB58String(), ' new Msg: ', msg)
+            })
 
             paratiiIPFS.protocol.start(callback)
 
