@@ -6,7 +6,15 @@
 @size-modal-wrapper-width: 310px;
 
 // Main
+.modal.fade{
+  transform: scaleY(0);
+  transition: all .75s @ease-smooth .3s;
+}
 
+.modal.fade.in{
+  transform: scaleY(1);
+  transition: all .75s @ease-smooth .3s;
+}
 .main-modal {
   &:extend(.pos-a-full all);
 
@@ -15,9 +23,9 @@
   justify-content: center;
   pointer-events: none;
   z-index: @zindex-modal;
+  pointer-events: initial;
+  &.open-modal {
 
-  .open-modal & {
-    pointer-events: initial;
   }
 
   // Bg
@@ -46,7 +54,7 @@
     overflow: hidden;
     padding: 20px;
     position: relative;
-    transform: scaleY(0);
+    // transform: scaleY(0);
     transition: transform .5s @ease-smooth;
     width: @size-modal-wrapper-width;
     z-index: 2;
@@ -131,7 +139,7 @@
 
     &--alert {
       color: @color-red;
-      text-transform: uppercase; 
+      text-transform: uppercase;
     }
 
     &--small {

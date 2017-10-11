@@ -9,6 +9,7 @@ import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import { createIPFSPlayer } from './ipfs_hls.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
+import '/imports/ui/components/modals/modals.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 
 import './player.html'
@@ -468,12 +469,13 @@ Template.player.events({
     Meteor.call('videos.dislike', videoId)
   },
   'click #embed' () {
-    const videoId = _video._id
-    Modal.show('embedCustomizer', {
-      videoId: videoId,
-      label: 'Embed code',
-      embed: window.top !== window.self
-    })
+    Modal.show('modal_share_video')
+    // const videoId = _video._id
+    // Modal.show('embedCustomizer', {
+    //   videoId: videoId,
+    //   label: 'Embed code',
+    //   embed: window.top !== window.self
+    // })
   },
   'click .player-infos-button-description' (event, instance) {
     instance.playerState.set('showDescription', !instance.playerState.get('showDescription'))

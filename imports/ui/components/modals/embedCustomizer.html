@@ -1,3 +1,40 @@
+<template name="modal_share_video">
+  <div class="modal fade main-modal">
+    <div class="main-modal-wrapper">
+      <button class="main-modal-button-close" data-dismiss="modal" title="{{fullscreen}}">
+        <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
+          <path id="X" class="cls-1" d="M15.5,2.068,13.432,0,7.754,5.685,2.068,0,0,2.068,5.685,7.754,0,13.432,2.068,15.5,7.754,9.822,13.432,15.5,15.5,13.432,9.822,7.754Z" transform="translate(609.5 451.9)"/>
+        </svg>
+      </button>
+      <!-- #share video -->
+      <div class="main-modal-content active main-modal-content-sharevideo">
+        <h3 class="main-modal-title">Share this video</h3>
+        <div class="modal-share-url">
+          <button class="button-text button-text--grey">
+            URL
+            <svg class="button-text-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+              <path d="M17.8 8.4H8.7c-.5 0-.9.2-1.3.5-.3.3-.5.8-.5 1.3v13c0 .5.2.9.5 1.3.4.3.8.5 1.3.5h9.1c.5 0 .9-.2 1.3-.5s.5-.8.5-1.3v-13c0-.5-.2-.9-.5-1.3-.4-.3-.8-.5-1.3-.5zm.2 1.8v13c0 .1 0 .1-.1.2 0 0-.1.1-.2.1h-9c-.1 0-.1 0-.2-.1 0 0-.1-.1-.1-.2v-13c0-.1 0-.1.1-.2 0 0 .1-.1.2-.1h9.1c.1 0 .1 0 .2.1v.2z"/>
+              <path d="M22.5 5.5c-.3-.3-.7-.5-1.2-.5h-9.1c-.5 0-.9.2-1.3.5-.3.3-.5.8-.5 1.3 0 .2.1.4.2.5.1.1.3.2.5.2s.4-.1.5-.2c.3-.1.4-.3.4-.5 0-.1 0-.1.1-.2 0 0 .1-.1.2-.1h9.1c.1 0 .1 0 .2.1 0 0 .1.1.1.2v13c0 .1 0 .1-.1.2 0 0-.1.1-.2.1-.2 0-.4.1-.5.2-.1.1-.2.3-.2.5s.1.4.2.5c.1.1.3.2.5.2.5 0 .9-.2 1.3-.5.3-.3.5-.8.5-1.3v-13c-.1-.4-.3-.8-.7-1.2z"/>
+            </svg>
+          </button>
+          <input readonly class="input-copy-code main-form-input" value="http://player.paratii.video/scientifanta/aroundtheblock " />
+        </div>
+        <div class="modal-share-embed">
+          <button class="button-text button-text--grey">
+            Embed video
+            <svg class="button-text-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+              <path d="M17.8 8.4H8.7c-.5 0-.9.2-1.3.5-.3.3-.5.8-.5 1.3v13c0 .5.2.9.5 1.3.4.3.8.5 1.3.5h9.1c.5 0 .9-.2 1.3-.5s.5-.8.5-1.3v-13c0-.5-.2-.9-.5-1.3-.4-.3-.8-.5-1.3-.5zm.2 1.8v13c0 .1 0 .1-.1.2 0 0-.1.1-.2.1h-9c-.1 0-.1 0-.2-.1 0 0-.1-.1-.1-.2v-13c0-.1 0-.1.1-.2 0 0 .1-.1.2-.1h9.1c.1 0 .1 0 .2.1v.2z"/>
+              <path d="M22.5 5.5c-.3-.3-.7-.5-1.2-.5h-9.1c-.5 0-.9.2-1.3.5-.3.3-.5.8-.5 1.3 0 .2.1.4.2.5.1.1.3.2.5.2s.4-.1.5-.2c.3-.1.4-.3.4-.5 0-.1 0-.1.1-.2 0 0 .1-.1.2-.1h9.1c.1 0 .1 0 .2.1 0 0 .1.1.1.2v13c0 .1 0 .1-.1.2 0 0-.1.1-.2.1-.2 0-.4.1-.5.2-.1.1-.2.3-.2.5s.1.4.2.5c.1.1.3.2.5.2.5 0 .9-.2 1.3-.5.3-.3.5-.8.5-1.3v-13c-.1-.4-.3-.8-.7-1.2z"/>
+            </svg>
+          </button>
+          <input readonly class="input-copy-code main-form-input" value="<iframe width='560' height='315' src='https://www.youtube.com/embed/7yVnhNlR84E' frameborder='0' allowfullscreen></iframe>" />
+        </div>
+      </div>
+      <!-- /share video -->
+    </div>
+  </div>
+</template>
+
 <template name="embedCustomizer">
   <div class="modal fade">
     <form id="form-embedCustomizer">
