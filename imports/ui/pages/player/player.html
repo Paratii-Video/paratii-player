@@ -3,20 +3,32 @@
     <video id="video-player" class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
     </video>
     {{#unless isLocked }}
+    {{ #if status }}<span id="status"><tt>STATUS: {{ status }}</tt></span>{{/if}}
     <div class="player-controls {{playPause}} {{hideControls}}">
       <div class="player-controls-wrapper">
         <div class="player-controls-buttons">
           {{#if hasPlaylistId}}
-            <button id="previous-video-button" class="player-button player-button-play" title="previous video">
-              <img class="player-button-svg" src="/img/rewind-icon.svg">
+            <button id="previous-video-button" class="player-button player-button-prev" title="previous video">
+              <svg class="player-button-svg" viewBox="576 409 11.049 15.084">
+                <path d="M576 409.084v15l11.049-7.5z"/>
+                <path d="M584 409h3v15h-3z"/>
+              </svg>
             </button>
           {{/if}}
-          <button id="play-pause-button" class="player-button player-button-pause" title="{{playPause}}">
-            <img class="player-button-svg" src="{{playPauseIcon}}">
+          <button id="play-pause-button" class="player-button player-button-play-pause" title="{{playPause}}" data-icon="{{playPauseIcon}}">
+            <svg class="player-button-svg player-button-svg-pause" viewBox="0 0 13 14">
+                <path d="M0 0h5v14H0zM8 0h5v14H8z"/>
+            </svg>
+            <svg class="player-button-svg player-button-svg-play" viewBox="576 409.084 11.049 15">
+              <path data-name="Path 185" class="cls-1" d="M576 409.084v15l11.049-7.5z"/>
+            </svg>
           </button>
           {{#if hasPlaylistId}}
             <button id="next-video-button" class="player-button player-button-next" title="next video">
-              <img class="player-button-svg" src="/img/forward-icon.svg">
+              <svg class="player-button-svg" viewBox="576 409 11.049 15.084">
+                <path d="M576 409.084v15l11.049-7.5z"/>
+                <path d="M584 409h3v15h-3z"/>
+              </svg>
             </button>
           {{/if}}
           <button id="volume-button" class="player-button player-button-volume" title="volume">
@@ -37,8 +49,6 @@
         <div class="player-controls-time">
           <span id="total-time" class="player-time-total">{{formatTime totalTime}}</span>
         </div>
-
-        {{ #if status }}<span id="status"><tt>STATUS: {{ status }}</tt></span>{{/if}}
       </div>
     </div>
 

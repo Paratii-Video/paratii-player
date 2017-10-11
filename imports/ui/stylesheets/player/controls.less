@@ -2,7 +2,8 @@
 
 //Vars
 
-@size-player-controls-button: 15px;
+@size-player-controls-button-height: 15px;
+@size-player-controls-button-height-mini: 15px;
 
 //
 
@@ -96,16 +97,65 @@
 .player-button {
   &:extend(.hover-opacity all);
 
-  height: @size-player-controls-button;
-  width: @size-player-controls-button;
+  height: @size-player-controls-button-height;
+  position: relative;
 
-  .player-controls-buttons & {
-    margin-right: 10px;
-  }
+  .query-mini({
+    height: @size-player-controls-button-height-mini;
+  });
 
+  //
 
   &-svg {
     &:extend(.full-block all);
+
+    fill: @color-white;
+    margin: auto;
+
+    &-play {
+      .playing & {
+        display: none;
+      }
+    }
+
+    &-pause {
+      display: none;
+      .playing & {
+        display: block;
+      }
+    }
+  }
+
+  //
+
+  &-prev,
+  &-next {
+    width: 14px;
+
+    .query-mini({
+      width: 11px;
+    });
+  }
+
+  &-prev {
+    transform: rotateY(180deg);
+  }
+
+  &-play-pause {
+    margin: 0 10px;
+    width: 14px;
+
+    .query-mini({
+      width: 11px;
+    });
+
+    .playing & {
+      width: 17px;
+
+      .query-mini({
+        width: 14px;
+      });
+    }
   }
 
   &-volume {
@@ -126,9 +176,6 @@
       width: 20px;
       top: 40px;
     });
-
-    .playing & {
-    }
   }
 }
 
@@ -199,6 +246,15 @@
 //
 //
 //
+
+#status {
+  &:extend(.pos-a-m all);
+
+  background: rgba(0, 0, 0, .85);
+  color: @color-red;
+  padding: 10px;
+  z-index: 9999;
+}
 
 .player-controls {
   input {
