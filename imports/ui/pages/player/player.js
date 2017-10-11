@@ -216,7 +216,7 @@ Template.player.helpers({
   },
   descriptionClass () {
     return Template.instance().playerState.get('showDescription') ? 'show-description' : ''
-  },
+  }
 })
 
 const requestFullscreen = (element) => {
