@@ -22960,9 +22960,9 @@ const SECOND = 1000
 
 module.exports = {
   maxProvidersPerRequest: 3,
-  providerRequestTimeout: 20 * SECOND,
-  hasBlockTimeout: 30 * SECOND,
-  provideTimeout: 30 * SECOND,
+  providerRequestTimeout: 10 * SECOND,
+  hasBlockTimeout: 15 * SECOND,
+  provideTimeout: 15 * SECOND,
   kMaxPriority: Math.pow(2, 31) - 1,
   rebroadcastDelay: 10 * SECOND,
   maxListeners: 1000
@@ -65919,12 +65919,10 @@ const Wantlist = __webpack_require__(87)
 const Ledger = __webpack_require__(401)
 const logger = __webpack_require__(53).logger
 
-// const MAX_MESSAGE_SIZE = 512 * 1024
-const MAX_MESSAGE_SIZE = 64 * 1024
-console.log('[BITSWAP] setting MAX_SIZE ', MAX_MESSAGE_SIZE)
+const MAX_MESSAGE_SIZE = 512 * 1024
 
 class DecisionEngine {
-  constructor (peerId, blockstore, network) {
+  constructor (peerId, blockstore, network, options) {
     this._log = logger(peerId, 'engine')
     this.blockstore = blockstore
     this.network = network
@@ -65936,7 +65934,22 @@ class DecisionEngine {
     // List of tasks to be processed
     this._tasks = []
 
+    options = options || {}
+    this._maxMessageSize = options.maxMessageSize || MAX_MESSAGE_SIZE
+    // override Max size to 1kb bytes by minimum.
+    if (this._maxMessageSize < 1024) {
+      this._maxMessageSize = 1024
+    }
+
     this._outbox = debounce(this._processTasks.bind(this), 100)
+    this.meterController = (options.meterController) ? options.meterController.bind(this) : this.defaultMeterController.bind(this)
+  }
+
+  defaultMeterController (peer, size, cb) {
+    // callback with true by default.
+    // this function is used as a placeholder for an actual controller.
+    // useful if the user want to add rules on sending.
+    cb(null, true)
   }
 
   _sendBlocks (peer, blocks, cb) {
@@ -65945,7 +65958,7 @@ class DecisionEngine {
       return acc + b.data.byteLength
     }, 0)
 
-    if (total < MAX_MESSAGE_SIZE) {
+    if (total < this._maxMessageSize) {
       return this._sendSafeBlocks(peer, blocks, cb)
     }
 
@@ -65958,7 +65971,7 @@ class DecisionEngine {
       batch.push(b)
       size += b.data.byteLength
 
-      if (size >= MAX_MESSAGE_SIZE ||
+      if (size >= this._maxMessageSize ||
           // need to ensure the last remaining items get sent
           outstanding === 0) {
         const nextBatch = batch.slice()
@@ -65970,6 +65983,66 @@ class DecisionEngine {
           // not returning the error, so we send as much as we can
           // as otherwise `eachSeries` would cancel
           cb()
+        })
+      } else {
+        cb()
+      }
+    }, cb)
+  }
+
+  _sendMeteredBlocks (peer, blocks, cb) {
+    // split into messges of max 512 * 1024 bytes
+    const total = blocks.reduce((acc, b) => {
+      return acc + b.data.byteLength
+    }, 0)
+
+    if (total < this._maxMessageSize) {
+      // TODO check if user has enough credit to get this batch here...
+      this.meterController(peer, total, (err, proceed) => {
+        if (err) {
+          this._log('meterController Error: %s ', err.message)
+          return
+        }
+        if (proceed) {
+          return this._sendSafeBlocks(peer, blocks, cb)
+        } else {
+          return this._log('peer out of credit %s ', peer.id.toB58String())
+        }
+      })
+    }
+
+    let size = 0
+    let batch = []
+    let outstanding = blocks.length
+
+    eachSeries(blocks, (b, cb) => {
+      outstanding--
+      batch.push(b)
+      size += b.data.byteLength
+
+      if (size >= this._maxMessageSize ||
+          // need to ensure the last remaining items get sent
+          outstanding === 0) {
+        const nextBatch = batch.slice()
+        batch = []
+        // TODO check if user has enough credit to get this batch here...
+        this.meterController(peer, total, (err, proceed) => {
+          if (err) {
+            this._log('meterController Error: %s ', err.message)
+          }
+
+          if (proceed) {
+            this._sendSafeBlocks(peer, nextBatch, (err) => {
+              if (err) {
+                this._log('sendblock error: %s', err.message)
+              }
+              // not returning the error, so we send as much as we can
+              // as otherwise `eachSeries` would cancel
+              cb()
+            })
+          } else {
+            this._log('peer out of credit %s ', peer.id.toB58String())
+          }
         })
       } else {
         cb()
@@ -66267,17 +66340,17 @@ const logger = __webpack_require__(53).logger
  * @param {Blockstore} blockstore
  */
 class Bitswap {
-  constructor (libp2p, blockstore) {
+  constructor (libp2p, blockstore, options) {
     this._libp2p = libp2p
     this._log = logger(this.peerInfo.id)
-
+    options = options || {}
     // the network delivers messages
     this.network = new Network(libp2p, this)
 
     // local database
     this.blockstore = blockstore
 
-    this.engine = new DecisionEngine(this.peerInfo.id, blockstore, this.network)
+    this.engine = new DecisionEngine(this.peerInfo.id, blockstore, this.network, options)
 
     // handle message sending
     this.wm = new WantManager(this.peerInfo.id, this.network)
@@ -66705,12 +66778,8 @@ class Network {
       lp.decode(),
       pull.asyncMap((data, cb) => Message.deserialize(data, cb)),
       pull.asyncMap((msg, cb) => {
-        console.log('msg deserialized ' , msg)
         conn.getPeerInfo((err, peerInfo) => {
-          if (err) {
-            console.log('peerInfo Error ', err)
-            return cb(err)
-          }
+          if (err) { return cb(err) }
 
           // this._log('data from', peerInfo.id.toB58String())
           this.bitswap._receiveMessage(peerInfo.id, msg, cb)
@@ -66732,8 +66801,6 @@ class Network {
   }
 
   _onPeerDisconnect (peerInfo) {
-    console.log('_onPeerDisconnect: ', peerInfo.id.toB58String())
-    console.log('_onPeerDisconnect: this._running: ', this._running)
     if (!this._running) { return }
 
     this.bitswap._onPeerDisconnected(peerInfo.id)
@@ -72312,7 +72379,7 @@ module.exports = {"_from":"elliptic@^6.2.3","_id":"elliptic@6.4.0","_inBundle":f
 /* 470 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"ipfs","version":"0.26.0","description":"JavaScript implementation of the IPFS specification","bin":{"jsipfs":"src/cli/bin.js"},"main":"src/core/index.js","browser":{"./src/core/components/init-assets.js":false,"./src/core/runtime/config-nodejs.json":"./src/core/runtime/config-browser.json","./src/core/runtime/libp2p-nodejs.js":"./src/core/runtime/libp2p-browser.js","./src/core/runtime/repo-nodejs.js":"./src/core/runtime/repo-browser.js","./test/utils/create-repo-nodejs.js":"./test/utils/create-repo-browser.js","stream":"readable-stream"},"engines":{"node":">=6.0.0","npm":">=3.0.0"},"scripts":{"lint":"aegir-lint","coverage":"gulp coverage","test":"gulp test --dom","test:node":"npm run test:unit:node","test:browser":"npm run test:unit:browser","test:unit:node":"gulp test:node","test:unit:node:core":"TEST=core npm run test:unit:node","test:unit:node:http":"TEST=http npm run test:unit:node","test:unit:node:gateway":"TEST=gateway npm run test:unit:node","test:unit:node:cli":"TEST=cli npm run test:unit:node","test:unit:browser":"gulp test:browser","test:interop":"npm run test:interop:node","test:interop:node":"mocha -t 60000 test/interop/node.js","test:interop:browser":"mocha -t 60000 test/interop/browser.js","test:benchmark":"echo \"Error: no benchmarks yet\" && exit 1","test:benchmark:node":"echo \"Error: no benchmarks yet\" && exit 1","test:benchmark:node:core":"echo \"Error: no benchmarks yet\" && exit 1","test:benchmark:node:http":"echo \"Error: no benchmarks yet\" && exit 1","test:benchmark:browser":"echo \"Error: no benchmarks yet\" && exit 1","build":"gulp build","release":"gulp release","release-minor":"gulp release --type minor","release-major":"gulp release --type major","coverage-publish":"aegir-coverage publish"},"pre-commit":["lint","test"],"repository":{"type":"git","url":"git+https://github.com/ipfs/js-ipfs.git"},"keywords":["IPFS"],"author":"David Dias <daviddias@ipfs.io>","license":"MIT","bugs":{"url":"https://github.com/ipfs/js-ipfs/issues"},"homepage":"https://github.com/ipfs/js-ipfs#readme","devDependencies":{"aegir":"^11.0.2","buffer-loader":"0.0.1","chai":"^4.1.2","delay":"^2.0.0","detect-node":"^2.0.3","dir-compare":"^1.4.0","dirty-chai":"^2.0.1","eslint-plugin-react":"^7.3.0","execa":"^0.8.0","expose-loader":"^0.7.3","form-data":"^2.3.1","gulp":"^3.9.1","interface-ipfs-core":"~0.31.19","ipfsd-ctl":"~0.23.0","left-pad":"^1.1.3","lodash":"^4.17.4","mocha":"^3.5.2","ncp":"^2.0.0","nexpect":"^0.5.0","pre-commit":"^1.2.2","pretty-bytes":"^4.0.2","qs":"^6.5.1","random-fs":"^1.0.3","rimraf":"^2.6.1","stream-to-promise":"^2.2.0","transform-loader":"^0.2.4"},"dependencies":{"async":"^2.5.0","bl":"^1.2.1","boom":"^5.2.0","debug":"^3.0.1","cids":"^0.5.1","file-type":"^6.1.0","filesize":"^3.5.10","fsm-event":"^2.1.0","glob":"^7.1.2","hapi":"^16.5.2","hapi-set-header":"^1.0.2","hoek":"^4.2.0","ipfs-api":"^14.3.5","ipfs-bitswap":"~0.17.2","ipfs-block":"~0.6.0","ipfs-block-service":"~0.12.0","ipfs-multipart":"~0.1.0","ipfs-repo":"~0.17.0","ipfs-unixfs":"~0.1.13","ipfs-unixfs-engine":"~0.22.5","ipld-resolver":"~0.13.2","is-ipfs":"^0.3.2","is-stream":"^1.1.0","joi":"^10.6.0","libp2p":"~0.12.4","libp2p-floodsub":"~0.11.1","libp2p-kad-dht":"~0.5.1","libp2p-mdns":"~0.9.1","libp2p-multiplex":"~0.5.0","libp2p-railing":"~0.7.1","libp2p-secio":"~0.8.1","libp2p-tcp":"~0.11.0","libp2p-webrtc-star":"~0.13.2","libp2p-websockets":"~0.10.1","lodash.flatmap":"^4.5.0","lodash.get":"^4.4.2","lodash.sortby":"^4.7.0","lodash.values":"^4.3.0","mafmt":"^3.0.1","mime-types":"^2.1.17","mkdirp":"~0.5.1","multiaddr":"^3.0.1","multihashes":"~0.4.9","once":"^1.4.0","path-exists":"^3.0.0","peer-book":"~0.5.1","peer-id":"~0.10.1","peer-info":"~0.11.0","promisify-es6":"^1.0.3","pull-file":"^1.0.0","pull-paramap":"^1.2.2","pull-pushable":"^2.1.1","pull-sort":"^1.0.1","pull-stream":"^3.6.1","pull-stream-to-stream":"^1.3.4","pull-zip":"^2.0.1","read-pkg-up":"^2.0.0","readable-stream":"2.3.3","safe-buffer":"^5.1.1","stream-to-pull-stream":"^1.7.2","tar-stream":"^1.5.4","temp":"~0.8.3","through2":"^2.0.3","update-notifier":"^2.2.0","yargs":"8.0.2"},"optionalDependencies":{"prom-client":"^10.1.0","prometheus-gc-stats":"^0.5.0"},"contributors":["Andrew de Andrade <andrew@deandrade.com.br>","Bernard Mordan <bernard@tableflip.io>","CHEVALAY JOSSELIN <josselin54.chevalay@gmail.com>","Caio Gondim <me@caiogondim.com>","Christian Couder <chriscool@tuxfamily.org>","Daniel J. O'Quinn <danieljoquinn@gmail.com>","Daniela Borges Matos de Carvalho <alunassertiva@gmail.com>","David Dias <daviddias.p@gmail.com>","Dmitriy Ryajov <dryajov@gmail.com>","Dzmitry Das <dbachko@gmail.com>","Enrico Marino <enrico.marino@email.com>","Felix Yan <felixonmars@archlinux.org>","Francisco Baio Dias <xicombd@gmail.com>","Francisco Baio Dias <francisco@typeform.com>","Friedel Ziegelmayer <dignifiedquire@gmail.com>","Georgios Rassias <georassias@gmail.com>","Greenkeeper <support@greenkeeper.io>","Haad <haadcode@users.noreply.github.com>","Harsh Vakharia <harshjv@users.noreply.github.com>","Henry Rodrick <moshisushi@gmail.com>","Johannes Wikner <johannes.wikner@gmail.com>","Jon Schlinkert <dev@sellside.com>","João Antunes <j.goncalo.antunes@gmail.com>","Kevin Wang <kevin@fossa.io>","Lars Gierth <larsg@systemli.org>","Maciej Krüger <mkg20001@gmail.com>","Marius Darila <marius.darila@gmail.com>","Michelle Lee <michelle@protocol.ai>","Mikeal Rogers <mikeal.rogers@gmail.com>","Mithgol <getgit@mithgol.ru>","Nuno Nogueira <nunofmn@gmail.com>","Oskar Nyberg <oskar@oskarnyberg.com>","Pau Ramon Revilla <masylum@gmail.com>","Pedro Teixeira <i@pgte.me>","RasmusErik Voel Jensen <github@solsort.com>","Richard Littauer <richard.littauer@gmail.com>","Rod Keys <rod@zokos.com>","Sid Harder <sideharder@gmail.com>","SidHarder <softwarenavigator@gmail.com>","Stephen Whitmore <stephen.whitmore@gmail.com>","Stephen Whitmore <noffle@users.noreply.github.com>","Terence Pae <terencepae@gmail.com>","Uroš Jurglič <jurglic@gmail.com>","Xiao Liang <yxliang01@users.noreply.github.com>","Yahya <ya7yaz@gmail.com>","bitspill <bitspill+github@bitspill.net>","haad <haad@headbanggames.com>","jbenet <juan@benet.ai>","kumavis <kumavis@users.noreply.github.com>","nginnever <ginneversource@gmail.com>","npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>","tcme <hi@this-connect.me>","Łukasz Magiera <magik6k@users.noreply.github.com>","ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>"]}
+module.exports = {"name":"ipfs","version":"0.26.0","description":"JavaScript implementation of the IPFS specification","bin":{"jsipfs":"src/cli/bin.js"},"main":"src/core/index.js","browser":{"./src/core/components/init-assets.js":false,"./src/core/runtime/config-nodejs.json":"./src/core/runtime/config-browser.json","./src/core/runtime/libp2p-nodejs.js":"./src/core/runtime/libp2p-browser.js","./src/core/runtime/repo-nodejs.js":"./src/core/runtime/repo-browser.js","./test/utils/create-repo-nodejs.js":"./test/utils/create-repo-browser.js","stream":"readable-stream"},"engines":{"node":">=6.0.0","npm":">=3.0.0"},"scripts":{"lint":"aegir-lint","coverage":"gulp coverage","test":"gulp test --dom","test:node":"npm run test:unit:node","test:browser":"npm run test:unit:browser","test:unit:node":"gulp test:node","test:unit:node:core":"TEST=core npm run test:unit:node","test:unit:node:http":"TEST=http npm run test:unit:node","test:unit:node:gateway":"TEST=gateway npm run test:unit:node","test:unit:node:cli":"TEST=cli npm run test:unit:node","test:unit:browser":"gulp test:browser","test:interop":"npm run test:interop:node","test:interop:node":"mocha -t 60000 test/interop/node.js","test:interop:browser":"mocha -t 60000 test/interop/browser.js","test:benchmark":"echo \"Error: no benchmarks yet\" && exit 1","test:benchmark:node":"echo \"Error: no benchmarks yet\" && exit 1","test:benchmark:node:core":"echo \"Error: no benchmarks yet\" && exit 1","test:benchmark:node:http":"echo \"Error: no benchmarks yet\" && exit 1","test:benchmark:browser":"echo \"Error: no benchmarks yet\" && exit 1","build":"gulp build","release":"gulp release","release-minor":"gulp release --type minor","release-major":"gulp release --type major","coverage-publish":"aegir-coverage publish"},"pre-commit":["lint","test"],"repository":{"type":"git","url":"git+https://github.com/ipfs/js-ipfs.git"},"keywords":["IPFS"],"author":"David Dias <daviddias@ipfs.io>","license":"MIT","bugs":{"url":"https://github.com/ipfs/js-ipfs/issues"},"homepage":"https://github.com/ipfs/js-ipfs#readme","devDependencies":{"aegir":"^11.0.2","buffer-loader":"0.0.1","chai":"^4.1.2","delay":"^2.0.0","detect-node":"^2.0.3","dir-compare":"^1.4.0","dirty-chai":"^2.0.1","eslint-plugin-react":"^7.3.0","execa":"^0.8.0","expose-loader":"^0.7.3","form-data":"^2.3.1","gulp":"^3.9.1","interface-ipfs-core":"~0.31.19","ipfsd-ctl":"~0.23.0","left-pad":"^1.1.3","lodash":"^4.17.4","mocha":"^3.5.2","ncp":"^2.0.0","nexpect":"^0.5.0","pre-commit":"^1.2.2","pretty-bytes":"^4.0.2","qs":"^6.5.1","random-fs":"^1.0.3","rimraf":"^2.6.1","stream-to-promise":"^2.2.0","transform-loader":"^0.2.4"},"dependencies":{"async":"^2.5.0","bl":"^1.2.1","boom":"^5.2.0","cids":"^0.5.1","debug":"^3.0.1","file-type":"^6.1.0","filesize":"^3.5.10","fsm-event":"^2.1.0","glob":"^7.1.2","hapi":"^16.5.2","hapi-set-header":"^1.0.2","hoek":"^4.2.0","ipfs-api":"^14.3.5","ipfs-bitswap":"github:ya7ya/js-ipfs-bitswap#paratii/meter","ipfs-block":"~0.6.0","ipfs-block-service":"~0.12.0","ipfs-multipart":"~0.1.0","ipfs-repo":"~0.17.0","ipfs-unixfs":"~0.1.13","ipfs-unixfs-engine":"~0.22.5","ipld-resolver":"~0.13.2","is-ipfs":"^0.3.2","is-stream":"^1.1.0","joi":"^10.6.0","libp2p":"~0.12.4","libp2p-floodsub":"~0.11.1","libp2p-kad-dht":"~0.5.1","libp2p-mdns":"~0.9.1","libp2p-multiplex":"~0.5.0","libp2p-railing":"~0.7.1","libp2p-secio":"~0.8.1","libp2p-tcp":"~0.11.0","libp2p-webrtc-star":"~0.13.2","libp2p-websockets":"~0.10.1","lodash.flatmap":"^4.5.0","lodash.get":"^4.4.2","lodash.sortby":"^4.7.0","lodash.values":"^4.3.0","mafmt":"^3.0.1","mime-types":"^2.1.17","mkdirp":"~0.5.1","multiaddr":"^3.0.1","multihashes":"~0.4.9","once":"^1.4.0","path-exists":"^3.0.0","peer-book":"~0.5.1","peer-id":"~0.10.1","peer-info":"~0.11.0","promisify-es6":"^1.0.3","pull-file":"^1.0.0","pull-paramap":"^1.2.2","pull-pushable":"^2.1.1","pull-sort":"^1.0.1","pull-stream":"^3.6.1","pull-stream-to-stream":"^1.3.4","pull-zip":"^2.0.1","read-pkg-up":"^2.0.0","readable-stream":"2.3.3","safe-buffer":"^5.1.1","stream-to-pull-stream":"^1.7.2","tar-stream":"^1.5.4","temp":"~0.8.3","through2":"^2.0.3","update-notifier":"^2.2.0","yargs":"8.0.2"},"optionalDependencies":{"prom-client":"^10.1.0","prometheus-gc-stats":"^0.5.0"},"contributors":["Andrew de Andrade <andrew@deandrade.com.br>","Bernard Mordan <bernard@tableflip.io>","CHEVALAY JOSSELIN <josselin54.chevalay@gmail.com>","Caio Gondim <me@caiogondim.com>","Christian Couder <chriscool@tuxfamily.org>","Daniel J. O'Quinn <danieljoquinn@gmail.com>","Daniela Borges Matos de Carvalho <alunassertiva@gmail.com>","David Dias <daviddias.p@gmail.com>","Dmitriy Ryajov <dryajov@gmail.com>","Dzmitry Das <dbachko@gmail.com>","Enrico Marino <enrico.marino@email.com>","Felix Yan <felixonmars@archlinux.org>","Francisco Baio Dias <xicombd@gmail.com>","Francisco Baio Dias <francisco@typeform.com>","Friedel Ziegelmayer <dignifiedquire@gmail.com>","Georgios Rassias <georassias@gmail.com>","Greenkeeper <support@greenkeeper.io>","Haad <haadcode@users.noreply.github.com>","Harsh Vakharia <harshjv@users.noreply.github.com>","Henry Rodrick <moshisushi@gmail.com>","Johannes Wikner <johannes.wikner@gmail.com>","Jon Schlinkert <dev@sellside.com>","João Antunes <j.goncalo.antunes@gmail.com>","Kevin Wang <kevin@fossa.io>","Lars Gierth <larsg@systemli.org>","Maciej Krüger <mkg20001@gmail.com>","Marius Darila <marius.darila@gmail.com>","Michelle Lee <michelle@protocol.ai>","Mikeal Rogers <mikeal.rogers@gmail.com>","Mithgol <getgit@mithgol.ru>","Nuno Nogueira <nunofmn@gmail.com>","Oskar Nyberg <oskar@oskarnyberg.com>","Pau Ramon Revilla <masylum@gmail.com>","Pedro Teixeira <i@pgte.me>","RasmusErik Voel Jensen <github@solsort.com>","Richard Littauer <richard.littauer@gmail.com>","Rod Keys <rod@zokos.com>","Sid Harder <sideharder@gmail.com>","SidHarder <softwarenavigator@gmail.com>","Stephen Whitmore <stephen.whitmore@gmail.com>","Stephen Whitmore <noffle@users.noreply.github.com>","Terence Pae <terencepae@gmail.com>","Uroš Jurglič <jurglic@gmail.com>","Xiao Liang <yxliang01@users.noreply.github.com>","Yahya <ya7yaz@gmail.com>","bitspill <bitspill+github@bitspill.net>","haad <haad@headbanggames.com>","jbenet <juan@benet.ai>","kumavis <kumavis@users.noreply.github.com>","nginnever <ginneversource@gmail.com>","npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>","tcme <hi@this-connect.me>","Łukasz Magiera <magik6k@users.noreply.github.com>","ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>"]}
 
 /***/ }),
 /* 471 */
@@ -114957,7 +115024,7 @@ module.exports = (self) => {
       self._bitswap = new Bitswap(
         self._libp2pNode,
         self._repo.blocks,
-        self._peerInfoBook
+        self._options.bitswap
       )
 
       self._bitswap.start()

@@ -2,6 +2,7 @@
 'use strict'
 import { Meteor } from 'meteor/meteor'
 import { getUserPTIAddress } from '/imports/api/users.js'
+import { setImmediate } from 'lodash'
 import Protocol from 'paratii-protocol'
 
 const REPO_PATH = 'paratii-ipfs-repo'
@@ -65,6 +66,10 @@ const paratiiIPFS = {
           })
         } else {
           window.ipfs = new Ipfs({
+            bitswap: {
+              maxMessageSize: 32 * 1024,
+              meterController: paratiiIPFS.meterController
+            },
             repo: String(Math.random()),
             config: {
               Addresses: {
@@ -223,6 +228,67 @@ const paratiiIPFS = {
     window.localStorage.setItem('paratii-ledger', JSON.stringify(localLedger))
     callback(null, 1)
   },
+
+  /**
+   * get Cached Ledger book for peer.
+   * @param  {string}   peerId   peer B58String
+   * @param  {Function} callback returns (err, ledger)
+   */
+  getTransactions: (peerId, callback) => {
+    updateTransactions((err, updated) => {
+      if (err) throw err
+
+      let localLedger = window.localStorage.getItem('paratii-ledger')
+      if (!localLedger) {
+        localLedger = {}
+      } else {
+        localLedger = JSON.parse(localLedger)
+      }
+
+      if (localLedger[peerId]) {
+        return callback(null, localLedger[peerId])
+      } else {
+        console.log(`${peerId} isn't in the Ledger`)
+        return callback(new Error(`${peerId} is not in the Ledger`))
+      }
+    })
+  },
+
+ /**
+  * Clear transactions Cache
+  * @param  {Function} callback callback when done
+  */
+  clearTransactionsCache: (callback) => {
+    window.localStorage.removeItem('paratii-ledger', null)
+    setImmediate(callback)
+  },
+
+/**
+ * the meteroController handles whether a peer should get the block or not.
+ * @param  {Peer}   peer     IPFS Peer Object
+ * @param  {uint}   size     total size of the block(s)
+ * @param  {Function} callback returns (err, proceed)
+ */
+  meterController: (peer, size, callback) => {
+    if (!callback) {
+      throw new Error('meteroController Requires a callback & size')
+    }
+
+    if (size && parseInt(size) < 0) {
+      throw new Error('meterController size Must be positive')
+    }
+
+    let CREDIT_PER_PEER = 10 * 1024 * 1024 // 10 mb
+    paratiiIPFS.getTransactions(peer.id.toB58String(), (err, ledger) => {
+      if (err) throw err
+      if (ledger.accounting.bytesSent <= CREDIT_PER_PEER) {
+        return callback(null, true)
+      } else {
+        return callback(null, false)
+      }
+    })
+  },
+
   start: (callback) => {
     if (!window.Ipfs) {
       return callback(new Error('window.Ipfs is not available, call initIPFS first'))

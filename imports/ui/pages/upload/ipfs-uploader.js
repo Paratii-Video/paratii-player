@@ -114,7 +114,6 @@ function addToIPFS (files) {
             })
             cb(null, file)
           })
-
         }))),
       pull.collect((err, files) => {
         if (err) {
