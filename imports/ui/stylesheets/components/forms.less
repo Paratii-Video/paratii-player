@@ -17,36 +17,17 @@
       cursor: pointer;
       padding: 0 0 0 20px;
       position: relative;
-
-      &::before,
-      &::after {
-        &:extend(.pos-a-vm all);
-
-        content: '';
-      }
+      user-select: none;
 
       &::before {
+        &:extend(.pos-a-vm all);
+
         border-radius: 2px;
         border: 1px solid @color-grey;
+        content: '';
         height: 13px;
         left: 0;
         width: 13px;
-      }
-
-      &::after {
-
-        border-radius: 1px;
-        background: @color-purple;
-        left: 1px;
-        height: 11px;
-        opacity: 0;
-        width: 11px;
-      }
-
-      &.active {
-        &::after {
-          opacity: 1;
-        }
       }
     }
   }
@@ -100,6 +81,23 @@
 
   &-checkbox {
     &:extend(.visually-hidden);
+
+    &-checked {
+      &:extend(.pos-a-vm all);
+
+      border-radius: 1px;
+      background: @color-purple;
+      left: 1px;
+      height: 11px;
+      transform: scale(0) translate3d(0, -50%, 0);
+      transition: transform .25s @ease-smooth;
+      transform-origin: top;
+      width: 11px;
+    }
+
+    &:checked + .main-form-checkbox-checked {
+      transform: scale(1) translate3d(0, -50%, 0);
+    }
   }
 
   // Buttons
