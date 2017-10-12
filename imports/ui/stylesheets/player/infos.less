@@ -22,7 +22,7 @@
 
     .query-mini({
       left: 0;
-      top: 30px;
+      top: 25px;
       transform: translate3d(0, 0, 0);
     });
 
@@ -45,11 +45,11 @@
     display: block;
     font-size: 3.5vw;
     font-weight: 300;
-    margin: 0;
+    margin: 0 0 5px;
     padding-right: 20px;
 
     .query-mini({
-      font-size: 5vw;
+      font-size: 5.3vw;
     });
   }
 
@@ -98,6 +98,7 @@
   //
 
   &-content {
+    overflow: hidden;
     position: relative;
   }
 
@@ -105,19 +106,19 @@
 
   &-holder {
     position: relative;
-    transition: opacity .3s linear .2s;
+    transition: transform .7s @ease-smooth .4s;
 
     .show-description & {
-      opacity: 0;
+      transform: translate3d(0, -100%, 0);
+      transition: transform .7s @ease-smooth;
       pointer-events: none;
-      transition: opacity .3s;
     }
   }
 
   // Releated tags
 
   &-related {
-    margin: 0 0 3px;
+    margin: 0 0 7px;
 
     &-tag {
       color: @color-purple;
@@ -130,7 +131,7 @@
 
   &-uploader-name {
     font-weight: 300;
-    margin: 0 0 3px;
+    margin: 0 0 19px;
   }
 
 
@@ -166,16 +167,16 @@
     font-weight: 300;
     font-size: 14px;
     left: 0;
-    opacity: 0;
-    transition: opacity .3s;
+    transform: translate3d(0, -100%, 0);
+    transition: transform .5s @ease-smooth;
     pointer-events: none;
     position: absolute;
     top: 0;
 
     .show-description & {
-      opacity: 1;
       pointer-events: initial;
-      transition: opacity .3s linear .2s;
+      transform: translate3d(0, 0, 0);
+      transition: transform .5s @ease-smooth .4s;
     }
   }
 

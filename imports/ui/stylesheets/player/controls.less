@@ -68,7 +68,7 @@
   width: 100%;
 
   .query-mini({
-    margin: 0 10px;
+    margin: 0 20px;
   });
 
   &-played {
@@ -142,7 +142,7 @@
   }
 
   &-play-pause {
-    margin: 0 10px;
+    margin: 0 13px;
     width: 14px;
 
     .query-mini({
@@ -166,16 +166,24 @@
 
   &-fullscreen {
     bottom: 16px;
+    height: 15px;
     position: absolute;
     right: 20px;
+    transition: transform .8s @ease-smooth;
+    width: 15px;
     z-index: @zindex-player-button-fullscreen;
 
     .query-mini({
       bottom: auto;
       height: 20px;
-      width: 20px;
+      right: 29px;
       top: 40px;
+      width: 20px;
     });
+
+    .playing & {
+
+    }
   }
 }
 
@@ -212,6 +220,10 @@
   &-slash {
     color: @color-white;
     font-size: 14px;
+
+    .query-mini({
+      font-size: 13px;
+    });
   }
 
   &-current {
