@@ -235,7 +235,7 @@ const paratiiIPFS = {
    * @param  {Function} callback returns (err, ledger)
    */
   getTransactions: (peerId, callback) => {
-    updateTransactions((err, updated) => {
+    paratiiIPFS.updateTransactions((err, updated) => {
       if (err) throw err
 
       let localLedger = window.localStorage.getItem('paratii-ledger')
