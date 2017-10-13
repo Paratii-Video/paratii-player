@@ -66009,45 +66009,45 @@ class DecisionEngine {
           return this._log('peer out of credit %s ', peer.id.toB58String())
         }
       })
+    } else {
+      let size = 0
+      let batch = []
+      let outstanding = blocks.length
+
+      eachSeries(blocks, (b, cb) => {
+        outstanding--
+        batch.push(b)
+        size += b.data.byteLength
+
+        if (size >= this._maxMessageSize ||
+            // need to ensure the last remaining items get sent
+            outstanding === 0) {
+          const nextBatch = batch.slice()
+          batch = []
+          // TODO check if user has enough credit to get this batch here...
+          this.meterController(peer, size, (err, proceed) => {
+            if (err) {
+              this._log('meterController Error: %s ', err.message)
+            }
+
+            if (proceed) {
+              this._sendSafeBlocks(peer, nextBatch, (err) => {
+                if (err) {
+                  this._log('sendblock error: %s', err.message)
+                }
+                // not returning the error, so we send as much as we can
+                // as otherwise `eachSeries` would cancel
+                cb()
+              })
+            } else {
+              this._log('peer out of credit %s ', peer.toB58String())
+            }
+          })
+        } else {
+          cb()
+        }
+      }, cb)
     }
-
-    let size = 0
-    let batch = []
-    let outstanding = blocks.length
-
-    eachSeries(blocks, (b, cb) => {
-      outstanding--
-      batch.push(b)
-      size += b.data.byteLength
-
-      if (size >= this._maxMessageSize ||
-          // need to ensure the last remaining items get sent
-          outstanding === 0) {
-        const nextBatch = batch.slice()
-        batch = []
-        // TODO check if user has enough credit to get this batch here...
-        this.meterController(peer, total, (err, proceed) => {
-          if (err) {
-            this._log('meterController Error: %s ', err.message)
-          }
-
-          if (proceed) {
-            this._sendSafeBlocks(peer, nextBatch, (err) => {
-              if (err) {
-                this._log('sendblock error: %s', err.message)
-              }
-              // not returning the error, so we send as much as we can
-              // as otherwise `eachSeries` would cancel
-              cb()
-            })
-          } else {
-            this._log('peer out of credit %s ', peer.id.toB58String())
-          }
-        })
-      } else {
-        cb()
-      }
-    }, cb)
   }
 
   _sendSafeBlocks (peer, blocks, cb) {
@@ -66073,22 +66073,24 @@ class DecisionEngine {
       (cb) => map(uniqCids, (cid, cb) => {
         this.blockstore.get(cid, cb)
       }, cb),
-      (blocks, cb) => each(values(groupedTasks), (tasks, cb) => {
+      (blocks, cb) => each(values(groupedTasks), (tasks, next) => {
         // all tasks have the same target
         const peer = tasks[0].target
         const blockList = cids.map((cid) => {
           return find(blocks, (b) => b.cid.equals(cid))
         })
 
-        this._sendBlocks(peer, blockList, (err) => {
+        // this._sendBlocks(peer, blockList, (err) => {
+        this._sendMeteredBlocks(peer, blockList, (err) => {
           if (err) {
             // `_sendBlocks` actually doesn't return any errors
             this._log.error('should never happen: ', err)
           } else {
             blockList.forEach((block) => this.messageSent(peer, block))
           }
-
-          cb()
+          setImmediate(() => { next() })
+          // next()
+          // cb()
         })
       })
     ], (err) => {
@@ -115020,6 +115022,7 @@ module.exports = (self) => {
       if (err) {
         return done(err)
       }
+      console.log('bitswap options: ', self._options.bitswap)
 
       self._bitswap = new Bitswap(
         self._libp2pNode,

@@ -235,23 +235,24 @@ const paratiiIPFS = {
    * @param  {Function} callback returns (err, ledger)
    */
   getTransactions: (peerId, callback) => {
-    paratiiIPFS.updateTransactions((err, updated) => {
-      if (err) throw err
-
-      let localLedger = window.localStorage.getItem('paratii-ledger')
-      if (!localLedger) {
-        localLedger = {}
-      } else {
-        localLedger = JSON.parse(localLedger)
-      }
-
-      if (localLedger[peerId]) {
-        return callback(null, localLedger[peerId])
-      } else {
-        console.log(`${peerId} isn't in the Ledger`)
-        return callback(new Error(`${peerId} is not in the Ledger`))
-      }
-    })
+    return callback(null, window.ipfs._bitswap.engine._findOrCreate(peerId))
+    // paratiiIPFS.updateTransactions((err, updated) => {
+    //   if (err) throw err
+    //
+    //   let localLedger = window.localStorage.getItem('paratii-ledger')
+    //   if (!localLedger) {
+    //     localLedger = {}
+    //   } else {
+    //     localLedger = JSON.parse(localLedger)
+    //   }
+    //
+    //   if (localLedger[peerId]) {
+    //     return callback(null, localLedger[peerId])
+    //   } else {
+    //     console.log(`${peerId} isn't in the Ledger`)
+    //     return callback(new Error(`${peerId} is not in the Ledger`))
+    //   }
+    // })
   },
 
  /**
@@ -278,12 +279,25 @@ const paratiiIPFS = {
       throw new Error('meterController size Must be positive')
     }
 
-    let CREDIT_PER_PEER = 10 * 1024 * 1024 // 10 mb
-    paratiiIPFS.getTransactions(peer.id.toB58String(), (err, ledger) => {
+    let CREDIT_PER_PEER = 5529887 / 2
+    paratiiIPFS.getTransactions(peer, (err, ledger) => {
       if (err) throw err
-      if (ledger.accounting.bytesSent <= CREDIT_PER_PEER) {
+      // if (!ledger || !ledger.accounting) {
+      //   console.log('new User. sending block ', peer.toB58String(), size)
+      //   ledger = ledger || {}
+      //   ledger.accounting = ledger.accounting || {}
+      //   ledger.accounting.bytesSent = ledger.accounting.bytesSent || 0
+      //   ledger.accounting.bytesSent = ledger.accounting.bytesSent + size
+      //   window.ipfs._bitswap.engine.ledgerMap.set(peer.toB58String(), ledger)
+      //
+      //   return callback(null, true)
+      // }
+
+      if (ledger.accounting.bytesSent + size <= CREDIT_PER_PEER) {
+        console.log('bytesSent <= CREDIT', ledger.accounting.bytesSent, CREDIT_PER_PEER)
         return callback(null, true)
       } else {
+        console.log('bytesSent > CREDIT', ledger.accounting.bytesSent, CREDIT_PER_PEER)
         return callback(null, false)
       }
     })
