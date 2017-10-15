@@ -4,7 +4,7 @@
     </video>
     {{#unless isLocked }}
     {{ #if status }}<span id="status"><tt>STATUS: {{ status }}</tt></span>{{/if}}
-    <div class="player-controls {{playPause}} {{hideControls}}">
+    <div class="player-controls {{playPause}} {{hideControls}} {{ mutedClass }}">
       <div class="player-controls-wrapper">
         <div class="player-controls-buttons">
           {{#if hasPlaylistId}}
@@ -32,10 +32,21 @@
             </button>
           {{/if}}
           <button id="volume-button" class="player-button player-button-volume" title="volume">
-            <img class="player-button-svg" src={{ volumeIcon }} />
+            <svg class="player-button-svg player-button-svg-mute" viewBox="0 0 20 19">
+              <g transform="translate(-1 -1)">
+                <path d="M2 8v6h4l5 5V3L6 8H2zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM13 2.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z"/>
+                <rect transform="rotate(-44 11 10.5)" x="-2" y="9" width="26" height="3" rx="1.5"/>
+              </g>
+            </svg>
+            <svg class="player-button-svg player-button-svg-volume" viewBox="0 0 19 19">
+              <path d="M0 6v6h4l5 5V1L4 6H0zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM11 .23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z" fill="#FFF" fill-rule="evenodd"/>
+            </svg>
           </button>
-          <div id="vol-control" class="player-volume-control {{ volumeClass }}">
-            <div id="volume-value" class="player-volume-control-bar" style="width: {{ volumeValue }}%"></div>
+        </div>
+
+        <div class="player-controls-volume {{ volumeClass }}">       
+          <div id="vol-control" class="player-controls-volume-slider">
+            <div id="volume-value" class="player-controls-volume-bar" style="width: {{ volumeValue }}%"></div>
             <div id="vol-scrubber" class="player-scrubber" style="left: {{volScrubberTranslate}}%"></div>
           </div>
         </div>
@@ -110,7 +121,7 @@
           {{/if}}
         </div>
         {{#if isLocked }}
-          <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
+          <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">Watch {{formatNumber price}} PTI</button>
         {{/if}}
       </div>
     </div>

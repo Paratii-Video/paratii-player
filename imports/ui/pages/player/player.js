@@ -192,9 +192,9 @@ Template.player.helpers({
   volScrubberTranslate () {
     return Template.instance().playerState.get('volScrubberTranslate')
   },
-  volumeIcon () {
+  mutedClass () {
     const state = Template.instance().playerState.get('muted')
-    return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg'
+    return (state) ? 'muted' : ''
   },
   hasPlaylistId () {
     return FlowRouter.getQueryParam('playlist') != null

@@ -16,7 +16,6 @@ const embedSizes = [
     height: 190
 
   }
-
 ]
 
 /* NEW TEMPLATE */
@@ -45,6 +44,7 @@ Template.modal_share_video.onCreated(function () {
     placement: 'bottom'
   })
 })
+
 Template.modal_share_video.helpers({
   embedSizes,
   embedBaseUrl () {
@@ -87,6 +87,7 @@ Template.modal_share_video.helpers({
     return index === 0
   }
 })
+
 Template.modal_share_video.events({
   'change .sizes' (event) {
     console.log(event.target.value)
