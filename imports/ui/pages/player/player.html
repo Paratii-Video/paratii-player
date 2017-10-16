@@ -3,7 +3,6 @@
     <video id="video-player" class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
     </video>
     {{#unless isLocked }}
-    {{ #if status }}<span id="status" class="visually-hidden"><tt>STATUS: {{ status }}</tt></span>{{/if}}
     <div class="player-controls {{playPause}} {{hideControls}} {{ mutedClass }}">
       <div class="player-controls-wrapper">
         <div class="player-controls-buttons">
@@ -116,13 +115,14 @@
               </button>
             </div>
             <button class="button-text button-text--white button-text--nocase player-infos-button-description" type="button">Show description</button>
+          {{ #if status }}<p id="status" class="player-infos-description-text">STATUS: {{ status }}</p>{{/if}}
           </div>
           {{#if isShowDescription}}
           {{/if}}
+          {{#if isLocked }}
+            <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">Watch {{formatNumber price}} PTI</button>
+          {{/if}}
         </div>
-        {{#if isLocked }}
-          <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">Watch {{formatNumber price}} PTI</button>
-        {{/if}}
       </div>
     </div>
     {{/with}}
