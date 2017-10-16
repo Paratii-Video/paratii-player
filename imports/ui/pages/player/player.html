@@ -3,7 +3,7 @@
     <video id="video-player" class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
     </video>
     {{#unless isLocked }}
-    {{ #if status }}<span id="status"><tt>STATUS: {{ status }}</tt></span>{{/if}}
+    {{ #if status }}<span id="status" class="visually-hidden"><tt>STATUS: {{ status }}</tt></span>{{/if}}
     <div class="player-controls {{playPause}} {{hideControls}} {{ mutedClass }}">
       <div class="player-controls-wrapper">
         <div class="player-controls-buttons">
