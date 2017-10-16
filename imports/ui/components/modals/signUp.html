@@ -1,0 +1,32 @@
+<template name="modal_sign_up">
+  <div class="modal fade main-modal main-modal-signup">
+    <div class="main-modal-wrapper">
+      <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{fullscreen}}">
+        <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
+          <path id="X" class="cls-1" d="M15.5,2.068,13.432,0,7.754,5.685,2.068,0,0,2.068,5.685,7.754,0,13.432,2.068,15.5,7.754,9.822,13.432,15.5,15.5,13.432,9.822,7.754Z" transform="translate(609.5 451.9)"/>
+        </svg>
+      </button>
+      <!-- #signup -->
+      <div class="main-modal-content">
+        <h3 class="main-modal-title">Sign up</h3>
+        <form class="main-modal-form" action="">
+          <div class="main-form-label username">
+            <input class="main-form-input username" type="text" placeholder="username" />
+          </div>
+          <div class="main-form-label">
+            <input class="main-form-input email" type="email" placeholder="email" />
+          </div>
+          <div class="main-form-label password">
+            <input class="main-form-input main-form-input-password password" type="password" placeholder="password" />
+            <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
+          </div>
+          <div class="main-modal-footer">
+            <button class="button-text button-text--grey-light main-modal-button cancel" type="button">Sign in</button>
+            <button class="button-text main-modal-button signup" type="submit">Sign up</button>
+          </div>
+        </form>
+      </div>
+      <!-- /signup -->
+    </div>
+  </div>
+</template>
