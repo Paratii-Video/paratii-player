@@ -70,7 +70,7 @@ describe('player page', function () {
   it('increments the likes counter when clicked', function () {
     let data = {}
     withRenderedTemplate('player', data, (el) => {
-      assert.equal($(el).find('#button-like').text(), '3.141')
+      assert.equal($(el).find('#button-like').text().trim(), '3.141')
     })
     Template.player.fireEvent('click #button-like')
     // (it is probably easier to write a full-app test, instead of a unittest like this)
@@ -83,7 +83,7 @@ describe('player page', function () {
   it('increments the dislikes counter when clicked', function () {
     let data = {}
     withRenderedTemplate('player', data, (el) => {
-      assert.equal($(el).find('#button-dislike').text(), '2.718')
+      assert.equal($(el).find('#button-dislike').text().trim(), '2.718')
     })
     Template.player.fireEvent('click #button-dislike')
     // TODO: this text fails, because there is no logged in user at this point
