@@ -11,6 +11,8 @@ import * as HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/signIn.js'
 import '/imports/ui/components/modals/signUp.js'
+import '/imports/ui/components/modals/waitConfirm.js'
+import '/imports/ui/components/modals/confirmAccount.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/modals.js'
 import '/imports/ui/components/modals/unlockVideo.js'
@@ -475,8 +477,12 @@ Template.player.events({
     Meteor.call('videos.dislike', videoId)
   },
   'click #embed' () {
-    Modal.show('modal_share_video')
-    // const videoId = _video._id
+    const videoId = _video._id
+    Modal.show('modal_share_video', {
+      videoId: videoId,
+      label: 'Embed code',
+      embed: window.top !== window.self
+    })
     // Modal.show('embedCustomizer', {
     //   videoId: videoId,
     //   label: 'Embed code',
