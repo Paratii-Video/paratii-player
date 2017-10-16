@@ -2,6 +2,7 @@
 'use strict'
 import { Meteor } from 'meteor/meteor'
 import { getUserPTIAddress } from '/imports/api/users.js'
+import { setImmediate } from 'lodash'
 import Protocol from 'paratii-protocol'
 
 const REPO_PATH = 'paratii-ipfs-repo'
@@ -37,7 +38,7 @@ const paratiiIPFS = {
             config: {
               Addresses: {
                 Swarm: [
-                  '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
+                  // '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
                   // run our own star-signal server.
                   // https://github.com/libp2p/js-libp2p-webrtc-star
                   // '/ip4/34.213.133.148/tcp/42000/wss/p2p-webrtc-star'
@@ -65,6 +66,10 @@ const paratiiIPFS = {
           })
         } else {
           window.ipfs = new Ipfs({
+            bitswap: {
+              maxMessageSize: 32 * 1024,
+              meterController: paratiiIPFS.meterController
+            },
             repo: String(Math.random()),
             config: {
               Addresses: {
@@ -112,6 +117,7 @@ const paratiiIPFS = {
 
           window.ipfs.id().then((id) => {
             let peerInfo = id
+            paratiiIPFS.id = id
             console.log('[IPFS] id: ', peerInfo)
             let ptiAddress = getUserPTIAddress() || 'no_address'
             paratiiIPFS.protocol = new Protocol(
@@ -120,6 +126,10 @@ const paratiiIPFS = {
               // add ETH Address here.
               ptiAddress
             )
+
+            paratiiIPFS.protocol.notifications.on('message:new', (peerId, msg) => {
+              console.log('[paratii-protocol] ', peerId.toB58String(), ' new Msg: ', msg)
+            })
 
             paratiiIPFS.protocol.start(callback)
 
@@ -218,6 +228,81 @@ const paratiiIPFS = {
     window.localStorage.setItem('paratii-ledger', JSON.stringify(localLedger))
     callback(null, 1)
   },
+
+  /**
+   * get Cached Ledger book for peer.
+   * @param  {string}   peerId   peer B58String
+   * @param  {Function} callback returns (err, ledger)
+   */
+  getTransactions: (peerId, callback) => {
+    return callback(null, window.ipfs._bitswap.engine._findOrCreate(peerId))
+    // paratiiIPFS.updateTransactions((err, updated) => {
+    //   if (err) throw err
+    //
+    //   let localLedger = window.localStorage.getItem('paratii-ledger')
+    //   if (!localLedger) {
+    //     localLedger = {}
+    //   } else {
+    //     localLedger = JSON.parse(localLedger)
+    //   }
+    //
+    //   if (localLedger[peerId]) {
+    //     return callback(null, localLedger[peerId])
+    //   } else {
+    //     console.log(`${peerId} isn't in the Ledger`)
+    //     return callback(new Error(`${peerId} is not in the Ledger`))
+    //   }
+    // })
+  },
+
+ /**
+  * Clear transactions Cache
+  * @param  {Function} callback callback when done
+  */
+  clearTransactionsCache: (callback) => {
+    window.localStorage.removeItem('paratii-ledger', null)
+    setImmediate(callback)
+  },
+
+/**
+ * the meteroController handles whether a peer should get the block or not.
+ * @param  {Peer}   peer     IPFS Peer Object
+ * @param  {uint}   size     total size of the block(s)
+ * @param  {Function} callback returns (err, proceed)
+ */
+  meterController: (peer, size, callback) => {
+    if (!callback) {
+      throw new Error('meteroController Requires a callback & size')
+    }
+
+    if (size && parseInt(size) < 0) {
+      throw new Error('meterController size Must be positive')
+    }
+
+    let CREDIT_PER_PEER = 5529887 / 2
+    paratiiIPFS.getTransactions(peer, (err, ledger) => {
+      if (err) throw err
+      // if (!ledger || !ledger.accounting) {
+      //   console.log('new User. sending block ', peer.toB58String(), size)
+      //   ledger = ledger || {}
+      //   ledger.accounting = ledger.accounting || {}
+      //   ledger.accounting.bytesSent = ledger.accounting.bytesSent || 0
+      //   ledger.accounting.bytesSent = ledger.accounting.bytesSent + size
+      //   window.ipfs._bitswap.engine.ledgerMap.set(peer.toB58String(), ledger)
+      //
+      //   return callback(null, true)
+      // }
+
+      if (ledger.accounting.bytesSent + size <= CREDIT_PER_PEER) {
+        console.log('bytesSent <= CREDIT', ledger.accounting.bytesSent, CREDIT_PER_PEER)
+        return callback(null, true)
+      } else {
+        console.log('bytesSent > CREDIT', ledger.accounting.bytesSent, CREDIT_PER_PEER)
+        return callback(null, false)
+      }
+    })
+  },
+
   start: (callback) => {
     if (!window.Ipfs) {
       return callback(new Error('window.Ipfs is not available, call initIPFS first'))

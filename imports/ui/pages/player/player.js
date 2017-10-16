@@ -7,7 +7,8 @@ import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
-import { createIPFSPlayer } from './ipfs_hls.js'
+import * as HLSPlayer from './ipfs_hls.js'
+import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/modals.js'
 import '/imports/ui/components/modals/unlockVideo.js'
@@ -43,8 +44,11 @@ function renderVideoElement (instance) {
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo)
     instance.playerState.set('torrent', true)
-  } else if (currentVideo.src.startsWith('/ipfs')) {
+  } else if (currentVideo.src.startsWith('/ipfs/Qmb3eFpLCNGg1NrPcY5RcHhznibVGuPT28fzZQ7egTzv37')) {
     createIPFSPlayer(instance, currentVideo)
+    instance.playerState.set('ipfs', true)
+  } else if (currentVideo.src.startsWith('/ipfs')) {
+    HLSPlayer.createIPFSPlayer(instance, currentVideo)
     instance.playerState.set('ipfs', true)
   } else {
     const videoElement = $('#video-player')
