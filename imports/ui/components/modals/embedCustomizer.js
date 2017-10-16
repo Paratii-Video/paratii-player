@@ -16,10 +16,11 @@ const embedSizes = [
     height: 190
 
   }
-
 ]
 
-Template.embedCustomizer.onCreated(function () {
+/* NEW TEMPLATE */
+
+Template.modal_share_video.onCreated(function () {
   this.iframe = new ReactiveDict()
   // default size
   this.iframe.set('size', embedSizes[0])
@@ -43,7 +44,8 @@ Template.embedCustomizer.onCreated(function () {
     placement: 'bottom'
   })
 })
-Template.embedCustomizer.helpers({
+
+Template.modal_share_video.helpers({
   embedSizes,
   embedBaseUrl () {
     return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + 'embed/' + this.videoId
@@ -85,7 +87,8 @@ Template.embedCustomizer.helpers({
     return index === 0
   }
 })
-Template.embedCustomizer.events({
+
+Template.modal_share_video.events({
   'change .sizes' (event) {
     console.log(event.target.value)
     const size = event.target.value
@@ -104,6 +107,8 @@ Template.embedCustomizer.events({
     Template.instance().iframe.set('playsinline', event.target.checked)
   }
 })
+
+//
 
 function setTooltip (message) {
   $('#copy_to_clipboard').tooltip('hide')

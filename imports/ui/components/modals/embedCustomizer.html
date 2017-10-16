@@ -1,43 +1,61 @@
-<template name="embedCustomizer">
-  <div class="modal fade">
-    <form id="form-embedCustomizer">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <!-- Header -->
-          <div class="modal-header">
-            <h4 class="modal-title">{{ label }}</h4>
+<template name="modal_share_video">
+  <div class="modal fade main-modal main-modal-share">
+    <div class="main-modal-wrapper">
+      <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{fullscreen}}">
+        <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
+          <path id="X" class="cls-1" d="M15.5,2.068,13.432,0,7.754,5.685,2.068,0,0,2.068,5.685,7.754,0,13.432,2.068,15.5,7.754,9.822,13.432,15.5,15.5,13.432,9.822,7.754Z" transform="translate(609.5 451.9)"/>
+        </svg>
+      </button>
+      <!-- #share video -->
+      <div class="main-modal-content">
+        <h3 class="main-modal-title">Embed video</h3>
+        <div class="main-modal-share-option">
+          <p class="main-modal-subtitle">Capabilities:</p>
+          <div class="main-modal-share-options">
+            <label class="main-form-label main-form-label-checkbox fullscreen">
+              Fullscreen
+              <input class="main-form-checkbox" type="checkbox" name="fullscreen">
+              <span class="main-form-checkbox-checked"></span>
+            </label>
+            <label class="main-form-label main-form-label-checkbox autoplay">
+              Autoplay
+              <input class="main-form-checkbox" type="checkbox" name="autoplay">
+              <span class="main-form-checkbox-checked"></span>
+            </label>
+            <label class="main-form-label main-form-label-checkbox loop">
+              Loop
+              <input class="main-form-checkbox" type="checkbox" name="loop">
+              <span class="main-form-checkbox-checked"></span>
+            </label>
+            <label class="main-form-label main-form-label-checkbox playsinline">
+              Playsinline (iOS)
+              <input class="main-form-checkbox" type="checkbox" name="playsinline">
+              <span class="main-form-checkbox-checked"></span>
+            </label>
           </div>
-          <!-- Body -->
-
-          <div class="modal-body">
-            <p> Capabilities: </p>
-            <div>
-              <input type="checkbox" name="fullscreen" class="fullscreen" /> Allow fullscreen?
-              <input type="checkbox" name="autoplay" class="autoplay" /> Allow autoplay?
-              <input type="checkbox" name="loop" class="loop" /> Allow loop?
-              <input type="checkbox" name="playsinline" class="playsinline" /> Allow playsinline (iOS)?
-            </div>
-            <p> Sizes: </p>
-            <div>
-              {{#each embedSizes}}
-                <input type="radio" name="sizes" class="sizes" value="{{@index}}" checked={{isChecked @index}}> {{ type }}<br>
-              {{/each}}
-
-            </div>
-            <p> Code for embedding </p>
-            <pre id="to_clip" class="embed_code">{{code}}</pre>
-            {{#unless embed}}
-              {{{code}}}
-            {{/unless}}
+        </div>
+        <div class="main-modal-share-option">
+          <p class="main-modal-subtitle">Sizes:</p>
+          <div class="main-modal-share-options">
+            {{#each embedSizes}}
+              <label class="main-form-label main-form-label-checkbox playsinline">
+                {{ type }}
+                <input class="main-form-checkbox sizes" type="radio" name="sizes" value="{{@index}}" checked=
+                {{isChecked @index}}>
+                <span class="main-form-checkbox-checked"></span>
+              </label>
+            {{/each}}
           </div>
-          <!-- Footer -->
-          <div class="modal-footer">
-            <button type="button" id="copy_to_clipboard" data-clipboard-target="#to_clip" class="btn btn-default blue-button"> Copy to clipboard </button>
-            <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-trans-close">Close</button>
-          </div>
+        </div>
+        <input class="input-copy-code main-form-input" onclick="this.focus();this.select()" readonly="readonly" value="{{code}}" />
+        <pre id="to_clip" class="visually-hidden">{{code}}</pre>
 
+        <div class="main-modal-footer">
+          <button class="button-text button-text--grey-light">Copy link</button>
+          <button id="copy_to_clipboard"  class="button-text" data-clipboard-target="#to_clip">Copy code</button>
         </div>
       </div>
-    </form>
+      <!-- /share video -->
+    </div>
   </div>
 </template>

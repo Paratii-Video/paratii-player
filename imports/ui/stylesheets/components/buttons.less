@@ -9,6 +9,7 @@
     font-size: 14px;
     font-weight: 500;
     text-transform: uppercase;
+    user-select: none;
 
     // Colors
 
@@ -24,6 +25,10 @@
       color: @color-grey-dark;
     }
 
+    &--white {
+      color: @color-white;
+    }
+
     &--nocase {
       text-transform: none;
     }
@@ -36,7 +41,7 @@
 
     &-icon {
       fill: @color-purple;
-      height: 32px;
+      height: 25px;
       transform: translateY(-2px);
       vertical-align: middle;
 

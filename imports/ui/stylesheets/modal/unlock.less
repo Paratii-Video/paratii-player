@@ -1,6 +1,12 @@
-// Modal buy
+// Modal unlock
 
-.main-modal-buy {
+.main-modal-unlock {
+  &-wrapper {
+    .error & {
+      animation: shakeAnim .5s @ease-smooth;
+    }
+  }
+
   &-info {
     align-items: center;
     display: flex;
@@ -68,31 +74,27 @@
       color: @color-red;
     }
   }
-}
 
-.main-modal-content-buy {
-  .main-form-label {
+  &-label {
     .success & {
       display: none;
     }
   }
 
-  .main-form-button-forgot {
+  &-anchor {
     .success & {
       display: none;
     }
   }
 
-  .button-text {
-    &.confirm {
-
+  &-button {
+    &-confirm {
       .loading &,
       .success & {
         display: none;
       }
     }
-
-    &.watch {
+    &-watch {
       display: none;
 
       .success & {

@@ -59,7 +59,7 @@ describe('Video Store: ', function () {
 
     // the video should be unlocked now
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForExist('#video-is-unlocked', 5000)
+    browser.waitForExist('.player-controls', 5000)
 
     done()
   })

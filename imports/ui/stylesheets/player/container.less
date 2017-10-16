@@ -8,4 +8,19 @@
   top: 0px;
   transition: 0.5s;
   width: 100%;
+
+  &::before {
+    &:extend(.pos-a-full all);
+
+    background: rgba(0, 0, 0, .5);
+    content: '';
+    pointer-events: none;
+    transition: opacity .3s;
+    z-index: @zindex-player-overlay;
+
+    .playing & {
+      opacity: 0;
+      transition: opacity .3s linear .15s;
+    }
+  }
 }

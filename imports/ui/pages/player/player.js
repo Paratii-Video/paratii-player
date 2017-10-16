@@ -10,6 +10,7 @@ import { createWebtorrentPlayer } from './webtorrent.js'
 import * as HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
+import '/imports/ui/components/modals/modals.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 
 import './player.html'
@@ -96,6 +97,8 @@ Template.player.onCreated(function () {
   this.playerState.set('loop', loop === 1)
   this.playerState.set('playsinline', playsinline === 1)
   this.playerState.set('type', type === 1)
+  // Description
+  this.playerState.set('showDescription', false)
 
   console.log('navState:', this.navState.get())
 
@@ -193,9 +196,9 @@ Template.player.helpers({
   volScrubberTranslate () {
     return Template.instance().playerState.get('volScrubberTranslate')
   },
-  volumeIcon () {
+  mutedClass () {
     const state = Template.instance().playerState.get('muted')
-    return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg'
+    return (state) ? 'muted' : ''
   },
   hasPlaylistId () {
     return FlowRouter.getQueryParam('playlist') != null
@@ -215,6 +218,9 @@ Template.player.helpers({
   },
   type () {
     return Template.instance().playerState.get('type')
+  },
+  descriptionClass () {
+    return Template.instance().playerState.get('showDescription') ? 'show-description' : ''
   }
 })
 
@@ -249,6 +255,7 @@ const pauseVideo = (instance) => {
   Meteor.clearTimeout(controlsHandler)
   instance.playerState.set('hideControls', false)
   $('#app-container').removeClass('playing')
+  $('div.main-app').removeClass('hide-nav')
 }
 
 const playVideo = (instance) => {
@@ -259,6 +266,7 @@ const playVideo = (instance) => {
   navState.set('closed')
   videoPlayer.play()
   $('#app-container').addClass('playing')
+  $('div.main-app').addClass('hide-nav')
   controlsHandler = Meteor.setTimeout(() => {
     if (!videoPlayer.paused) {
       dict.set('hideControls', true)
@@ -465,11 +473,15 @@ Template.player.events({
     Meteor.call('videos.dislike', videoId)
   },
   'click #embed' () {
-    const videoId = _video._id
-    Modal.show('embedCustomizer', {
-      videoId: videoId,
-      label: 'Embed code',
-      embed: window.top !== window.self
-    })
+    Modal.show('modal_share_video')
+    // const videoId = _video._id
+    // Modal.show('embedCustomizer', {
+    //   videoId: videoId,
+    //   label: 'Embed code',
+    //   embed: window.top !== window.self
+    // })
+  },
+  'click .player-infos-button-description' (event, instance) {
+    instance.playerState.set('showDescription', !instance.playerState.get('showDescription'))
   }
 })

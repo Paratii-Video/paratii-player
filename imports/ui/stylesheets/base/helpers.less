@@ -75,29 +75,49 @@
   width: 100%;
 }
 
+// middle
+
+.pos-a-m {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+
 // vertical middle
 
-.pos-a-v {
+.pos-a-vm {
   position: absolute;
   top: 50%;
   transform: translate3d(0, -50%, 0);
-
 }
 
 
 // Animations
 // Keyframes
 
-
-@keyframes fromTop {
+@keyframes showUp {
   from {
     transform: translateY(20px);
     opacity: 0;
   }
 
   to {
-    transform: translateY(0px);
+    transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes hideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(20px);
+    opacity: 0;
   }
 }
 
