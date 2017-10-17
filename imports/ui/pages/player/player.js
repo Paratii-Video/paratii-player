@@ -308,7 +308,7 @@ const setLoadedProgress = (instance) => {
 
 Template.player.events({
   'click #unlock-video' (event) {
-    if(Meteor.user()) {
+    if (Meteor.user()) {
       Modal.show('unlockVideo', {
         type: 'PTI',
         label: 'Unlock this video',

@@ -21,7 +21,7 @@ Template.modal_sign_in.events({
     $email.removeClass('error')
     $password.removeClass('error')
 
-    if (!emailValidation(email)) {      
+    if (!emailValidation(email)) {
       $email.addClass('error')
     } else {
       $email.removeClass('error')
@@ -32,7 +32,7 @@ Template.modal_sign_in.events({
             $password.addClass('error')
           }
         } else {
-           Modal.hide('modal_sign_in')
+          Modal.hide('modal_sign_in')
         }
       })
     }
