@@ -10,7 +10,6 @@ import { createWebtorrentPlayer } from './webtorrent.js'
 import * as HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/signIn.js'
-import '/imports/ui/components/modals/signUp.js'
 import '/imports/ui/components/modals/waitConfirm.js'
 import '/imports/ui/components/modals/confirmAccount.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
@@ -309,15 +308,19 @@ const setLoadedProgress = (instance) => {
 
 Template.player.events({
   'click #unlock-video' (event) {
-    Modal.show('unlockVideo', {
-      type: 'PTI',
-      label: 'Unlock this video',
-      action: 'unlock_video',
-      price: event.target.dataset.price, // Video Price
-      address: event.target.dataset.address, // Creator PTI address
-      videotitle: event.target.dataset.title, // Video title
-      videoid: _video._id // Video title
-    })
+    if(Meteor.user()) {
+      Modal.show('unlockVideo', {
+        type: 'PTI',
+        label: 'Unlock this video',
+        action: 'unlock_video',
+        price: event.target.dataset.price, // Video Price
+        address: event.target.dataset.address, // Creator PTI address
+        videotitle: event.target.dataset.title, // Video title
+        videoid: _video._id // Video title
+      })
+    } else {
+      Modal.show('modal_sign_in')
+    }
   },
   'ended #video-player' (event, instance) {
     const navState = instance.navState
@@ -476,18 +479,13 @@ Template.player.events({
     const videoId = _video._id
     Meteor.call('videos.dislike', videoId)
   },
-  'click #embed' () {
+  'click #embed' (event, instance) {
     const videoId = _video._id
     Modal.show('modal_share_video', {
       videoId: videoId,
       label: 'Embed code',
       embed: window.top !== window.self
     })
-    // Modal.show('embedCustomizer', {
-    //   videoId: videoId,
-    //   label: 'Embed code',
-    //   embed: window.top !== window.self
-    // })
   },
   'click .player-infos-button-description' (event, instance) {
     instance.playerState.set('showDescription', !instance.playerState.get('showDescription'))
