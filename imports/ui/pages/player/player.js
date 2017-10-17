@@ -9,7 +9,7 @@ import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import * as HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
-import '/imports/ui/components/modals/signIn.js'
+import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/waitConfirm.js'
 import '/imports/ui/components/modals/confirmAccount.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
@@ -319,7 +319,9 @@ Template.player.events({
         videoid: _video._id // Video title
       })
     } else {
-      Modal.show('modal_sign_in')
+      Modal.show('modal_sign', {
+        type: 'sign_in'
+      })
     }
   },
   'ended #video-player' (event, instance) {
