@@ -79,14 +79,23 @@ function sendForms (type) {
     } else {
       Accounts.createUser(userData, (err) => {
         if (err) {
-          if (err.reason === 'Password may not be empty') {
+          if (err.reason === 'Need to set a username or email') {
+            $email.addClass('error')
+            $username.addClass('error')
+            $password.removeClass('error')
+          } else if (err.reason === 'Password may not be empty') {
+            $email.removeClass('error')
+            $username.removeClass('error')
+            $password.addClass('error')
+          } else if (err.reason === 'Email already exists') {
             $email.removeClass('error')
             $username.removeClass('error')
             $password.addClass('error')
           } else {
-            $email.addClass('error')
-            $password.addClass('error')
-            $username.addClass('error')
+            $email.removeClass('error')
+            $password.removeClass('error')
+            $username.removeClass('error')
+            console.log(err)
           }
         } else {
           Modal.hide('modal_sign')
