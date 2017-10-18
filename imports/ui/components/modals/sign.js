@@ -4,7 +4,6 @@ let $modal
 let $email
 let $password
 let $username
-let $buttonPassword
 let isModalOpened = false
 const animIn = 10
 const animOut = 500
@@ -19,7 +18,6 @@ function modalGetElements (type) {
   $modal = $('div.main-modal-sign')
   $email = $('[name=email]')
   $password = $('[name=password]')
-  $buttonPassword = $('[name=password]')
   if (type === 'sign-up') {
     $username = $('[name=username]')
   }
@@ -43,12 +41,6 @@ function modalShowContent (type) {
 function modalHideContent (template, type) {
   $modal.removeClass('show-content')
   Meteor.setTimeout(() => template.templateInstance().modalState.set('type', type), animOut)
-}
-
-function changePasswordType () {
-  let inputType = $buttonPassword.attr('type')
-  inputType = (inputType === 'text') ? 'password' : 'text'
-  $buttonPassword.attr('type', inputType)
 }
 
 function sendForms (type) {
@@ -122,6 +114,14 @@ Template.modal_sign.onCreated(function () {
 
 // Sign in
 
+Template.modal_sign_in.helpers({
+  passwordType: () => Session.get('passwordType')
+})
+
+Template.modal_sign_in.onCreated(() => {
+  Session.set('passwordType', 'password')
+})
+
 Template.modal_sign_in.onRendered(() => modalShowContent('sign-in'))
 
 Template.modal_sign_in.events({
@@ -129,7 +129,8 @@ Template.modal_sign_in.events({
     modalHideContent(instance.view.parentView.parentView, 'sign_up')
   },
   'click button.password' (event, instance) {
-    changePasswordType()
+    let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
+    Session.set('passwordType', inputType)
   },
   'submit form.main-modal-form' (event) {
     event.preventDefault()
@@ -139,6 +140,14 @@ Template.modal_sign_in.events({
 
 // Sign up
 
+Template.modal_sign_up.helpers({
+  passwordType: () => Session.get('passwordType')
+})
+
+Template.modal_sign_up.onCreated(() => {
+  Session.set('passwordType', 'password')
+})
+
 Template.modal_sign_up.onRendered(() => modalShowContent('sign-up'))
 
 Template.modal_sign_up.events({
@@ -146,7 +155,8 @@ Template.modal_sign_up.events({
     modalHideContent(instance.view.parentView.parentView, 'sign_in')
   },
   'click button.password' (event, instance) {
-    changePasswordType()
+    let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
+    Session.set('passwordType', inputType)
   },
   'submit form.main-modal-form' (event) {
     event.preventDefault()
