@@ -1,10 +1,11 @@
 import './sign.html'
 
-let $modal
-let $email
-let $password
-let $username
-let isModalOpened = false
+var $modal
+var $email
+var $password
+var $username
+var isModalOpened = false
+var userData
 const animIn = 10
 const animOut = 500
 
@@ -26,7 +27,7 @@ function modalGetElements (type) {
 function modalShowContent (type) {
   let timeAnimIn
 
-  modalGetElements(type)
+  if (type !== 'confirm') modalGetElements(type)
 
   timeAnimIn = animIn
 
@@ -43,8 +44,8 @@ function modalHideContent (template, type) {
   Meteor.setTimeout(() => template.templateInstance().modalState.set('type', type), animOut)
 }
 
-function sendForms (type) {
-  let userData = {
+function formValidation (type) {
+  userData = {
     username: (type === 'sign-up') ? $username.val() : '',
     email: $email.val(),
     password: $password.val()
@@ -56,44 +57,12 @@ function sendForms (type) {
 
   if (type === 'sign-up' && userData.username.lenght < 2) {
     $username.addClass('error')
+    return false
   } else if (!emailValidation(userData.email)) {
     $email.addClass('error')
+    return false
   } else {
-    if (type === 'sign-in') {
-      Meteor.loginWithPassword(userData.email, userData.password, (err) => {
-        if (err) {
-          $email.addClass('error')
-          $password.addClass('error')
-        } else {
-          Modal.hide('modal_sign')
-        }
-      })
-    } else {
-      Accounts.createUser(userData, (err) => {
-        if (err) {
-          if (err.reason === 'Need to set a username or email') {
-            $email.addClass('error')
-            $username.addClass('error')
-            $password.removeClass('error')
-          } else if (err.reason === 'Password may not be empty') {
-            $email.removeClass('error')
-            $username.removeClass('error')
-            $password.addClass('error')
-          } else if (err.reason === 'Email already exists') {
-            $email.removeClass('error')
-            $username.removeClass('error')
-            $password.addClass('error')
-          } else {
-            $email.removeClass('error')
-            $password.removeClass('error')
-            $username.removeClass('error')
-            console.log(err)
-          }
-        } else {
-          Modal.hide('modal_sign')
-        }
-      })
-    }
+    return true
   }
 }
 
@@ -128,13 +97,22 @@ Template.modal_sign_in.events({
   'click button.gotosignup' (event, instance) {
     modalHideContent(instance.view.parentView.parentView, 'sign_up')
   },
-  'click button.password' (event, instance) {
+  'click button.password' () {
     let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
     Session.set('passwordType', inputType)
   },
-  'submit form.main-modal-form' (event) {
+  'submit form.main-modal-form' (event, instance) {
     event.preventDefault()
-    sendForms('sign-in')
+    if (formValidation('sign-in')) {
+      Meteor.loginWithPassword(userData.email, userData.password, (err) => {
+        if (err) {
+          $email.addClass('error')
+          $password.addClass('error')
+        } else {
+          Modal.hide('modal_sign')
+        }
+      })
+    }
   }
 })
 
@@ -154,12 +132,80 @@ Template.modal_sign_up.events({
   'click button.gotosignin' (event, instance) {
     modalHideContent(instance.view.parentView.parentView, 'sign_in')
   },
+  'click button.password' () {
+    let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
+    Session.set('passwordType', inputType)
+  },
+  'submit form.main-modal-form' (event, instance) {
+    event.preventDefault()
+    if (formValidation('sign-up')) {
+      Accounts.createUser(userData, (err) => {
+        if (err) {
+          if (err.reason === 'Need to set a username or email') {
+            $email.addClass('error')
+            $username.addClass('error')
+            $password.removeClass('error')
+          } else if (err.reason === 'Password may not be empty') {
+            $email.removeClass('error')
+            $username.removeClass('error')
+            $password.addClass('error')
+          } else if (err.reason === 'Email already exists') {
+            $email.removeClass('error')
+            $username.removeClass('error')
+            $password.addClass('error')
+          } else {
+            $email.removeClass('error')
+            $password.removeClass('error')
+            $username.removeClass('error')
+            console.log(err)
+          }
+        } else {
+          modalHideContent(instance.view.parentView.parentView, 'confirm')
+        }
+      })
+    }
+  }
+})
+
+// Cofirm
+
+Template.modal_wait_confirm.onRendered(() => modalShowContent('confirm'))
+
+Template.modal_wait_confirm.events({
+  'click button.gotosignin' (event, instance) {
+    modalHideContent(instance.view.parentView.parentView, 'sign_in')
+  },
   'click button.password' (event, instance) {
     let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
     Session.set('passwordType', inputType)
   },
   'submit form.main-modal-form' (event) {
     event.preventDefault()
-    sendForms('sign-up')
+    if (formValidation('sign-up')) {
+      Accounts.createUser(userData, (err) => {
+        if (err) {
+          if (err.reason === 'Need to set a username or email') {
+            $email.addClass('error')
+            $username.addClass('error')
+            $password.removeClass('error')
+          } else if (err.reason === 'Password may not be empty') {
+            $email.removeClass('error')
+            $username.removeClass('error')
+            $password.addClass('error')
+          } else if (err.reason === 'Email already exists') {
+            $email.removeClass('error')
+            $username.removeClass('error')
+            $password.addClass('error')
+          } else {
+            $email.removeClass('error')
+            $password.removeClass('error')
+            $username.removeClass('error')
+            console.log(err)
+          }
+        } else {
+          Modal.hide('modal_sign')
+        }
+      })
+    }
   }
 })

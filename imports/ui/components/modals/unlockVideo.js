@@ -34,7 +34,7 @@ Template.unlockVideo.helpers({
 })
 
 Template.unlockVideo.events({
-  'click button.password' (event, instance) {
+  'click button.password' () {
     let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
     Session.set('passwordType', inputType)
   },
