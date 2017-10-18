@@ -1,5 +1,5 @@
 <template name="unlockVideo">
-  <div class="modal fade main-modal main-modal-unlock {{#if getErrors 'user_password'}}error{{/if}}">
+  <div class="modal fade main-modal main-modal-unlock show-content {{#if getErrors 'user_password'}}error{{/if}}">
     <div class="main-modal-wrapper main-modal-unlock-wrapper">
       <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{fullscreen}}">
         <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
@@ -73,37 +73,3 @@
     </div>
   </div>
 </template>
-<!-- 
-  <div class="modal fade main-modal main-modal-unlock {{ action }} {{#if getErrors 'wallet_amount'}}has-error{{/if}}">
-    <div class="main-modal-wrapper">
-      <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{fullscreen}}">
-        <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
-          <path id="X" class="cls-1" d="M15.5,2.068,13.432,0,7.754,5.685,2.068,0,0,2.068,5.685,7.754,0,13.432,2.068,15.5,7.754,9.822,13.432,15.5,15.5,13.432,9.822,7.754Z" transform="translate(609.5 451.9)"/>
-        </svg>
-      </button>
-      <form id="form-unlockVideo" class="main-modal-form main-modal-content {{ action }}" action="">
-        <h3 class="main-modal-title">{{ label }}</h3>
-        <div class="form-group {{#if getErrors 'wallet_amount'}}has-error{{/if}}">
-          {{#if getErrors 'wallet_amount'}}<label class="control-label">{{ getErrors 'wallet_amount' }}</label>{{/if}}
-          <div class="input-group">
-            <span class="input-group-addon" id="sizing-addon3">{{ type }}</span>
-            {{#if action}}
-              <input name="wallet_amount" type="text" value="{{price}}" class="form-control" aria-describedby="sizing-addon1" readonly>
-            {{/if}}
-          </div>
-        </div>
-        <tt>{{ videotitle }}</tt>
-        <div class="form-group {{#if getErrors 'user_password'}}has-error{{/if}}">
-          {{#if getErrors 'user_password'}}<label class="control-label">{{ getErrors 'user_password' }}</label>{{/if}}
-          <div class="input-group">
-              <span class="input-group-addon" id="sizing-addon3">Password</span>
-              <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
-          </div>
-        </div>
-        <div class="main-modal-footer">
-          <button id="send_trans_btn" class="button-text main-modal-button confirm" type="submit">Confirm</button>
-        </div>
-      </form>
-    </div>
-  </div>
- -->
