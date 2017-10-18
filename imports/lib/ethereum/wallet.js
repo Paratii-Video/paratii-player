@@ -94,11 +94,11 @@ function createAnonymousKeystore () {
 // getKeystore tries to load the keystore from the Session,
 // or, if it is not found there, restore it from localstorage.
 // If no keystore can be found, it returns undefined.
-export function getKeystore () {
+export function getKeystore (user = null) {
   let serializedKeystore
   let userId = Accounts.userId()
   // If the user is not logged in
-  if (userId === null) {
+  if (user === 'anonymous') {
     userId = 'anonymous'
   }
   serializedKeystore = Session.get(`keystore-${userId}`)
@@ -111,8 +111,8 @@ export function getKeystore () {
   // using lightwallet to deserialize the keystore
   if (serializedKeystore !== null) {
     const keystore = lightwallet.keystore.deserialize(serializedKeystore)
-    const address = keystore.getAddresses()[0]
-    Session.set('userPTIAddress', add0x(address))
+    // const address = keystore.getAddresses()[0]
+    // Session.set('userPTIAddress', add0x(address))
     return keystore
   }
   return null
@@ -169,7 +169,9 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
 
   const keystore = getKeystore()
   keystore.keyFromPassword(password, function (error, pwDerivedKey) {
-    if (error) throw error
+    if (error) {
+      throw error
+    }
     // sign the transaction
     const txOptions = {
       nonce: web3.toHex(nonce),

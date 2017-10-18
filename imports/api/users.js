@@ -2,10 +2,41 @@
 /* eslint-disable no-alert */
 import { Accounts } from 'meteor/accounts-base'
 import { check } from 'meteor/check'
-import { getKeystore } from '/imports/lib/ethereum/wallet.js'
+import { keystoresCheck, getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { add0x } from '/imports/lib/utils.js'
 
 const Promise = require('bluebird')
+
+if (Meteor.isClient) {
+  Accounts.onLogin(function (user) {
+    // User Logged In
+    console.log('logged in!')
+    const keystores = keystoresCheck()
+    console.log(keystores)
+    const keystore = getKeystore()
+    Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))
+    // Check if there is an anonymous keystore
+    if (keystores.anonymous > 0) {
+      const keystoreAnonymous = getKeystore('anonymous')
+      Session.set('anonymousAddress', add0x(keystoreAnonymous.getAddresses()[0]))
+      console.log('keystore')
+      console.log(add0x(keystore.getAddresses()[0]))
+      console.log('keystore anonymous')
+      console.log(add0x(keystoreAnonymous.getAddresses()[0]))
+    }
+  })
+
+  Accounts.onLogout(function (user) {
+    // User Logged Out
+    console.log('logged out')
+    // Reset all session values
+    Session.set('userPTIAddress', null)
+    Session.set('tempSeed', null)
+    Session.set('tempKeystore', null)
+    Session.set('tempAddress', null)
+    Session.set('wallet-state', null)
+  })
+}
 
 // Deny all client-side updates to user documents
 Meteor.users.deny({
@@ -30,6 +61,7 @@ if (Meteor.isServer) {
 if (Meteor.isClient) {
   Meteor.subscribe('userData')
 }
+
 if (Meteor.isServer) {
   Meteor.methods({
     'users.create' (options) {
@@ -39,28 +71,27 @@ if (Meteor.isServer) {
     },
     'users.update' (data) {
       check(data, Object)
-        // check if email is defined, if it is -> update.
-        // TODO campare with old email, if it's different then update
-
+      // check if email is defined, if it is -> update.
+      // TODO campare with old email, if it's different then update
       if (data.email !== undefined) {
-          // data['emails.0.address'] = data.email;
-          // data['emails.s 0.verified'] = false;
-          // delete data.email;
+        // data['emails.0.address'] = data.email;
+        // data['emails.s 0.verified'] = false;
+        // delete data.email;
 
-          // save oldEmail address
+        // save oldEmail address
         const oldEmail = Meteor.users.findOne(this.userId).emails[0].address
-          // remove old email address
+        // remove old email address
         Accounts.removeEmail(this.userId, oldEmail)
-          // add new email address
+        // add new email address
         Accounts.addEmail(this.userId, data.email, false)
       }
-        // check if name is defined, if it is -> update.
-        // TODO compare with old name, if it's different then update
+      // check if name is defined, if it is -> update.
+      // TODO compare with old name, if it's different then update
       if (data.name !== undefined) {
         Meteor.users.update(this.userId, { $set: { 'profile.name': data.name } })
       }
 
-        // TODO campare with old image, if it's different then update
+      // TODO campare with old image, if it's different then update
       if (data.avatar !== undefined) {
         Meteor.users.update(this.userId, { $set: { 'profile.image': data.avatar } })
       }
@@ -119,6 +150,6 @@ export function getUserPTIAddress () {
 }
 
 export function checkPassword (password) {
-    // check the password, return True if it valid, false otherwise
+  // check the password, return True if it valid, false otherwise
   return Promise.promisify(Meteor.call)('checkPassword', password)
 }
