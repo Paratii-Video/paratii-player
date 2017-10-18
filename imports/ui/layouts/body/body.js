@@ -12,8 +12,10 @@ Template.App_body.onRendered(function () {
   */
   this.autorun(() => {
     FlowRouter.watchPathChange()
-    // const currentContext = FlowRouter.current();
-    this.navState.set('minimized')
+    // verify if isn't a autoplay page
+    if (parseInt(FlowRouter.getQueryParam('autoplay')) !== 1) {
+      this.navState.set('minimized')
+    }
   })
 })
 

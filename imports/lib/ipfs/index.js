@@ -2,6 +2,7 @@
 'use strict'
 import { Meteor } from 'meteor/meteor'
 import { getUserPTIAddress } from '/imports/api/users.js'
+import { setImmediate } from 'lodash'
 import Protocol from 'paratii-protocol'
 
 const REPO_PATH = 'paratii-ipfs-repo'
@@ -37,7 +38,7 @@ const paratiiIPFS = {
             config: {
               Addresses: {
                 Swarm: [
-                  '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
+                  // '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
                   // run our own star-signal server.
                   // https://github.com/libp2p/js-libp2p-webrtc-star
                   // '/ip4/34.213.133.148/tcp/42000/wss/p2p-webrtc-star'
@@ -50,20 +51,25 @@ const paratiiIPFS = {
                 // '/ip4/127.0.0.1/tcp/4003/ws/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS',
                 // '/libp2p-webrtc-star/ip4/127.0.0.1/tcp/9091/wss/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS',
                 // '/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS',
-                '/ip4/34.213.133.148/tcp/4003/ws/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW',
+                // '/ip4/34.213.133.148/tcp/4003/ws/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW',
+                '/dns4/bootstrap.paratii.video/tcp/443/wss/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW',
                 '/dns4/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H',
-                '/ip4/212.71.247.117/tcp/4003/ws/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H'
+                // '/ip4/212.71.247.117/tcp/4003/ws/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H'
                 // official nodes that are stable.
-                // '/dns4/ams-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd',
-                // '/dns4/sfo-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLju6m7xTh3DuokvT3886QRYqxAzb1kShaanJgW36yx',
-                // '/dns4/lon-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLMeWqB7YGVLJN3pNLQpmmEk35v6wYtsMGLzSr5QBU3',
-                // '/dns4/sgp-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLSafTMBsPKadTEgaXctDQVcqN88CNLHXMkTNwMKPnu'
-                // '/dns4/nyc-2.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLV4Bbm51jM9C4gDYZQ9Cy3U6aXMJDAbzgu2fzaDs64'
+                '/dns4/ams-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd',
+                '/dns4/sfo-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLju6m7xTh3DuokvT3886QRYqxAzb1kShaanJgW36yx',
+                '/dns4/lon-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLMeWqB7YGVLJN3pNLQpmmEk35v6wYtsMGLzSr5QBU3',
+                '/dns4/sgp-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLSafTMBsPKadTEgaXctDQVcqN88CNLHXMkTNwMKPnu',
+                '/dns4/nyc-2.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLV4Bbm51jM9C4gDYZQ9Cy3U6aXMJDAbzgu2fzaDs64'
               ]
             }
           })
         } else {
           window.ipfs = new Ipfs({
+            bitswap: {
+              maxMessageSize: 32 * 1024,
+              meterController: paratiiIPFS.meterController
+            },
             repo: String(Math.random()),
             config: {
               Addresses: {
@@ -79,11 +85,13 @@ const paratiiIPFS = {
               Bootstrap: [
                 // don't use official Bootstrap nodes cuz they keep f@#king thowing 403 errors
                 // https://github.com/ipfs/js-ipfs/issues/941
+                // '/dns4/wss1.bootstrap.libp2p.io/tcp/443/wss/ipfs/Qmbut9Ywz9YEDrz8ySBSgWyJk41Uvm2QJPhwDJzJyGFsD6'
                 // '/ip4/127.0.0.1/tcp/4003/ws/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS',
                 // '/libp2p-webrtc-star/ip4/127.0.0.1/tcp/9091/wss/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS',
                 // '/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS',
-                '/ip4/34.213.133.148/tcp/4003/ws/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW',
-                '/dns4/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H',
+                // '/ip4/34.213.133.148/tcp/4003/ws/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW',
+                '/dns4/bootstrap.paratii.video/tcp/443/wss/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW',
+                '/dns4/star-signal.cloud.ipfs.team/wss/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H',
                 '/ip4/212.71.247.117/tcp/4003/ws/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H'
                 // '/dns4/ams-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd',
                 // '/dns4/sfo-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLju6m7xTh3DuokvT3886QRYqxAzb1kShaanJgW36yx',
@@ -109,6 +117,7 @@ const paratiiIPFS = {
 
           window.ipfs.id().then((id) => {
             let peerInfo = id
+            paratiiIPFS.id = id
             console.log('[IPFS] id: ', peerInfo)
             let ptiAddress = getUserPTIAddress() || 'no_address'
             paratiiIPFS.protocol = new Protocol(
@@ -117,6 +126,10 @@ const paratiiIPFS = {
               // add ETH Address here.
               ptiAddress
             )
+
+            paratiiIPFS.protocol.notifications.on('message:new', (peerId, msg) => {
+              console.log('[paratii-protocol] ', peerId.toB58String(), ' new Msg: ', msg)
+            })
 
             paratiiIPFS.protocol.start(callback)
 
@@ -215,6 +228,81 @@ const paratiiIPFS = {
     window.localStorage.setItem('paratii-ledger', JSON.stringify(localLedger))
     callback(null, 1)
   },
+
+  /**
+   * get Cached Ledger book for peer.
+   * @param  {string}   peerId   peer B58String
+   * @param  {Function} callback returns (err, ledger)
+   */
+  getTransactions: (peerId, callback) => {
+    return callback(null, window.ipfs._bitswap.engine._findOrCreate(peerId))
+    // paratiiIPFS.updateTransactions((err, updated) => {
+    //   if (err) throw err
+    //
+    //   let localLedger = window.localStorage.getItem('paratii-ledger')
+    //   if (!localLedger) {
+    //     localLedger = {}
+    //   } else {
+    //     localLedger = JSON.parse(localLedger)
+    //   }
+    //
+    //   if (localLedger[peerId]) {
+    //     return callback(null, localLedger[peerId])
+    //   } else {
+    //     console.log(`${peerId} isn't in the Ledger`)
+    //     return callback(new Error(`${peerId} is not in the Ledger`))
+    //   }
+    // })
+  },
+
+ /**
+  * Clear transactions Cache
+  * @param  {Function} callback callback when done
+  */
+  clearTransactionsCache: (callback) => {
+    window.localStorage.removeItem('paratii-ledger', null)
+    setImmediate(callback)
+  },
+
+/**
+ * the meteroController handles whether a peer should get the block or not.
+ * @param  {Peer}   peer     IPFS Peer Object
+ * @param  {uint}   size     total size of the block(s)
+ * @param  {Function} callback returns (err, proceed)
+ */
+  meterController: (peer, size, callback) => {
+    if (!callback) {
+      throw new Error('meteroController Requires a callback & size')
+    }
+
+    if (size && parseInt(size) < 0) {
+      throw new Error('meterController size Must be positive')
+    }
+
+    let CREDIT_PER_PEER = 5529887 / 2
+    paratiiIPFS.getTransactions(peer, (err, ledger) => {
+      if (err) throw err
+      // if (!ledger || !ledger.accounting) {
+      //   console.log('new User. sending block ', peer.toB58String(), size)
+      //   ledger = ledger || {}
+      //   ledger.accounting = ledger.accounting || {}
+      //   ledger.accounting.bytesSent = ledger.accounting.bytesSent || 0
+      //   ledger.accounting.bytesSent = ledger.accounting.bytesSent + size
+      //   window.ipfs._bitswap.engine.ledgerMap.set(peer.toB58String(), ledger)
+      //
+      //   return callback(null, true)
+      // }
+
+      if (ledger.accounting.bytesSent + size <= CREDIT_PER_PEER) {
+        console.log('bytesSent <= CREDIT', ledger.accounting.bytesSent, CREDIT_PER_PEER)
+        return callback(null, true)
+      } else {
+        console.log('bytesSent > CREDIT', ledger.accounting.bytesSent, CREDIT_PER_PEER)
+        return callback(null, false)
+      }
+    })
+  },
+
   start: (callback) => {
     if (!window.Ipfs) {
       return callback(new Error('window.Ipfs is not available, call initIPFS first'))

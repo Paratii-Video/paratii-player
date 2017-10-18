@@ -1,6 +1,6 @@
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { UserTransactions } from '/imports/api/transactions.js'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 
 import './transactions.html'
 
@@ -37,7 +37,6 @@ Template.transactions.onCreated(function () {
   template.searching = new ReactiveVar(false)
 
   const userPTIAddress = getUserPTIAddress()
-  // template.bitTransactions = getBitTransactions()
   Meteor.subscribe('userTransactions', userPTIAddress)
 })
 

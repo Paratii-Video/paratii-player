@@ -1,0 +1,132 @@
+// Forms elements (label, input, textarea, buttons...)
+
+
+.main-form {
+  // Label
+
+  &-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 300;
+    margin: 0 0 20px;
+    position: relative;
+    width: 100%;
+
+    &-checkbox {
+      color: @color-grey-light;
+      cursor: pointer;
+      padding: 0 0 0 20px;
+      position: relative;
+      user-select: none;
+
+      &::before {
+        &:extend(.pos-a-vm all);
+
+        border-radius: 2px;
+        border: 1px solid @color-grey;
+        content: '';
+        height: 13px;
+        left: 0;
+        width: 13px;
+      }
+    }
+
+    &.password {
+      margin: 0 0 8px;
+    }
+  }
+
+  // Input
+  
+  &-input,
+  &-textarea {
+    background: 0;
+    border-bottom: 1px solid @color-grey;
+    display: block;
+    font-size: 14px;
+    transition: border-color .3s;
+    width: 100%;
+  }
+
+  &-input {
+    height: 35px;
+    padding: 0 5px 0 0;
+
+    &.error {
+      animation: shakeAnim .5s @ease-smooth;
+      border-color: @color-red;
+    }
+
+    &.success {
+      border-color: @color-green;
+    }
+
+    &,
+    &::placeholder,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill {
+      color: @color-grey-light;
+      font-size: 14px;
+      font-weight: 300;
+      -webkit-box-shadow: 0 0 0px 1000px white inset;
+      -webkit-text-fill-color: @color-grey-light;
+    }
+
+    &-password {
+      padding: 0 48px 0 0;
+    }
+  }
+
+  &-textarea {
+    padding: 0;
+    resize: none;
+  }
+
+  &-checkbox {
+    &:extend(.visually-hidden);
+
+    &-checked {
+      &:extend(.pos-a-vm all);
+
+      border-radius: 1px;
+      background: @color-purple;
+      left: 1px;
+      height: 11px;
+      transform: scale(0) translate3d(0, -50%, 0);
+      transition: transform .25s @ease-smooth;
+      transform-origin: top;
+      width: 11px;
+    }
+
+    &:checked + .main-form-checkbox-checked {
+      transform: scale(1) translate3d(0, -50%, 0);
+    }
+  }
+
+  // Buttons
+
+  &-button {
+    &-password {
+      &:extend(.pos-a-vm all);
+
+      font-size: 10px;
+      right: 0;
+    }
+    
+    &-qrcode {
+      &:extend(.pos-a-vm all);
+
+      right: 0;
+
+      &-svg {
+        fill: @color-grey-light;
+        width: 20px;
+      }
+    }
+
+    &-forgot {
+      font-size: 12px;
+    }
+  }
+}

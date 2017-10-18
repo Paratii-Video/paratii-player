@@ -1,72 +1,128 @@
 <template name="player">
-  <div id="player-container">
-    <video id="video-player">
+  <div id="player-container" class="player-container {{ descriptionClass }}">
+    <video id="video-player" class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
     </video>
     {{#unless isLocked }}
-    <div class="player-controls {{playPause}} {{hideControls}}">
-      <div id="video-progress">
-        <div id="loaded-bar" style="width: {{loadedProgress}}%"></div>
-        <div id="played-bar" style="width: {{playedProgress}}%"></div>
-        <div id="scrubber" style="left: {{scrubberTranslate}}%"></div>
+    <div class="player-controls {{playPause}} {{hideControls}} {{ mutedClass }}">
+      <div class="player-controls-wrapper">
+        <div class="player-controls-buttons">
+          {{#if hasPlaylistId}}
+            <button id="previous-video-button" class="player-button player-button-prev" title="previous video">
+              <svg class="player-button-svg" viewBox="576 409 11.049 15.084">
+                <path d="M576 409.084v15l11.049-7.5z"/>
+                <path d="M584 409h3v15h-3z"/>
+              </svg>
+            </button>
+          {{/if}}
+          <button id="play-pause-button" class="player-button player-button-play-pause" title="{{playPause}}" data-icon="{{playPauseIcon}}">
+            <svg class="player-button-svg player-button-svg-pause" viewBox="0 0 13 14">
+                <path d="M0 0h5v14H0zM8 0h5v14H8z"/>
+            </svg>
+            <svg class="player-button-svg player-button-svg-play" viewBox="576 409.084 11.049 15">
+              <path data-name="Path 185" class="cls-1" d="M576 409.084v15l11.049-7.5z"/>
+            </svg>
+          </button>
+          {{#if hasPlaylistId}}
+            <button id="next-video-button" class="player-button player-button-next" title="next video">
+              <svg class="player-button-svg" viewBox="576 409 11.049 15.084">
+                <path d="M576 409.084v15l11.049-7.5z"/>
+                <path d="M584 409h3v15h-3z"/>
+              </svg>
+            </button>
+          {{/if}}
+          <button id="volume-button" class="player-button player-button-volume" title="volume">
+            <svg class="player-button-svg player-button-svg-mute" viewBox="0 0 20 19">
+              <g transform="translate(-1 -1)">
+                <path d="M2 8v6h4l5 5V3L6 8H2zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM13 2.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z"/>
+                <rect transform="rotate(-44 11 10.5)" x="-2" y="9" width="26" height="3" rx="1.5"/>
+              </g>
+            </svg>
+            <svg class="player-button-svg player-button-svg-volume" viewBox="0 0 19 19">
+              <path d="M0 6v6h4l5 5V1L4 6H0zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM11 .23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z" fill="#FFF" fill-rule="evenodd"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="player-controls-volume {{ volumeClass }}">
+          <div id="vol-control" class="player-controls-volume-slider">
+            <div id="volume-value" class="player-controls-volume-bar" style="width: {{ volumeValue }}%"></div>
+            <div id="vol-scrubber" class="player-scrubber" style="left: {{volScrubberTranslate}}%"></div>
+          </div>
+        </div>
+
+        <div id="video-progress" class="player-progress player-controls-progress">
+          <div id="loaded-bar" class="player-progress-loaded" style="width: {{loadedProgress}}%"></div>
+          <div id="played-bar" class="player-progress-played" style="width: {{playedProgress}}%"></div>
+          <div id="scrubber" class="player-scrubber" style="left: {{scrubberTranslate}}%"></div>
+        </div>
+
+        <div class="player-controls-time">
+          <span id="total-time" class="player-time-total">{{formatTime totalTime}}</span>
+        </div>
       </div>
-      <br />
-      {{#if hasPlaylistId}}
-        <button id="previous-video-button" title="previous video">
-          <img src="/img/rewind-icon.svg">
-        </button>
-      {{/if}}
-      <button id="play-pause-button" title="{{playPause}}">
-        <img src= "{{playPauseIcon}}">
-      </button>
-      {{#if hasPlaylistId}}
-        <button id="next-video-button" title="next video">
-          <img src="/img/forward-icon.svg">
-        </button>
-      {{/if}}
-      <button id="volume-button" title="volume">
-        <img src={{ volumeIcon }} />
-      </button>
-      <div id="vol-control" class="{{ volumeClass }}">
-        <div id="volume-value" style="width: {{ volumeValue }}%"></div>
-        <div id="vol-scrubber" style="left: {{volScrubberTranslate}}%"></div>
-      </div>
-      <span id="current-time">{{formatTime currentTime}}</span>
-      <span class="slash">/</span>
-      <span id="total-time">{{formatTime totalTime}}</span>
-      {{ #if status }}<span id="status"><tt>STATUS: {{ status }}</tt></span>{{/if}}
-      <button id="fullscreen-button" title="{{fullscreen}}">
-        <img src= "/img/fullscreen-icon.svg">
-      </button>
     </div>
+
+    <button id="fullscreen-button" class="player-button player-button-fullscreen {{hideControls}}" title="{{fullscreen}}">
+      <svg class="player-button-svg" viewBox="0 0 14 14">
+        <path d="M2 9H0v5h5v-2H2V9zM0 5h2V2h3V0H0v5zm12 7H9v2h5V9h-2v3zM9 0v2h3v3h2V0H9z"/>
+      </svg>
+    </button>
     {{/unless }}
 
     {{#with video}}
-    <div class="player-overlay {{playPause}}">
-      {{#each tag in tags }}
-        <div class="primary-tag">{{ tag }}</div>
-      {{/each}}
+    <div class="player-overlay player-infos {{playPause}}">
+      <div class="player-uploader player-infos-uploader">{{ uploader.name }} <img class="player-infos-uploader-image" src="{{ uploader.avatar }}"/></div>
 
-      <div class="player-uploader">{{ uploader.name }} <img src="{{ uploader.avatar }}"/></div>
-      <div class="player-info">
-        <div class="player-title">{{ title }}</div>
+      <div class="player-info player-infos-wrapper">
+        <h2 class="player-title player-infos-title">{{ title }}</h2>
 
-        <div class="player-related">Related to:
-          {{#each tag in tags }}
-            <span>{{ tag }}</span>
-          {{/each}}
+        <div class="player-infos-content">
+          <div class="player-description player-infos-description">
+            <p class="player-infos-description-text">{{ description }}</p>
+            <button class="button-text button-text--white button-text--nocase player-infos-button-description" type="button">Hide description</button>
+          </div>
+          <div class="player-infos-holder">
+            <p class="player-related player-infos-related">
+              {{#each tag in tags }}
+                <span class="player-infos-related-tag">{{ tag }}</span>
+              {{/each}}
+            </p>
+            <p class="player-uploader-name player-infos-uploader-name">By <strong>{{ uploader.name }}</strong></p>
+            <div class="player-stats">
+              <p class="player-stats-item">
+                <svg class="player-stats-icon player-stats-icon-view" viewBox="0 0 22 15">
+                  <path d="M0 7.5C1.73 11.89 6 15 11 15s9.27-3.11 11-7.5C20.27 3.11 16 0 11 0S1.73 3.11 0 7.5zm6 0c0-2.76 2.24-5 5-5s5 2.24 5 5-2.24 5-5 5-5-2.24-5-5zm2 0c0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3-3 1.34-3 3z" fill="#FFF" fill-rule="evenodd"/>
+                </svg>{{formatNumber stats.views}}
+              </p>
+
+              <button id="button-like" class="player-stats-item player-stats-button">
+                <svg class="player-stats-icon player-stats-icon-like" viewBox="0 0 10 13">
+                  <path d="M.491792 5.6762759v5.6329376l1.223178.4526176c.523873.1881702 1.117919.3944451 1.694421.5484835.576201.1543352 1.13516.2573242 1.729508.3252911.593744.0688572 1.222271.102989 1.676274.0863683.454306-.0172143.734088-.0860715.979086-.2059781.244092-.1199066.453701-.2917529.611287-.4802199.15698-.188467.261936-.3941483.314263-.565401.05263-.1712527.05263-.3086704.069568-.4457913.017845-.1374176.052629-.2742417.087715-.3772308.034784-.1026922.06987-.1712527.121895-.2739449l.175128-.3600165c.052327-.1202034.087111-.2231925.104956-.3600165.016938-.1371209.016938-.3089672.016938-.4627088 0-.1543352 0-.2917529.035087-.4454945.034783-.1543351.104956-.3258846.157585-.4633023l.121894-.3428022c.035389-.1026923.070173-.2053845.070173-.3083736 0-.102989-.034784-.2056813-.070173-.3089672-.035086-.1026922-.06987-.2053845-.06987-.2911592 0-.0857748.034784-.1543352.087414-.2745386.052629-.1196098.121894-.2914561.157585-.4796263.034784-.1887638.034784-.3944451 0-.6001264-.035691-.2050877-.104956-.4116594-.227455-.5998297-.122197-.188467-.297023-.3597197-.488788-.479923-.192369-.1202034-.401979-.1887638-.821501-.2231925-.419219-.0341318-1.047746-.0341318-1.449725-.0513461-.401677-.0169175-.576503-.0510493-.663613-.0854779-.087414-.0344286-.087414-.0685605-.017846-.2056813.070172-.1371209.20961-.3769341.314566-.6342583.104654-.2573243.175128-.5312692.209912-.8402364.034784-.3083736.034784-.6511758 0-.9595493-.034784-.3086704-.105258-.5829122-.244696-.8227253C6.256516.534243 6.047208.3282648 5.749883.191144 5.45286.0543199 5.068727-.0145374 4.772006.0029737c-.297022.0169176-.506935.1196098-.646372.3252911-.140042.2059782-.20961.5143517-.27948.9087969-.070475.3941483-.13974.8737746-.419522 1.4225549-.27948.5481867-.768267 1.1652306-1.189906 1.6282362-.421337.4630056-.774619.7713791-1.054704.9776541-.279177.2056813-.484855.3080767-.69023.410769z" />
+                </svg>{{formatNumber stats.likes}}
+              </button>
+
+              <button id="button-dislike" class="player-stats-item player-stats-button">
+                <svg class="player-stats-icon player-stats-icon-dislike " viewBox="0 0 14 19">
+                  <path d="M1 10.07706533V2.8243558l1.574907-.5827695c.674515-.2422792 1.439381-.5078693 2.181659-.706202.741888-.1987148 1.461579-.3313187 2.226834-.4188297.764476-.0886574 1.573739-.1326039 2.158292-.1112039.584943.0221644.945178.1108218 1.260627.2652079.31428.1543861.584164.3756475.787064.6183089.202121.2426614.337257.5074871.404631.7279841.067763.2204971.067763.3974297.089572.5739802.022977.1769327.067763.353101.112938.4857049.044786.1322218.089962.2204971.156946.3527189l.225487.4635406c.067374.1547683.11216.2873722.135137.4635405.021809.1765505.021809.3978119.021809.5957624 0 .1987149 0 .3756475.045175.5735981.044786.1987148.135137.419594.2029.5965266l.156945.4413763c.045565.1322218.090351.2644435.090351.3970475 0 .1326039-.044786.2648257-.090351.3978118-.045175.1322218-.089961.2644436-.089961.3748832 0 .1104396.044786.19871485.112549.35348314.067763.154004.156945.37526533.2029.61754458.044785.24304353.044785.50786927 0 .772695-.045955.26406146-.135137.53003364-.292861.77231288-.157335.2426614-.382433.46315844-.62934.61792673-.247686.1547683-.51757.24304354-1.057727.28737223-.539768.04394655-1.34903.04394655-1.8666.0661109-.51718.0217822-.742278.06572875-.854437.11005745-.112549.0443287-.112549.08827526-.022977.26482575.09035.1765505.269884.48532278.40502.81664157.134748.33131878.225488.68403762.270274 1.08184945.044786.39704753.044786.83842377 0 1.2354713-.044786.39742968-.135526.75053067-.31506 1.05930296-.180312.3087723-.449806.57398018-.832628.75053067-.382433.17616835-.877026.26482574-1.259069.24227925-.382433-.0217822-.652706-.154004-.83224-.41882974-.180312-.26520788-.269883-.66225542-.359845-1.1701247-.09074-.50748712-.179922-1.1250317-.540157-1.83161582-.359845-.70581983-.989185-1.50029705-1.532068-2.09644157-.542494-.5961445-.997363-.99319205-1.357987-1.25878208-.359456-.26482574-.624277-.3966654-.888709-.5288872z" stroke="#FFF" stroke-width="1.5" fill="none" fill-rule="evenodd"/>
+                </svg>
+                {{formatNumber stats.dislikes}}
+              </button>
+
+              <button id="embed" class="player-stats-item player-stats-button">
+                <svg class="player-stats-icon player-stats-icon-share" viewBox="572.207 408.932 18.793 15.661">
+                  <path d="M583.692 413.108v-4.176L591 416.24l-7.308 7.308v-4.28c-5.22 0-8.874 1.67-11.485 5.325 1.044-5.221 4.176-10.441 11.485-11.485z"/>
+                </svg>
+              </button>
+            </div>
+            <button class="button-text button-text--white button-text--nocase player-infos-button-description" type="button">Show description</button>
+          {{ #if status }}<p id="status" class="player-infos-description-text">STATUS: {{ status }}</p>{{/if}}
+          </div>
+          {{#if isShowDescription}}
+          {{/if}}
+          {{#if isLocked }}
+            <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">Watch {{formatNumber price}} PTI</button>
+          {{/if}}
         </div>
-        <div class="player-uploader-name">By: {{ uploader.name }}</div>
-        <div class="player-statistics">
-          <span class="statistic-text"><img src= "/img/view-icon.svg">{{formatNumber stats.views}}</span>
-          <span class="statistic-text" id="button-like"><img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
-          <span class="statistic-text" id="button-dislike"><img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
-          <span class="sharing-actions" id="embed"><img src= "/img/share.svg"/></span>
-        </div>
-        <div class="player-description">{{ description }}</div>
-
-        {{#if isLocked }}
-          <button id="unlock-video" class="player-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
-        {{/if}}
       </div>
     </div>
     {{/with}}

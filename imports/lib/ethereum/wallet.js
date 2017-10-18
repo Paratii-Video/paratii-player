@@ -3,9 +3,9 @@ import lightwallet from 'eth-lightwallet/dist/lightwallet.js'
 import { Accounts } from 'meteor/accounts-base'
 import { add0x } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-import { web3, GAS_PRICE, GAS_LIMIT } from './connection.js'
-import { getContractAddress } from './contracts.js'
-import ParatiiToken from './contracts/ParatiiToken.json'
+import { web3 } from './web3.js'
+import { GAS_PRICE, GAS_LIMIT } from './connection.js'
+import { getContract } from './contracts.js'
 
 // createKeystore will create a new keystore
 // save it in the session object and in local storage
@@ -69,7 +69,6 @@ function saveKeystore (seedPhrase, keystore, address) {
   Session.set(`keystore-${userId}`, keystore)
 
   Session.set('userPTIAddress', add0x(address))
-  // TODO: we do not seem to be using this anymore...
   Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
 }
 
@@ -160,18 +159,23 @@ function restoreWallet (password, seedPhrase, cb) {
   return createKeystore(password, seedPhrase, cb)
 }
 
-function doTx (amount, recipient, password, type, description, extraInfo) {
+function sendTransaction (password, contractName, functionName, args, value, callback) {
   // send some ETH or PTI
-  // the type argument can either be ETH or PTI
+  // @param value The amount of ETH to transfer (expressed in Wei)
+  //
+  if (!value) {
+    value = 0
+  }
+  if (!args) {
+    args = []
+  }
+  console.log(`Sending transaction: ${contractName}.${functionName}(${args}), with value ${value} ETH`)
   const fromAddr = getUserPTIAddress()
   const nonce = web3.eth.getTransactionCount(fromAddr)
-  const value = parseInt(web3.toWei(amount, 'ether'), 10)
-
   const keystore = getKeystore()
-  keystore.keyFromPassword(password, function (error, pwDerivedKey) {
-    if (error) {
-      throw error
-    }
+  keystore.keyFromPassword(password, async function (error, pwDerivedKey) {
+    let contract
+    if (error) throw error
     // sign the transaction
     const txOptions = {
       nonce: web3.toHex(nonce),
@@ -180,53 +184,24 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
     }
 
     let rawTx
-    switch (type) {
-      case 'Eth':
-        txOptions.to = add0x(recipient)
-        txOptions.value = web3.toHex(value)
-        txOptions.currency = 'eth'
-        rawTx = lightwallet.txutils.valueTx(txOptions)
-        break
-      case 'PTI':
-        txOptions.to = getContractAddress('ParatiiToken')
-        txOptions.currency = 'pti'
-        rawTx = lightwallet.txutils.functionTx(ParatiiToken.abi, 'transfer', [recipient, value], txOptions)
-        break
-      default:
-    }
+    contract = await getContract(contractName)
+    txOptions.to = contract.address
+    txOptions.value = web3.toHex(value)
+    rawTx = lightwallet.txutils.functionTx(contract.abi, functionName, args, txOptions)
+    console.log('Signing transaction')
+    console.log(fromAddr)
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr)
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
-      if (err) {
-        throw err
+      console.log('Transaction sent: calling callback', callback)
+      if (callback) {
+        callback(err, hash)
+      } else {
+        if (err) {
+          throw err
+        }
       }
-      txOptions.from = fromAddr
-      txOptions.description = description
-      txOptions.value = value
-      txOptions.transactionHash = hash
-      Object.assign(txOptions, extraInfo) // If there are options they are merged in the transation object
-      Meteor.call('addTXToCollection', txOptions)
     })
   })
 }
 
-function sendUnSignedTransaction (address, amount) {
-  const toAddr = getUserPTIAddress()
-  console.log('send unsigned transaction ')
-  web3.eth.sendTransaction({ from: add0x(address), to: add0x(toAddr), value: web3.toWei(amount, 'ether'), gas: 21000, gasPrice: 20000000000 }, function (error, result) {
-    console.log('result...')
-    if (error) {
-      console.log(error)
-    }
-    console.log(result)
-  })
-}
-
-async function sendUnSignedContractTransaction (address, value) {
-  const contractAddress = await getContractAddress('ParatiiToken')
-  const toAddr = getUserPTIAddress()
-  const contract = web3.eth.contract(ParatiiToken.abi).at(contractAddress)
-  let result = await contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: address })
-  return result
-}
-
-export { createKeystore, restoreWallet, doTx, getSeed, sendUnSignedTransaction, sendUnSignedContractTransaction, saveKeystore, createAnonymousKeystore }
+export { createKeystore, restoreWallet, sendTransaction, getSeed, saveKeystore, createAnonymousKeystore, keystoresCheck }

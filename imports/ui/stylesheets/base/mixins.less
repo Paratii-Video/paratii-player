@@ -1,0 +1,68 @@
+// Mixins
+
+// Media Queries
+
+// Player
+
+.query-tiny(@rules) {
+    @media only screen and (max-width: @screen-tiny-width) and (max-height: @screen-tiny-height) {
+        @rules();
+    }
+}
+
+.query-mini(@rules) {
+    // @media only screen and (max-width: @screen-mini-width) and (max-height: @screen-mini-height) {
+    @media only screen and (max-width: @screen-mini-width) {
+        @rules();
+    }
+}
+
+.query-large(@rules) {
+    @media only screen and (max-width: @screen-large-width) and (max-height: @screen-large-height) {
+        @rules();
+    }
+}
+
+// Screens
+
+.query-fullhd(@rules) {
+    @media only screen and (max-width: @screen-fullhd) {
+        @rules();
+    }
+}
+
+.query-notebook(@rules) {
+    @media only screen and (max-width: @screen-notebook) {
+        @rules();
+    }
+}
+
+.query-tablet(@rules) {
+    @media only screen and (max-width: @screen-tablet) {
+        @rules();
+    }
+}
+
+.query-phablet(@rules) {
+    @media only screen and (max-width: @screen-phablet) {
+        @rules();
+    }
+}
+
+.query-mobile(@rules) {
+    @media only screen and (max-width: @screen-mobile) {
+        @rules();
+    }
+}
+
+.query-mobile2(@rules) {
+    @media only screen and (max-width: @screen-mobile2) {
+        @rules();
+    }
+}
+
+.query-mobile3(@rules) {
+    @media only screen and (max-width: @screen-mobile3) {
+        @rules();
+    }
+}

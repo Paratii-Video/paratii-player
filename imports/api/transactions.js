@@ -1,10 +1,6 @@
 /* globals ReactiveAggregate */
-import {
-  web3,
-  PTIContract
-} from '/imports/lib/ethereum/connection.js'
-
-import { Settings } from '/imports/api/settings.js'
+import { PTIContract } from '/imports/lib/ethereum/connection.js'
+import { getContract } from '../lib/ethereum/contracts.js'
 
 /*****************************
 Transactions data model looks like this.
@@ -19,17 +15,13 @@ Transactions data model looks like this.
 *********************************/
 
 export const Transactions = new Mongo.Collection('transactions')
-export const TransactionSyncHistory = new Mongo.Collection('transactionSyncHistory')
 export const UserTransactions = new Mongo.Collection('userTransactions')
 
 if (Meteor.isServer) {
-  Meteor.methods({
-    'addTXToCollection' (tx) {
-      addAppTransaction(tx)
-    }
-  })
-
   Meteor.publish('userTransactions', function (userPTIAddress) {
+    if (!userPTIAddress) {
+      return []
+    }
     check(userPTIAddress, String)
 
     // Publish all transactions where I find userPTIAddress and blockNumber exist
@@ -39,11 +31,11 @@ if (Meteor.isServer) {
       }, {
         from: userPTIAddress
       }]
-      // blockNumber: {$ne: null}
     }
 
     // Aggregate transactions with same hash as ID and group data
     // new collections userTransactions will be published with this structures
+    // TODO: SIMPLIFY ThIS
     ReactiveAggregate(this, Transactions, [
       { $match: query },
       { $group: {
@@ -53,30 +45,35 @@ if (Meteor.isServer) {
         from: {$first: '$from'},
         to: {$first: '$to'},
         currency: {$first: '$currency'},
-        description: {$first: '$description'},
+        description: {$push: '$description'},
         value: {$first: '$value'},
         // transactions: { $push: "$$ROOT" }
-        videoid: { $push: '$videoid' },
-        data: {$push: '$date'}
+        videoid: { $push: '$videoid' }
+        // data: {$push: '$date'}
       }
       }
     ],
-      {clientCollection: 'userTransactions'})
+      {clientCollection: 'userTransactions'}
+    )
   })
-}
+} // this bracket closes Meteor.isServer()
 
-async function addOrUpdateTransaction (transaction) {
+export async function addOrUpdateTransaction (transaction) {
   // add (or update) a transaction in the collection
-  transaction.logIndex = transaction.logIndex || undefined
+  // transaction is a json object similar to a transaction log - cf the check() invocation below
+  // transactions are identified by transaction.hash
+  console.log('Add event to collection: ', transaction.hash)
+  console.log(transaction)
+
   try {
     check(transaction, {
-      blockNumber: Match.Maybe(Number),
+      blockNumber: Match.Integer,
       currency: String,
       date: Match.Maybe(Date),
       description: Match.Maybe(String),
       from: String,
       hash: String,
-      logIndex: Match.Maybe(Match.OneOf(Number, undefined)),
+      logIndex: Match.Integer,
       nonce: Match.Maybe(Number),
       source: String,
       to: String,
@@ -87,148 +84,68 @@ async function addOrUpdateTransaction (transaction) {
     throw err
   }
 
-  let existingTransaction
-  if (transaction.hash) {
-    existingTransaction = await Transactions.findOne({
-      hash: transaction.hash,
-      logIndex: transaction.logIndex
-    })
-  } else {
-    existingTransaction = await Transactions.findOne({
-      nonce: transaction.nonce,
-      from: transaction.from,
-      source: transaction.source
-    })
-  }
-
-  let txId
-  if (existingTransaction) {
-    txId = existingTransaction._id
-    console.log('Transaction already exists  - not added')
-  } else {
-    txId = Transactions.insert(transaction)
-    console.log('Transaction added')
-  }
-  return txId
-
-  // const txToValidate = await Transactions.findOne({
-  //   blockNumber: null,
-  //   nonce: transaction.nonce,
-  //   from: transaction.from,
-  //   source: 'client'
-  // })
-  //
-  // if (txToValidate) {
-  //   Transactions.update({_id: txToValidate._id}, { $set: { blockNumber: transaction.blockNumber, hash: transaction.hash } })
-  // } else {
-  //   const txValidated = await Transactions.findOne({
-  //     blockNumber: {$ne: null},
-  //     nonce: transaction.nonce,
-  //     from: transaction.from,
-  //     source: {$ne: 'client'}
-  //   })
-  //   if (txValidated) {
-  //     Transactions.update({ _id: newTxId }, { $set: { blockNumber: txValidated.blockNumber, hash: txValidated.hash } })
-  //   }
-  // }
-}
-
-async function syncTransactions () {
-  // syncs all transactions in the blockchain that are not in the database yet
-  let fromBlock = (await getLatestSyncedBlockNumber()) + 1
-  let toBlock = web3.eth.blockNumber
-  console.log(`syncing transactions from Block ${fromBlock}`)
-  for (let i = fromBlock; i <= toBlock; i++) {
-    let synchistory = TransactionSyncHistory.findOne(i)
-    if (synchistory) {
-      console.log(` block ${i} exists in db - skipping`)
-    } else {
-      await syncPTITransactions(i, i + 1)
-      await syncETHTransactions(i, i + 1)
-    }
-  }
-}
-
-async function syncPTITransactions (fromBlock = 0, toBlock) {
-  // set a filter for ALL PTI transactions
-  console.log('PTI SYNC FROM', fromBlock, 'TO', toBlock)
-  let filter = PTIContract().Transfer({}, {
-    fromBlock,
-    toBlock
+  /** * NEXT LINES REPRESENT ANOTHER DATE MODEL
+  Transactions.upsert(transaction.hash, {
+    blockNumber: transaction.blockNumber,
+    data: transaction.date,
+    hash: transaction.hash,
+    nonce: transaction.nonce,
   })
-
-  filter.get(function (error, logs) {
-    if (error) {
-      console.log(error)
-      throw error
-    }
-    logs.forEach(function (log) {
-      try {
-        addPTITransaction(log)
-      } catch (err) {
-        console.log(err)
-        throw err
+  Transactions.update(transaction.hash, {
+    '$addToSet': {
+      'events': {
+        currency: transaction.currency,
+        description: transaction.description,
+        from: transaction.from,
+        logIndex: transaction.logIndex,
+        source: transaction.source,
+        to: transaction.to,
+        value: transaction.value
       }
-    })
+    },
   })
+  ************************************/
+  let eventId = `${transaction.hash}/${transaction.logIndex}`
+  Transactions.upsert(eventId, transaction)
 }
 
-// Itseems the only way to get the ETH transaction is by searching each block separately
-// next function adapted from https://ethereum.stackexchange.com/questions/2531/common-useful-javascript-snippets-for-geth/3478#3478
-// NB: this is *very expensive* as it makes a request for each block to be searched
-async function syncETHTransactions (fromBlock, toBlock) {
-  console.log('ETH SYNC FROM', fromBlock, 'TO', toBlock)
-  for (let i = fromBlock; i <= toBlock; i += 1) {
-    await syncBlockWithDB(i)
-  }
-};
-
-async function syncBlockWithDB (blockHashOrNumber) {
-  // get the block given blockHashOrNumber, find its transactions and write them to the DB
-
-  await Meteor.wrapAsync(web3.eth.getBlock, web3.eth)(blockHashOrNumber, true, function (error, block) {
-    if (error) {
-      throw error
-    }
-    console.log('got block', block.number)
-    if (block != null && block.transactions != null) {
-      block.transactions.forEach(function (transaction) {
-        try {
-          addETHTransaction(web3.eth.getTransaction(transaction.hash))
-        } catch (err) {
-          console.log(err)
-          throw err
-        }
-      })
-    }
-    TransactionSyncHistory.upsert(block.number, {'isSynced': true})
-
-    // Settings.update('latestSyncedBlockNumber', { value: block.number })
-  })
+export function watchEvents () {
+  watchPTIContractTransferEvents()
+  watchSendEtherEvents()
+  watchVideoStoreBuyVideoEvents()
 }
 
-async function watchTransactions () {
-  watchPTITransactions()
-  watchETHTransactions()
-}
-
-function watchETHTransactions () {
+async function watchSendEtherEvents () {
   console.log('Watching for ETH Transactions')
-  web3.eth.filter('latest', function (error, result) {
+  let filter = (await getContract('SendEther')).LogSendEther({}, {
+    fromBlock: 'latest',
+    toBlock: 'latest'
+  })
+
+  filter.watch(function (error, log) {
     if (error) {
-      // TODO: proper error handling
-      console.log('Error setting filter')
       console.log(error)
-      return
     }
-    syncBlockWithDB(result)
+    const transaction = {
+      blockNumber: log.blockNumber,
+      currency: 'ETH',
+      description: log.args.description || '',
+      from: log.args.from,
+      hash: log.transactionHash,
+      logIndex: log.logIndex,
+      to: log.args.to,
+      source: 'SendEther.LogSendEther',
+      value: log.args.value.toNumber()
+    }
+    return addOrUpdateTransaction(transaction)
   })
 };
 
-async function watchPTITransactions () {
-  // set a filter for ALL PTI transactions
+async function watchPTIContractTransferEvents () {
+  // set a filter for ALL PTI transactions    console.log(log.args)
+
   console.log('Watching for PTI Transactions')
-  let filter = PTIContract().Transfer({}, {
+  let filter = (await PTIContract()).Transfer({}, {
     fromBlock: 'latest',
     toBlock: 'latest'
   })
@@ -236,87 +153,64 @@ async function watchPTITransactions () {
   filter.watch(function (error, log) {
     if (error) {
       // TODO: proper error handling
-      console.log('Error setting filter')
+      console.log('Error watching for PTI Transactions')
       console.log(error)
       return
     }
-    addPTITransaction(log)
+    const transaction = {
+      blockNumber: log.blockNumber,
+      currency: 'PTI',
+      description: log.args.description || '',
+      from: log.args.from,
+      hash: log.transactionHash,
+      logIndex: log.logIndex,
+      source: 'PTIContract.Transfer',
+      to: log.args.to,
+      value: log.args.value && log.args.value.toNumber()
+    }
+    return addOrUpdateTransaction(transaction)
   })
 }
+//
+async function watchVideoStoreBuyVideoEvents () {
+  console.log('Watching the VideoStore')
+  let filter = (await getContract('VideoStore')).LogBuyVideo({}, {
+    fromBlock: 'latest',
+    toBlock: 'latest'
+  })
 
-function addPTITransaction (log) {
-  // add a transaction to the collection that derives from Transfer Event from PTI contract
-  // const tx = web3.eth.getTransaction(log.transactionHash)
-  console.log('Adding PTI Transaction')
-  console.log(log.logIndex)
-  const transaction = {}
-  transaction.value = log.args.value.toNumber()
-  transaction.from = log.args.from
-  // transaction.hash = log.topics[0]
-  transaction.hash = log.transactionHash
-  transaction.logIndex = log.logIndex
-  transaction.blockNumber = log.blockNumber
-  transaction.to = log.args.to
-  transaction.currency = 'pti'
-  transaction.source = 'event'
-  console.log('Add event to collection: ', transaction.hash)
-  return addOrUpdateTransaction(transaction)
-}
+  filter.watch(Meteor.bindEnvironment(
+    function (error, log) {
+      console.log('Adding a BuyVideo to event log ')
+      if (error) {
+        console.log(error)
+        throw (error)
+      }
+      /* register the sale in the user collection */
+      // find our user
+      let user = Meteor.users.findOne({'profile.ptiAddress': log.args.buyer})
+      if (!user) {
+        console.log(`No user found with account ${log.args.buyer}!`)
+        // so we create a new user object to at least have some trace of the sale
+      } else {
+        let videos = user.profile.videos || {}
+        videos[log.args.videoId] = { acquired: log.transactionHash }
+        Meteor.users.update(user._id, {$set: {'profile.videos': videos}})
+      }
 
-function addETHTransaction (tx) {
-  // add some info from native ETH transactions
-  if (tx.value.toNumber() > 0) {
-    const transaction = {}
-    transaction.blockNumber = tx.blockNumber
-    transaction.currency = 'eth'
-    transaction.from = tx.from
-    transaction.value = tx.value.toNumber()
-    transaction.to = tx.to
-    transaction.hash = tx.hash
-    transaction.nonce = tx.nonce
-    transaction.source = 'blockchain'
-    console.log('Add ETH transaction to collection: ', transaction.hash)
-    return addOrUpdateTransaction(transaction)
-  }
-}
-
-function addAppTransaction (tx) {
-  // add information from the application to the Transaction history
-  check(tx, Object)
-  const transaction = {
-    nonce: web3.toDecimal(tx.nonce),
-    from: tx.from,
-    to: tx.to,
-    description: tx.description,
-    source: 'app',
-    // value: tx.value,
-    currency: tx.currency,
-    date: new Date(),
-    hash: tx.hash
-  }
-
-  console.log('Inserting Transaction from  Client Application', transaction)
-  return addOrUpdateTransaction(transaction)
-}
-
-function getLatestSyncedBlockNumber () {
-  // return the number of the latest block that has been synced to the db
-  // TODO: a block may have more than one transaction - this function should return
-  // the latest block in which *all* transactions have been synced
-  let latestBlock
-
-  latestBlock = Settings.findOne('latestSyncedBlockNumber')
-  if (latestBlock) {
-    return latestBlock.value
-  } else {
-    return 0
-  }
-}
-
-export {
-  addAppTransaction,
-  addETHTransaction,
-  addPTITransaction,
-  syncTransactions,
-  watchTransactions
-}
+      /* add the transaction to the transaction history */
+      const transaction = {
+        blockNumber: log.blockNumber,
+        currency: 'PTI',
+        description: `Bought video ${log.args.videoId}`,
+        from: log.args.buyer,
+        hash: log.transactionHash,
+        logIndex: log.logIndex,
+        source: 'VideoStore.BuyVideo',
+        to: '',
+        value: log.args.price && log.args.price.toNumber()
+      }
+      addOrUpdateTransaction(transaction)
+    })
+  )
+};

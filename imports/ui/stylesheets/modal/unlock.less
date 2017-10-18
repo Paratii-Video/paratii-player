@@ -1,0 +1,122 @@
+// Modal unlock
+
+.main-modal-unlock {
+  &-wrapper {
+    .error & {
+      animation: shakeAnim .5s @ease-smooth;
+    }
+  }
+
+  &-info {
+    align-items: center;
+    display: flex;
+    height: 90px;
+    justify-content: space-between;
+    margin: 0 0 10px;
+  }
+
+  &-status {
+    display: flex;
+    flex-direction: column;
+
+    &-content {
+      align-items: center;
+      display: none;
+      flex-direction: column;
+    }
+
+    &-start {
+      display: flex;
+
+      .success &,
+      .error & {
+        display: none;
+      }
+    }
+
+    &-success {
+      .success & {
+        display: flex;
+      }
+    }
+
+    &-error {
+      .error & {
+        display: flex;
+      }
+    }
+
+  }
+
+  &-icon {
+    fill: @color-grey-light;
+    width: 40px;
+
+    .success & {
+      fill: @color-green;
+    }
+
+    .error & {
+      fill: @color-red;
+    }
+  }
+
+  &-text {
+    color: @color-purple;
+    font-size: 16px;
+    font-weight: 500;
+
+    .success & {
+      color: @color-green;
+    }
+
+    .error & {
+      color: @color-red;
+    }
+  }
+
+  &-label {
+    .success & {
+      display: none;
+    }
+  }
+
+  &-anchor {
+    .success & {
+      display: none;
+    }
+  }
+
+  &-button {
+    &-confirm {
+      .loading &,
+      .success & {
+        display: none;
+      }
+    }
+    &-watch {
+      display: none;
+
+      .success & {
+        display: block;
+      }
+    }
+  }
+}
+
+//
+
+.player-tooltip {
+  background-color: @color-purple;
+  border-radius: 3px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px 3px;
+  text-align: center;
+
+  &--small {
+    font-size: 10px;
+    padding: 2px 4px 1px;
+  } 
+}

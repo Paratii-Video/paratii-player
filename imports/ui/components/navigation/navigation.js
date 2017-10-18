@@ -1,6 +1,6 @@
 /* globals SVGInjector */
 import 'meteor/johnantoni:meteor-svginjector'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 import paratiiIPFS from '/imports/lib/ipfs/index.js'
 import './navigation.html'
 

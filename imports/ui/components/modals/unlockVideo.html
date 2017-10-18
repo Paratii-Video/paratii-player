@@ -1,0 +1,109 @@
+<template name="unlockVideo">
+  <div class="modal fade main-modal main-modal-unlock {{#if getErrors 'user_password'}}error{{/if}}">
+    <div class="main-modal-wrapper main-modal-unlock-wrapper">
+      <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{fullscreen}}">
+        <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
+          <path id="X" class="cls-1" d="M15.5,2.068,13.432,0,7.754,5.685,2.068,0,0,2.068,5.685,7.754,0,13.432,2.068,15.5,7.754,9.822,13.432,15.5,15.5,13.432,9.822,7.754Z" transform="translate(609.5 451.9)"/>
+        </svg>
+      </button>
+      <div class="main-modal-content">
+        <h3 class="main-modal-title">{{ videotitle }}</h3>
+        <div class="main-modal-unlock-info">
+          <div class="main-modal-avatar">
+            {{#if currentUser }}
+              {{#if currentUser.profile.image }}
+                <img class="main-modal-avatar-image" src="{{ currentUser.profile.image }}"/>
+              {{else}}
+                <svg class="main-modal-avatar-image" viewBox="0 0 1000 1000">
+                  <path d="M500 10C229.4 10 10 229.4 10 500s219.4 490 490 490 490-219.4 490-490S770.6 10 500 10zm3.3 966.9c-144.9 0-274.5-65.1-361.4-167.5 15.7-122.1 109.8-223.2 236.7-263-52.8-42.6-87.2-112.4-87.2-191.4 0-129.7 92.7-234.8 207-234.8s207 105.1 207 234.8c0 79-34.4 148.9-87.2 191.4 130.4 40.8 226 146.4 237.8 273-86.7 96.7-212.6 157.5-352.7 157.5z"/>
+                </svg>
+              {{/if}}
+            {{else}}
+                <svg class="main-modal-avatar-image" viewBox="0 0 1000 1000">
+                  <path d="M500 10C229.4 10 10 229.4 10 500s219.4 490 490 490 490-219.4 490-490S770.6 10 500 10zm3.3 966.9c-144.9 0-274.5-65.1-361.4-167.5 15.7-122.1 109.8-223.2 236.7-263-52.8-42.6-87.2-112.4-87.2-191.4 0-129.7 92.7-234.8 207-234.8s207 105.1 207 234.8c0 79-34.4 148.9-87.2 191.4 130.4 40.8 226 146.4 237.8 273-86.7 96.7-212.6 157.5-352.7 157.5z"/>
+                </svg>
+            {{/if}}
+          </div>
+
+          <div class="main-modal-unlock-status">
+            <div class="main-modal-unlock-status-content main-modal-unlock-status-start">
+              <svg class="main-modal-unlock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45.3 40.1">
+                <path class="st0" d="M7.2 19.9v.1c0 .8.7 1.5 1.5 1.5h24.2l-8 8c-.6.6-.6 1.5 0 2.1l.1.1c.6.6 1.5.6 2.1 0l10.5-10.5c.3-.3.6-.7.6-1.2v-.1c0-.6-.3-1.1-.8-1.3L27 8.3c-.6-.6-1.5-.6-2.1 0l-.1.1c-.6.6-.6 1.5 0 2.1l8 8H8.7c-.9 0-1.5.6-1.5 1.4z"/>
+              </svg>
+              <p class="main-modal-unlock-text visually-hidden">10 US$</p>
+              <p class="player-tooltip player-tooltip--small">{{price}} {{ type }}</p>
+            </div>
+
+            <div class="main-modal-unlock-status-content main-modal-unlock-status-success">
+              <svg class="main-modal-unlock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                <path d="M191.8 50.2L84.2 172.1l-59.5-49.8L46 97.5l34.7 28.9 82.2-98.5z"/>
+              </svg>
+              <p class="main-modal-unlock-text">Success</p>
+            </div>
+
+            <div class="main-modal-unlock-status-content main-modal-unlock-status-error">
+              <svg class="main-modal-unlock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                <path d="M191.8 50.2L84.2 172.1l-59.5-49.8L46 97.5l34.7 28.9 82.2-98.5z"/>
+              </svg>
+              <p class="main-modal-unlock-text">Error</p>
+            </div>
+          </div>
+
+          <div class="main-modal-avatar">
+            <img class="main-modal-avatar-image" src="https://scontent.fcgh10-1.fna.fbcdn.net/v/t1.0-1/p320x320/19399089_10155553304868010_6057071577605879971_n.jpg?oh=2e3194c11d536f4a6400993334f1eaff&oe=5A4F0961"/>
+          </div>
+        </div>
+
+        <form id="form-unlockVideo" class="main-modal-form {{ action }}" action="">
+          {{#if action}}
+            <input name="wallet_amount" type="text" value="{{price}}" class="visually-hidden" aria-describedby="sizing-addon1" readonly>
+          {{/if}}
+          <div class="main-form-label main-modal-unlock-label password">
+            <input class="main-form-input main-form-input-password password" name="user_password" type="password" placeholder="Enter your password" aria-describedby="sizing-addon1" />
+            <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
+          </div>
+          <a class="button-text button-text--grey-light button-text--lowercase main-form-button-forgot main-modal-unlock-anchor" href="#" target="_blank">Forgot password?</a>
+          <div class="main-modal-footer">
+            <span class="main-modal-footer-loading">Loading...</span>
+            <button id="send_trans_btn" class="button-text main-modal-button main-modal-unlock-button-confirm confirm" type="submit">Confirm</button>
+            <button class="button-text main-modal-button main-modal-unlock-button-watch watch" type="button">Watch the video</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+<!-- 
+  <div class="modal fade main-modal main-modal-unlock {{ action }} {{#if getErrors 'wallet_amount'}}has-error{{/if}}">
+    <div class="main-modal-wrapper">
+      <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{fullscreen}}">
+        <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
+          <path id="X" class="cls-1" d="M15.5,2.068,13.432,0,7.754,5.685,2.068,0,0,2.068,5.685,7.754,0,13.432,2.068,15.5,7.754,9.822,13.432,15.5,15.5,13.432,9.822,7.754Z" transform="translate(609.5 451.9)"/>
+        </svg>
+      </button>
+      <form id="form-unlockVideo" class="main-modal-form main-modal-content {{ action }}" action="">
+        <h3 class="main-modal-title">{{ label }}</h3>
+        <div class="form-group {{#if getErrors 'wallet_amount'}}has-error{{/if}}">
+          {{#if getErrors 'wallet_amount'}}<label class="control-label">{{ getErrors 'wallet_amount' }}</label>{{/if}}
+          <div class="input-group">
+            <span class="input-group-addon" id="sizing-addon3">{{ type }}</span>
+            {{#if action}}
+              <input name="wallet_amount" type="text" value="{{price}}" class="form-control" aria-describedby="sizing-addon1" readonly>
+            {{/if}}
+          </div>
+        </div>
+        <tt>{{ videotitle }}</tt>
+        <div class="form-group {{#if getErrors 'user_password'}}has-error{{/if}}">
+          {{#if getErrors 'user_password'}}<label class="control-label">{{ getErrors 'user_password' }}</label>{{/if}}
+          <div class="input-group">
+              <span class="input-group-addon" id="sizing-addon3">Password</span>
+              <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
+          </div>
+        </div>
+        <div class="main-modal-footer">
+          <button id="send_trans_btn" class="button-text main-modal-button confirm" type="submit">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+ -->

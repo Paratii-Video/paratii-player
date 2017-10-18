@@ -32,7 +32,7 @@
           <td>{{ blockNumber}}</td>
           <td>
             {{#if description}}
-              description: <b>{{ description }}</b>
+              description: <span class="transaction-description">{{ description }}</span>
               <br>
             {{/if}}
 
@@ -42,7 +42,7 @@
             {{/if}}
 
             from: {{ from }}
-            <br>to: {{ to }}
+            <br>to: <span class="transaction-to">{{ to }}</span>
             <br>transactionHash: {{ _id }}
             <br>currency: {{ currency }}
             <br>source: {{ source }}

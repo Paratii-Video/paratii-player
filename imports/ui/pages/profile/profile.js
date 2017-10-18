@@ -3,7 +3,7 @@
 import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Events } from '/imports/api/events.js'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { web3 } from '/imports/lib/ethereum/web3.js'
 
 import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
@@ -23,21 +23,39 @@ Template.profile.helpers({
     return (getKeystore() !== undefined) ? getKeystore() : false
   },
   userPTIAddress () {
-    return getUserPTIAddress()
+    return web3.toChecksumAddress(getUserPTIAddress())
   },
   eth_balance () {
+    const connected = Session.get('eth_isConnected')
     const balance = Session.get('eth_balance')
-    if (balance !== undefined && balance > 0) {
-      return web3.fromWei(balance, 'ether')
+    if (!connected) {
+      return 'Not connected to blockchain'
     }
-    return false
+    if (balance !== undefined) {
+      if (balance > 0) {
+        const amount = web3.fromWei(balance, 'ether')
+        return 'You own <b id="eth_amount">' + amount + '</b> Ether'
+      } else {
+        return 'You don\'t own Ether'
+      }
+    }
+    return 'Connecting to blockchain...'
   },
   pti_balance () {
+    const connected = Session.get('eth_isConnected')
     const balance = Session.get('pti_balance')
-    if (balance !== undefined && balance > 0) {
-      return web3.fromWei(balance, 'ether')
+    if (!connected) {
+      return 'Not connected to blockchain'
     }
-    return false
+    if (balance !== undefined) {
+      if (balance > 0) {
+        const amount = web3.fromWei(balance, 'ether')
+        return 'You own <b id="pti_amount">' + amount + '</b> PTI'
+      } else {
+        return 'You don\'t own Paratii'
+      }
+    }
+    return 'Connecting to blockchain...'
   },
   wallet_is_generating () {
     return Session.get('wallet-state') === 'generating'

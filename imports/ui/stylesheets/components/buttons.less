@@ -1,0 +1,66 @@
+// Buttons
+
+.button {
+
+  &-text {
+    &:extend(.hover-opacity all);
+
+    color: @color-purple;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    user-select: none;
+
+    // Colors
+
+    &--grey {
+      color: @color-grey;
+    }
+
+    &--grey-light {
+      color: @color-grey-light;
+    }
+
+    &--grey-dark {
+      color: @color-grey-dark;
+    }
+
+    &--white {
+      color: @color-white;
+    }
+
+    &--nocase {
+      text-transform: none;
+    }
+
+    &--lowercase {
+      text-transform: lowercase;
+    }
+
+    // Icon
+
+    &-icon {
+      fill: @color-purple;
+      height: 25px;
+      transform: translateY(-2px);
+      vertical-align: middle;
+
+      .button-text--grey & {
+        fill: @color-grey;
+      }
+
+      .button-text--grey-light & {
+        fill: @color-grey-light;
+      }
+
+      .button-text--grey-dark & {
+        fill: @color-grey-dark;
+      }
+
+      &--small {
+        height: 12px;
+        transform: translateY(-1px);
+      }
+    }
+  }
+}

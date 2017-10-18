@@ -1,6 +1,6 @@
 import { createKeystore, saveKeystore } from '/imports/lib/ethereum/wallet.js'
 import { showSeed } from '/imports/ui/components/modals/showSeed.js'
-
+import { AccountsTemplates } from 'meteor/useraccounts:core'
 const mySubmitFunc = function (error, state) {
   if (error) {
     // NB: do _not_ throw error, it will break the accounts workflow

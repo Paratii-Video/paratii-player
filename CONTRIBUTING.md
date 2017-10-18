@@ -69,9 +69,9 @@ Documentation can fall behind when things are advancing fast. If you can’t fin
 
 * 1. Fork a repository.
 * 2. Clone the fork to your local machine.
-* 3. Create a new branch (e.g. issue-6) where to make your changes and commit them (check if tests pass).
-* 4. Push the branch to the fork (e.g. git push my-handle issue-6).
-* 5. Open a PR from the new branch to the original fork's master branch.
+* 3. Create a new branch (e.g. `issue-6`) where to make your changes and commit them (check if tests pass).
+* 4. Push the branch to the fork (e.g. `git push my-handle issue-6`).
+* 5. Open a Pull Request from the new branch to the original fork's master branch.
 
 
-If your contribution takes the form of mental resources and thought streams solely, it’ll be a honor to receive you on [gitter](https://gitter.im/Paratii-Video/Lobby).
+If your contribution takes the form of mental resources and thought streams solely, it’ll be an honor to receive you on [gitter](https://gitter.im/Paratii-Video/Lobby).

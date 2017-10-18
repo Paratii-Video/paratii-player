@@ -7,10 +7,16 @@ import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
+import * as HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
 import { keystoresCheck, createAnonymousKeystore } from '/imports/lib/ethereum/wallet.js'
-import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/login.js'
+import '/imports/ui/components/modals/signIn.js'
+import '/imports/ui/components/modals/waitConfirm.js'
+import '/imports/ui/components/modals/confirmAccount.js'
+import '/imports/ui/components/modals/embedCustomizer.js'
+import '/imports/ui/components/modals/modals.js'
+import '/imports/ui/components/modals/unlockVideo.js'
 
 import './player.html'
 
@@ -41,8 +47,11 @@ function renderVideoElement (instance) {
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo)
     instance.playerState.set('torrent', true)
-  } else if (currentVideo.src.startsWith('/ipfs')) {
+  } else if (currentVideo.src.startsWith('/ipfs/Qmb3eFpLCNGg1NrPcY5RcHhznibVGuPT28fzZQ7egTzv37')) {
     createIPFSPlayer(instance, currentVideo)
+    instance.playerState.set('ipfs', true)
+  } else if (currentVideo.src.startsWith('/ipfs')) {
+    HLSPlayer.createIPFSPlayer(instance, currentVideo)
     instance.playerState.set('ipfs', true)
   } else {
     const videoElement = $('#video-player')
@@ -76,6 +85,13 @@ Template.player.onCreated(function () {
     }
   }
 
+  // embed/extra parameters
+  const autoplay = parseInt(FlowRouter.getQueryParam('autoplay'))
+  const loop = parseInt(FlowRouter.getQueryParam('loop'))
+  const playsinline = parseInt(FlowRouter.getQueryParam('playsinline'))
+  const fullscreen = parseInt(FlowRouter.getQueryParam('fullscreen'))
+  const type = parseInt(FlowRouter.getQueryParam('type'))
+
   this.currentVideo = new ReactiveVar()
 
   // this makes the tests work
@@ -95,6 +111,24 @@ Template.player.onCreated(function () {
   this.playerState.set('volScrubberTranslate', 100)
   this.playerState.set('muted', false)
   this.playerState.set('locked', true)
+  /* EMBED CONTROLS */
+  this.playerState.set('autoplay', autoplay === 1)
+  this.playerState.set('loop', loop === 1)
+  this.playerState.set('playsinline', playsinline === 1)
+  this.playerState.set('type', type === 1)
+  // Description
+  this.playerState.set('showDescription', false)
+
+  console.log('navState:', this.navState.get())
+
+  /* DETERMINED IF PLAYER IS EMBEDED */
+  if (window.top !== window.self) {
+    console.log('embedded')
+    this.playerState.set('fullscreen', fullscreen === 1)
+  } else {
+    console.log('not embedded')
+    this.playerState.set('fullscreen', true)
+  }
 
   if (userPTIAddress) {
     Meteor.subscribe('userTransactions', userPTIAddress)
@@ -107,28 +141,17 @@ Template.player.onCreated(function () {
 
   Meteor.subscribe('playlists')
 
-  // let query = UserTransactions.find({videoid: FlowRouter.getParam('_id')})
-  // query.observeChanges({
-  //   added: function (id, fields) {
-  //     console.log('added')
-  //     console.log(id)
-  //     console.log(fields)
-  //     self.playerState.set('locked', false)
-  //   },
-  //   changed: function (id, fields) {
-  //     console.log('changed')
-  //     console.log(id)
-  //     console.log(fields)
-  //     // self.playerState.set('locked', false);
-  //   }
-  // })
-
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id'), getUserPTIAddress(), function (err, results) {
     if (err) {
       throw err
     } else {
       self.playerState.set('locked', results)
-      // renderVideoElement(instance)
+      // hide everything if the video is unlocked and autoplay is true
+      if (self.playerState.get('autoplay') && !self.playerState.get('locked')) {
+        self.playerState.set('playing', true)
+        self.playerState.set('hideControls', true)
+        self.navState.set('closed')
+      }
     }
   })
 })
@@ -192,12 +215,31 @@ Template.player.helpers({
   volScrubberTranslate () {
     return Template.instance().playerState.get('volScrubberTranslate')
   },
-  volumeIcon () {
+  mutedClass () {
     const state = Template.instance().playerState.get('muted')
-    return (state) ? '/img/mute-icon.svg' : '/img/volume-icon.svg'
+    return (state) ? 'muted' : ''
   },
   hasPlaylistId () {
     return FlowRouter.getQueryParam('playlist') != null
+  },
+  autoplay () {
+    if (Template.instance().playerState.get('locked')) return ''
+    return Template.instance().playerState.get('autoplay') === true ? 'autoplay' : ''
+  },
+  loop () {
+    return Template.instance().playerState.get('loop') === true ? 'loop' : ''
+  },
+  playsinline () {
+    return Template.instance().playerState.get('playsinline') === true ? 'playsinline' : ''
+  },
+  fullscreen () {
+    return Template.instance().playerState.get('fullscreen')
+  },
+  type () {
+    return Template.instance().playerState.get('type')
+  },
+  descriptionClass () {
+    return Template.instance().playerState.get('showDescription') ? 'show-description' : ''
   }
 })
 
@@ -232,6 +274,23 @@ const pauseVideo = (instance) => {
   Meteor.clearTimeout(controlsHandler)
   instance.playerState.set('hideControls', false)
   $('#app-container').removeClass('playing')
+  $('div.main-app').removeClass('hide-nav')
+}
+
+const playVideo = (instance) => {
+  const dict = instance.playerState
+  const navState = instance.navState
+  const videoPlayer = instance.find('#video-player')
+  dict.set('playing', true)
+  navState.set('closed')
+  videoPlayer.play()
+  $('#app-container').addClass('playing')
+  $('div.main-app').addClass('hide-nav')
+  controlsHandler = Meteor.setTimeout(() => {
+    if (!videoPlayer.paused) {
+      dict.set('hideControls', true)
+    }
+  }, 3000)
 }
 
 // Set a value (0 ~ 1) to the player volume and volume UX
@@ -265,15 +324,19 @@ const setLoadedProgress = (instance) => {
 
 Template.player.events({
   'click #unlock-video' (event) {
-    Modal.show('doTransaction', {
-      type: 'PTI',
-      label: 'Unlock this video',
-      action: 'unlock_video',
-      price: event.target.dataset.price, // Video Price
-      address: event.target.dataset.address, // Creator PTI address
-      videotitle: event.target.dataset.title, // Video title
-      videoid: _video._id // Video title
-    })
+    if (Meteor.user()) {
+      Modal.show('unlockVideo', {
+        type: 'PTI',
+        label: 'Unlock this video',
+        action: 'unlock_video',
+        price: event.target.dataset.price, // Video Price
+        address: event.target.dataset.address, // Creator PTI address
+        videotitle: event.target.dataset.title, // Video title
+        videoid: _video._id // Video title
+      })
+    } else {
+      Modal.show('modal_sign_in')
+    }
   },
   'ended #video-player' (event, instance) {
     const navState = instance.navState
@@ -282,20 +345,10 @@ Template.player.events({
   },
   'click #play-pause-button' (event, instance) {
     const dict = instance.playerState
-    const navState = instance.navState
-    const videoPlayer = instance.find('#video-player')
     if (dict.get('playing')) {
       pauseVideo(instance)
     } else {
-      dict.set('playing', true)
-      navState.set('closed')
-      videoPlayer.play()
-      $('#app-container').addClass('playing')
-      controlsHandler = Meteor.setTimeout(() => {
-        if (!videoPlayer.paused) {
-          dict.set('hideControls', true)
-        }
-      }, 3000)
+      playVideo(instance)
     }
   },
   'click #next-video-button' () {
@@ -442,11 +495,15 @@ Template.player.events({
     const videoId = _video._id
     Meteor.call('videos.dislike', videoId)
   },
-  'click #embed' () {
+  'click #embed' (event, instance) {
     const videoId = _video._id
-    Modal.show('embedCustomizer', {
+    Modal.show('modal_share_video', {
       videoId: videoId,
-      label: 'Embed code'
+      label: 'Embed code',
+      embed: window.top !== window.self
     })
+  },
+  'click .player-infos-button-description' (event, instance) {
+    instance.playerState.set('showDescription', !instance.playerState.get('showDescription'))
   }
 })

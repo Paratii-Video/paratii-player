@@ -1,5 +1,6 @@
 'use strict'
-import { initIPFS } from '../../../lib/ipfs/index.js'
+import paratiiIPFS from '../../../lib/ipfs/index.js'
+// import { initIPFS } from '../../../lib/ipfs/index.js'
 
 const pull = require('pull-stream')
 const pullFilereader = require('pull-filereader')
@@ -66,7 +67,7 @@ function addToIPFS (files) {
     console.log('Progress \t', total, ' / ', fileSize, ' = ', Math.floor((total / fileSize) * 100))
   }
 
-  initIPFS(() => {
+  paratiiIPFS.initIPFS(() => {
     setInterval(() => {
       window.ipfs._bitswap.engine.ledgerMap.forEach((ledger, peerId, ledgerMap) => {
         console.log(`${peerId} : ${JSON.stringify(ledger.accounting)}\n`)
@@ -89,7 +90,7 @@ function addToIPFS (files) {
             pull.through((chunk) => updateProgress(chunk.length))
           )
         }]),
-        window.ipfs.files.createAddPullStream(),
+        window.ipfs.files.createAddPullStream({chunkerOptions: {maxChunkSize: 64048}}), // default size 262144
         pull.collect((err, res) => {
           if (err) {
             return cb(err)
@@ -98,7 +99,21 @@ function addToIPFS (files) {
           console.log('Adding %s finished', file.path)
 
           statusEl.innerHTML += `Added ${file.path} as ${file.hash} ` + '<br>'
-          cb(null, file)
+          // Trigger paratii transcoder signal
+
+          let msg = paratiiIPFS.protocol.createCommand('transcode', {hash: file.hash, author: paratiiIPFS.id.id})
+          window.ipfs.swarm.peers((err, peers) => {
+            if (err) throw err
+            peers.map((peer) => {
+              paratiiIPFS.protocol.network.sendMessage(peer.peer.id, msg, (err) => {
+                if (err) console.warn('[Paratii-protocol] Error ', err)
+              })
+
+              if (peer.addr) {
+              }
+            })
+            cb(null, file)
+          })
         }))),
       pull.collect((err, files) => {
         if (err) {

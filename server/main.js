@@ -1,27 +1,20 @@
 // Server entry point, imports all server code
 
 import '../imports/startup/server'
-import '../imports/startup/server/fixtures.js'
 import '../imports/startup/both'
+import '../imports/startup/server/fixtures.js'
 import '../imports/api/users.js'
-import { watchTransactions, syncTransactions } from '/imports/api/transactions.js'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { setHead } from '/imports/lib/head'
 
-const DEFAULT_PROVIDER = Meteor.settings.public.http_provider
-let FIRST_BLOCK = 0 // First block we consider when searching for transaction history etc.
+import { watchEvents, syncTransactions } from '/imports/api/transactions.js'
 
 if (Meteor.settings.public.first_block === undefined) {
-  FIRST_BLOCK = 0
-} else {
-  FIRST_BLOCK = Meteor.settings.public.first_block
+  Meteor.settings.public.first_block = 0
 }
-
-console.log('FIRST_BLOCK', FIRST_BLOCK)
-web3.setProvider(new web3.providers.HttpProvider(DEFAULT_PROVIDER))
+// SETTING THE HEAD
+setHead()
 
 Meteor.startup(async function () {
-  console.log('settings.public.http_provider: ', Meteor.settings.public.http_provider)
-
   Meteor.defer(function () {
     // sync the transaction history - update the collection to include the latest blocks
     // chain start sync from block 267 because it takes to long start from 0
@@ -30,7 +23,17 @@ Meteor.startup(async function () {
     }
   })
   Meteor.defer(function () {
-    // now keep watching for blocks
-    watchTransactions()
+    if (Meteor.settings.public.isTestEnv) {
+      // if we are in a test environment, we need to set the wathcer only after deploying the contracts
+      // this happens in fixtures.js
+    } else {
+      watchEvents()
+    }
+  })
+
+  Meteor.methods({
+    'getRegistryAddress' () {
+      return Meteor.settings.public.ParatiiRegistry
+    }
   })
 })

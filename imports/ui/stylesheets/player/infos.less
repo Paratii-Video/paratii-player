@@ -1,0 +1,225 @@
+// Player Info
+
+// Vars
+
+@size-player-infos-max-width: 1240px;
+
+//
+
+.player-infos {
+  color: @color-white;
+  z-index: @zindex-player-infos;
+
+  //
+
+  &-wrapper {
+    &:extend(.pos-a-m all);
+
+    padding: 0 20px 0 90px;
+    transition: opacity .25s linear .2s, padding .8s @ease-smooth;
+    width: 100%;
+    z-index: @zindex-player-infos;
+
+    .query-mini({
+      left: 0;
+      padding: 0 20px 0 90px;
+      top: 25px;
+      transform: translate3d(0, 0, 0);
+    });
+
+    .hide-nav & {
+      transition: opacity .25s, padding .8s @ease-smooth;
+      padding: 0 20px;
+    }
+
+    .playing & {
+      opacity: 0;
+      transition: opacity .25s, padding .8s @ease-smooth;
+      pointer-events: none;
+    }
+  }
+
+  // Title
+
+  &-title {
+    color: white;
+    display: block;
+    font-size: 3.5vw;
+    font-weight: 300;
+    margin: 0 0 5px;
+    padding-right: 40px;
+
+    .query-mini({
+      font-size: 5.3vw;
+    });
+  }
+
+  // Tags
+
+  &-tag {
+    background-color: @color-red;
+    border-radius: 3px;
+    color: white;
+    display: inline-block;
+    font-size: 10px;
+    font-weight:bold;
+    position:relative;
+    left: 10px;
+    margin: 5px;
+    padding: 3px 6px;
+    top: 10px;
+
+    .query-mini({
+      .visually-hidden;
+    });
+  }
+
+  // Uploader
+
+  &-uploader {
+    font-weight: 300;
+    position:absolute;
+    font-size: 14px;
+    right: 20px;
+    top: 20px;
+
+    .query-mini({
+      display: none;
+    });
+
+    &-image {
+      background-size: cover;
+      border-radius: 50%;
+      display: inline-block;
+      height: 50px;
+      width: 50px;
+    }
+  }
+
+  //
+
+  &-content {
+    position: relative;
+  }
+
+  //
+
+  &-holder {
+    position: relative;
+    transition: transform .8s @ease-smooth .2s, opacity .3s linear .2s;
+
+    .show-description & {
+      opacity: 0;
+      transform: translate3d(0, 20px, 0);
+      transition: transform .5s @ease-smooth, opacity .3s;
+      pointer-events: none;
+    }
+  }
+
+  // Description
+
+  &-description {
+    left: 0;
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition: transform .5s @ease-smooth, opacity .3s;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+
+    &-text {
+      font-family:'Roboto';
+      font-weight: 300;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .show-description & {
+      opacity: 1;
+      pointer-events: initial;
+      transform: translate3d(0, 0, 0);
+      transition: transform .8s @ease-smooth .2s, opacity .3s linear .2s;
+    }
+  }
+
+  // Releated tags
+
+  &-related {
+    margin: 0 0 7px;
+
+    &-tag {
+      color: @color-purple;
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+
+  // Uploader name
+
+  &-uploader-name {
+    font-weight: 300;
+    font-size: 16px;
+    margin: 0 0 21px;
+  }
+
+  // Price
+
+  &-price {
+    font-size: 10px;
+    margin-top: 10px;
+    padding: 12px;
+    color: white;
+    font-weight:bold;
+    background-color: #7d70ff;
+    border: 0;
+    border-radius: 3px;
+    position: relative;
+  }
+}
+
+
+
+// Stats (views, likes, shares)
+
+.player-stats {
+  align-items: center;
+  display: flex;
+  margin-bottom: 17px;
+
+  &-item {
+    align-items: center;
+    display: flex;
+    font-size: 12px;
+    margin-right: 15px;
+  }
+
+  &-icon {
+    display: inline-block;
+    fill: @color-white;
+    height: 20px;
+    margin-right: 10px;
+    width: 20px;
+
+    &-view {
+      width: 20px;
+    }
+
+    &-like {
+      transform: translate3d(0, -3px, 0);
+      width: 20px;
+    }
+
+    &-dislike {
+      transform: translate3d(0, 3px, 0);
+      width: 20px;
+    }
+
+    &-share {
+      width: 20px;
+    }
+  }
+
+  &-button {
+    &:extend(.hover-opacity all);
+  }
+}

@@ -3,3 +3,6 @@ npm-debug.log
 .DS_Store
 package-lock.json
 .node-xmlhttprequest-content-*
+.node-xmlhttprequest-sync-*
+weekly.txt
+.vscode/
