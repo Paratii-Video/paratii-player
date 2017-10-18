@@ -204,4 +204,4 @@ function sendTransaction (password, contractName, functionName, args, value, cal
   })
 }
 
-export { createKeystore, restoreWallet, sendTransaction, getSeed, saveKeystore, createAnonymousKeystore, keystoresCheck }
+export { createKeystore, restoreWallet, sendTransaction, getSeed, saveKeystore, createAnonymousKeystore }
