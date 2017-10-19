@@ -13,13 +13,15 @@ function setHead () {
     // console.log('calling home')
     // console.log(params)
     // console.log(req)
-    console.log(params.query.url)
-    var parsedExternalUrl = parse_url(params.query.url)
-    var parsedInternalUrl = parse_url(Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, ''))
-    console.log(parsedExternalUrl)
-    console.log(parsedInternalUrl)
-
     var oembedresponse = {}
+    if (params.query.url === undefined) {
+      oembedresponse.error = 'urlMissing'
+      res.end(JSON.stringify(oembedresponse))
+    }
+
+    var parsedExternalUrl = parseUrl(params.query.url)
+    var parsedInternalUrl = parseUrl(Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, ''))
+
     res.setHeader('Content-Type', 'application/json')
     if (
       parsedExternalUrl.protocol === parsedInternalUrl.protocol &&
@@ -44,27 +46,7 @@ function setHead () {
     } else {
       oembedresponse.error = 'denied'
     }
-    //     {
-    //    "version": "1.0",
-    //    "type": "rich",
-    //
-    //    "provider_name": "FWD:Everyone",
-    //    "provider_url": "https://www.fwdeveryone.com"
-    //
-    //    "author_name": "Alex Krupp",
-    //    "author_url": "https://www.fwdeveryone.com/u/alex3917",
-    //
-    //     "html": "<iframe src=\"https://oembed.fwdeveryone.com?thread-id=e8RFukWTS5Wo54fBNbZ2yQ\" width=\"700\" height=\"825\" scrolling=\"yes\" frameborder=\"0\" allowfullscreen></iframe>",
-    //     "width": 700,
-    //     "height": 825,
-    //
-    //     "thumbnail_url": "https://ddc2txxlo9fx3.cloudfront.net/static/fwd_media_preview.png",
-    //     "thumbnail_width": 280,
-    //     "thumbnail_height": 175,
-    //
-    //     "referrer": "",
-    //     "cache_age": 3600,
-    // }
+
     res.end(JSON.stringify(oembedresponse))
     next()
   })
@@ -106,9 +88,9 @@ function basicHead (params, req, res, next) {
   req.dynamicHead += '<link rel="mask-icon" href="/img/icon/safari-pinned-tab.svg" color="#5bbad5">'
 }
 
-function parse_url (url) {
-  var match = url.match(/^(http|https|ftp)?(?:[\:\/]*)([a-z0-9\.-]*)(?:\:([0-9]+))?(\/[^?#]*)?(?:\?([^#]*))?(?:#(.*))?$/i)
-  var ret = new Object()
+function parseUrl (url) {
+  var match = url.match(/^(http|https|ftp)?(?:[:/]*)([a-z0-9.-]*)(?::([0-9]+))?(\/[^?#]*)?(?:\?([^#]*))?(?:#(.*))?$/i)
+  var ret = {}
 
   ret['protocol'] = ''
   ret['host'] = match[2]
