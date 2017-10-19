@@ -2,7 +2,7 @@
   <nav id="nav" class="main-nav {{ navState }} {{ isMaximized }}">
     <ul class="main-nav-list">
       <li class="main-nav-item {{isActivePath '/profile'}}">
-        <a class="main-nav-link" href="/profile">
+        <a id="nav-profile" class="main-nav-link" href="/profile">
           {{#if currentUser}}
             {{#if currentUser.profile.image }}
               <img class="main-nav-icon profile" src="{{ currentUser.profile.image }}">
