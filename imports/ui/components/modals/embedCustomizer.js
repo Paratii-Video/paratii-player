@@ -45,6 +45,10 @@ Template.modal_share_video.onCreated(function () {
   })
 })
 
+Template.modal_share_video.onRendered(function () {
+  Meteor.setTimeout(() => $('div.main-modal-share').addClass('show-content'), 1000)
+})
+
 Template.modal_share_video.helpers({
   embedSizes,
   embedBaseUrl () {
