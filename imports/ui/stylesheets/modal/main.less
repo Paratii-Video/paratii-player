@@ -217,14 +217,18 @@
 
       position: absolute;
       right: 20px;
-      transform: scale(0);
-      transition: transform .35s @ease-smooth;
       top: 23px;
+      transform: scale(0);
+      transition: opacity .3s, transform .35s @ease-smooth;
       z-index: 2;
 
       .fade.in & {
         transform: scale(1);
-        transition: transform .5s @ease-smooth .8s;
+        transition: opacity .3s, transform .5s @ease-smooth .8s;
+      }
+
+      &:hover {
+        opacity: .5;
       }
 
       &-svg {
