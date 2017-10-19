@@ -14,27 +14,36 @@ function setHead () {
     // console.log(params)
     // console.log(req)
     console.log(params.query.url)
-    var parser = parse_url(params.query.url)
-    console.log(parser)
-
-    res.setHeader('Content-Type', 'application/json')
+    var parsedExternalUrl = parse_url(params.query.url)
+    var parsedInternalUrl = parse_url(Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, ''))
+    console.log(parsedExternalUrl)
+    console.log(parsedInternalUrl)
 
     var oembedresponse = {}
-    oembedresponse.version = '1.0'
-    oembedresponse.type = 'rich'
-    oembedresponse.provider_name = 'Paratii'
-    oembedresponse.provider_url = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
-    oembedresponse.author_name = 'Creator name'
-    oembedresponse.author_url = 'Creator url, maybe the channel?'
-    // TODO: get ifram code
-    oembedresponse.html = 'iframe code'
-    oembedresponse.width = 700
-    oembedresponse.height = 825
-    oembedresponse.thumbnail_url = 'url for thumbnail'
-    oembedresponse.thumbnail_width = 825
-    oembedresponse.thumbnail_height = 825
-    oembedresponse.referrer = ''
-    oembedresponse.cache_age = 3600
+    res.setHeader('Content-Type', 'application/json')
+    if (
+      parsedExternalUrl.protocol === parsedInternalUrl.protocol &&
+      parsedExternalUrl.host === parsedInternalUrl.host &&
+      parsedExternalUrl.port === parsedInternalUrl.port
+    ) {
+      oembedresponse.version = '1.0'
+      oembedresponse.type = 'rich'
+      oembedresponse.provider_name = 'Paratii'
+      oembedresponse.provider_url = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
+      oembedresponse.author_name = 'Creator name'
+      oembedresponse.author_url = 'Creator url, maybe the channel?'
+      // TODO: get iframe code
+      oembedresponse.html = 'iframe code'
+      oembedresponse.width = 570
+      oembedresponse.height = 320
+      oembedresponse.thumbnail_url = 'url for thumbnail'
+      oembedresponse.thumbnail_width = 825
+      oembedresponse.thumbnail_height = 825
+      oembedresponse.referrer = ''
+      oembedresponse.cache_age = 3600
+    } else {
+      oembedresponse.error = 'denied'
+    }
     //     {
     //    "version": "1.0",
     //    "type": "rich",
