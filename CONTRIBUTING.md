@@ -1,7 +1,7 @@
 # Contributing
 
 
-Paratii is an open source project that welcomes anyone willing to get involved and to build together upon a common vision. Be on the lookout for issues labeled with `help wanted`.
+Paratii is an open source project that welcomes anyone willing to get involved and to build together upon a common vision.
 
 * [Community Guidelines](https://github.com/Paratii-Video/wiki/blob/master/CONTRIBUTING.md#community-guidelines)
 * [How to Contribute](https://github.com/Paratii-Video/wiki/blob/master/CONTRIBUTING.md#how-to-contribute)

@@ -1,62 +1,66 @@
 <template name="navigation">
-  <div id="nav" class="nav main-nav {{navState}}">
-    {{#if currentUser }}
-      <li class="{{isActivePath '/profile'}} main">
-        <a href="/profile" class="textNav main-nav-link">
-
-          {{#if currentUser.profile.image }}
-            <span id="avatar" class="dapp-identicon dapp-tiny" style="background-image: url( {{ currentUser.profile.image }} )"></span>
-          {{else}}
-            <span id="avatar" class="dapp-identicon dapp-tiny" style="background-image: url('/img/avatar_img.svg')"></span>
-          {{/if}}
-
-          {{#if isMaximized}}
-          <span class="nav-text main-nav-text">
-            {{ currentUser.profile.name}}
-          </span>
-          <span class="nav-text main-nav-text nav-text2">{{ pti_balance }} PTI</span>
-          {{else}}
-          {{/if}}
-        </a>
-      </li>
-
-
-    {{ else }}
-      <li class="{{isActivePath '/profile'}} main">
-        <a href="/profile" class="textNav main-nav-link">
-          <img src= "/img/avatar_img.svg" class="svg">
-          {{#if isMaximized}}
-          <span class="nav-text nav-text3">Sign up or login</span>
-          {{/if}}
-        </a>
-      </li>
-    {{/if}}
-    {{#each navLinks}}
-      <li class="{{isActivePath path}}" id="{{ id }}">
-        <a href="{{path}}" class="textNav main-nav-link {{#if locked}}locked{{/if}}">
-          <img src= "{{icon}}" class="svg">
-          {{#if isMaximized}}
-            <span class="nav-text main-nav-text">{{text}}</span>
-            {{#if locked}}
-              <img src="/img/lock_icon.svg" class="locked-nav main-nav-icon-locked" />
+  <nav id="nav" class="main-nav {{ navState }} {{ isMaximized }}">
+    <ul class="main-nav-list">
+      <li class="main-nav-item {{isActivePath '/profile'}}">
+        <a class="main-nav-link" href="/profile">
+          {{#if currentUser}}
+            {{#if currentUser.profile.image }}
+              <img class="main-nav-icon profile" src="{{ currentUser.profile.image }}">
+            {{else}}
+              <svg class="main-nav-icon profile">
+                <use class="main-nav-icon-use" xlink:href="#icon-avatar"></use>
+              </svg>
             {{/if}}
+          {{else}}
+            <svg class="main-nav-icon profile">
+              <use class="main-nav-icon-use" xlink:href="#icon-avatar"></use>
+            </svg>
+          {{/if}}
+          {{#if currentUser}}
+            <span class="main-nav-text">{{ currentUser.profile.name }}</span>
+          {{else}}
+            <span class="main-nav-text">Sign up or login</span>
           {{/if}}
         </a>
       </li>
-    {{/each}}
-
-    {{#with aboutLink}}
-      <li class="{isActivePath path }}">
-        <a href="{{path}}" class="textNav main-nav-link">
-          <img src= "{{icon}}" class="svg">
-          {{#if isMaximized}}
-          <span class="nav-text main-nav-text">{{text}}</span>
-          {{/if}}
+      <li id="playlist" class="main-nav-item {{isActivePath '/playlists'}} {{#if locked}}locked{{/if}}">
+        <a class="main-nav-link" href="/playlists">
+          <svg class="main-nav-icon">
+            <use class="main-nav-icon-use" xlink:href="#icon-playlist"></use>
+          </svg>
+          <span class="main-nav-text">Playlists</span>
         </a>
       </li>
-    {{/with}}
-    <li>
-        indigo release - alpha v.0.1
-    </li>
-  </div>
+      <li id="search" class="main-nav-item {{isActivePath '/search'}} locked">
+        <a class="main-nav-link locked" href="/search">
+          <svg class="main-nav-icon">
+            <use class="main-nav-icon-use" xlink:href="#icon-search"></use>
+          </svg>
+          <span class="main-nav-text">Search</span>
+          <svg class="main-nav-icon-locked">
+            <use class="main-nav-icon-use" xlink:href="#icon-locked"></use>
+          </svg>
+        </a>
+      </li>
+      <li id="myvideos" class="main-nav-item {{isActivePath '/myvideos'}} locked">
+        <a class="main-nav-link locked" href="/myvideos">
+          <svg class="main-nav-icon">
+            <use class="main-nav-icon-use" xlink:href="#icon-myvideos"></use>
+          </svg>
+          <span class="main-nav-text">My videos</span>
+          <svg class="main-nav-icon-locked">
+            <use class="main-nav-icon-use" xlink:href="#icon-locked"></use>
+          </svg>
+        </a>
+      </li>
+      <li id="logout" class="main-nav-item">
+        <a class="main-nav-link" href="/">
+          <svg class="main-nav-icon">
+            <use class="main-nav-icon-use" xlink:href="#icon-logout"></use>
+          </svg>
+          <span class="main-nav-text">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 </template>

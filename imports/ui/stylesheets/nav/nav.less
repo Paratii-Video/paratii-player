@@ -1,4 +1,9 @@
 // Nav
+// Vars
+
+@size-main-nav-maximized-width: 220px;
+@size-main-nav-minimized-width: 60px;
+@size-main-nav-icon: 60px;
 
 // Overlay
 
@@ -20,7 +25,7 @@
 //
 
 .main-nav {
-  background-color: #fff;
+  background-color: @color-white;
   box-sizing: border-box;
   color: #fff;
   height: 100%;
@@ -28,7 +33,7 @@
   overflow-x: hidden;
   transition: transform .8s @ease-smooth, width .7s @ease-smooth;
   white-space: nowrap;
-  width: 60px;
+  width: @size-main-nav-minimized-width;
   z-index: @zindex-main-nav;
 
   .query-mini({
@@ -36,10 +41,10 @@
   });
 
   &.maximized {
-    width: 220px;
+    width: @size-main-nav-maximized-width;
 
     .query-mini({
-      width: 60px;
+      width: @size-main-nav-minimized-width;
     });
   }
 
@@ -47,29 +52,68 @@
     transform: translate3d(-100%, 0, 0);
   }
 
-  //
+  &-list {
+    display: block;
+    margin: 0;
+
+    .query-mini({
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+    });
+  }
+
+  &-item {
+    display: block;
+    overflow: hidden;
+    position: relative;
+  }
 
   &-link {
-    .query-mini({
-      display: none;
-    });
+    align-items: center;
+    background: @color-white;
+    display: flex;
+    transition: background .35s;
+    width: @size-main-nav-maximized-width;
+
+    &:hover {
+      background:#eee
+    }
   }
-
-  //
-
-  &-text {
-    .query-mini({
-      .simple-hidden;
-    });
-  }
-
-  //
 
   &-icon {
+    display: inline-block;
+    fill: @color-grey-light;
+    height: @size-main-nav-icon;
+    padding: 16px;
+    transition: fill .3s;
+    width: @size-main-nav-icon;
+
+    .active & {
+      fill: @color-purple;
+    }
+
+    &.profile {
+      padding: 10px;
+    }
+
     &-locked {
-      .query-mini({
-        display: none;
-      });
+      display: inline-block;
+      fill: @color-grey-light;
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  &-text {
+    color: @color-white;
+    display: inline-block;
+    transition: color .3s;
+
+    .maximized & {
+      color: @color-grey-light;
+      transition: color .3s linear .2s;
     }
   }
 }
