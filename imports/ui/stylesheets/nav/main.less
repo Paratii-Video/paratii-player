@@ -82,9 +82,13 @@
     display: inline-block;
     fill: @color-grey-light;
     height: @size-main-nav-icon;
-    padding: 14px;
+    padding: 18px;
     transition: fill .3s;
     width: @size-main-nav-icon;
+
+    &.profile {
+      padding: 14px;
+    }
 
     .active & {
       fill: @color-purple;

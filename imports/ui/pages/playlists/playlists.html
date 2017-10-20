@@ -1,20 +1,47 @@
 <template name="playlists">
-  <div class="app-content playlistContainer">
-    <div class="titleContainer">Playlist</div>
-    <div class="line"></div>
-    <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        {{ currentPlaylistName }}
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
-        {{# each playlists }}
-          <li class="playlistSel"><a href="{{pathFor route='playlists' _id=this._id}}">{{ title}}</a></li>
-        {{/each}}
-
-
-      </ul>
+  <div class="internal playlists">
+    <header class="internal-header">
+      <a class="internal-header-link" href="/">      
+        <svg class="internal-header-icon">
+          <use class="internal-header-icon-use" xlink:href="#icon-return"></use>
+        </svg>
+      </a>
+      <h2 class="internal-header-title">Playlists</h2>
+    </header>
+    <div class="internal-content">
+      <div class="playlists-wrapper">      
+        <h3 class="playlists-wrapper-title">My playlist</h3>
+        <ul class="playlists-list">
+          {{# each playlists }}
+            <li class="playlists-item">
+              <a class="playlists-item-link" href="{{pathFor route='playlists' _id=this._id}}">
+                <h4 class="playlists-item-title">{{ title }}</h4>
+                <div class="playlists-item-length">
+                  <p class="playlists-item-length-value">11 <span class="visually-hidden">videos on playlist</span></p>
+                  <svg class="playlists-item-icon">
+                    <use class="playlists-item-icon-use" xlink:href="#icon-playlists"></use>
+                  </svg>
+                </div>
+                <img class="playlists-item-image" src="/img/cover/default-thumb.png"/>
+              </a>
+            </li>
+          {{/each}}
+            <li class="playlists-item">
+              <button id="button-create-playlist" class="playlists-item-link playlists-item-button" type="button">
+                <span class="playlists-item-title playlists-item-button-label">Create playlist</span>
+              </button>
+            </li>
+        </ul>
+      </div>
+      <div class="playlists-wrapper">      
+        <h3 class="playlists-wrapper-title">Suggestions</h3>
+      </div>
+      <div class="playlists-wrapper">      
+        <h3 class="playlists-wrapper-title">Watch later</h3>
+      </div>
     </div>
+    <hr>
+    <!--  -->
     <div class="descriptionPlaylist">
       {{ currentPlaylistDesc }}
     </div>

@@ -3,6 +3,7 @@ import { formatNumber } from '/imports/lib/utils.js'
 import { Videos } from '../../../../imports/api/videos.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
+import '/imports/ui/components/modals/playlist.js'
 import './playlists.html'
 
 Template.playlists.onCreated(function () {
@@ -82,5 +83,10 @@ Template.playlists.helpers({
 Template.playlists.events({
   'click .playlistSel' (event) {
     Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'))
+  },
+  'click #button-create-playlist' () {
+    Modal.show('modal_playlist', {
+      type: 'create'
+    })
   }
 })
