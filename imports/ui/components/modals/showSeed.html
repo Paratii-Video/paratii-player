@@ -5,26 +5,27 @@
       <div class="modal-content" id="show-seed">
         <div class="modal-header">
           <h4 class="modal-title">The seed of your wallet</h4>
-          {{#if seed}}
-            <p>
-              Please save these 12 words on somewhere safe (we recommend to write it down).
-              <br />
-              Without this seed you can't recover your wallet and
-              will result in <b>loss of all of your funds</b>.
-            </p>
-            <p class="text-danger">
-              <b>WARNING:</b> Never disclose your seed.
-            </p>
-          {{/if}}
         </div>
         <form id="form-show-seed">
-            <div class="modal-body">
+          <div class="modal-body">
             <div class="flex-container-row">
               <div class="flex-grow">
                 {{#if seed}}
-                  <div class="highlight" id="seed">
-                    <tt>{{seed}}</tt>
+                  <p>
+                    Please save these 12 words on somewhere safe (we recommend writting it down).
+                    <br />
+                    Without this seed you cannot recover your wallet and
+                    will result in <b>loss of all of your funds</b>.
+                  </p>
+                  <p class="text-danger">
+                    <b>WARNING:</b> Never disclose your seed.
+                  </p>
+                  <div class="panel panel-default">
+                    <div class="panel-body highlight" id="seed"><tt>{{seed}}</tt></div>
                   </div>
+                  <p>
+                    This is not a Ethereum address and is not on Ethereum blockchain.
+                  </p>
                 {{else}}
                   <div class="{{#if errorMessage}}has-error{{/if}}">
                     {{#if errorMessage}}
@@ -45,13 +46,6 @@
             </div>
           </div>
           <div class="modal-footer">
-            {{#if seed}}
-              <div class="text-left pull-left">
-                <p>
-                  This is not a Ethereum address and is not on Ethereum blockchain.
-                </p>
-              </div>
-            {{/if}}
             <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-eth-close">Close</button>
             {{#unless seed}}
               <button type="submit" id="btn-show-seed" class="btn btn-default blue-button"
