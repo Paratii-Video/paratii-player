@@ -57,7 +57,7 @@ function setHead () {
         // TODO: creatore page it's not defined
         // oembedresponse.author_url = 'Creator url, maybe the channel?'
         // TODO: get iframe code of the mini version
-        oembedresponse.html = '<iframe src="http://localhost:3000/embed/' + videoId + '?type=mini" width="570" height="320" frameborder="0"></iframe>'
+        oembedresponse.html = '<iframe src="' + baseUrl + '/' + videoId + '?type=mini" width="570" height="320" frameborder="0"></iframe>'
         oembedresponse.width = 570
         oembedresponse.height = 320
         oembedresponse.thumbnail_url = baseUrl + thumbUrl
