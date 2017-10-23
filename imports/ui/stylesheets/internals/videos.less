@@ -11,12 +11,12 @@
   }
 
   &-item {
-    flex: 0 0 31.5%;
+    flex: 0 0 30%;
     height: 100px;
     margin: 0 0 10px;
 
     &:nth-child(3n-1) {
-      margin: 0 7px 10px; 
+      margin: 0 15px 10px; 
     }
 
     &-link {
@@ -42,7 +42,7 @@
       &::after {
         &:extend(.pos-a-full all);
 
-        border: 1px solid @color-grey;
+        border: 1px solid @color-grey-light;
         border-radius: 4px;
         content: '';
         z-index: 10;
@@ -64,63 +64,56 @@
       display: block;
       font-size: 14px;
       left: 0;
-      padding: 6px 10px 0;
+      overflow: hidden;
+      padding: 6px 10px;
       position: absolute;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       width: 100%;
       z-index: 4;
+    }
+
+    &-button {
+      height: 3px;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 15px;
+      z-index: 4;
+
+      &-svg {
+        &:extend(.full-block all);
+
+        fill: @color-white;
+      }
+    }
+
+    &-price {
+      background-color: @color-purple;
+      border-radius: 3px;
+      bottom: 35px;
+      color: white;
+      font-size: 10px;
+      font-weight: 500;
+      left: 9px;
+      padding: 2px 4px 1px;
+      position: absolute;
+      text-align: center;
+      z-index: 3;
+    }
+
+    &-time {
+      bottom: 33px;
+      font-size: 12px;
+      right: 10px;
+      position: absolute;
+      z-index: 2;
     }
 
     &-image {
       &:extend(.pos-a-full all);
 
-      display: block;
-      width: 100%;
       z-index: 1;
-    }
-
-    &-length {
-      align-items: flex-end;
-      bottom: 5px;
-      display: flex;
-      position: absolute;
-      right: 5px;
-      z-index: 3;
-
-      &-value {
-        font-size: 16px;
-      }
-    }
-
-    &-icon {
-      fill: @color-white;
-      height: 18px;
-      margin: 0 0 0 3px;
-      width: 20px;
-    }
-
-    &-button {
-      background-color: transparent;
-      border: 2px dashed @color-grey-light;
-      color: @color-grey-dark;
-
-      &::before {
-        content: none;
-      }
-
-      &:hover {
-        color: @color-grey-dark;
-      }
-
-      &-label {
-        left: 0;
-        position: absolute;
-        top: 0;
-        transition: opacity .3s;
-
-        .playlists-item-button:hover & {
-          opacity: .5;
-        }
-      }
     }
   }
 }

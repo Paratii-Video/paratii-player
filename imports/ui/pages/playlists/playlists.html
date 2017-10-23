@@ -48,6 +48,11 @@
                 <li class="videos-item">
                   <a class="videos-item-link" href="{{videoPath this}}">
                     <h4 class="videos-item-title">{{ title }}</h4>
+                    <button class="videos-item-button">
+                      <svg class="videos-item-button-svg">
+                        <use class="videos-item-button-svg-use" xlink:href="#icon-reticence"></use>
+                      </svg>
+                    </button>
                     <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
 
                     {{#if isLocked this}}
@@ -55,7 +60,7 @@
                     {{else if hasPrice this}}
                       <div class="videos-item-price">✓</div>
                     {{/if}}
-                    <div class="videos-time">{{ duration }}</div>
+                    <div class="videos-item-time">{{ duration }}</div>
                     {{#if thumb}}
                       <img class="videos-item-image" src="{{ thumb }}"/>
                     {{else}}
