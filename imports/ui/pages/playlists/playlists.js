@@ -43,14 +43,17 @@ Template.playlists.helpers({
   },
   videos () {
     if (Playlists.find().fetch().length > 0) {
-      const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
-      const videosIds = playlist.videos
-      const videos = Videos.find({ _id: { '$in': videosIds } })
-      return videos
+      if(FlowRouter.getParam('_id')) {
+        const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
+        const videosIds = playlist.videos
+        const videos = Videos.find({ _id: { '$in': videosIds } })
+
+        return videos
+      }
     }
   },
   isLocked (video) {
-    console.log('locked' + video._id, Template.instance().lockeds.get(video._id))
+    // console.log('locked' + video._id, Template.instance().lockeds.get(video._id))
     return Template.instance().lockeds.get(video._id)
   },
   hasPrice (video) {

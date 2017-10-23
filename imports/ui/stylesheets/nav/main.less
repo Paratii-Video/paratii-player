@@ -27,7 +27,7 @@
   height: 100%;
   position: fixed;
   overflow-x: hidden;
-  transition: transform .8s @ease-smooth, width .7s @ease-smooth;
+  transition: transform .5s @ease-smooth, width .7s @ease-smooth;
   white-space: nowrap;
   width: @size-main-nav-minimized-width;
   z-index: @zindex-main-nav;
@@ -37,6 +37,7 @@
   });
 
   &.maximized {
+    transition: transform .5s @ease-smooth, width .9s @ease-smooth;
     width: @size-main-nav-maximized-width;
 
     .query-mini({

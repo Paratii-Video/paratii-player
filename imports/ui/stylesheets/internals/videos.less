@@ -1,0 +1,126 @@
+// Videos
+
+//
+
+.videos {
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 10px;
+    max-width: 800px;
+  }
+
+  &-item {
+    flex: 0 0 31.5%;
+    height: 100px;
+    margin: 0 0 10px;
+
+    &:nth-child(3n-1) {
+      margin: 0 7px 10px; 
+    }
+
+    &-link {
+      &:extend(.full-block all);
+
+      backface-visibility: hidden;
+      border-radius: 4px;
+      color: @color-white;
+      overflow: hidden;
+      position: relative;
+      transition: color .35s;
+
+      &::before {
+        &:extend(.pos-a-full all);
+
+        background-color: black;
+        content: ''; 
+        opacity: .7;
+        transition: opacity .35s;
+        z-index: 2;
+      }
+
+      &::after {
+        &:extend(.pos-a-full all);
+
+        border: 1px solid @color-grey;
+        border-radius: 4px;
+        content: '';
+        z-index: 10;
+      }
+
+      &:hover {
+        color: @color-white;
+
+        &::before {
+          opacity: .5;
+        }
+      }
+    }
+
+    &-title {
+      background-color: @color-white;
+      bottom: 0;
+      color: @color-grey;
+      display: block;
+      font-size: 14px;
+      left: 0;
+      padding: 6px 10px 0;
+      position: absolute;
+      width: 100%;
+      z-index: 4;
+    }
+
+    &-image {
+      &:extend(.pos-a-full all);
+
+      display: block;
+      width: 100%;
+      z-index: 1;
+    }
+
+    &-length {
+      align-items: flex-end;
+      bottom: 5px;
+      display: flex;
+      position: absolute;
+      right: 5px;
+      z-index: 3;
+
+      &-value {
+        font-size: 16px;
+      }
+    }
+
+    &-icon {
+      fill: @color-white;
+      height: 18px;
+      margin: 0 0 0 3px;
+      width: 20px;
+    }
+
+    &-button {
+      background-color: transparent;
+      border: 2px dashed @color-grey-light;
+      color: @color-grey-dark;
+
+      &::before {
+        content: none;
+      }
+
+      &:hover {
+        color: @color-grey-dark;
+      }
+
+      &-label {
+        left: 0;
+        position: absolute;
+        top: 0;
+        transition: opacity .3s;
+
+        .playlists-item-button:hover & {
+          opacity: .5;
+        }
+      }
+    }
+  }
+}
