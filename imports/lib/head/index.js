@@ -37,9 +37,8 @@ function setHead () {
 
       // Get video id from the path
       var videoId = parsedExternalUrl.path.split('/')[2]
-      console.log(videoId)
       var video = Videos.findOne({_id: videoId})
-
+      console.log(video)
       // If video exist build response
       if (video) {
         var baseUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
@@ -90,15 +89,20 @@ function setHead () {
 function twitterCardHead (params, req, res, next) {
   var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
   req.dynamicHead = (req.dynamicHead || '')
-  var videoID = params._id
+  var videoId = params._id
+  var video = Videos.findOne({_id: videoId})
+  var videoTitle = video.title
+
+  var source = video.src
+  console.log(source)
   req.dynamicHead += '<meta property="twitter:card" content="player" />'
-  req.dynamicHead += '<meta property="twitter:title" content="Custom player inside a twitter card" />'
-  req.dynamicHead += '<meta property="twitter:site" content="https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg">'
+  req.dynamicHead += '<meta property="twitter:title" content="' + videoTitle + '" />'
+  req.dynamicHead += '<meta property="twitter:site" content="' + rootUrl + '/play/' + videoId + '">'
   req.dynamicHead += '<meta property="twitter:player:width" content="500" />'
   req.dynamicHead += '<meta property="twitter:player:height" content="500" />'
   req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + '/img/icon/apple-touch-icon.png" />'
-  req.dynamicHead += '<meta property="twitter:player:stream" content="https://gateway.ipfs.io/ipfs/QmcSHvFsGEU36viAkXo5PAkz1YgsorzT5LXR8uAnugJ7Hg" />'
-  req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoID + '" />'
+  req.dynamicHead += '<meta property="twitter:player:stream" content="https://gateway.ipfs.io' + source + '" />'
+  req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '" />'
 }
 
 function basicHead (params, req, res, next) {
