@@ -93,7 +93,7 @@ function twitterCardHead (params, req, res, next) {
   var videoId = params._id
   var video = Videos.findOne({_id: videoId})
   var videoTitle = video.title
-
+  var thumbUrl = video.thumb
   var source = video.src
   console.log(source)
   req.dynamicHead += '<meta property="twitter:card" content="player" />'
@@ -101,7 +101,7 @@ function twitterCardHead (params, req, res, next) {
   req.dynamicHead += '<meta property="twitter:site" content="' + rootUrl + '/play/' + videoId + '">'
   req.dynamicHead += '<meta property="twitter:player:width" content="500" />'
   req.dynamicHead += '<meta property="twitter:player:height" content="500" />'
-  req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + '/img/icon/apple-touch-icon.png" />'
+  req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + thumbUrl + '" />'
   req.dynamicHead += '<meta property="twitter:player:stream" content="https://gateway.ipfs.io' + source + '" />'
   req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '" />'
 }
