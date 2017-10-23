@@ -9,7 +9,6 @@ import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import * as HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
-import { keystoresCheck, createAnonymousKeystore } from '/imports/lib/ethereum/wallet.js'
 import '/imports/ui/components/modals/login.js'
 import '/imports/ui/components/modals/signIn.js'
 import '/imports/ui/components/modals/waitConfirm.js'
@@ -67,23 +66,6 @@ Template.player.onCreated(function () {
   const userPTIAddress = getUserPTIAddress()
   const instance = Template.instance()
   const bodyView = Blaze.getView('Template.App_body')
-
-  // If user is not logged in
-  if (Accounts.userId() === null) {
-    const keystores = keystoresCheck()
-    console.log(keystores)
-    if (keystores.users > 0) {
-      // There is at least one User keystore
-      // TODO: propose to login if not create anonymous keystore
-      Modal.show('login')
-    } else {
-      // If there is no User keystore
-      console.log('no user keystore')
-      Session.set('wallet-state', 'generating')
-      // Create anonymouse keystore with 'password'
-      createAnonymousKeystore()
-    }
-  }
 
   // embed/extra parameters
   const autoplay = parseInt(FlowRouter.getQueryParam('autoplay'))

@@ -12,12 +12,10 @@ import { getContract } from './contracts.js'
 // generate an address, and save that in the sesssion too
 function createKeystore (password, seedPhrase, cb) {
   // create a new seedPhrase if we have none
-
   Session.set('generating-keystore', true)
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed()
   }
-
   // create a new keystore with the given password and seedPhrase
   const opts = {
     password,
@@ -28,7 +26,6 @@ function createKeystore (password, seedPhrase, cb) {
       cb(err)
       return
     }
-
     // while we are at it, also generate an address for our user
     keystore.keyFromPassword(password, function (error, pwDerivedKey) {
       if (error) {
@@ -60,14 +57,9 @@ function createKeystore (password, seedPhrase, cb) {
 // save the seed, keystore and address in the session
 function saveKeystore (seedPhrase, keystore, address) {
   const userId = Accounts.userId()
-  // If the user is not logged in
-  // if (userId === null) {
-  //   userId = 'anonymous'
-  // }
   Session.set('seed', seedPhrase)
   RLocalStorage.setItem(`keystore-${userId}`, keystore)
   Session.set(`keystore-${userId}`, keystore)
-
   Session.set('userPTIAddress', add0x(address))
   Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
 }
@@ -86,6 +78,7 @@ function createAnonymousKeystore () {
       RLocalStorage.setItem(`keystore-anonymous`, keystore)
       Session.set(`keystore-anonymous`, keystore)
       Session.set('tempKeystore', null)
+      Session.set('wallet-state', '')
     })
   }
 }
@@ -97,7 +90,7 @@ export function getKeystore (user = null) {
   let serializedKeystore
   let userId = Accounts.userId()
   // If the user is not logged in
-  if (user === 'anonymous') {
+  if (user === 'anonymous' || userId === null) {
     userId = 'anonymous'
   }
   serializedKeystore = Session.get(`keystore-${userId}`)

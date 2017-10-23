@@ -3,6 +3,7 @@ import { formatNumber } from '/imports/lib/utils.js'
 import { Videos } from '../../../../imports/api/videos.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
+import '../../components/pageheader/pageheader.js'
 import './playlists.html'
 
 Template.playlists.onCreated(function () {

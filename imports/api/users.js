@@ -2,41 +2,10 @@
 /* eslint-disable no-alert */
 import { Accounts } from 'meteor/accounts-base'
 import { check } from 'meteor/check'
-import { keystoresCheck, getKeystore } from '/imports/lib/ethereum/wallet.js'
+import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { add0x } from '/imports/lib/utils.js'
 
 const Promise = require('bluebird')
-
-if (Meteor.isClient) {
-  Accounts.onLogin(function (user) {
-    // User Logged In
-    console.log('logged in!')
-    const keystores = keystoresCheck()
-    console.log(keystores)
-    const keystore = getKeystore()
-    Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))
-    // Check if there is an anonymous keystore
-    if (keystores.anonymous > 0) {
-      const keystoreAnonymous = getKeystore('anonymous')
-      Session.set('anonymousAddress', add0x(keystoreAnonymous.getAddresses()[0]))
-      console.log('keystore')
-      console.log(add0x(keystore.getAddresses()[0]))
-      console.log('keystore anonymous')
-      console.log(add0x(keystoreAnonymous.getAddresses()[0]))
-    }
-  })
-
-  Accounts.onLogout(function (user) {
-    // User Logged Out
-    console.log('logged out')
-    // Reset all session values
-    Session.set('userPTIAddress', null)
-    Session.set('tempSeed', null)
-    Session.set('tempKeystore', null)
-    Session.set('tempAddress', null)
-    Session.set('wallet-state', null)
-  })
-}
 
 // Deny all client-side updates to user documents
 Meteor.users.deny({

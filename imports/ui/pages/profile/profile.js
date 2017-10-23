@@ -9,6 +9,7 @@ import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
 import '/imports/ui/components/modals/restoreKeystore.js'
 import '/imports/ui/components/modals/showSeed.js'
+import '../../components/pageheader/pageheader.js'
 import './profile.html'
 
 Template.profile.helpers({

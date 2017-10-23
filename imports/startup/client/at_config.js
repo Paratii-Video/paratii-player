@@ -1,4 +1,4 @@
-import { createKeystore, saveKeystore } from '/imports/lib/ethereum/wallet.js'
+// import { createKeystore, saveKeystore } from '/imports/lib/ethereum/wallet.js'
 import { showSeed } from '/imports/ui/components/modals/showSeed.js'
 import { AccountsTemplates } from 'meteor/useraccounts:core'
 const mySubmitFunc = function (error, state) {
@@ -7,32 +7,32 @@ const mySubmitFunc = function (error, state) {
     console.log(error)
   }
   if (state === 'signUp') {
-    if (Session.get('tempSeed')) {
-      Session.set('wallet-state', 'generating')
-      // if signup is successful, save the temporaries variables
-      saveKeystore(
-        Session.get('tempSeed'),
-        Session.get('tempKeystore'),
-        Session.get('tempAddress')
-      )
-      Session.set('tempSeed', null)
-      Session.set('tempKeystore', null)
-      Session.set('tempAddress', null)
-      Session.set('wallet-state', '')
-    }
+    // if (Session.get('tempSeed')) {
+    //   Session.set('wallet-state', 'generating')
+    //   // if signup is successful, save the temporaries variables
+    //   saveKeystore(
+    //     Session.get('tempSeed'),
+    //     Session.get('tempKeystore'),
+    //     Session.get('tempAddress')
+    //   )
+    //   Session.set('tempSeed', null)
+    //   Session.set('tempKeystore', null)
+    //   Session.set('tempAddress', null)
+    //   Session.set('wallet-state', '')
+    // }
     showSeed('show')
   }
 }
 
 const myPreSignupFunc = function (password) {
   // create a new wallet during signup
-  Session.set('wallet-state', 'generating')
-  createKeystore(password, undefined, function (err) {
-    if (err) {
-      throw err
-    }
-    Session.set('wallet-state', '')
-  })
+  // Session.set('wallet-state', 'generating')
+  // createKeystore(password, undefined, function (err) {
+  //   if (err) {
+  //     throw err
+  //   }
+  //   Session.set('wallet-state', '')
+  // })
 }
 
 AccountsTemplates.avoidRedirect = true

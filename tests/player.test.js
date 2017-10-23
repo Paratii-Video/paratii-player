@@ -9,7 +9,7 @@ describe('player workflow', function () {
   it('play a free video', function () {
     server.execute(createVideo, '12345', 'Test 1', 0)
     browser.url('http://localhost:3000/play/12345')
-    browser.waitForExist('#video-player')
+    browser.waitForExist('#video-player', 1000000)
     browser.waitForExist('.player-overlay')
     browser.waitForExist('.player-controls')
     assert.equal(browser.getText('.player-title'), 'Test 1')
