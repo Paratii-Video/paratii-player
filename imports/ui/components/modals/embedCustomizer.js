@@ -2,6 +2,8 @@ import { Template } from 'meteor/templating'
 import Clipboard from 'clipboard'
 import './embedCustomizer.html'
 
+//
+
 let clipboard
 const embedSizes = [
   {
@@ -19,7 +21,7 @@ const embedSizes = [
 ]
 var isModalOpened = false
 const animIn = 10
-const animOut = 500
+const animOut = 300
 var $modal
 
 // Share modal
@@ -42,6 +44,16 @@ Template.modal_share_links.onRendered(() => {
   modalShowContent()
 })
 
+Template.modal_share_links.onCreated(function () {
+  setClipboard('#copy_url')
+})
+
+Template.modal_share_links.helpers({
+  embedBaseUrl () {
+    return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  }
+})
+
 Template.modal_share_links.events({
   'click button.gotoembed' (event, instance) {
     modalHideContent(instance.view.parentView.parentView, 'embed')
@@ -61,21 +73,7 @@ Template.modal_share_embed.onCreated(function () {
   this.iframe.set('loop', false)
   this.iframe.set('playsinline', false)
 
-  clipboard = new Clipboard('#copy_to_clipboard')
-  clipboard.on('success', function (e) {
-    setTooltip('Copied!')
-    hideTooltip()
-  })
-
-  clipboard.on('error', function (e) {
-    setTooltip('Failed!')
-    hideTooltip()
-  })
-
-  $('#copy_to_clipboard').tooltip({
-    trigger: 'click',
-    placement: 'bottom'
-  })
+  setClipboard('#copy_embed_code')
 })
 
 Template.modal_share_embed.helpers({
@@ -154,8 +152,6 @@ function modalShowContent () {
     timeAnimIn = animIn + 850
   }
 
-  console.log($modal)
-
   Meteor.setTimeout(() => $modal.addClass('show-content'), timeAnimIn)
 }
 
@@ -164,17 +160,39 @@ function modalHideContent (template, type) {
   Meteor.setTimeout(() => template.templateInstance().modalState.set('type', type), animOut)
 }
 
-function setTooltip (message) {
-  $('#copy_to_clipboard').tooltip('hide')
+//
+
+function setClipboard (element) {
+  clipboard = new Clipboard(element)
+  clipboard.on('success', function (e) {
+    setTooltip('Copied!', element)
+    hideTooltip(element)
+  })
+
+  clipboard.on('error', function (e) {
+    setTooltip('Failed!', element)
+    hideTooltip(element)
+  })
+
+  $(element).tooltip({
+    trigger: 'click',
+    placement: 'bottom'
+  })
+}
+
+function setTooltip (message, element) {
+  $(element).tooltip('hide')
     .attr('data-original-title', message)
     .tooltip('show')
 }
 
-function hideTooltip () {
+function hideTooltip (element) {
   setTimeout(function () {
-    $('#copy_to_clipboard').tooltip('destroy')
+    $(element).tooltip('destroy')
   }, 1000)
 }
+
+//
 
 function buildUrl (url, parameters) {
   var qs = ''

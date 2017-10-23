@@ -1,5 +1,7 @@
 import './sign.html'
 
+//
+
 var $modal
 var $email
 var $password
@@ -7,7 +9,7 @@ var $username
 var isModalOpened = false
 var userData
 const animIn = 10
-const animOut = 500
+const animOut = 300
 
 //
 
