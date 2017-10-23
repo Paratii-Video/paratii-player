@@ -46,7 +46,7 @@ function setHead () {
         var videoTitle = video.title
         var videoDescription = video.description
         var creatorName = video.uploader.name
-        oembedresponse.success = true
+        oembedresponse.success = 'true'
         oembedresponse.version = '1.0'
         oembedresponse.type = 'rich'
         oembedresponse.title = videoTitle
