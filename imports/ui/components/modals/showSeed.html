@@ -5,8 +5,17 @@
       <div class="modal-content" id="show-seed">
         <div class="modal-header">
           <h4 class="modal-title">The seed of your wallet</h4>
-          <p>Write down or save the following 12 words. You will need them to restore your wallet.
-          </p>
+          {{#if seed}}
+            <p>
+              Please save these 12 words on somewhere safe (we recommend to write it down).
+              <br />
+              Without this seed you can't recover your wallet and
+              will result in <b>loss of all of your funds</b>.
+            </p>
+            <p class="text-danger">
+              <b>WARNING:</b> Never disclose your seed.
+            </p>
+          {{/if}}
         </div>
         <form id="form-show-seed">
             <div class="modal-body">
@@ -17,15 +26,15 @@
                     <tt>{{seed}}</tt>
                   </div>
                 {{else}}
-                <div class="{{#if errorMessage}}has-error{{/if}}">
-                  {{#if errorMessage}}
-                    <label class="control-label">{{errorMessage}}</label>
-                  {{/if}}
-                  <div class="input-group">
-                    <span class="input-group-addon" id="sizing-addon3">Password</span>
-                    <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
-                  </div>
-                </div>
+                  <div class="{{#if errorMessage}}has-error{{/if}}">
+                    {{#if errorMessage}}
+                      <label class="control-label">{{errorMessage}}</label>
+                      {{/if}}
+                      <div class="input-group">
+                        <span class="input-group-addon" id="sizing-addon3">Password</span>
+                        <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
+                      </div>
+                    </div>
                 {{/if}}
 
               </div>
@@ -36,10 +45,17 @@
             </div>
           </div>
           <div class="modal-footer">
+            {{#if seed}}
+              <div class="text-left pull-left">
+                <p>
+                  This is not a Ethereum address and is not on Ethereum blockchain.
+                </p>
+              </div>
+            {{/if}}
             <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-eth-close">Close</button>
             {{#unless seed}}
-            <button type="submit" id="btn-show-seed" class="btn btn-default blue-button"
-              data-loading-text="Getting seed...">Get seed</button>
+              <button type="submit" id="btn-show-seed" class="btn btn-default blue-button"
+                data-loading-text="Getting seed...">Get seed</button>
             {{/unless}}
           </div>
         </form>
