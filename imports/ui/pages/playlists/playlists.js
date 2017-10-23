@@ -43,7 +43,7 @@ Template.playlists.helpers({
   },
   videos () {
     if (Playlists.find().fetch().length > 0) {
-      if(FlowRouter.getParam('_id')) {
+      if (FlowRouter.getParam('_id')) {
         const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
         const videosIds = playlist.videos
         const videos = Videos.find({ _id: { '$in': videosIds } })
