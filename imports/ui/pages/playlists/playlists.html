@@ -24,6 +24,11 @@
                 <li class="playlists-item">
                   <a class="playlists-item-link" href="{{pathFor route='playlists' _id=this._id}}">
                     <h4 class="playlists-item-title">{{ title }}</h4>
+                    <a href="{{pathFor route='playlists' _id=this._id}}" class="playlists-item-button">
+                      <svg class="playlists-item-button-svg">
+                        <use class="playlists-item-button-svg-use" xlink:href="#icon-play"></use>
+                      </svg>
+                    </a>
                     <div class="playlists-item-length">
                       <p class="playlists-item-length-value">11 <span class="visually-hidden">videos on playlist</span></p>
                       <svg class="playlists-item-icon">
@@ -35,8 +40,8 @@
                 </li>
               {{/each}}
                 <li class="playlists-item">
-                  <button id="button-create-playlist" class="playlists-item-link playlists-item-button" type="button">
-                    <span class="playlists-item-title playlists-item-button-label">Create playlist</span>
+                  <button id="button-create-playlist" class="playlists-item-link playlists-button" type="button">
+                    <span class="playlists-item-title playlists-button-label">Create playlist</span>
                   </button>
                 </li>
             </ul>

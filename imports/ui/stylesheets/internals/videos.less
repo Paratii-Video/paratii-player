@@ -89,16 +89,12 @@
     }
 
     &-price {
-      background-color: @color-purple;
-      border-radius: 3px;
+      &:extend(.player-tooltip all);
+      &:extend(.player-tooltip--small all);
+
       bottom: 35px;
-      color: white;
-      font-size: 10px;
-      font-weight: 500;
       left: 9px;
-      padding: 2px 4px 1px;
       position: absolute;
-      text-align: center;
       z-index: 3;
     }
 
