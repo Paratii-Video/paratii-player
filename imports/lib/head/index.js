@@ -38,23 +38,37 @@ function setHead () {
       // Get video id from the path
       var videoId = parsedExternalUrl.path.split('/')[2]
       console.log(videoId)
-      Videos.find()
+      var video = Videos.findOne({_id: videoId})
 
-      oembedresponse.version = '1.0'
-      oembedresponse.type = 'rich'
-      oembedresponse.provider_name = 'Paratii'
-      oembedresponse.provider_url = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
-      oembedresponse.author_name = 'Creator name'
-      oembedresponse.author_url = 'Creator url, maybe the channel?'
-      // TODO: get iframe code
-      oembedresponse.html = 'iframe code'
-      oembedresponse.width = 570
-      oembedresponse.height = 320
-      oembedresponse.thumbnail_url = 'url for thumbnail'
-      oembedresponse.thumbnail_width = 825
-      oembedresponse.thumbnail_height = 825
-      oembedresponse.referrer = ''
-      oembedresponse.cache_age = 3600
+      // If video exist build response
+      if (video) {
+        var baseUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
+        var thumbUrl = video.thumb
+        var videoTitle = video.title
+        var videoDescription = video.description
+        var creatorName = video.uploader.name
+        oembedresponse.version = '1.0'
+        oembedresponse.type = 'rich'
+        oembedresponse.title = videoTitle
+        oembedresponse.description = videoDescription
+        oembedresponse.provider_name = creatorName
+        oembedresponse.provider_url = baseUrl
+        oembedresponse.author_name = creatorName
+        // TODO: creatore page it's not defined
+        // oembedresponse.author_url = 'Creator url, maybe the channel?'
+        // TODO: get iframe code of the mini version
+        oembedresponse.html = '<iframe src="http://localhost:3000/embed/' + videoId + '?type=mini" width="570" height="320" frameborder="0"></iframe>'
+        oembedresponse.width = 570
+        oembedresponse.height = 320
+        oembedresponse.thumbnail_url = baseUrl + thumbUrl
+        oembedresponse.thumbnail_width = 825
+        oembedresponse.thumbnail_height = 825
+        oembedresponse.referrer = ''
+        oembedresponse.cache_age = 3600
+      } else {
+        // if not video exist i return a not found response
+        oembedresponse.error = 'videoNotFound'
+      }
     } else {
       // url don't match, denied
       oembedresponse.error = 'denied'
