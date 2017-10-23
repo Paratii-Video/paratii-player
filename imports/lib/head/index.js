@@ -1,3 +1,5 @@
+import { Videos } from '/imports/api/videos.js'
+
 function setHead () {
   Picker.route('/play/:_id', (params, req, res, next) => {
     // console.log('calling home')
@@ -13,6 +15,7 @@ function setHead () {
     // console.log('calling home')
     // console.log(params)
     // console.log(req)
+
     var oembedresponse = {}
     if (params.query.url === undefined) {
       oembedresponse.error = 'urlMissing'
@@ -21,13 +24,22 @@ function setHead () {
 
     var parsedExternalUrl = parseUrl(params.query.url)
     var parsedInternalUrl = parseUrl(Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, ''))
-
+    console.log(parsedInternalUrl)
+    console.log(parsedExternalUrl)
     res.setHeader('Content-Type', 'application/json')
+    // check if the url passed in query parameter matches with our
     if (
       parsedExternalUrl.protocol === parsedInternalUrl.protocol &&
       parsedExternalUrl.host === parsedInternalUrl.host &&
       parsedExternalUrl.port === parsedInternalUrl.port
     ) {
+      // url match
+
+      // Get video id from the path
+      var videoId = parsedExternalUrl.path.split('/')[2]
+      console.log(videoId)
+      Videos.find()
+
       oembedresponse.version = '1.0'
       oembedresponse.type = 'rich'
       oembedresponse.provider_name = 'Paratii'
@@ -44,6 +56,7 @@ function setHead () {
       oembedresponse.referrer = ''
       oembedresponse.cache_age = 3600
     } else {
+      // url don't match, denied
       oembedresponse.error = 'denied'
     }
 
