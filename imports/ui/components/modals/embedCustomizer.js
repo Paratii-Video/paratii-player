@@ -17,10 +17,42 @@ const embedSizes = [
 
   }
 ]
+var isModalOpened = false
+const animIn = 10
+const animOut = 500
+var $modal
 
-/* NEW TEMPLATE */
+// Share modal
 
 Template.modal_share_video.onCreated(function () {
+  this.modalState = new ReactiveDict()
+  this.modalState.set('type', this.data.type)
+})
+
+Template.modal_share_video.helpers({
+  isLinks: (type) => type === 'links',
+  isEmbed: (type) => type === 'embed',
+  modalType: () => Template.instance().modalState.get('type')
+})
+
+// Links
+
+Template.modal_share_links.onRendered(() => {
+  $modal = $('div.main-modal-share')
+  modalShowContent()
+})
+
+Template.modal_share_links.events({
+  'click button.gotoembed' (event, instance) {
+    modalHideContent(instance.view.parentView.parentView, 'embed')
+  }
+})
+
+// Embed
+
+Template.modal_share_embed.onRendered(() => modalShowContent())
+
+Template.modal_share_embed.onCreated(function () {
   this.iframe = new ReactiveDict()
   // default size
   this.iframe.set('size', embedSizes[0])
@@ -34,6 +66,7 @@ Template.modal_share_video.onCreated(function () {
     setTooltip('Copied!')
     hideTooltip()
   })
+
   clipboard.on('error', function (e) {
     setTooltip('Failed!')
     hideTooltip()
@@ -45,11 +78,7 @@ Template.modal_share_video.onCreated(function () {
   })
 })
 
-Template.modal_share_video.onRendered(function () {
-  Meteor.setTimeout(() => $('div.main-modal-share').addClass('show-content'), 1000)
-})
-
-Template.modal_share_video.helpers({
+Template.modal_share_embed.helpers({
   embedSizes,
   embedBaseUrl () {
     return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + 'embed/' + this.videoId
@@ -92,7 +121,7 @@ Template.modal_share_video.helpers({
   }
 })
 
-Template.modal_share_video.events({
+Template.modal_share_embed.events({
   'change .sizes' (event) {
     console.log(event.target.value)
     const size = event.target.value
@@ -109,10 +138,31 @@ Template.modal_share_video.events({
   },
   'change .playsinline' (event) {
     Template.instance().iframe.set('playsinline', event.target.checked)
+  },
+  'click button.gotolinks' (event, instance) {
+    modalHideContent(instance.view.parentView.parentView, 'links')
   }
 })
 
 //
+
+function modalShowContent () {
+  let timeAnimIn = animIn
+
+  if (!isModalOpened) {
+    isModalOpened = true
+    timeAnimIn = animIn + 850
+  }
+
+  console.log($modal)
+
+  Meteor.setTimeout(() => $modal.addClass('show-content'), timeAnimIn)
+}
+
+function modalHideContent (template, type) {
+  $modal.removeClass('show-content')
+  Meteor.setTimeout(() => template.templateInstance().modalState.set('type', type), animOut)
+}
 
 function setTooltip (message) {
   $('#copy_to_clipboard').tooltip('hide')

@@ -25,11 +25,9 @@ function modalGetElements (type) {
 }
 
 function modalShowContent (type) {
-  let timeAnimIn
+  let timeAnimIn = animIn
 
   if (type !== 'confirm') modalGetElements(type)
-
-  timeAnimIn = animIn
 
   if (!isModalOpened) {
     isModalOpened = true
@@ -170,42 +168,3 @@ Template.modal_sign_up.events({
 // Cofirm
 
 Template.modal_wait_confirm.onRendered(() => modalShowContent('confirm'))
-
-Template.modal_wait_confirm.events({
-  'click button.gotosignin' (event, instance) {
-    modalHideContent(instance.view.parentView.parentView, 'sign_in')
-  },
-  'click button.password' (event, instance) {
-    let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
-    Session.set('passwordType', inputType)
-  },
-  'submit form.main-modal-form' (event) {
-    event.preventDefault()
-    if (formValidation('sign-up')) {
-      Accounts.createUser(userData, (err) => {
-        if (err) {
-          if (err.reason === 'Need to set a username or email') {
-            $email.addClass('error')
-            $username.addClass('error')
-            $password.removeClass('error')
-          } else if (err.reason === 'Password may not be empty') {
-            $email.removeClass('error')
-            $username.removeClass('error')
-            $password.addClass('error')
-          } else if (err.reason === 'Email already exists') {
-            $email.removeClass('error')
-            $username.removeClass('error')
-            $password.addClass('error')
-          } else {
-            $email.removeClass('error')
-            $password.removeClass('error')
-            $username.removeClass('error')
-            console.log(err)
-          }
-        } else {
-          Modal.hide('modal_sign')
-        }
-      })
-    }
-  }
-})
