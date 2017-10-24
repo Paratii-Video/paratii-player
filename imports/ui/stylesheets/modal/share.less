@@ -1,6 +1,33 @@
 // Modal share
 
 .main-modal-share {
+
+  // Links
+  
+  &-list {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0 0;
+  }
+
+  &-item {
+    margin: 0 5px;
+  }
+
+  &-link {
+    &:extend(.hover-opacity all);
+
+    display: block;
+    height: 40px;
+    width: 40px;
+
+    &-svg {
+      &:extend(.full-block all);
+    }
+  }
+
+  // Embed
+
   &-options {
     display: flex;
     flex-wrap: wrap;

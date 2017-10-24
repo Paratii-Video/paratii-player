@@ -21,7 +21,39 @@
 
 <template name="modal_share_links">
   <h3 class="main-modal-title main-modal-anim-1">Share this video</h3>
-  <div class="main-modal-footer main-modal-anim-5">
+  <input class="input-copy-code main-form-input main-modal-anim-2" onclick="this.focus();this.select()" readonly="readonly" value="{{ embedBaseUrl }}" />
+
+  <ul class="main-modal-share-list main-modal-anim-3">
+    <li class="main-modal-share-item">
+      <a class="main-modal-share-link" href="/">
+        <svg class="main-modal-share-link-svg">
+          <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-facebook"></use>
+        </svg> 
+      </a>
+    </li>
+    <li class="main-modal-share-item">
+      <a class="main-modal-share-link" href="/">
+        <svg class="main-modal-share-link-svg">
+          <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-twitter"></use>
+        </svg> 
+      </a>
+    </li>
+    <li class="main-modal-share-item">
+      <a class="main-modal-share-link" href="/">
+        <svg class="main-modal-share-link-svg">
+          <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-whatsapp"></use>
+        </svg> 
+      </a>
+    </li>
+    <li class="main-modal-share-item">
+      <a class="main-modal-share-link" href="/">
+        <svg class="main-modal-share-link-svg">
+          <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-email"></use>
+        </svg> 
+      </a>
+    </li>
+  </ul>
+  <div class="main-modal-footer main-modal-anim-4">
     <pre id="to_clip" class="visually-hidden">{{ embedBaseUrl }}</pre>
     <button class="button-text button-text--grey-light gotoembed">Get embed</button>
     <button id="copy_url"  class="button-text" data-clipboard-target="#to_clip">Copy link</button>
@@ -72,7 +104,7 @@
   <pre id="to_clip" class="visually-hidden">{{ code }}</pre>
 
   <div class="main-modal-footer main-modal-anim-5">
-    <button class="button-text button-text--grey-light gotolinks">Share URL</button>
+    <button class="button-text button-text--grey-light gotolinks">Share video</button>
     <button id="copy_embed_code"  class="button-text" data-clipboard-target="#to_clip">Copy code</button>
   </div>
 </template>

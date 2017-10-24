@@ -27,6 +27,7 @@ var $modal
 // Share modal
 
 Template.modal_share_video.onCreated(function () {
+  isModalOpened = false
   this.modalState = new ReactiveDict()
   this.modalState.set('type', this.data.type)
 })
@@ -121,7 +122,6 @@ Template.modal_share_embed.helpers({
 
 Template.modal_share_embed.events({
   'change .sizes' (event) {
-    console.log(event.target.value)
     const size = event.target.value
     Template.instance().iframe.set('size', embedSizes[size])
   },
