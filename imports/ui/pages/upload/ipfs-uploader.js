@@ -4,7 +4,7 @@ import paratiiIPFS from '../../../lib/ipfs/index.js'
 
 const pull = require('pull-stream')
 const pullFilereader = require('pull-filereader')
-var dropAreaEl, statusEl
+var dropAreaEl, statusEl, titleEl
 
 document.addEventListener('DOMContentLoaded', (e) => {
   console.log('DOMContentLoaded', document)
@@ -140,6 +140,23 @@ function addToIPFS (files) {
         console.log('args: ', args)
         console.log('result: ', result)
         statusEl.innerHTML += `Video HLS link: /ipfs/${result.master.hash}\n`
+
+        titleEl = document.querySelector('#input-title')
+        console.log('titleEl: ', titleEl)
+        Meteor.call('videos.create', {
+          id: String(Math.random()).split('.')[1],
+          title: titleEl.value,
+          price: 0.0,
+          src: '/ipfs/' + result.master.hash,
+          mimetype: 'video/mp4',
+          stats: {
+            likes: 0,
+            dislikes: 0
+          }}, (err, videoId) => {
+            if (err) throw err
+            console.log('[upload] Video Uploaded: ', videoId)
+            statusEl.innerHTML += '\n Video Uploaded go to <b><a href="/play/' + videoId + '">/play/' + videoId + '</a></b>\n'
+          })
       }
     })
   })
