@@ -3,19 +3,21 @@
     <ul class="main-nav-list">
       <li class="main-nav-item {{isActivePath '/profile'}}">
         <a id="nav-profile" class="main-nav-link" href="/profile">
-          {{#if currentUser}}
-            {{#if currentUser.profile.image }}
-              <img class="main-nav-icon profile" src="{{ currentUser.profile.image }}">
+          <div class="main-nav-icon avatar">
+            {{#if currentUser}}
+              {{#if currentUser.profile.image }}
+                <img class="main-nav-svg" src="{{ currentUser.profile.image }}">
+              {{else}}
+                <svg class="main-nav-svg">
+                  <use class="main-nav-svg-use" xlink:href="#icon-avatar"></use>
+                </svg>
+              {{/if}}
             {{else}}
-              <svg class="main-nav-icon profile">
-                <use class="main-nav-icon-use" xlink:href="#icon-avatar"></use>
+              <svg class="main-nav-svg">
+                <use class="main-nav-svg-use" xlink:href="#icon-avatar"></use>
               </svg>
             {{/if}}
-          {{else}}
-            <svg class="main-nav-icon profile">
-              <use class="main-nav-icon-use" xlink:href="#icon-avatar"></use>
-            </svg>
-          {{/if}}
+          </div>
           {{#if currentUser}}
             <span class="main-nav-text">{{ currentUser.profile.name }}</span>
           {{else}}
@@ -25,39 +27,47 @@
       </li>
       <li id="playlist" class="main-nav-item {{isActivePath '/playlists'}} {{#if locked}}locked{{/if}}">
         <a class="main-nav-link" href="/playlists">
-          <svg class="main-nav-icon">
-            <use class="main-nav-icon-use" xlink:href="#icon-playlist"></use>
-          </svg>
+          <div class="main-nav-icon">
+            <svg class="main-nav-svg">
+              <use class="main-nav-svg-use" xlink:href="#icon-playlist"></use>
+            </svg>
+          </div>
           <span class="main-nav-text">Playlists</span>
         </a>
       </li>
       <li id="search" class="main-nav-item {{isActivePath '/search'}} locked">
         <a class="main-nav-link locked" href="/search">
-          <svg class="main-nav-icon">
-            <use class="main-nav-icon-use" xlink:href="#icon-search"></use>
-          </svg>
+          <div class="main-nav-icon">
+            <svg class="main-nav-svg">
+              <use class="main-nav-svg-use" xlink:href="#icon-search"></use>
+            </svg>
+          </div>
           <span class="main-nav-text">Search</span>
-          <svg class="main-nav-icon-locked">
-            <use class="main-nav-icon-use" xlink:href="#icon-locked"></use>
+          <svg class="main-nav-svg-locked">
+            <use class="main-nav-svg-use" xlink:href="#icon-locked"></use>
           </svg>
         </a>
       </li>
       <li id="myvideos" class="main-nav-item {{isActivePath '/myvideos'}} locked">
         <a class="main-nav-link locked" href="/myvideos">
-          <svg class="main-nav-icon">
-            <use class="main-nav-icon-use" xlink:href="#icon-myvideos"></use>
-          </svg>
+          <div class="main-nav-icon">
+            <svg class="main-nav-svg">
+              <use class="main-nav-svg-use" xlink:href="#icon-myvideos"></use>
+            </svg>
+          </div>
           <span class="main-nav-text">My videos</span>
-          <svg class="main-nav-icon-locked">
-            <use class="main-nav-icon-use" xlink:href="#icon-locked"></use>
+          <svg class="main-nav-svg-locked">
+            <use class="main-nav-svg-use" xlink:href="#icon-locked"></use>
           </svg>
         </a>
       </li>
       <li id="logout" class="main-nav-item">
         <a class="main-nav-link" href="/">
-          <svg class="main-nav-icon">
-            <use class="main-nav-icon-use" xlink:href="#icon-logout"></use>
-          </svg>
+          <div class="main-nav-icon">
+            <svg class="main-nav-svg">
+              <use class="main-nav-svg-use" xlink:href="#icon-logout"></use>
+            </svg>
+          </div>
           <span class="main-nav-text">Logout</span>
         </a>
       </li>

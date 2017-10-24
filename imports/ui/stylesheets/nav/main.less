@@ -81,14 +81,23 @@
 
   &-icon {
     display: inline-block;
-    fill: @color-grey-light;
     height: @size-main-nav-icon;
     padding: 18px;
-    transition: fill .3s;
     width: @size-main-nav-icon;
 
-    &.profile {
+    &.avatar {
       padding: 14px;
+    }
+  }
+
+  &-svg {
+    &:extend(.full-block all);
+    
+    fill: @color-grey-light;
+    transition: fill .3s;
+    
+    .avatar & {
+      border-radius: 50px;
     }
 
     .active & {
@@ -112,5 +121,9 @@
       color: @color-grey-light;
       transition: color .3s linear .2s;
     }
+
+    .query-mini({
+      display: none;
+    });
   }
 }
