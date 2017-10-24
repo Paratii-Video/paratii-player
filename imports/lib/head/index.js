@@ -61,8 +61,8 @@ function setHead () {
         oembedresponse.width = 570
         oembedresponse.height = 320
         oembedresponse.thumbnail_url = baseUrl + thumbUrl
-        oembedresponse.thumbnail_width = 825
-        oembedresponse.thumbnail_height = 825
+        oembedresponse.thumbnail_width = 570
+        oembedresponse.thumbnail_height = 320
         oembedresponse.referrer = ''
         oembedresponse.cache_age = 3600
       } else {
@@ -99,8 +99,8 @@ function twitterCardHead (params, req, res, next) {
   req.dynamicHead += '<meta property="twitter:card" content="player" />'
   req.dynamicHead += '<meta property="twitter:title" content="' + videoTitle + '" />'
   req.dynamicHead += '<meta property="twitter:site" content="' + rootUrl + '/play/' + videoId + '">'
-  req.dynamicHead += '<meta property="twitter:player:width" content="500" />'
-  req.dynamicHead += '<meta property="twitter:player:height" content="500" />'
+  req.dynamicHead += '<meta property="twitter:player:width" content="570" />'
+  req.dynamicHead += '<meta property="twitter:player:height" content="230" />'
   req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + thumbUrl + '" />'
   req.dynamicHead += '<meta property="twitter:player:stream" content="https://gateway.ipfs.io' + source + '" />'
   req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '" />'
