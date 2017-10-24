@@ -1,7 +1,9 @@
 import './body.html'
 import '/imports/ui/components/modals/login.js'
 import '/imports/ui/components/modals/regenerateKeystore.js'
-import { keystoresCheck, createAnonymousKeystor, getKeystore } from '/imports/lib/ethereum/wallet.js'
+import { add0x } from '/imports/lib/utils.js'
+
+import { keystoresCheck, createAnonymousKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js'
 
 if (Meteor.isClient) {
   // const keystoreAnonymous = getKeystore('anonymous')

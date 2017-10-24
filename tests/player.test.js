@@ -6,10 +6,10 @@ describe('player workflow', function () {
     server.execute(resetDb)
   })
 
-  it('play a free video', function () {
+  it('play a free video @watch', function () {
     server.execute(createVideo, '12345', 'Test 1', 0)
     browser.url('http://localhost:3000/play/12345')
-    browser.waitForExist('#video-player', 1000000)
+    browser.waitForExist('#video-player')
     browser.waitForExist('.player-overlay')
     browser.waitForExist('.player-controls')
     assert.equal(browser.getText('.player-title'), 'Test 1')
@@ -32,7 +32,7 @@ describe('player workflow', function () {
     // assert.isAbove(browser.getLocation('#scrubber', 'x'), 0)
   })
 
-  it('click on next video', () => {
+  it('click on next video @watch', () => {
     server.execute(createVideo, '12345', 'Test 1', 0)
     server.execute(createVideo, '23456', 'Test 2', 0)
     server.execute(createPlaylist, '98765', 'Playlist test', ['12345', '23456'])

@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating'
 import { Blaze } from 'meteor/blaze'
-import { Accounts } from 'meteor/accounts-base'
+// import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
 import { formatNumber } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
