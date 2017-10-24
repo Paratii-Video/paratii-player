@@ -18,7 +18,6 @@ function emailValidation (address) {
 }
 
 function modalGetElements (type) {
-  $modal = $('div.main-modal-sign')
   $email = $('[name=email]')
   $password = $('[name=password]')
   if (type === 'sign-up') {
@@ -72,7 +71,10 @@ Template.modal_sign.helpers({
   isSignIn: (type) => type === 'sign_in',
   isSignUp: (type) => type === 'sign_up',
   isConfirm: (type) => type === 'confirm',
-  modalType: () => Template.instance().modalState.get('type')
+  isForgotStep1: (type) => type === 'forgot_step_1',
+  isForgotStep2: (type) => type === 'forgot_step_2',
+  modalType: () => Template.instance().modalState.get('type'),
+  modalClass: () => 'main-modal-' + Template.instance().modalState.get('type')
 })
 
 Template.modal_sign.onCreated(function () {
@@ -81,15 +83,17 @@ Template.modal_sign.onCreated(function () {
   this.modalState.set('type', this.data.type)
 })
 
+Template.modal_sign.onRendered(() => {
+  $modal = $('div.main-modal-sign')
+})
+
 // Sign in
 
 Template.modal_sign_in.helpers({
   passwordType: () => Session.get('passwordType')
 })
 
-Template.modal_sign_in.onCreated(() => {
-  Session.set('passwordType', 'password')
-})
+Template.modal_sign_in.onCreated(() => Session.set('passwordType', 'password'))
 
 Template.modal_sign_in.onRendered(() => modalShowContent('sign-in'))
 
@@ -100,6 +104,9 @@ Template.modal_sign_in.events({
   'click button.password' () {
     let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
     Session.set('passwordType', inputType)
+  },
+  'click #button-forgot' (event, instance) {
+    // modalHideContent(instance.view.parentView.parentView, 'forgot_step_2')
   },
   'submit form.main-modal-form' (event, instance) {
     event.preventDefault()
@@ -166,6 +173,11 @@ Template.modal_sign_up.events({
     }
   }
 })
+
+// Forgot password
+
+Template.modal_forgot_password_step_1.onRendered(() => modalShowContent('forgot-step-1'))
+Template.modal_forgot_password_step_2.onRendered(() => modalShowContent('forgot-step-2'))
 
 // Cofirm
 

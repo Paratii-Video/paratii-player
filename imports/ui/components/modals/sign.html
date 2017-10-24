@@ -1,12 +1,11 @@
 <template name="modal_sign">
-  <div class="modal fade main-modal main-modal-sign {{ modalType }}">
+  <div class="modal fade main-modal main-modal-sign {{ modalClass }} {{ modalType }}">
     <div class="main-modal-wrapper">
       <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{fullscreen}}">
-        <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
-          <path id="X" class="cls-1" d="M15.5,2.068,13.432,0,7.754,5.685,2.068,0,0,2.068,5.685,7.754,0,13.432,2.068,15.5,7.754,9.822,13.432,15.5,15.5,13.432,9.822,7.754Z" transform="translate(609.5 451.9)"/>
+        <svg class="main-modal-button-close-svg">
+          <use class="main-modal-button-close-svg-use" xlink:href="#icon-close"></use>
         </svg>
       </button>
-      <!-- #signin -->
       <div class="main-modal-content">
         {{#if isSignIn modalType }}
           {{> modal_sign_in}}
@@ -14,11 +13,16 @@
         {{#if isSignUp modalType }}
           {{> modal_sign_up}}
         {{/if}}
+        {{#if isForgotStep1 modalType }}
+          {{> modal_forgot_password_step_1}}
+        {{/if}}
+        {{#if isForgotStep2 modalType }}
+          {{> modal_forgot_password_step_2}}
+        {{/if}}
         {{#if isConfirm modalType }}
           {{> modal_wait_confirm}}
         {{/if}}
       </div>
-      <!-- /signin -->
     </div>
   </div>
 </template>
@@ -33,7 +37,9 @@
       <input class="main-form-input main-form-input-password password" name="password" type="{{ passwordType }}" placeholder="password" />
       <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
     </div>
-    <a class="button-text button-text--grey-light button-text--nocase main-form-button-forgot main-modal-anim-3" href="#" target="_blank">Forgot password?</a>
+    <div class="main-modal-anim-3">
+      <button id="button-forgot" class="button-text button-text--grey-light button-text--nocase main-form-button-forgot" type="button">Forgot password?</button>
+    </div>
     <div class="main-modal-footer main-modal-anim-4">
       <button class="button-text button-text--grey-light main-modal-button gotosignup" type="button">Sign up</button>
       <button class="button-text main-modal-button signin" type="submit">Sign in</button>
@@ -61,14 +67,41 @@
   </form>
 </template>
 
+<template name="modal_forgot_password_step_1">
+  <h3 class="main-modal-title">Forgot password</h3>
+  <p class="main-modal-text">We sent a provisory password to sus********@gmail.com </p>
+  <br>
+  <form class="main-modal-form" action="">
+    <div class="main-form-label password">
+      <input class="main-form-input main-form-input-password password" type="password" placeholder="password" />
+      <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
+    </div>
+    <div class="main-modal-footer">
+      <button class="button-text main-modal-button signup" type="submit">Continue</button>
+    </div>
+  </form>
+</template>
+
+<template name="modal_forgot_password_step_2">
+  <h3 class="main-modal-title">Forgot password</h3>
+  <p class="main-modal-text">Please enter the 12 words of your wallet generation seed to regenerate your previous wallet. If you don't remember a new wallet will be generate.</p>
+  <br>
+  <form class="main-modal-form" action="">
+    <div class="main-form-label">
+      <input class="main-form-input" type="text" placeholder="wallet generation seed" />
+    </div>
+    <div class="main-modal-footer">
+      <button class="button-text main-modal-button signup" type="submit">Continue</button>
+    </div>
+  </form>
+</template>
+
 <template name="modal_wait_confirm">
-  <!-- #confirm -->
   <div class="main-modal-content">
     <h3 class="main-modal-title main-modal-anim-1">We are almost there</h3>
     <p class="main-modal-text main-modal-anim-2">Susan Medelin your account has been created, please confirm your email to activate your PTI wallet. When you confirm, you will  win 10 PTI in your test network. </p>
     <p class="main-modal-text visually-hidden"><strong class="text-success">Email Confirmed</strong></p>
     <br />
-    <button class="button-text button-text--grey-light button-text--nocase main-form-button-forgot main-modal-anim-3">Send email again</button>
+    <button class="button-text button-text--grey-light button-text--nocase main-modal-anim-3">Send email again</button>
   </div>
-  <!-- /confirm -->
 </template>

@@ -204,11 +204,13 @@
     &-close {
       &:extend(.hover-opacity all);
 
+      height: 15px;
       position: absolute;
       right: 20px;
       top: 23px;
       transform: scale(0);
       transition: opacity .3s, transform .35s @ease-smooth;
+      width: 15px;
       z-index: 2;
 
       .fade.in & {
@@ -221,9 +223,9 @@
       }
 
       &-svg {
-        display: block;
+        &:extend(.full-block all);
+
         fill: @color-grey-light;
-        width: 15px;
       }
     }
 
