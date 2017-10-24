@@ -39,15 +39,6 @@
         z-index: 2;
       }
 
-      &::after {
-        &:extend(.pos-a-full all);
-
-        border: 1px solid @color-grey-light;
-        border-radius: 4px;
-        content: '';
-        z-index: 10;
-      }
-
       &:hover {
         color: @color-white;
 
@@ -59,6 +50,10 @@
 
     &-title {
       background-color: @color-white;
+      border-bottom: 1px solid @color-grey-light;
+      border-left: 1px solid @color-grey-light;
+      border-right: 1px solid @color-grey-light;
+      border-radius: 0 0 4px 4px;
       bottom: 0;
       color: @color-grey;
       display: block;
