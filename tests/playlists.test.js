@@ -54,10 +54,10 @@ describe('price tag status', function () {
     server.execute(createVideo, 0)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videoCardContainer', 2000)
+    browser.waitForExist('.videos-item', 2000)
 
     // .videoCardPrice should not exists
-    const priceTag = browser.waitForExist('.videoCardPrice', null, true)
+    const priceTag = browser.waitForExist('.videos-item-price', null, true)
     assert.isTrue(priceTag)
   })
 
@@ -66,8 +66,8 @@ describe('price tag status', function () {
     server.execute(createVideo, 10)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videoCardContainer', 2000)
-    assert.equal(browser.getText('.videoCardPrice'), '10 PTI')
+    browser.waitForExist('.videos-item', 2000)
+    assert.equal(browser.getText('.videos-item-price'), '10 PTI')
   })
 
   it('when the video was bought [TODO]', () => {
@@ -78,7 +78,7 @@ describe('price tag status', function () {
     server.execute(createPlaylist)
     server.execute(fakeVideoUnlock, address)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videoCardContainer', 2000)
-    // assert.equal(browser.getText('.videoCardPrice'), '✓')
+    browser.waitForExist('.videos-item', 2000)
+    // assert.equal(browser.getText('.videos-item-price'), '✓')
   })
 })
