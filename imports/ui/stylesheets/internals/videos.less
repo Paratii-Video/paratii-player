@@ -1,0 +1,115 @@
+// Videos
+
+//
+
+.videos {
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 10px;
+    max-width: 800px;
+  }
+
+  &-item {
+    flex: 0 0 30%;
+    height: 100px;
+    margin: 0 0 10px;
+
+    &:nth-child(3n-1) {
+      margin: 0 15px 10px; 
+    }
+
+    &-link {
+      &:extend(.full-block all);
+
+      backface-visibility: hidden;
+      border-radius: 4px;
+      color: @color-white;
+      overflow: hidden;
+      position: relative;
+      transition: color .35s;
+
+      &::before {
+        &:extend(.pos-a-full all);
+
+        background-color: black;
+        content: ''; 
+        opacity: .7;
+        transition: opacity .35s;
+        z-index: 2;
+      }
+
+      &::after {
+        &:extend(.pos-a-full all);
+
+        border: 1px solid @color-grey-light;
+        border-radius: 4px;
+        content: '';
+        z-index: 10;
+      }
+
+      &:hover {
+        color: @color-white;
+
+        &::before {
+          opacity: .5;
+        }
+      }
+    }
+
+    &-title {
+      background-color: @color-white;
+      bottom: 0;
+      color: @color-grey;
+      display: block;
+      font-size: 14px;
+      left: 0;
+      overflow: hidden;
+      padding: 6px 10px;
+      position: absolute;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+      z-index: 4;
+    }
+
+    &-button {
+      height: 3px;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 15px;
+      z-index: 4;
+
+      &-svg {
+        &:extend(.full-block all);
+
+        fill: @color-white;
+      }
+    }
+
+    &-price {
+      &:extend(.player-tooltip all);
+      &:extend(.player-tooltip--small all);
+
+      bottom: 35px;
+      left: 9px;
+      position: absolute;
+      z-index: 3;
+    }
+
+    &-time {
+      bottom: 33px;
+      font-size: 12px;
+      right: 10px;
+      position: absolute;
+      z-index: 2;
+    }
+
+    &-image {
+      &:extend(.pos-a-full all);
+
+      z-index: 1;
+    }
+  }
+}
