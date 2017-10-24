@@ -102,7 +102,7 @@ function addToIPFS (files) {
           // Trigger paratii transcoder signal
 
           let msg = paratiiIPFS.protocol.createCommand('transcode', {hash: file.hash, author: paratiiIPFS.id.id})
-          window.ipfs.swarm.connect('/ip4/127.0.0.1/tcp/4003/ws/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS', (err, success) => {
+          window.ipfs.swarm.connect('/dns4/bootstrap.paratii.video/tcp/443/wss/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW', (err, success) => {
             if (err) throw err
             window.ipfs.swarm.peers((err, peers) => {
               console.log('peers: ', peers)
