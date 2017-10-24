@@ -102,17 +102,22 @@ function addToIPFS (files) {
           // Trigger paratii transcoder signal
 
           let msg = paratiiIPFS.protocol.createCommand('transcode', {hash: file.hash, author: paratiiIPFS.id.id})
-          window.ipfs.swarm.peers((err, peers) => {
+          window.ipfs.swarm.connect('/ip4/127.0.0.1/tcp/4003/ws/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS', (err, success) => {
             if (err) throw err
-            peers.map((peer) => {
-              paratiiIPFS.protocol.network.sendMessage(peer.peer.id, msg, (err) => {
-                if (err) console.warn('[Paratii-protocol] Error ', err)
-              })
+            window.ipfs.swarm.peers((err, peers) => {
+              console.log('peers: ', peers)
+              if (err) throw err
+              peers.map((peer) => {
+                console.log('sending transcode msg to ', peer.peer.id.toB58String())
+                paratiiIPFS.protocol.network.sendMessage(peer.peer.id, msg, (err) => {
+                  if (err) console.warn('[Paratii-protocol] Error ', err)
+                })
 
-              if (peer.addr) {
-              }
+                if (peer.addr) {
+                }
+              })
+              cb(null, file)
             })
-            cb(null, file)
           })
         }))),
       pull.collect((err, files) => {
@@ -120,9 +125,22 @@ function addToIPFS (files) {
           throw err
         }
         if (files && files.length) {
-          statusEl.innerHTML += `All Done!`
+          statusEl.innerHTML += `All Done!\n`
+          statusEl.innerHTML += `Don't Close this window. signaling transcoder...\n`
         }
       })
     )
+
+    // paratii transcoder signal.
+    paratiiIPFS.protocol.notifications.on('command', (peerId, command) => {
+      console.log('paratii protocol: Got Command ', command)
+      if (command.payload.toString() === 'transcoding:done') {
+        let args = JSON.parse(command.args.toString())
+        let result = JSON.parse(args.result)
+        console.log('args: ', args)
+        console.log('result: ', result)
+        statusEl.innerHTML += `Video HLS link: /ipfs/${result.master.hash}\n`
+      }
+    })
   })
 }

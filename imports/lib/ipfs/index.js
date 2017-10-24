@@ -34,6 +34,10 @@ const paratiiIPFS = {
         if (isProduction) {
           // production settings.
           window.ipfs = new Ipfs({
+            bitswap: {
+              maxMessageSize: 32 * 1024
+              // meterController: paratiiIPFS.meterController
+            },
             repo: repo,
             config: {
               Addresses: {
@@ -67,8 +71,8 @@ const paratiiIPFS = {
         } else {
           window.ipfs = new Ipfs({
             bitswap: {
-              maxMessageSize: 32 * 1024,
-              meterController: paratiiIPFS.meterController
+              maxMessageSize: 32 * 1024
+              // meterController: paratiiIPFS.meterController
             },
             repo: String(Math.random()),
             config: {
@@ -86,13 +90,13 @@ const paratiiIPFS = {
                 // don't use official Bootstrap nodes cuz they keep f@#king thowing 403 errors
                 // https://github.com/ipfs/js-ipfs/issues/941
                 // '/dns4/wss1.bootstrap.libp2p.io/tcp/443/wss/ipfs/Qmbut9Ywz9YEDrz8ySBSgWyJk41Uvm2QJPhwDJzJyGFsD6'
-                // '/ip4/127.0.0.1/tcp/4003/ws/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS',
+                '/ip4/127.0.0.1/tcp/4003/ws/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS'
                 // '/libp2p-webrtc-star/ip4/127.0.0.1/tcp/9091/wss/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS',
                 // '/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS',
                 // '/ip4/34.213.133.148/tcp/4003/ws/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW',
-                '/dns4/bootstrap.paratii.video/tcp/443/wss/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW',
-                '/dns4/star-signal.cloud.ipfs.team/wss/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H',
-                '/ip4/212.71.247.117/tcp/4003/ws/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H'
+                // '/dns4/bootstrap.paratii.video/tcp/443/wss/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW',
+                // '/dns4/star-signal.cloud.ipfs.team/wss/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H',
+                // '/ip4/212.71.247.117/tcp/4003/ws/ipfs/QmehDvwCWhcHSvFWKit59Liuxxu28N17Rm5pdpPN6uFC5H',
                 // '/dns4/ams-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd',
                 // '/dns4/sfo-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLju6m7xTh3DuokvT3886QRYqxAzb1kShaanJgW36yx',
                 // '/dns4/lon-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLMeWqB7YGVLJN3pNLQpmmEk35v6wYtsMGLzSr5QBU3',
@@ -105,7 +109,7 @@ const paratiiIPFS = {
 
         window.ipfs.on('ready', () => {
           console.log('[IPFS] node Ready.')
-
+          // callback()
           window.ipfs._bitswap.notifications.on('receivedNewBlock', (peerId, block) => {
             console.log('[IPFS] receivedNewBlock | peer: ', peerId.toB58String(), ' block length: ', block.data.length)
             console.log('---------[IPFS] bitswap LedgerMap ---------------------')
