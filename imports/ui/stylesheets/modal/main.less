@@ -298,14 +298,19 @@
     position: absolute;
     width: 100%;
 
-    &-loading {
-      display: none;
-      font-weight: 500;
-      text-transform: uppercase;
+    &-waiting {
+      &:extend(.pos-a-vm all);
 
-      .loading & {
+      color: @color-grey-light;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      right: 0;
+      text-transform: uppercase;
+      transition: opacity .2s;
+
+      .waiting & {
         animation: blink .5s linear infinite;
-        display: block;
       }
     }
   }
