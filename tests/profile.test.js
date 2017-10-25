@@ -115,20 +115,19 @@ describe('account workflow', function () {
     browser.pause(5000)
   })
 
-  // TODO: with the new flow the seed will be show after the user choose which keystire want to use
-  // it('shows the seed @watch', function () {
-  //   createUserAndLogin(browser)
-  //   browser.waitForExist('#walletModal')
-  //   browser.click('#X')
-  //   browser.pause(2000)
-  //   browser.waitForExist('#show-seed', 5000)
-  //   browser.click('#show-seed')
-  //   browser.waitForVisible('[name="user_password"]')
-  //   browser.setValue('[name="user_password"]', 'password')
-  //   browser.click('#btn-show-seed')
-  //   browser.waitForVisible('#btn-eth-close')
-  //   browser.click('#btn-eth-close')
-  // })
+  it('shows the seed @watch', function () {
+    createUserAndLogin(browser)
+    browser.waitForExist('#walletModal')
+    browser.click('#X')
+    browser.pause(2000)
+    browser.waitForExist('#show-seed', 5000)
+    browser.click('#show-seed')
+    browser.waitForVisible('[name="user_password"]')
+    browser.setValue('[name="user_password"]', 'password')
+    browser.click('#btn-show-seed')
+    browser.waitForVisible('#btn-eth-close')
+    browser.click('#btn-eth-close')
+  })
 
   it('sends ether dialog is visible', function () {
     createUserAndLogin(browser)
