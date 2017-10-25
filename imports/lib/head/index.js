@@ -6,7 +6,8 @@ function setHead () {
     // console.log(params)
     // console.log(req)
     basicHead(params, req, res, next)
-    twitterCardHead(params, req, res, next)
+    twitterCardHeadPlayer(params, req, res, next)
+    facebookOGHeadPlayer(params, req, res, next)
 
     next()
   })
@@ -87,23 +88,56 @@ function setHead () {
     next()
   })
 }
-function twitterCardHead (params, req, res, next) {
+function twitterCardHeadPlayer (params, req, res, next) {
   var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
+  var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '') + '/'
   req.dynamicHead = (req.dynamicHead || '')
   var videoId = params._id
   var video = Videos.findOne({_id: videoId})
   var videoTitle = video.title
   var thumbUrl = video.thumb
   var source = video.src
-  console.log(source)
+  var ipfsSource = source.split('/')
+  ipfsSource = ipfsSource[ipfsSource.length - 1]
   req.dynamicHead += '<meta property="twitter:card" content="player" />'
   req.dynamicHead += '<meta property="twitter:title" content="' + videoTitle + '" />'
   req.dynamicHead += '<meta property="twitter:site" content="' + rootUrl + '/play/' + videoId + '">'
   req.dynamicHead += '<meta property="twitter:player:width" content="570" />'
   req.dynamicHead += '<meta property="twitter:player:height" content="320" />'
-  req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + thumbUrl + '" />'
-  req.dynamicHead += '<meta property="twitter:player:stream" content="https://gateway.ipfs.io' + source + '" />'
-  req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '" />'
+  if (thumbUrl) {
+    req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + thumbUrl + '" />'
+  }
+  req.dynamicHead += '<meta property="twitter:player:stream" content="' + ipfsGateway + ipfsSource + '" />'
+  req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '?type=mini" />'
+}
+
+function facebookOGHeadPlayer (params, req, res, next) {
+  var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
+  var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '') + '/'
+  req.dynamicHead = (req.dynamicHead || '')
+  var videoId = params._id
+  var video = Videos.findOne({_id: videoId})
+  var videoTitle = video.title
+  var videoDescription = video.description
+  var thumbUrl = video.thumb
+  var source = video.src
+  var ipfsSource = source.split('/')
+  ipfsSource = ipfsSource[ipfsSource.length - 1]
+  req.dynamicHead += '<meta property="og:video" content="' + ipfsGateway + ipfsSource + '" />'
+  req.dynamicHead += '<meta property="og:video:secure_url" content="' + ipfsGateway + ipfsSource + '" />'
+  req.dynamicHead += '<meta property="og:video:type" content="text/html">'
+  req.dynamicHead += '<meta property="og:video:width" content="527" />'
+  req.dynamicHead += '<meta property="og:video:height" content="320" />'
+  req.dynamicHead += '<meta property="og:type" content="video.other" />'
+  req.dynamicHead += '<meta property="og:url" content="' + rootUrl + '/play/' + videoId + '" />'
+  req.dynamicHead += '<meta property="og:title" content="' + videoTitle + 'y" />'
+  if (thumbUrl) {
+    req.dynamicHead += '<meta property="og:image" content="' + rootUrl + thumbUrl + '" />'
+  }
+
+  if (videoDescription) {
+    req.dynamicHead += '<meta property="og:description" content="' + videoDescription + '" />'
+  }
 }
 
 function basicHead (params, req, res, next) {
