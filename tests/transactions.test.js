@@ -1,6 +1,6 @@
 /* eslint-disable: global-require, no-alert */
 /* eslint global-require: "off" */
-import { resetDb, clearLocalStorage } from './helpers.js'
+import { resetDb, clearUserKeystoreFromLocalStorage } from './helpers.js'
 
 describe('account workflow', function () {
   beforeEach(function () {
@@ -9,7 +9,7 @@ describe('account workflow', function () {
   })
 
   afterEach(function () {
-    browser.execute(clearLocalStorage)
+    browser.execute(clearUserKeystoreFromLocalStorage)
   })
 
   it('check if page works', function () {

@@ -1,14 +1,14 @@
 import { assert } from 'chai'
-import { clearLocalStorage, createVideo, resetDb, createPlaylist } from './helpers.js'
+import { clearUserKeystoreFromLocalStorage, createVideo, resetDb, createPlaylist } from './helpers.js'
 
 describe('player workflow', function () {
   beforeEach(function () {
-    // browser.execute(clearLocalStorage)
+    // browser.execute(clearUserKeystoreFromLocalStorage)
   })
 
   afterEach(function () {
     server.execute(resetDb)
-    browser.execute(clearLocalStorage)
+    browser.execute(clearUserKeystoreFromLocalStorage)
   })
 
   it('play a free video', function () {

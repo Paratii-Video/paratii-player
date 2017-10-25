@@ -1,4 +1,4 @@
-import { createUser, resetDb, createKeystore, createUserAndLogin, destroyLocalStorage, clearLocalStorage, login } from './helpers.js'
+import { createUser, resetDb, createKeystore, createUserAndLogin, nukeLocalStorage, clearUserKeystoreFromLocalStorage, login } from './helpers.js'
 import { web3 } from '../imports/lib/ethereum/web3.js'
 import { assert } from 'chai'
 
@@ -6,15 +6,15 @@ describe('account workflow', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     server.execute(resetDb)
-    browser.execute(clearLocalStorage)
+    browser.execute(clearUserKeystoreFromLocalStorage)
   })
 
   afterEach(function () {
-    browser.execute(clearLocalStorage)
+    browser.execute(clearUserKeystoreFromLocalStorage)
   })
 
-  it('register a new user', function () {
-    browser.execute(destroyLocalStorage)
+  it('register a new user @watch', function () {
+    browser.execute(nukeLocalStorage)
     browser.url('http://localhost:3000/profile')
     // we should see the login form, we click on the register link
     browser.waitForExist('#at-signUp')
@@ -171,7 +171,7 @@ describe('account workflow', function () {
     const seed = browser.getHTML('#seed tt', false)
     const publicAddress = browser.getHTML('#public_address', false)
     browser.click('#btn-eth-close')
-    browser.execute(clearLocalStorage)
+    browser.execute(clearUserKeystoreFromLocalStorage)
     browser.refresh()
     browser.pause(2000)
     // we now have a user account that is known in meteor, but no keystore
@@ -211,7 +211,7 @@ describe('account workflow', function () {
     const seed = browser.getHTML('#seed tt', false)
     // const publicAddress = browser.getHTML('#public_address', false)
     browser.click('#btn-eth-close')
-    browser.execute(clearLocalStorage)
+    browser.execute(clearUserKeystoreFromLocalStorage)
     browser.refresh()
 
     browser.waitForExist('#walletModal')
@@ -231,7 +231,7 @@ describe('account workflow', function () {
 
   it('do not create a new wallet if the password is wrong', function () {
     createUserAndLogin(browser)
-    browser.execute(clearLocalStorage)
+    browser.execute(clearUserKeystoreFromLocalStorage)
     browser.refresh()
     browser.waitForVisible('#create-wallet', 2000)
     browser.click('#create-wallet')

@@ -7,6 +7,8 @@ const mySubmitFunc = function (error, state) {
     console.log(error)
   }
   if (state === 'signUp') {
+    // we have succesfully signed up
+    // we have an anonymous keystore, but we want to use the keystore of the new user
     // if (Session.get('tempSeed')) {
     //   Session.set('wallet-state', 'generating')
     //   // if signup is successful, save the temporaries variables
