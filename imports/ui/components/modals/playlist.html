@@ -1,0 +1,55 @@
+<template name="modal_playlist">
+  <div class="modal fade main-modal main-modal-playlist {{ modalType }}">
+    <div class="main-modal-wrapper">
+      <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{fullscreen}}">
+        <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
+          <path id="X" class="cls-1" d="M15.5,2.068,13.432,0,7.754,5.685,2.068,0,0,2.068,5.685,7.754,0,13.432,2.068,15.5,7.754,9.822,13.432,15.5,15.5,13.432,9.822,7.754Z" transform="translate(609.5 451.9)"/>
+        </svg>
+      </button>
+      <!-- #signin -->
+      <div class="main-modal-content">
+        {{#if isAdd modalType }}
+          {{> modal_add_playlist}}
+        {{/if}}
+        {{#if isCreate modalType }}
+          {{> modal_create_playlist}}
+        {{/if}}
+      </div>
+      <!-- /signin -->
+    </div>
+  </div>
+</template>
+
+<template name="modal_add_playlist">
+  <!-- #add playlist -->
+  <h3 class="main-modal-title">Add video to playlist</h3>
+  <form class="main-modal-form" action="">
+    <label class="main-form-label main-form-label-checkbox active">Bakery <input class="main-form-checkbox" type="checkbox" name="addplaylist" value="Bakery"></label>
+    <label class="main-form-label main-form-label-checkbox">Post Modern Surf <input class="main-form-checkbox" type="checkbox" name="addplaylist" value="Post Modern Surf"></label>
+    <label class="main-form-label main-form-label-checkbox">Post Modern Surf <input class="main-form-checkbox" type="checkbox" name="addplaylist" value="Post Modern Surf"></label>
+
+    <button class="button-text button-text--nocase main-modal-button addmore" type="button"><svg class="button-text-icon button-text-icon--small" viewBox="577 412 9.415 10"><path d="M5.83,3.819H9.415v2.1H5.83V10H3.6V5.915H0v-2.1H3.6V0H5.819V3.819Z" transform="translate(577 412)"/></svg>New playlist</button>
+
+    <div class="main-modal-footer">
+      <button class="button-text main-modal-button confirm" type="submit">Confirm</button>
+    </div>
+  </form>
+  <!-- /add playlist -->
+</template>
+
+<template name="modal_create_playlist">
+  <!-- #create playlist -->
+  <h3 class="main-modal-title main-modal-anim-1">Create a new playlist</h3>
+  <form class="main-modal-form" action="">
+    <div class="main-form-label main-form-label-playlistname playlistname main-modal-anim-2">
+      <input class="main-form-input playlistname" type="text" placeholder="playlist name" />
+    </div>
+
+    <label class="main-form-label main-form-label-checkbox active main-modal-anim-3">Public playlist (everyone can see it) <input class="main-form-checkbox" type="radio" name="createplaylist" value="Public playlist ( everyone can see it )"><span class="main-form-checkbox-checked"></span></label>
+    <label class="main-form-label main-form-label-checkbox main-modal-anim-3">Private playlist (only you can see it ) <input class="main-form-checkbox" type="radio" name="createplaylist" value="Private playlist (only you can see it )"><span class="main-form-checkbox-checked"></span></label>
+    <div class="main-modal-footer  main-modal-anim-4">
+      <button class="button-text main-modal-button create" type="submit">Create playlist</button>
+    </div>
+  </form>
+  <!-- /create playlist -->
+</template>

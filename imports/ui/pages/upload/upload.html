@@ -1,10 +1,19 @@
 <template name="upload">
-  <div class="titleContainer">
-    <!-- Upload a new video [not implemented in this demo] -->
-    Drop a file anywhere here to be added to IPFS
-  </div>
-  <br>
-  Status:
-  <div class="statusContainer">
+  <div class="app-content">
+    <div class="titleContainer">
+      <!-- Upload a new video [not implemented in this demo] -->
+      Drop a file anywhere here to be added to IPFS
+    </div>
+    <br>
+    Status:
+    <div class="statusContainer">
+    </div>
+
+    <div class="upload-form-container">
+        <label for="input-title">
+          Video Title:
+          <input name="title" id="input-title" type="text" class="form-control textbox">
+        </label>
+    </div>
   </div>
 </template>

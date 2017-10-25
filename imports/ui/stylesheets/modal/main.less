@@ -57,7 +57,6 @@
   z-index: 2;
 
   .fade.in & {
-    pointer-events: initial;
     transform: scaleY(1);
     transition: transform .75s @ease-smooth .3s;
   }
@@ -109,9 +108,7 @@
 
 .main-modal-anim {
   &-1 {
-    opacity: 0;
-    transform: translate3d(0, 20px, 0);
-    transition: opacity .45s, transform .6s @ease-smooth;
+    &:extend(.anim-element-out all);
 
     .show-content & {
       opacity: 1;
@@ -120,9 +117,7 @@
     }
   }
   &-2 {
-    opacity: 0;
-    transform: translate3d(0, 20px, 0);
-    transition: opacity .45s, transform .6s @ease-smooth;
+    &:extend(.anim-element-out all);
 
     .show-content & {
       opacity: 1;
@@ -131,9 +126,7 @@
     }
   }
   &-3 {
-    opacity: 0;
-    transform: translate3d(0, 20px, 0);
-    transition: opacity .45s, transform .6s @ease-smooth;
+    &:extend(.anim-element-out all);
 
     .show-content & {
       opacity: 1;
@@ -142,9 +135,7 @@
     }
   }
   &-4 {
-    opacity: 0;
-    transform: translate3d(0, 20px, 0);
-    transition: opacity .45s, transform .6s @ease-smooth;
+    &:extend(.anim-element-out all);
 
     .show-content & {
       opacity: 1;
@@ -153,9 +144,7 @@
     }
   }
   &-5 {
-    opacity: 0;
-    transform: translate3d(0, 20px, 0);
-    transition: opacity .45s linear, transform .6s @ease-smooth;
+    &:extend(.anim-element-out all);
 
     .show-content & {
       opacity: 1;
@@ -217,14 +206,18 @@
 
       position: absolute;
       right: 20px;
-      transform: scale(0);
-      transition: transform .35s @ease-smooth;
       top: 23px;
+      transform: scale(0);
+      transition: opacity .3s, transform .35s @ease-smooth;
       z-index: 2;
 
       .fade.in & {
         transform: scale(1);
-        transition: transform .5s @ease-smooth .8s;
+        transition: opacity .3s, transform .5s @ease-smooth .8s;
+      }
+
+      &:hover {
+        opacity: .5;
       }
 
       &-svg {

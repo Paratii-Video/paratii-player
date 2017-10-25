@@ -40,11 +40,11 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
   paratiiIPFS.initIPFS(() => {
     templateDict.set('status', 'IPFS Ready. Searching for ' + splitPath(currentVideo.src)[0])
     // -----------------[Paratii protocol testing]------------------------------
-    paratiiIPFS.protocol.notifications.on('message:new', (peerId, msg) => {
-      if (msg && msg.hello) {
-        console.log('[PROTOCOL] Got peer ', peerId.toB58String(), ' | PTI: ', msg.hello.eth.toString())
-      }
-    })
+    // paratiiIPFS.protocol.notifications.on('message:new', (peerId, msg) => {
+    //   if (msg && msg.hello) {
+    //     console.log('[PROTOCOL] Got peer ', peerId.toB58String(), ' | PTI: ', msg.hello.eth.toString())
+    //   }
+    // })
     // -------------------------------------------------------------------------
 
     Hls.DefaultConfig.loader = HlsjsIpfsLoader
@@ -176,6 +176,13 @@ export function createIPFSPlayer (templateInstance, currentVideo) {
       hls.attachMedia(video)
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         // video.play()
+        setInterval(() => {
+          console.info('[HLS] levels: ', hls.levels, ' | currentLevel: ', hls.levels[hls.currentLevel])
+          // if (hls.currentLevel <= 1) {
+          //   hls.nextLevel = hls.currentLevel + 1
+          //   console.log('[HLS] level up ', hls.levels[hls.currentLevel])
+          // }
+        }, 5000)
       })
     }
   })

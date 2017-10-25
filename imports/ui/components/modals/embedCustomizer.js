@@ -2,6 +2,8 @@ import { Template } from 'meteor/templating'
 import Clipboard from 'clipboard'
 import './embedCustomizer.html'
 
+//
+
 let clipboard
 const embedSizes = [
   {
@@ -17,10 +19,53 @@ const embedSizes = [
 
   }
 ]
+var isModalOpened = false
+const animIn = 10
+const animOut = 300
+var $modal
 
-/* NEW TEMPLATE */
+// Share modal
 
 Template.modal_share_video.onCreated(function () {
+  isModalOpened = false
+  this.modalState = new ReactiveDict()
+  this.modalState.set('type', this.data.type)
+})
+
+Template.modal_share_video.helpers({
+  isLinks: (type) => type === 'links',
+  isEmbed: (type) => type === 'embed',
+  modalType: () => Template.instance().modalState.get('type')
+})
+
+// Links
+
+Template.modal_share_links.onRendered(() => {
+  $modal = $('div.main-modal-share')
+  modalShowContent()
+})
+
+Template.modal_share_links.onCreated(function () {
+  setClipboard('#copy_url')
+})
+
+Template.modal_share_links.helpers({
+  embedBaseUrl () {
+    return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  }
+})
+
+Template.modal_share_links.events({
+  'click button.gotoembed' (event, instance) {
+    modalHideContent(instance.view.parentView.parentView, 'embed')
+  }
+})
+
+// Embed
+
+Template.modal_share_embed.onRendered(() => modalShowContent())
+
+Template.modal_share_embed.onCreated(function () {
   this.iframe = new ReactiveDict()
   // default size
   this.iframe.set('size', embedSizes[0])
@@ -29,23 +74,10 @@ Template.modal_share_video.onCreated(function () {
   this.iframe.set('loop', false)
   this.iframe.set('playsinline', false)
 
-  clipboard = new Clipboard('#copy_to_clipboard')
-  clipboard.on('success', function (e) {
-    setTooltip('Copied!')
-    hideTooltip()
-  })
-  clipboard.on('error', function (e) {
-    setTooltip('Failed!')
-    hideTooltip()
-  })
-
-  $('#copy_to_clipboard').tooltip({
-    trigger: 'click',
-    placement: 'bottom'
-  })
+  setClipboard('#copy_embed_code')
 })
 
-Template.modal_share_video.helpers({
+Template.modal_share_embed.helpers({
   embedSizes,
   embedBaseUrl () {
     return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + 'embed/' + this.videoId
@@ -88,9 +120,8 @@ Template.modal_share_video.helpers({
   }
 })
 
-Template.modal_share_video.events({
+Template.modal_share_embed.events({
   'change .sizes' (event) {
-    console.log(event.target.value)
     const size = event.target.value
     Template.instance().iframe.set('size', embedSizes[size])
   },
@@ -105,22 +136,63 @@ Template.modal_share_video.events({
   },
   'change .playsinline' (event) {
     Template.instance().iframe.set('playsinline', event.target.checked)
+  },
+  'click button.gotolinks' (event, instance) {
+    modalHideContent(instance.view.parentView.parentView, 'links')
   }
 })
 
 //
 
-function setTooltip (message) {
-  $('#copy_to_clipboard').tooltip('hide')
+function modalShowContent () {
+  let timeAnimIn = animIn
+
+  if (!isModalOpened) {
+    isModalOpened = true
+    timeAnimIn = animIn + 850
+  }
+
+  Meteor.setTimeout(() => $modal.addClass('show-content'), timeAnimIn)
+}
+
+function modalHideContent (template, type) {
+  $modal.removeClass('show-content')
+  Meteor.setTimeout(() => template.templateInstance().modalState.set('type', type), animOut)
+}
+
+//
+
+function setClipboard (element) {
+  clipboard = new Clipboard(element)
+  clipboard.on('success', function (e) {
+    setTooltip('Copied!', element)
+    hideTooltip(element)
+  })
+
+  clipboard.on('error', function (e) {
+    setTooltip('Failed!', element)
+    hideTooltip(element)
+  })
+
+  $(element).tooltip({
+    trigger: 'click',
+    placement: 'bottom'
+  })
+}
+
+function setTooltip (message, element) {
+  $(element).tooltip('hide')
     .attr('data-original-title', message)
     .tooltip('show')
 }
 
-function hideTooltip () {
+function hideTooltip (element) {
   setTimeout(function () {
-    $('#copy_to_clipboard').tooltip('destroy')
+    $(element).tooltip('destroy')
   }, 1000)
 }
+
+//
 
 function buildUrl (url, parameters) {
   var qs = ''
