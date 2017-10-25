@@ -116,8 +116,11 @@ describe('account workflow', function () {
   })
 
   // TODO: with the new flow the seed will be show after the user choose which keystire want to use
-  // it('shows the seed', function () {
+  // it('shows the seed @watch', function () {
   //   createUserAndLogin(browser)
+  //   browser.waitForExist('#walletModal')
+  //   browser.click('#X')
+  //   browser.pause(2000)
   //   browser.waitForExist('#show-seed', 5000)
   //   browser.click('#show-seed')
   //   browser.waitForVisible('[name="user_password"]')
@@ -127,7 +130,7 @@ describe('account workflow', function () {
   //   browser.click('#btn-eth-close')
   // })
 
-  it('sends ether dialog is visible @watch', function () {
+  it('sends ether dialog is visible', function () {
     createUserAndLogin(browser)
     // Close wallet modal
     browser.waitForExist('#walletModal')
@@ -141,7 +144,10 @@ describe('account workflow', function () {
 
   it('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
-    browser.waitForExist('#show-seed', 5000)
+    browser.waitForExist('#walletModal')
+    browser.click('#X')
+    browser.pause(2000)
+    browser.waitForEnabled('#show-seed', 5000)
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'wrong')
