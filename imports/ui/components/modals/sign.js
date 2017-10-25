@@ -43,7 +43,7 @@ function modalHideContent (template, type) {
   Meteor.setTimeout(() => template.templateInstance().modalState.set('type', type), animOut)
 }
 
-function formValidation (type) {
+function formSignInUpValidation (type) {
   userData = {
     username: (type === 'sign-up') ? $username.val() : '',
     email: $email.val(),
@@ -106,11 +106,11 @@ Template.modal_sign_in.events({
     Session.set('passwordType', inputType)
   },
   'click #button-forgot' (event, instance) {
-    // modalHideContent(instance.view.parentView.parentView, 'forgot_step_2')
+    modalHideContent(instance.view.parentView.parentView, 'forgot_step_1')
   },
   'submit form.main-modal-form' (event, instance) {
     event.preventDefault()
-    if (formValidation('sign-in')) {
+    if (formSignInUpValidation('sign-in')) {
       Meteor.loginWithPassword(userData.email, userData.password, (err) => {
         if (err) {
           $email.addClass('error')
@@ -145,7 +145,7 @@ Template.modal_sign_up.events({
   },
   'submit form.main-modal-form' (event, instance) {
     event.preventDefault()
-    if (formValidation('sign-up')) {
+    if (formSignInUpValidation('sign-up')) {
       Accounts.createUser(userData, (err) => {
         if (err) {
           if (err.reason === 'Need to set a username or email') {
@@ -177,7 +177,35 @@ Template.modal_sign_up.events({
 // Forgot password
 
 Template.modal_forgot_password_step_1.onRendered(() => modalShowContent('forgot-step-1'))
+Template.modal_forgot_password_step_1.events({
+  'click button.gotosignin' (event, instance) {
+    modalHideContent(instance.view.parentView.parentView, 'sign_in')
+  },
+  'submit form.main-modal-form' (event, instance) {
+    event.preventDefault()
+
+    $('[name=email]').removeClass('error')
+
+    userData = {
+      email: $('[name=email]').val()
+    }
+
+    if (!emailValidation(userData.email)) {
+      $('[name=email]').addClass('error')
+    } else {
+      $modal.addClass('waiting')
+      Meteor.setTimeout(() => {
+        $modal.removeClass('waiting')
+        modalHideContent(instance.view.parentView.parentView, 'forgot_step_2')
+      }, 1000)
+    }
+  }
+})
+
 Template.modal_forgot_password_step_2.onRendered(() => modalShowContent('forgot-step-2'))
+Template.modal_forgot_password_step_2.helpers({
+  userEmail: () => userData.email
+})
 
 // Cofirm
 
