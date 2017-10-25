@@ -9,12 +9,15 @@ import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import * as HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
+<<<<<<< HEAD
 import '/imports/ui/components/modals/login.js'
 import '/imports/ui/components/modals/signIn.js'
 import '/imports/ui/components/modals/waitConfirm.js'
 import '/imports/ui/components/modals/confirmAccount.js'
+=======
+import '/imports/ui/components/modals/sign.js'
+>>>>>>> dev
 import '/imports/ui/components/modals/embedCustomizer.js'
-import '/imports/ui/components/modals/modals.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 
 import './player.html'
@@ -330,7 +333,9 @@ Template.player.events({
         videoid: Template.instance().currentVideo.get()._id // Video title
       })
     } else {
-      Modal.show('modal_sign_in')
+      Modal.show('modal_sign', {
+        type: 'sign_in'
+      })
     }
   },
   'ended #video-player' (event, instance) {
@@ -494,8 +499,8 @@ Template.player.events({
   'click #embed' (event, instance) {
     const videoId = Template.instance().currentVideo.get()._id
     Modal.show('modal_share_video', {
+      type: 'links',
       videoId: videoId,
-      label: 'Embed code',
       embed: window.top !== window.self
     })
   },

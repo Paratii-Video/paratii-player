@@ -1,5 +1,5 @@
 <template name="unlockVideo">
-  <div class="modal fade main-modal main-modal-unlock {{#if getErrors 'user_password'}}error{{/if}}">
+  <div class="modal fade main-modal main-modal-unlock {{#if getErrors 'wallet_amount'}}error{{/if}}">
     <div class="main-modal-wrapper main-modal-unlock-wrapper">
       <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{fullscreen}}">
         <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
@@ -7,8 +7,8 @@
         </svg>
       </button>
       <div class="main-modal-content">
-        <h3 class="main-modal-title">{{ videotitle }}</h3>
-        <div class="main-modal-unlock-info">
+        <h3 class="main-modal-title main-modal-anim-1">{{ videotitle }}</h3>
+        <div class="main-modal-unlock-info main-modal-anim-2">
           <div class="main-modal-avatar">
             {{#if currentUser }}
               {{#if currentUser.profile.image }}
@@ -58,12 +58,12 @@
           {{#if action}}
             <input name="wallet_amount" type="text" value="{{price}}" class="visually-hidden" aria-describedby="sizing-addon1" readonly>
           {{/if}}
-          <div class="main-form-label main-modal-unlock-label password">
-            <input class="main-form-input main-form-input-password password" name="user_password" type="password" placeholder="Enter your password" aria-describedby="sizing-addon1" />
+          <div class="main-form-label main-modal-unlock-label password } main-modal-anim-3">
+            <input class="main-form-input main-form-input-password password {{#if getErrors 'user_password'}}error{{/if}}" name="user_password" type="{{ passwordType }}" placeholder="Enter your password" aria-describedby="sizing-addon1" />
             <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
           </div>
-          <a class="button-text button-text--grey-light button-text--lowercase main-form-button-forgot main-modal-unlock-anchor" href="#" target="_blank">Forgot password?</a>
-          <div class="main-modal-footer">
+          <a class="button-text button-text--grey-light button-text--lowercase main-form-button-forgot main-modal-unlock-anchor } main-modal-anim-3" href="#" target="_blank">Forgot password?</a>
+          <div class="main-modal-footer main-modal-anim-4">
             <span class="main-modal-footer-loading">Loading...</span>
             <button id="send_trans_btn" class="button-text main-modal-button main-modal-unlock-button-confirm confirm" type="submit">Confirm</button>
             <button class="button-text main-modal-button main-modal-unlock-button-watch watch" type="button">Watch the video</button>
@@ -73,37 +73,3 @@
     </div>
   </div>
 </template>
-<!-- 
-  <div class="modal fade main-modal main-modal-unlock {{ action }} {{#if getErrors 'wallet_amount'}}has-error{{/if}}">
-    <div class="main-modal-wrapper">
-      <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{fullscreen}}">
-        <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
-          <path id="X" class="cls-1" d="M15.5,2.068,13.432,0,7.754,5.685,2.068,0,0,2.068,5.685,7.754,0,13.432,2.068,15.5,7.754,9.822,13.432,15.5,15.5,13.432,9.822,7.754Z" transform="translate(609.5 451.9)"/>
-        </svg>
-      </button>
-      <form id="form-unlockVideo" class="main-modal-form main-modal-content {{ action }}" action="">
-        <h3 class="main-modal-title">{{ label }}</h3>
-        <div class="form-group {{#if getErrors 'wallet_amount'}}has-error{{/if}}">
-          {{#if getErrors 'wallet_amount'}}<label class="control-label">{{ getErrors 'wallet_amount' }}</label>{{/if}}
-          <div class="input-group">
-            <span class="input-group-addon" id="sizing-addon3">{{ type }}</span>
-            {{#if action}}
-              <input name="wallet_amount" type="text" value="{{price}}" class="form-control" aria-describedby="sizing-addon1" readonly>
-            {{/if}}
-          </div>
-        </div>
-        <tt>{{ videotitle }}</tt>
-        <div class="form-group {{#if getErrors 'user_password'}}has-error{{/if}}">
-          {{#if getErrors 'user_password'}}<label class="control-label">{{ getErrors 'user_password' }}</label>{{/if}}
-          <div class="input-group">
-              <span class="input-group-addon" id="sizing-addon3">Password</span>
-              <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
-          </div>
-        </div>
-        <div class="main-modal-footer">
-          <button id="send_trans_btn" class="button-text main-modal-button confirm" type="submit">Confirm</button>
-        </div>
-      </form>
-    </div>
-  </div>
- -->

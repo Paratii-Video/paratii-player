@@ -3,7 +3,7 @@ import { formatNumber } from '/imports/lib/utils.js'
 import { Videos } from '../../../../imports/api/videos.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-import '../../components/pageheader/pageheader.js'
+import '/imports/ui/components/modals/playlist.js'
 import './playlists.html'
 
 Template.playlists.onCreated(function () {
@@ -43,14 +43,17 @@ Template.playlists.helpers({
   },
   videos () {
     if (Playlists.find().fetch().length > 0) {
-      const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
-      const videosIds = playlist.videos
-      const videos = Videos.find({ _id: { '$in': videosIds } })
-      return videos
+      if (FlowRouter.getParam('_id')) {
+        const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
+        const videosIds = playlist.videos
+        const videos = Videos.find({ _id: { '$in': videosIds } })
+
+        return videos
+      }
     }
   },
   isLocked (video) {
-    console.log('locked' + video._id, Template.instance().lockeds.get(video._id))
+    // console.log('locked' + video._id, Template.instance().lockeds.get(video._id))
     return Template.instance().lockeds.get(video._id)
   },
   hasPrice (video) {
@@ -83,5 +86,10 @@ Template.playlists.helpers({
 Template.playlists.events({
   'click .playlistSel' (event) {
     Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'))
+  },
+  'click #button-create-playlist' () {
+    Modal.show('modal_playlist', {
+      type: 'create'
+    })
   }
 })

@@ -8,6 +8,14 @@ import './unlockVideo.html'
 
 var promisify = require('promisify-node')
 
+Template.unlockVideo.onCreated(() => {
+  Session.set('passwordType', 'password')
+})
+
+Template.unlockVideo.onRendered(function () {
+  Meteor.setTimeout(() => $('div.main-modal-unlock').addClass('show-content'), 1000)
+})
+
 Template.unlockVideo.helpers({
   ima () {
     return Session.get('dataUrl')
@@ -17,11 +25,19 @@ Template.unlockVideo.helpers({
   },
   getErrors (name) {
     const check = Session.get('checkTransaction')
+    // user_password, wallet_amount, wallet_amount
     return check[name]
+  },
+  passwordType () {
+    return Session.get('passwordType')
   }
 })
 
 Template.unlockVideo.events({
+  'click button.password' () {
+    let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
+    Session.set('passwordType', inputType)
+  },
   async 'submit #form-unlockVideo' (event) {
     event.preventDefault()
     let amount = event.target.wallet_amount.value

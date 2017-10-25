@@ -57,7 +57,6 @@
   z-index: 2;
 
   .fade.in & {
-    pointer-events: initial;
     transform: scaleY(1);
     transition: transform .75s @ease-smooth .3s;
   }
@@ -69,13 +68,11 @@
   &:extend(.full-wh all);
 
   color: @color-grey;
-  opacity: 0;
-  transition: opacity .2s;
+  pointer-events: none;
   position: relative;
 
-  .fade.in & {
-    opacity: 1;
-    transition: opacity .4s linear 1s;
+  .show-content & {
+    pointer-events: initial;
   }
 }
 
@@ -106,6 +103,57 @@
     }
   }
 }
+
+// Animation
+
+.main-modal-anim {
+  &-1 {
+    &:extend(.anim-element-out all);
+
+    .show-content & {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition: opacity .3s linear .1s, transform .75s @ease-smooth;
+    }
+  }
+  &-2 {
+    &:extend(.anim-element-out all);
+
+    .show-content & {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition: opacity .3s linear .2s, transform .75s @ease-smooth .1s;
+    }
+  }
+  &-3 {
+    &:extend(.anim-element-out all);
+
+    .show-content & {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition: opacity .3s linear .3s, transform .75s @ease-smooth .2s;
+    }
+  }
+  &-4 {
+    &:extend(.anim-element-out all);
+
+    .show-content & {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition: opacity .3s linear .4s, transform .75s @ease-smooth .3s;
+    }
+  }
+  &-5 {
+    &:extend(.anim-element-out all);
+
+    .show-content & {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition: opacity .3s linear .5s, transform .75s @ease-smooth .4s;
+    }
+  }
+}
+
 
 // Title
 
@@ -158,14 +206,18 @@
 
       position: absolute;
       right: 20px;
-      transform: scale(0);
-      transition: transform .35s @ease-smooth;
       top: 23px;
+      transform: scale(0);
+      transition: opacity .3s, transform .35s @ease-smooth;
       z-index: 2;
 
       .fade.in & {
         transform: scale(1);
-        transition: transform .5s @ease-smooth .8s;
+        transition: opacity .3s, transform .5s @ease-smooth .8s;
+      }
+
+      &:hover {
+        opacity: .5;
       }
 
       &-svg {
@@ -262,102 +314,3 @@
 .modal-backdrop {
   display: none;
 }
-
-
-// Show modals
-
-// .main-modal-content-addplaylist {
-//   display: none;
-//   pointer-events: none;
-
-//   .open-modal--addplaylist & {
-//     display: block;
-//     pointer-events: initial;
-//   }
-// }
-
-// .main-modal-content-buy {
-//   display: none;
-//   pointer-events: none;
-
-//   .open-modal--buy & {
-//     display: block;
-//     pointer-events: initial;
-//   }
-// }
-
-// .main-modal-content-createplaylist {
-//   display: none;
-//   pointer-events: none;
-
-//   .open-modal--createplaylist & {
-//     display: block;
-//     pointer-events: initial;
-//   }
-// }
-
-// .main-modal-content-signin,
-// .main-modal-content-signup,
-// .main-modal-content-confirm,
-// .main-modal-content-confirmed, {
-//   display: none;
-//   pointer-events: none;
-
-// }
-
-// .main-modal-content-confirm {
-//   .open-modal--confirm & {
-//     display: block;
-//     pointer-events: initial;
-//   }
-// }
-
-// .main-modal-content-confirmed {
-//   .open-modal--confirmed & {
-//     display: block;
-//     pointer-events: initial;
-//   }
-// }
-
-// .main-modal-content-earn {
-//   display: none;
-//   pointer-events: none;
-
-//   .open-modal--earn & {
-//     display: block;
-//     pointer-events: initial;
-//   }
-// }
-
-// .main-modal-content-sendcrypto {
-//   display: none;
-//   pointer-events: none;
-
-//   .open-modal--sendcrypto & {
-//     display: block;
-//     pointer-events: initial;
-//   }
-// }
-
-// .main-modal-content-sharevideo {
-//   display: none;
-//   pointer-events: none;
-
-//   .open-modal--sharevideo & {
-//     display: block;
-//     pointer-events: initial;
-//   }
-// }
-// .main-modal-content-signin {
-//   .open-modal--signin & {
-//     display: block;
-//     pointer-events: initial;
-//   }
-// }
-
-// .main-modal-content-signup {
-//   .open-modal--signup & {
-//     display: block;
-//     pointer-events: initial;
-//   }
-// }

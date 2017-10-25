@@ -1,6 +1,7 @@
 {
   "public" : {
     "http_provider": "http://localhost:8545",
+    "ipfs_gateway": "https://gateway.paratii.video",
     "first_block": 0,
     "isTestEnv": true,
     "isProduction": false

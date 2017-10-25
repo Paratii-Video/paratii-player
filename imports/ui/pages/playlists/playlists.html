@@ -1,4 +1,5 @@
 <template name="playlists">
+<<<<<<< HEAD
   <div class="app-content playlistContainer">
 
     {{> pageheader title="Playlist" }}
@@ -41,8 +42,86 @@
             <img src= "/img/likesmall-icon.svg"/>
             {{stats.likes_percentage}}%
           </div>
+=======
+  <div class="internal playlists">
+    <header class="internal-header">
+      {{#if videos}}
+      <a class="internal-header-link" href="/playlists">      
+        <svg class="internal-header-icon">
+          <use class="internal-header-icon-use" xlink:href="#icon-return"></use>
+        </svg>
+      </a>
+      {{/if}}
+      <h2 class="internal-header-title">
+        {{#if videos}}
+          {{ currentPlaylistName }}
+        {{else}}
+          Playlists
+        {{/if}}</h2>
+    </header>
+    <div class="internal-content">
+        <div class="playlists-wrapper">
+          {{#unless videos}}
+            <h3 class="playlists-wrapper-title visually-hidden">My playlist</h3>
+            <ul class="playlists-list">
+              {{#each playlists}}
+                <li class="playlists-item">
+                  <a class="playlists-item-link" href="{{pathFor route='playlists' _id=this._id}}">
+                    <h4 class="playlists-item-title">{{ title }}</h4>
+                    <a href="{{pathFor route='playlists' _id=this._id}}" class="playlists-item-button">
+                      <svg class="playlists-item-button-svg">
+                        <use class="playlists-item-button-svg-use" xlink:href="#icon-play"></use>
+                      </svg>
+                    </a>
+                    <div class="playlists-item-length">
+                      <p class="playlists-item-length-value">11 <span class="visually-hidden">videos on playlist</span></p>
+                      <svg class="playlists-item-icon">
+                        <use class="playlists-item-icon-use" xlink:href="#icon-playlists"></use>
+                      </svg>
+                    </div>
+                    <img class="playlists-item-image" src="/img/cover/default-thumb.png"/>
+                  </a>
+                </li>
+              {{/each}}
+                <li class="playlists-item">
+                  <button id="button-create-playlist" class="playlists-item-link playlists-button" type="button">
+                    <span class="playlists-item-title playlists-button-label">Create playlist</span>
+                  </button>
+                </li>
+            </ul>
+          {{/unless}}
+          {{#if videos}}
+            <h3 class="playlists-wrapper-title visually-hidden">{{ currentPlaylistDesc }}</h3>
+            <ul class="videos-list">
+              {{#each videos}}
+                <li class="videos-item">
+                  <a class="videos-item-link" href="{{videoPath this}}">
+                    <h4 class="videos-item-title">{{ title }}</h4>
+                    <button class="videos-item-button">
+                      <svg class="videos-item-button-svg">
+                        <use class="videos-item-button-svg-use" xlink:href="#icon-reticence"></use>
+                      </svg>
+                    </button>
+                    <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
+
+                    {{#if isLocked this}}
+                      <div class="videos-item-price">{{ price }} PTI</div>
+                    {{else if hasPrice this}}
+                      <div class="videos-item-price">✓</div>
+                    {{/if}}
+                    <div class="videos-item-time">{{ duration }}</div>
+                    {{#if thumb}}
+                      <img class="videos-item-image" src="{{ thumb }}"/>
+                    {{else}}
+                      <img class="videos-item-image" src="/img/cover/default-thumb.png"/>
+                    {{/if}}
+                  </a>
+                </li>
+              {{/each}}
+            </ul>
+          {{/if}}
+>>>>>>> dev
         </div>
-      {{/each}}
     </div>
   </div>
 </template>
