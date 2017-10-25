@@ -66,6 +66,7 @@ function saveKeystore (seedPhrase, keystore, address) {
 
 function createAnonymousKeystoreIfNotExists () {
   const keystores = keystoresCheck()
+  console.log('creating anonymous keystore')
   // if there isn't anonyous keystore, we create one
   if (keystores.anonymous === 0) {
     createKeystore('password', undefined, function (err, seedPhrase) {
@@ -76,8 +77,10 @@ function createAnonymousKeystoreIfNotExists () {
       const keystore = Session.get('tempKeystore')
       RLocalStorage.setItem(`keystore-anonymous`, keystore)
       Session.set(`keystore-anonymous`, keystore)
+      Session.set(`seed-anonymous`, seedPhrase)
       Session.set('tempKeystore', null)
       Session.set('wallet-state', '')
+      console.log('Anonymous keystore created')
     })
   }
 }
@@ -109,6 +112,10 @@ export function getKeystore (user = null) {
   return null
 }
 
+function deleteKeystore (userId) {
+  RLocalStorage.removeItem(`keystore-${userId}`)
+}
+
 export function keystoresCheck () {
   let keystores = {}
   keystores.users = 0
@@ -126,8 +133,12 @@ export function keystoresCheck () {
 }
 
 // returns the seed of the keystore
-function getSeed (password, callback) {
+export function getSeed (password, callback) {
   const keystore = getKeystore()
+  return getSeedFromKeystore(password, keystore, callback)
+}
+
+export function getSeedFromKeystore (password, keystore, callback) {
   if (keystore !== null) {
     keystore.keyFromPassword(password, function (err, pwDerivedKey) {
       if (err) {
@@ -196,4 +207,4 @@ function sendTransaction (password, contractName, functionName, args, value, cal
   })
 }
 
-export { createKeystore, restoreWallet, sendTransaction, getSeed, saveKeystore, createAnonymousKeystoreIfNotExists }
+export { deleteKeystore, createKeystore, restoreWallet, sendTransaction, saveKeystore, createAnonymousKeystoreIfNotExists }

@@ -97,7 +97,7 @@ export function userPrettyName () {
 export function getUserPTIAddress () {
   if (Session.get('generating-keystore')) {
     // keystore is not available yet
-    return null
+    return undefined
   }
   const address = Session.get('userPTIAddress')
   if (address === undefined) {

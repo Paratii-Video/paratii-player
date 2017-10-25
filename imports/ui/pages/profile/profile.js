@@ -24,7 +24,12 @@ Template.profile.helpers({
     return (getKeystore() !== undefined) ? getKeystore() : false
   },
   userPTIAddress () {
-    return web3.toChecksumAddress(getUserPTIAddress())
+    let address = getUserPTIAddress()
+    if (address !== null) {
+      return web3.toChecksumAddress(address)
+    } else {
+      return ''
+    }
   },
   eth_balance () {
     const connected = Session.get('eth_isConnected')

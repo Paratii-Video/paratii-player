@@ -20,6 +20,7 @@ Template.showSeed.onDestroyed(function () {
   Session.set('seed', null)
 })
 
+// TODO: remove this function!!1!!
 const createNewSeed = (password) => {
   Session.set('wallet-state', 'generating')
   createKeystore(password, undefined, function (err, seed) {
@@ -44,6 +45,7 @@ Template.showSeed.events({
       }
       if (result) {
         if (this.type === 'create') {
+          // TODO: ?????????????????
           createNewSeed(password)
         } else {
           getSeed(password, () => {

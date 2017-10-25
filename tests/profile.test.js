@@ -1,4 +1,4 @@
-import { createUser, resetDb, createKeystore, createUserAndLogin, nukeLocalStorage, clearUserKeystoreFromLocalStorage, login } from './helpers.js'
+import { createUser, resetDb, createUserAndLogin, nukeLocalStorage, clearUserKeystoreFromLocalStorage, login } from './helpers.js'
 import { web3 } from '../imports/lib/ethereum/web3.js'
 import { assert } from 'chai'
 
@@ -13,15 +13,17 @@ describe('account workflow', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
   })
 
-  it('register a new user @watch', function () {
+  it('register a new user', function () {
     browser.execute(nukeLocalStorage)
+
     browser.url('http://localhost:3000/profile')
+
     // we should see the login form, we click on the register link
-    browser.waitForExist('#at-signUp')
+    browser.waitForEnabled('#at-signUp')
     browser.$('#at-signUp').click()
 
     // fill in the form
-    browser.waitForExist('[name="at-field-name"]')
+    browser.waitForEnabled('[name="at-field-name"]')
     browser
       .setValue('[name="at-field-name"]', 'Guildenstern')
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
@@ -32,32 +34,66 @@ describe('account workflow', function () {
 
     // now a modal should be opened with the seed
     // (we wait a long time, because the wallet needs to be generated)
-    // browser.waitForVisible('#seed', 10000)
-    // browser.waitForVisible('#btn-eth-close')
-    // browser.click('#btn-eth-close')
-    // we now should see avatar on the profile page
-    // (which is a bi of a hacky way to check if the use is logged in)
-    browser.waitForExist('#avatar')
+    browser.waitForVisible('#seed', 10000)
+    browser.waitForVisible('#btn-eth-close')
+    browser.click('#btn-eth-close')
+
+    // the user is now be logged in, and on the profile page, where the avatar is visible
+    browser.waitForExist('#avatar', 10000)
     // we should also see the wallet part
     browser.waitForExist('.walletContainer')
   })
 
-  it('login as an existing user', function () {
+  it('login as an existing user on a device with no keystore - use existing anonymous keystore [TODO]', function () {
+    browser.execute(nukeLocalStorage)
+
+    // create a meteor user
     server.execute(createUser)
-    // login
+
+    // a user exists, we now login
     browser.url('http://localhost:3000/profile')
     browser.waitForExist('[name="at-field-email"]')
     browser
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
       .setValue('[name="at-field-password"]', 'password')
-
     browser.click('#at-btn')
-    browser.execute(createKeystore)
-    // we now should see avatar on the profile page
-    // (which is a bi of a hacky way to check if the use is logged in)
+
+    // we should now see a modal presenting a choice to restore the wallet or use a new one
+    browser.waitForExist('#walletModal', 5000)
+    browser.pause(1000)
+    browser.waitForEnabled('#create-wallet', 5000)
+
+    // TODO: check if walelt is created (is not implemented yet)
+
+    // the user is now be logged in, and on the profile page, where the avatar is visible
     browser.waitForExist('#avatar')
-    // we should also see the wallet part
-    browser.waitForExist('.walletContainer')
+  })
+
+  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase [TODO: FIX]', function () {
+    browser.execute(nukeLocalStorage)
+
+    // create a meteor user
+    server.execute(createUser)
+
+    // a user exists, we now login
+    browser.url('http://localhost:3000/profile')
+    browser.waitForExist('[name="at-field-email"]')
+    browser
+      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+      .setValue('[name="at-field-password"]', 'password')
+    browser.click('#at-btn')
+
+    // we should now see a modal presenting a choice to restore the wallet or use a new one
+    browser.waitForExist('#walletModal', 5000)
+    browser.pause(1000)
+    browser.waitForEnabled('#restore-keystore', 5000)
+
+    browser.click('#restore-keystore')
+
+    // TODO: we now should see a modal in which we are asked for the seed to regenerate the keystore
+
+    // the user is now be logged in, and on the profile page, where the avatar is visible
+    browser.waitForExist('#avatar')
   })
 
   it('try to register a new account with a used email', function () {
@@ -82,14 +118,11 @@ describe('account workflow', function () {
     assert.equal(error, 'Email already exists.')
   })
 
-  it('do not overwrite a user address if failed to register a new user with a used email', function () {
+  it('do not overwrite a user address if failed to register a new user with a used email ', function () {
     createUserAndLogin(browser)
     browser.waitForVisible('#public_address', 5000)
     const address = browser.getText('#public_address')
-    // Close wallet modal
-    browser.waitForExist('#walletModal')
-    browser.click('#X')
-    browser.pause(2000)
+
     // logout
     browser.$('#logout').click()
     browser.url('http://localhost:3000/profile')
@@ -117,9 +150,7 @@ describe('account workflow', function () {
 
   it('shows the seed', function () {
     createUserAndLogin(browser)
-    browser.waitForExist('#walletModal')
-    browser.click('#X')
-    browser.pause(2000)
+
     browser.waitForExist('#show-seed', 5000)
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
@@ -131,10 +162,6 @@ describe('account workflow', function () {
 
   it('sends ether dialog is visible', function () {
     createUserAndLogin(browser)
-    // Close wallet modal
-    browser.waitForExist('#walletModal')
-    browser.click('#X')
-    browser.pause(2000)
     //
     browser.waitForExist('#send-eth', 5000)
     browser.click('#send-eth')
@@ -143,9 +170,7 @@ describe('account workflow', function () {
 
   it('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
-    browser.waitForExist('#walletModal')
-    browser.click('#X')
-    browser.pause(2000)
+
     browser.waitForEnabled('#show-seed', 5000)
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
@@ -157,8 +182,7 @@ describe('account workflow', function () {
 
   it('restore the keystore', function () {
     createUserAndLogin(browser)
-    browser.waitForExist('#walletModal')
-    browser.click('#X')
+
     browser.pause(2000)
 
     browser.waitForExist('#show-seed', 5000)
@@ -171,17 +195,14 @@ describe('account workflow', function () {
     const seed = browser.getHTML('#seed tt', false)
     const publicAddress = browser.getHTML('#public_address', false)
     browser.click('#btn-eth-close')
+
     browser.execute(clearUserKeystoreFromLocalStorage)
+
     browser.refresh()
     browser.pause(2000)
     // we now have a user account that is known in meteor, but no keystore
-
-    // TODO: we should click here ont he #restore-keystore button on the modal, but it is disabled
-    // (as a quick workaround, we close it and click on the button on the wallet...)
-    browser.waitForExist('#walletModal')
-    browser.click('#X')
-    browser.pause(2000)
-
+    // TODO: in this case, the user is logged in, but has removed his keystore after logging in, the bastard
+    // we need to show a blocking modal here
     //
     browser.waitForEnabled('#restore-keystore')
     browser.click('#restore-keystore')
@@ -194,12 +215,8 @@ describe('account workflow', function () {
     assert.equal(publicAddress, newPublicAddress)
   })
 
-  it('do not restore keystore if wrong password', function () {
+  it('do not restore keystore if wrong password @watch', function () {
     createUserAndLogin(browser)
-
-    browser.waitForExist('#walletModal')
-    browser.click('#X')
-    browser.pause(2000)
 
     browser.waitForExist('#show-seed', 5000)
     browser.click('#show-seed')
@@ -213,11 +230,6 @@ describe('account workflow', function () {
     browser.click('#btn-eth-close')
     browser.execute(clearUserKeystoreFromLocalStorage)
     browser.refresh()
-
-    browser.waitForExist('#walletModal')
-    browser.pause(1000)
-    browser.click('#X')
-    browser.pause(2000)
 
     browser.waitForVisible('#restore-keystore')
     browser.click('#restore-keystore')
