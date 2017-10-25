@@ -88,6 +88,7 @@ function setHead () {
     next()
   })
 }
+
 function twitterCardHeadPlayer (params, req, res, next) {
   var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
   var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '') + '/'
