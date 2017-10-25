@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating'
-import { createAnonymousKeystore } from '/imports/lib/ethereum/wallet.js'
+import { createAnonymousKeystoreIfNotExists } from '/imports/lib/ethereum/wallet.js'
 import '/imports/api/users.js'
 import './login.html'
 
@@ -14,6 +14,7 @@ Template.login.onDestroyed(function () {
   // If the user close the modal without doing login
   if (Accounts.userId() === null) {
     // Create anonymous keystore
-    createAnonymousKeystore()
+    // TODO: we create an anonymous keystore on App_body.onCreated - we probably do not need this here
+    createAnonymousKeystoreIfNotExists()
   }
 })

@@ -196,6 +196,11 @@ describe('account workflow', function () {
 
   it('do not restore keystore if wrong password', function () {
     createUserAndLogin(browser)
+
+    browser.waitForExist('#walletModal')
+    browser.click('#X')
+    browser.pause(2000)
+
     browser.waitForExist('#show-seed', 5000)
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
@@ -208,6 +213,12 @@ describe('account workflow', function () {
     browser.click('#btn-eth-close')
     browser.execute(clearLocalStorage)
     browser.refresh()
+
+    browser.waitForExist('#walletModal')
+    browser.pause(1000)
+    browser.click('#X')
+    browser.pause(2000)
+
     browser.waitForVisible('#restore-keystore')
     browser.click('#restore-keystore')
     browser.waitForVisible('[name="field-seed"]')

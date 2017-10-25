@@ -3,16 +3,15 @@ import '/imports/ui/components/modals/login.js'
 import '/imports/ui/components/modals/regenerateKeystore.js'
 import { add0x } from '/imports/lib/utils.js'
 
-import { keystoresCheck, createAnonymousKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js'
+import { keystoresCheck, createAnonymousKeystoreIfNotExists, getKeystore } from '/imports/lib/ethereum/wallet.js'
 
 if (Meteor.isClient) {
   // const keystoreAnonymous = getKeystore('anonymous')
   // console.log(add0x(keystoreAnonymous.getAddresses()[0]))
   Accounts.onLogin(function (user) {
-    // User Logged In
-    console.log('logged in!')
-    const keystores = keystoresCheck()
-    console.log(keystores)
+    // User is logged in
+    // const keystores = keystoresCheck()
+    // get the user's keystore
     const keystore = getKeystore()
     // Check if there is an anonymous keystore
     // if (keystores.anonymous > 0) {
@@ -25,6 +24,13 @@ if (Meteor.isClient) {
     //   console.log(add0x(keystoreAnonymous.getAddresses()[0]))
     // }
     if (keystore === null) {
+      // the user has no keystore (yet)
+      // const anonymousKeystore = getKeystore('anonymous')
+      // if (anonymousKeystore !== null) {
+      //
+      // } else {
+      //
+      // }
       console.log('!!!! rigenera keystore')
       Modal.show('regenerateKeystore')
     } else {
@@ -37,7 +43,7 @@ if (Meteor.isClient) {
     console.log('logged out')
     // Reset all session values
     Session.set('userPTIAddress', null)
-    Session.set('tempSeed', null)
+    // Session.set('tempSeed', null)
     Session.set('tempKeystore', null)
     Session.set('tempAddress', null)
     Session.set('wallet-state', null)
@@ -48,7 +54,6 @@ Template.App_body.onCreated(function () {
   // TODO: perhaps use a ReactiveDict here and store other state variables as well
   this.navState = new ReactiveVar('minimized')
   const keystores = keystoresCheck()
-  console.log('####created')
   // If user is not logged in and is not in profile page
   if (Accounts.userId() === null && FlowRouter.getRouteName() !== 'profile') {
     console.log(keystores)
@@ -61,7 +66,7 @@ Template.App_body.onCreated(function () {
       console.log('no user keystore')
       Session.set('wallet-state', 'generating')
       // Create anonymouse keystore with 'password'
-      createAnonymousKeystore()
+      createAnonymousKeystoreIfNotExists()
     }
   }
 })

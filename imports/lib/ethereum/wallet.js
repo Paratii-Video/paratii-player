@@ -42,7 +42,7 @@ function createKeystore (password, seedPhrase, cb) {
         saveKeystore(seedPhrase, keystore.serialize(), address)
       } else {
         // else, save in a temporary session variable
-        Session.set('tempSeed', seedPhrase)
+        // Session.set('tempSeed', seedPhrase)
         Session.set('tempKeystore', keystore.serialize())
         Session.set('tempAddress', add0x(address))
       }
@@ -64,9 +64,9 @@ function saveKeystore (seedPhrase, keystore, address) {
   Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
 }
 
-function createAnonymousKeystore () {
+function createAnonymousKeystoreIfNotExists () {
   const keystores = keystoresCheck()
-  // If there isn't anonyous keystore
+  // if there isn't anonyous keystore, we create one
   if (keystores.anonymous === 0) {
     createKeystore('password', undefined, function (err, seedPhrase) {
       if (err) {
@@ -196,4 +196,4 @@ function sendTransaction (password, contractName, functionName, args, value, cal
   })
 }
 
-export { createKeystore, restoreWallet, sendTransaction, getSeed, saveKeystore, createAnonymousKeystore }
+export { createKeystore, restoreWallet, sendTransaction, getSeed, saveKeystore, createAnonymousKeystoreIfNotExists }
