@@ -18,10 +18,10 @@ function emailValidation (address) {
 }
 
 function modalGetElements (type) {
-  $email = $('[name=email]')
-  $password = $('[name=password]')
+  $email = $('input[name=email]')
+  $password = $('input[name=password]')
   if (type === 'sign-up') {
-    $username = $('[name=username]')
+    $username = $('input[name=username]')
   }
 }
 
@@ -38,7 +38,7 @@ function modalShowContent (type) {
   Meteor.setTimeout(() => $modal.addClass('show-content'), timeAnimIn)
 }
 
-function modalHideContent (template, type) {
+function modalChangeContent (template, type) {
   $modal.removeClass('show-content')
   Meteor.setTimeout(() => template.templateInstance().modalState.set('type', type), animOut)
 }
@@ -67,16 +67,6 @@ function formSignInUpValidation (type) {
 
 // Sign
 
-Template.modal_sign.helpers({
-  isSignIn: (type) => type === 'sign_in',
-  isSignUp: (type) => type === 'sign_up',
-  isConfirm: (type) => type === 'confirm',
-  isForgotStep1: (type) => type === 'forgot_step_1',
-  isForgotStep2: (type) => type === 'forgot_step_2',
-  modalType: () => Template.instance().modalState.get('type'),
-  modalClass: () => 'main-modal-' + Template.instance().modalState.get('type')
-})
-
 Template.modal_sign.onCreated(function () {
   isModalOpened = false
   this.modalState = new ReactiveDict()
@@ -87,26 +77,36 @@ Template.modal_sign.onRendered(() => {
   $modal = $('div.main-modal-sign')
 })
 
-// Sign in
-
-Template.modal_sign_in.helpers({
-  passwordType: () => Session.get('passwordType')
+Template.modal_sign.helpers({
+  isSignIn: (type) => type === 'sign_in',
+  isSignUp: (type) => type === 'sign_up',
+  isConfirm: (type) => type === 'confirm',
+  isForgotStep1: (type) => type === 'forgot_step_1',
+  isForgotStep2: (type) => type === 'forgot_step_2',
+  modalType: () => Template.instance().modalState.get('type'),
+  modalClass: () => 'main-modal-' + Template.instance().modalState.get('type')
 })
+
+// Sign in
 
 Template.modal_sign_in.onCreated(() => Session.set('passwordType', 'password'))
 
 Template.modal_sign_in.onRendered(() => modalShowContent('sign-in'))
 
+Template.modal_sign_in.helpers({
+  passwordType: () => Session.get('passwordType')
+})
+
 Template.modal_sign_in.events({
   'click button.gotosignup' (event, instance) {
-    modalHideContent(instance.view.parentView.parentView, 'sign_up')
+    modalChangeContent(instance.view.parentView.parentView, 'sign_up')
   },
   'click button.password' () {
     let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
     Session.set('passwordType', inputType)
   },
   'click #button-forgot' (event, instance) {
-    modalHideContent(instance.view.parentView.parentView, 'forgot_step_1')
+    modalChangeContent(instance.view.parentView.parentView, 'forgot_step_1')
   },
   'submit form.main-modal-form' (event, instance) {
     event.preventDefault()
@@ -125,19 +125,19 @@ Template.modal_sign_in.events({
 
 // Sign up
 
-Template.modal_sign_up.helpers({
-  passwordType: () => Session.get('passwordType')
-})
-
 Template.modal_sign_up.onCreated(() => {
   Session.set('passwordType', 'password')
 })
 
 Template.modal_sign_up.onRendered(() => modalShowContent('sign-up'))
 
+Template.modal_sign_up.helpers({
+  passwordType: () => Session.get('passwordType')
+})
+
 Template.modal_sign_up.events({
   'click button.gotosignin' (event, instance) {
-    modalHideContent(instance.view.parentView.parentView, 'sign_in')
+    modalChangeContent(instance.view.parentView.parentView, 'sign_in')
   },
   'click button.password' () {
     let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
@@ -167,7 +167,7 @@ Template.modal_sign_up.events({
             console.log(err)
           }
         } else {
-          modalHideContent(instance.view.parentView.parentView, 'confirm')
+          modalChangeContent(instance.view.parentView.parentView, 'confirm')
         }
       })
     }
@@ -179,7 +179,7 @@ Template.modal_sign_up.events({
 Template.modal_forgot_password_step_1.onRendered(() => modalShowContent('forgot-step-1'))
 Template.modal_forgot_password_step_1.events({
   'click button.gotosignin' (event, instance) {
-    modalHideContent(instance.view.parentView.parentView, 'sign_in')
+    modalChangeContent(instance.view.parentView.parentView, 'sign_in')
   },
   'submit form.main-modal-form' (event, instance) {
     event.preventDefault()
@@ -194,10 +194,11 @@ Template.modal_forgot_password_step_1.events({
       $('[name=email]').addClass('error')
     } else {
       $modal.addClass('waiting')
+      // #just for test. need to apply the right method
       Meteor.setTimeout(() => {
-        $modal.removeClass('waiting')
-        modalHideContent(instance.view.parentView.parentView, 'forgot_step_2')
+        modalChangeContent(instance.view.parentView.parentView, 'forgot_step_2')
       }, 1000)
+      // /just for test. need to apply the right method
     }
   }
 })

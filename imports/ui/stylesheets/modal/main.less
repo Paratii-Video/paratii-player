@@ -298,6 +298,13 @@
     position: absolute;
     width: 100%;
 
+    .waiting & {
+      .button-text {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+
     &-waiting {
       &:extend(.pos-a-vm all);
 
