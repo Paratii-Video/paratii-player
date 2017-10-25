@@ -1,4 +1,4 @@
-import { createUser, resetDb, createKeystore, createUserAndLogin, clearLocalStorage, login } from './helpers.js'
+import { createUser, resetDb, createKeystore, createUserAndLogin, destroyLocalStorage, clearLocalStorage, login } from './helpers.js'
 import { web3 } from '../imports/lib/ethereum/web3.js'
 import { assert } from 'chai'
 
@@ -6,6 +6,7 @@ describe('account workflow', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     server.execute(resetDb)
+    browser.execute(clearLocalStorage)
   })
 
   afterEach(function () {
@@ -13,6 +14,7 @@ describe('account workflow', function () {
   })
 
   it('register a new user', function () {
+    browser.execute(destroyLocalStorage)
     browser.url('http://localhost:3000/profile')
     // we should see the login form, we click on the register link
     browser.waitForExist('#at-signUp')
@@ -30,9 +32,9 @@ describe('account workflow', function () {
 
     // now a modal should be opened with the seed
     // (we wait a long time, because the wallet needs to be generated)
-    browser.waitForVisible('#seed', 10000)
-    browser.waitForVisible('#btn-eth-close')
-    browser.click('#btn-eth-close')
+    // browser.waitForVisible('#seed', 10000)
+    // browser.waitForVisible('#btn-eth-close')
+    // browser.click('#btn-eth-close')
     // we now should see avatar on the profile page
     // (which is a bi of a hacky way to check if the use is logged in)
     browser.waitForExist('#avatar')
@@ -84,6 +86,10 @@ describe('account workflow', function () {
     createUserAndLogin(browser)
     browser.waitForVisible('#public_address', 5000)
     const address = browser.getText('#public_address')
+    // Close wallet modal
+    browser.waitForExist('#walletModal')
+    browser.click('#X')
+    browser.pause(2000)
     // logout
     browser.$('#logout').click()
     browser.url('http://localhost:3000/profile')
@@ -109,19 +115,25 @@ describe('account workflow', function () {
     browser.pause(5000)
   })
 
-  it('shows the seed', function () {
-    createUserAndLogin(browser)
-    browser.waitForExist('#show-seed', 5000)
-    browser.click('#show-seed')
-    browser.waitForVisible('[name="user_password"]')
-    browser.setValue('[name="user_password"]', 'password')
-    browser.click('#btn-show-seed')
-    browser.waitForVisible('#btn-eth-close')
-    browser.click('#btn-eth-close')
-  })
+  // TODO: with the new flow the seed will be show after the user choose which keystire want to use
+  // it('shows the seed', function () {
+  //   createUserAndLogin(browser)
+  //   browser.waitForExist('#show-seed', 5000)
+  //   browser.click('#show-seed')
+  //   browser.waitForVisible('[name="user_password"]')
+  //   browser.setValue('[name="user_password"]', 'password')
+  //   browser.click('#btn-show-seed')
+  //   browser.waitForVisible('#btn-eth-close')
+  //   browser.click('#btn-eth-close')
+  // })
 
-  it('sends ether dialog is visible', function () {
+  it('sends ether dialog is visible @watch', function () {
     createUserAndLogin(browser)
+    // Close wallet modal
+    browser.waitForExist('#walletModal')
+    browser.click('#X')
+    browser.pause(2000)
+    //
     browser.waitForExist('#send-eth', 5000)
     browser.click('#send-eth')
     browser.waitForExist('.modal-dialog', 5000)

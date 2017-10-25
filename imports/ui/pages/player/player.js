@@ -22,7 +22,7 @@ import './player.html'
 let controlsHandler
 let volumeHandler
 let previousVolume = 100
-let _video = new ReactiveVar()
+// let _video = new ReactiveVar()
 
 const fullscreen = () => {
   return document.fullscreenElement ||
@@ -31,18 +31,25 @@ const fullscreen = () => {
     document.msFullscreenElement
 }
 
-function getVideo () {
-  const videoId = FlowRouter.getParam('_id')
-  if (!_video || _video.id !== videoId) {
-    _video = Videos.findOne({ _id: videoId })
-  }
-  return _video
-  // return Template.instance().currentVideo.get()
-}
+// function getVideo () {
+//   const videoId = FlowRouter.getParam('_id')
+//   if (!_video || _video.id !== videoId) {
+//     _video = Videos.findOne({ _id: videoId })
+//   }
+//   return _video
+// }
 
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = instance.currentVideo.get()
+
+  document.getElementById('video-player').remove()
+  const playerContainer = document.getElementById('player-container')
+  const videoTag = document.createElement('video')
+  videoTag.className = 'player-video'
+  videoTag.id = 'video-player'
+  playerContainer.insertBefore(videoTag, playerContainer.firstChild)
+
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo)
     instance.playerState.set('torrent', true)
@@ -116,7 +123,7 @@ Template.player.onCreated(function () {
     Meteor.subscribe('userTransactions', userPTIAddress)
   }
   const videoId = FlowRouter.getParam('_id')
-  Meteor.subscribe('videoPlay', videoId, function () {
+  Meteor.subscribe('videos', function () {
     self.currentVideo.set(Videos.findOne({ _id: videoId }))
     renderVideoElement(instance)
   })
@@ -143,6 +150,12 @@ Template.player.onDestroyed(function () {
 })
 
 Template.player.helpers({
+  currentVideo () {
+    const videoId = FlowRouter.getParam('_id')
+    // console.log(Videos.findOne({ _id: videoId }))
+    Template.instance().currentVideo.set(Videos.findOne({ _id: videoId }))
+    renderVideoElement(Template.instance())
+  },
   isLocked () {
     return Template.instance().playerState.get('locked')
   },
@@ -160,10 +173,10 @@ Template.player.helpers({
     return Template.instance().playerState.get('totalTime')
   },
   video () {
-    return getVideo()
+    return Template.instance().currentVideo.get()
   },
   hasPrice () {
-    return getVideo().price && getVideo().price > 0
+    return Template.instance().currentVideo.get().price && Template.instance().currentVideo.get().price > 0
   },
   hideControls () {
     return Template.instance().playerState.get('hideControls') ? 'toggleFade' : ''
@@ -314,7 +327,7 @@ Template.player.events({
         price: event.target.dataset.price, // Video Price
         address: event.target.dataset.address, // Creator PTI address
         videotitle: event.target.dataset.title, // Video title
-        videoid: _video._id // Video title
+        videoid: Template.instance().currentVideo.get()._id // Video title
       })
     } else {
       Modal.show('modal_sign_in')
@@ -337,7 +350,7 @@ Template.player.events({
     const playlistId = FlowRouter.getQueryParam('playlist')
     const playlist = Playlists.findOne({ _id: playlistId })
     const videos = playlist.videos
-    const currentIndex = videos.indexOf(getVideo()._id)
+    const currentIndex = videos.indexOf(Template.instance().currentVideo.get()._id)
     var nextId
     if (videos[currentIndex + 1] != null) {
       nextId = videos[currentIndex + 1]
@@ -347,6 +360,7 @@ Template.player.events({
     const pathDef = 'player'
     const params = { _id: nextId }
     const queryParams = { playlist: playlistId }
+    Template.instance().currentVideo.set()
     FlowRouter.go(pathDef, params, queryParams)
   },
   'click #previous-video-button' (event, instance) {
@@ -357,7 +371,7 @@ Template.player.events({
       const playlistId = FlowRouter.getQueryParam('playlist')
       const playlist = Playlists.findOne({ _id: playlistId })
       const videos = playlist.videos
-      const currentIndex = videos.indexOf(getVideo()._id)
+      const currentIndex = videos.indexOf(Template.instance().currentVideo.get()._id)
       var previousId
       if (videos[currentIndex - 1] != null) {
         previousId = videos[currentIndex - 1]
@@ -469,16 +483,16 @@ Template.player.events({
     }
   },
   'click #button-like' () {
-    const videoId = _video._id
+    const videoId = Template.instance().currentVideo.get()._id
     // const videoId = this._id // works as well
     Meteor.call('videos.like', videoId)
   },
   'click #button-dislike' () {
-    const videoId = _video._id
+    const videoId = Template.instance().currentVideo.get()._id
     Meteor.call('videos.dislike', videoId)
   },
   'click #embed' (event, instance) {
-    const videoId = _video._id
+    const videoId = Template.instance().currentVideo.get()._id
     Modal.show('modal_share_video', {
       videoId: videoId,
       label: 'Embed code',

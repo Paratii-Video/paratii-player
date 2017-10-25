@@ -20,7 +20,7 @@ const mySubmitFunc = function (error, state) {
     //   Session.set('tempAddress', null)
     //   Session.set('wallet-state', '')
     // }
-    showSeed('show')
+    // showSeed('show')
   }
 }
 

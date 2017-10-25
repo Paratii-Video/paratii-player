@@ -72,7 +72,6 @@ function createAnonymousKeystore () {
       if (err) {
         throw err
       }
-      Session.set('wallet-state', '')
       // Need to save keystore
       const keystore = Session.get('tempKeystore')
       RLocalStorage.setItem(`keystore-anonymous`, keystore)

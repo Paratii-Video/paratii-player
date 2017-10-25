@@ -106,6 +106,10 @@ export function clearLocalStorage () {
   localStorage.removeItem(`keystore-${Accounts.userId()}`)
 }
 
+export function destroyLocalStorage () {
+  localStorage.clear()
+}
+
 export function createVideo (id, title, price) {
   const video = {
     id: id,

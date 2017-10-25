@@ -49,8 +49,8 @@ Template.App_body.onCreated(function () {
   this.navState = new ReactiveVar('minimized')
   const keystores = keystoresCheck()
   console.log('####created')
-  // If user is not logged in
-  if (Accounts.userId() === null) {
+  // If user is not logged in and is not in profile page
+  if (Accounts.userId() === null && FlowRouter.getRouteName() !== 'profile') {
     console.log(keystores)
     if (keystores.users > 0) {
       // There is at least one User keystore
