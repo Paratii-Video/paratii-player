@@ -9,14 +9,7 @@ import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import * as HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
-<<<<<<< HEAD
-import '/imports/ui/components/modals/login.js'
-import '/imports/ui/components/modals/signIn.js'
-import '/imports/ui/components/modals/waitConfirm.js'
-import '/imports/ui/components/modals/confirmAccount.js'
-=======
 import '/imports/ui/components/modals/sign.js'
->>>>>>> dev
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 

@@ -1,52 +1,8 @@
 <template name="playlists">
-<<<<<<< HEAD
-  <div class="app-content playlistContainer">
-
-    {{> pageheader title="Playlist" }}
-
-    <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        {{ currentPlaylistName }}
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
-        {{# each playlists }}
-          <li class="playlistSel"><a href="{{pathFor route='playlists' _id=this._id}}">{{ title}}</a></li>
-        {{/each}}
-      </ul>
-    </div>
-    <div class="descriptionPlaylist">
-      {{ currentPlaylistDesc }}
-    </div>
-    <div class="videosListContainer">
-      {{# each videos }}
-        <div class="videoCardContainer">
-          <div class="videoThumbContent">
-            <a href="{{videoPath this}}">
-              {{#if thumb}}
-                <img src="{{thumb}}"/>
-              {{else}}
-                <img src="/img/cover/default-thumb.png"/>
-              {{/if}}
-            </a>
-            <div class="videoCardDuration">{{duration}}</div>
-            {{#if isLocked this}}
-              <div class="videoCardPrice">{{price }} PTI</div>
-            {{else if hasPrice this}}
-              <div class="videoCardPrice">✓</div>
-            {{/if}}
-          </div>
-          <div class="videoCardTitle"><a href="{{videoPath this}}">{{title}}</a></div>
-          <div class="videoCardViews">{{formatNumber stats.views}} views</div>
-          <div class="videoCardLikes">
-            <img src= "/img/likesmall-icon.svg"/>
-            {{stats.likes_percentage}}%
-          </div>
-=======
   <div class="internal playlists">
     <header class="internal-header">
       {{#if videos}}
-      <a class="internal-header-link" href="/playlists">      
+      <a class="internal-header-link" href="/playlists">
         <svg class="internal-header-icon">
           <use class="internal-header-icon-use" xlink:href="#icon-return"></use>
         </svg>
@@ -120,7 +76,6 @@
               {{/each}}
             </ul>
           {{/if}}
->>>>>>> dev
         </div>
     </div>
   </div>

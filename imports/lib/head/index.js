@@ -1,7 +1,6 @@
 import { Videos } from '/imports/api/videos.js'
 
 function setHead () {
-
   Picker.route('/play/:_id', (params, req, res, next) => {
     // console.log('calling home')
     // console.log(params)

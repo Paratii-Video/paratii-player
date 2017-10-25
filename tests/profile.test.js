@@ -157,6 +157,10 @@ describe('account workflow', function () {
 
   it('restore the keystore', function () {
     createUserAndLogin(browser)
+    browser.waitForExist('#walletModal')
+    browser.click('#X')
+    browser.pause(2000)
+
     browser.waitForExist('#show-seed', 5000)
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
@@ -169,7 +173,17 @@ describe('account workflow', function () {
     browser.click('#btn-eth-close')
     browser.execute(clearLocalStorage)
     browser.refresh()
-    browser.waitForVisible('#restore-keystore')
+    browser.pause(2000)
+    // we now have a user account that is known in meteor, but no keystore
+
+    // TODO: we should click here ont he #restore-keystore button on the modal, but it is disabled
+    // (as a quick workaround, we close it and click on the button on the wallet...)
+    browser.waitForExist('#walletModal')
+    browser.click('#X')
+    browser.pause(2000)
+
+    //
+    browser.waitForEnabled('#restore-keystore')
     browser.click('#restore-keystore')
     browser.waitForVisible('[name="field-seed"]')
     browser.setValue('[name="field-seed"]', seed)
