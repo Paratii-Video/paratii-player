@@ -22,7 +22,7 @@
     "bluebird": "^3.5.0",
     "browser-process-hrtime": "^0.1.2",
     "chai": "^4.1.0",
-    "cids": "^0.5.1",
+    "cids": "^0.5.2",
     "clipboard": "^1.7.1",
     "eth-lightwallet": "^2.5.6",
     "hls.js": "^0.8.5",
