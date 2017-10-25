@@ -89,6 +89,7 @@ function setHead () {
 }
 function twitterCardHead (params, req, res, next) {
   var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
+  var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '')
   req.dynamicHead = (req.dynamicHead || '')
   var videoId = params._id
   var video = Videos.findOne({_id: videoId})
@@ -102,7 +103,7 @@ function twitterCardHead (params, req, res, next) {
   req.dynamicHead += '<meta property="twitter:player:width" content="500" />'
   req.dynamicHead += '<meta property="twitter:player:height" content="500" />'
   req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + thumbUrl + '" />'
-  req.dynamicHead += '<meta property="twitter:player:stream" content="https://gateway.ipfs.io' + source + '" />'
+  req.dynamicHead += '<meta property="twitter:player:stream" content="' + ipfsGateway + source + '" />'
   req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '" />'
 }
 
