@@ -481,8 +481,8 @@ Template.player.events({
   'click #embed' (event, instance) {
     const videoId = _video._id
     Modal.show('modal_share_video', {
+      type: 'links',
       videoId: videoId,
-      label: 'Embed code',
       embed: window.top !== window.self
     })
   },

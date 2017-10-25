@@ -33,7 +33,7 @@ describe('Video Store: ', function () {
     // assert.equal(amount, 300)
   })
 
-  it('should be possible to buy (and unlock) a video [TODO]  @watch', function (done) {
+  it('should be possible to buy (and unlock) a video [TODO]', function (done) {
     // check sanity
     // set up the test..
     browser.url(`http://localhost:3000/play/${videoId}`)
