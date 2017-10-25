@@ -34,10 +34,14 @@ test:
     - pkill -f meteor
 
 deployment:
-  staging:
+  production:
     branch: master
     commands:
-      - ./deploy.sh:
+      - ./deploy.sh production:
+  staging:
+    branch: dev
+    commands:
+      - ./deploy.sh staging:
 
 notify:
   webhooks:
