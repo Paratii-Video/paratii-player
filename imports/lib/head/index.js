@@ -104,7 +104,7 @@ function twitterCardHead (params, req, res, next) {
   req.dynamicHead += '<meta property="twitter:player:height" content="320" />'
   req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + thumbUrl + '" />'
   req.dynamicHead += '<meta property="twitter:player:stream" content="' + ipfsGateway + source + '" />'
-  req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '" />'
+  req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '?type=mini" />'
 }
 
 function basicHead (params, req, res, next) {
