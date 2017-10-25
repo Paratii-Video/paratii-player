@@ -115,7 +115,7 @@ describe('account workflow', function () {
     browser.pause(5000)
   })
 
-  it('shows the seed @watch', function () {
+  it('shows the seed', function () {
     createUserAndLogin(browser)
     browser.waitForExist('#walletModal')
     browser.click('#X')
