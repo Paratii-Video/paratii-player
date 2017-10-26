@@ -43,7 +43,7 @@ function modalChangeContent (template, type) {
   Meteor.setTimeout(() => template.templateInstance().modalState.set('type', type), animOut)
 }
 
-function formSignInUpValidation (type) {
+function formSignValidation (type) {
   userData = {
     username: (type === 'sign-up') ? $username.val() : '',
     email: $email.val(),
@@ -83,6 +83,7 @@ Template.modal_sign.helpers({
   isConfirm: (type) => type === 'confirm',
   isForgotStep1: (type) => type === 'forgot_step_1',
   isForgotStep2: (type) => type === 'forgot_step_2',
+  isNewPassword: (type) => type === 'new_password',
   modalType: () => Template.instance().modalState.get('type'),
   modalClass: () => 'main-modal-' + Template.instance().modalState.get('type')
 })
@@ -110,7 +111,7 @@ Template.modal_sign_in.events({
   },
   'submit form.main-modal-form' (event, instance) {
     event.preventDefault()
-    if (formSignInUpValidation('sign-in')) {
+    if (formSignValidation('sign-in')) {
       Meteor.loginWithPassword(userData.email, userData.password, (err) => {
         if (err) {
           $email.addClass('error')
@@ -145,7 +146,7 @@ Template.modal_sign_up.events({
   },
   'submit form.main-modal-form' (event, instance) {
     event.preventDefault()
-    if (formSignInUpValidation('sign-up')) {
+    if (formSignValidation('sign-up')) {
       Accounts.createUser(userData, (err) => {
         if (err) {
           if (err.reason === 'Need to set a username or email') {
