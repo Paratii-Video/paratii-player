@@ -124,6 +124,7 @@ function facebookOGHeadPlayer (params, req, res, next) {
   var source = video.src
   var ipfsSource = source.split('/')
   ipfsSource = ipfsSource[ipfsSource.length - 1]
+
   req.dynamicHead += '<meta property="og:video" content="' + ipfsGateway + ipfsSource + '" />'
   req.dynamicHead += '<meta property="og:video:secure_url" content="' + ipfsGateway + ipfsSource + '" />'
   req.dynamicHead += '<meta property="og:video:type" content="text/html">'
