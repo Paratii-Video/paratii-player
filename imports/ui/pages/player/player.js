@@ -13,8 +13,6 @@ import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 
-import '/imports/ui/components/modals/newPassword.js'
-
 import './player.html'
 
 let controlsHandler
