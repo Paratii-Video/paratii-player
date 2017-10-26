@@ -102,8 +102,12 @@ export function createUserAndLogin (browser) {
   browser.waitForExist('#public_address', 5000)
 }
 
-export function clearLocalStorage () {
+export function clearUserKeystoreFromLocalStorage () {
   localStorage.removeItem(`keystore-${Accounts.userId()}`)
+}
+
+export function nukeLocalStorage () {
+  localStorage.clear()
 }
 
 export function createVideo (id, title, price) {

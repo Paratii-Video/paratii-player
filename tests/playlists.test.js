@@ -1,4 +1,4 @@
-import { resetDb, clearLocalStorage, createUserAndLogin } from './helpers.js'
+import { resetDb, clearUserKeystoreFromLocalStorage, createUserAndLogin } from './helpers.js'
 import { assert } from 'chai'
 
 function createVideo (price) {
@@ -46,7 +46,7 @@ describe('price tag status', function () {
   })
 
   afterEach(function () {
-    browser.execute(clearLocalStorage)
+    browser.execute(clearUserKeystoreFromLocalStorage)
   })
 
   it('when the video has no price', () => {

@@ -1,9 +1,14 @@
 import { assert } from 'chai'
-import { createVideo, resetDb, createPlaylist } from './helpers.js'
+import { clearUserKeystoreFromLocalStorage, createVideo, resetDb, createPlaylist } from './helpers.js'
 
 describe('player workflow', function () {
+  beforeEach(function () {
+    // browser.execute(clearUserKeystoreFromLocalStorage)
+  })
+
   afterEach(function () {
     server.execute(resetDb)
+    browser.execute(clearUserKeystoreFromLocalStorage)
   })
 
   it('play a free video', function () {
@@ -11,8 +16,12 @@ describe('player workflow', function () {
     browser.url('http://localhost:3000/play/12345')
     browser.waitForExist('#video-player')
     browser.waitForExist('.player-overlay')
-    browser.waitForExist('.player-controls')
     assert.equal(browser.getText('.player-title'), 'Test 1')
+    // Close modal
+    // browser.waitForExist('#loginModal')
+    // browser.click('#btn-editprofile-close')
+    // browser.pause(2000)
+    browser.waitForExist('.player-controls')
     browser.click('#play-pause-button')
     assert.isTrue(browser.getAttribute('#nav', 'class').includes('closed'))
     assert.isTrue(browser.getAttribute('.player-controls', 'class').includes('pause'))
@@ -39,6 +48,10 @@ describe('player workflow', function () {
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitForExist('.player-overlay')
     assert.equal(browser.getText('.player-title'), 'Test 1')
+    // Close modal
+    // browser.waitForExist('#loginModal')
+    // browser.click('#btn-editprofile-close')
+    // browser.pause(2000)
     browser.waitForExist('#next-video-button')
     browser.click('#next-video-button')
     browser.waitForExist('.player-overlay')
