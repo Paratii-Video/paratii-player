@@ -127,9 +127,9 @@ function facebookOGHeadPlayer (params, req, res, next) {
 
   req.dynamicHead += '<meta property="og:video" content="' + ipfsGateway + ipfsSource + '" />'
   req.dynamicHead += '<meta property="og:video:secure_url" content="' + ipfsGateway + ipfsSource + '" />'
-  req.dynamicHead += '<meta property="og:video:type" content="text/html">'
-  req.dynamicHead += '<meta property="og:video:width" content="527" />'
-  req.dynamicHead += '<meta property="og:video:height" content="320" />'
+  req.dynamicHead += '<meta property="og:video:type" content="video/mp4">'
+  req.dynamicHead += '<meta property="og:video:width" content="1280" />'
+  req.dynamicHead += '<meta property="og:video:height" content="720" />'
   req.dynamicHead += '<meta property="og:type" content="video.other" />'
   req.dynamicHead += '<meta property="og:url" content="' + rootUrl + '/play/' + videoId + '" />'
   req.dynamicHead += '<meta property="og:title" content="' + videoTitle + 'y" />'
