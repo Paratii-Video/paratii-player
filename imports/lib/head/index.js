@@ -106,7 +106,7 @@ function twitterCardHeadPlayer (params, req, res, next) {
   req.dynamicHead += '<meta property="twitter:player:width" content="570" />'
   req.dynamicHead += '<meta property="twitter:player:height" content="320" />'
   if (thumbUrl) {
-    req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + thumbUrl + '" />'
+    req.dynamicHead += '<meta property="twitter:image" content="https://www.fillmurray.com/527/320" />'
   }
   req.dynamicHead += '<meta property="twitter:player:stream" content="' + ipfsGateway + ipfsSource + '" />'
   req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '?type=mini" />'
@@ -134,7 +134,9 @@ function facebookOGHeadPlayer (params, req, res, next) {
   req.dynamicHead += '<meta property="og:url" content="' + rootUrl + '/play/' + videoId + '" />'
   req.dynamicHead += '<meta property="og:title" content="' + videoTitle + 'y" />'
   if (thumbUrl) {
-    req.dynamicHead += '<meta property="og:image" content="' + rootUrl + thumbUrl + '" />'
+    req.dynamicHead += '<meta property="og:image" content="https://www.fillmurray.com/527/320" />'
+    req.dynamicHead += '<meta property="og:image:width" content="527" />'
+    req.dynamicHead += '<meta property="og:image:height" content="320" />'
   }
 
   if (videoDescription) {
