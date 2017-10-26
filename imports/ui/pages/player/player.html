@@ -1,5 +1,8 @@
 <template name="player">
   <div id="player-container" class="player-container {{ descriptionClass }}">
+
+    {{currentVideo}}
+
     <video id="video-player" class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
     </video>
     {{#unless isLocked }}

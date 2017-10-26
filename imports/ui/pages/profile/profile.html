@@ -1,18 +1,9 @@
 <template name="profile">
   <div class="app-content scrollable-y">
     {{#if currentUser }} {{#isAuthorized}}
-    <div class="clearfix">
-      <div class="titleContainer" id="wallet-title">
-        <span>My Profile</span>
-      </div>
-      {{#if userPTIAddress}}
-        <div class="float-right address-container">
-          <div class="address-identicon">{{> dapp_identicon identity=userPTIAddress class="dapp-tiny"}}</div>
-          <span class="address">This is your address: <span id="public_address">{{ userPTIAddress }}</span></span>
-        </div>
-      {{/if}}
-    </div>
-    <div class="line"></div>
+
+    {{> pageheader title="Profile" }}
+
     <div class="walletContainer">
       <div class="centerIcon">
         <!-- {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-large"}} -->
@@ -66,15 +57,14 @@
           Please be patient, we are generating your wallet file.....
           {{ else }}
           <p>
-          We could not find a wallet stored on this device. If you remember the 12-word seed, you can restore your wallet:
+          We could not find a wallet associeted to your user. If you remember the 12-word seed, you can restore your wallet
           </p>
           <button class="btn btn-default blue-button" id="restore-keystore">Restore wallet</button>
+          <br><br>
           <p>
-            Otherwise, you can generate a new wallet (but you will not have access to any funds you might have)
+            Otherwise, you can use a new wallet (but you will not have access to any funds you might have)
           </p>
-          <p>
-            <button class="btn btn-default blue-button" id="create-wallet">Generate a new wallet</button>
-          </p>
+            <button class="btn btn-default blue-button" id="create-wallet">Use a new wallet</button>
           {{/if}}
         </div>
       </div>
