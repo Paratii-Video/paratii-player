@@ -39,15 +39,17 @@ describe('player page', function () {
     FlowRouter.getParam.restore()
   })
 
-  it('the video() helper returns the expected video', function () {
-    const video = Template.player.__helpers[' video']()
-    assert.equal(video._id, videoId)
+  it('the videoTitle is rendered in the template', function () {
+    let data = {}
+    withRenderedTemplate('player', data, (el) => {
+      assert.equal($(el).find('.player-title').text().trim(), videoTitle)
+    })
   })
 
-  it('the hasPrice() helper returns the expected value', function () {
-    const value = Template.player.__helpers[' hasPrice']()
-    assert.equal(value, true)
-  })
+  // it('the hasPrice() helper returns the expected value', function () {
+  //   const value = Template.player.__helpers[' hasPrice']()
+  //   assert.equal(value, true)
+  // })
 
   it('the formatNumber() helper returns the number formatted correctly', function () {
     const value = Template.player.__helpers[' formatNumber'](1000)
@@ -67,31 +69,33 @@ describe('player page', function () {
     })
   })
 
-  it('increments the likes counter when clicked', function () {
-    let data = {}
-    withRenderedTemplate('player', data, (el) => {
-      assert.equal($(el).find('#button-like').text().trim(), '3.141')
-    })
-    Template.player.fireEvent('click #button-like')
-    // (it is probably easier to write a full-app test, instead of a unittest like this)
-    // TODO: this text fails, because there is no logged in user at this point
-    // withRenderedTemplate('player', data, (el) => {
-    //   assert.equal($(el).find('#button-like').text(), '3.142');
-    // });
-  })
+  // TODO: write a chimp test for incrementing the like counter
+  // it('increments the likes counter when clicked', function () {
+  //   let data = {}
+  //   withRenderedTemplate('player', data, (el) => {
+  //     assert.equal($(el).find('#button-like').text().trim(), '3.141')
+  //     Template.player.fireEvent('click #button-like')
+  //   })
+  //   // (it is probably easier to write a full-app test, instead of a unittest like this)
+  //   // TODO: this text fails, because there is no logged in user at this point
+  //   // withRenderedTemplate('player', data, (el) => {
+  //   //   assert.equal($(el).find('#button-like').text(), '3.142');
+  //   // });
+  // })
 
-  it('increments the dislikes counter when clicked', function () {
-    let data = {}
-    withRenderedTemplate('player', data, (el) => {
-      assert.equal($(el).find('#button-dislike').text().trim(), '2.718')
-    })
-    Template.player.fireEvent('click #button-dislike')
-    // TODO: this text fails, because there is no logged in user at this point
-    // (it is probably easier to write a full-app test, instead of a unittest like this)
-    // withRenderedTemplate('player', data, (el) => {
-    //   assert.equal($(el).find('#button-dislike').text(), '2.719');
-    // });
-  })
+  // TODO: write a chimp test for incrementing the dislike counter
+  // it('increments the dislikes counter when clicked', function () {
+  //   let data = {}
+  //   withRenderedTemplate('player', data, (el) => {
+  //     assert.equal($(el).find('#button-dislike').text().trim(), '2.718')
+  //   })
+  //   Template.player.fireEvent('click #button-dislike')
+  //   // TODO: this text fails, because there is no logged in user at this point
+  //   // (it is probably easier to write a full-app test, instead of a unittest like this)
+  //   // withRenderedTemplate('player', data, (el) => {
+  //   //   assert.equal($(el).find('#button-dislike').text(), '2.719');
+  //   // });
+  // })
 })
 
 describe('webtorrent player', function () {

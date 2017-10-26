@@ -9,6 +9,7 @@ import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
 import '/imports/ui/components/modals/restoreKeystore.js'
 import '/imports/ui/components/modals/showSeed.js'
+import '../../components/pageheader/pageheader.js'
 import './profile.html'
 
 Template.profile.helpers({
@@ -23,7 +24,12 @@ Template.profile.helpers({
     return (getKeystore() !== undefined) ? getKeystore() : false
   },
   userPTIAddress () {
-    return web3.toChecksumAddress(getUserPTIAddress())
+    let address = getUserPTIAddress()
+    if (address !== null) {
+      return web3.toChecksumAddress(address)
+    } else {
+      return ''
+    }
   },
   eth_balance () {
     const connected = Session.get('eth_isConnected')
