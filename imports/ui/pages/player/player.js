@@ -148,7 +148,6 @@ Template.player.onDestroyed(function () {
 Template.player.helpers({
   currentVideo () {
     const videoId = FlowRouter.getParam('_id')
-    // console.log(Videos.findOne({ _id: videoId }))
     Template.instance().currentVideo.set(Videos.findOne({ _id: videoId }))
     renderVideoElement(Template.instance())
   },
@@ -168,12 +167,9 @@ Template.player.helpers({
   totalTime () {
     return Template.instance().playerState.get('totalTime')
   },
-  video () {
-    return Template.instance().currentVideo.get()
-  },
-  hasPrice () {
-    return Template.instance().currentVideo.get().price && Template.instance().currentVideo.get().price > 0
-  },
+  // hasPrice () {
+  //   return Template.instance().currentVideo.get().price && Template.instance().currentVideo.get().price > 0
+  // },
   hideControls () {
     return Template.instance().playerState.get('hideControls') ? 'toggleFade' : ''
   },
@@ -185,20 +181,23 @@ Template.player.helpers({
     const remainingSeconds = seconds % 60
     return sprintf('%02d:%02d', minutes, remainingSeconds)
   },
-  volumeClass () {
-    return Template.instance().playerState.get('showVolume') ? '' : 'closed'
+  loadedProgress () {
+    return Template.instance().playerState.get('loadedProgress')
   },
   playedProgress () {
     return Template.instance().playerState.get('playedProgress')
-  },
-  loadedProgress () {
-    return Template.instance().playerState.get('loadedProgress')
   },
   scrubberTranslate () {
     return Template.instance().playerState.get('scrubberTranslate')
   },
   status () {
     return Template.instance().playerState.get('status')
+  },
+  video () {
+    return Template.instance().currentVideo.get()
+  },
+  volumeClass () {
+    return Template.instance().playerState.get('showVolume') ? '' : 'closed'
   },
   volumeValue () {
     return Template.instance().playerState.get('volumeValue')
