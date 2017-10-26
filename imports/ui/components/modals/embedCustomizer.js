@@ -52,6 +52,22 @@ Template.modal_share_links.onCreated(function () {
 Template.modal_share_links.helpers({
   embedBaseUrl () {
     return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  },
+  facebook () {
+    var fbBaseUrl = 'https://www.facebook.com/sharer/sharer.php?u='
+    return fbBaseUrl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  },
+  twitter () {
+    var twitterBaseUrl = 'https://twitter.com/intent/tweet?text='
+    return twitterBaseUrl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  },
+  whatsapp () {
+    var whatsappBaseUrl = 'whatsapp://send?text='
+    return whatsappBaseUrl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  },
+  email () {
+    var emailBaseUrl = 'mailto:?&subject=Paratii&body='
+    return emailBaseUrl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
   }
 })
 
