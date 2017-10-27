@@ -1,18 +1,22 @@
 import './body.html'
 import '/imports/ui/components/modals/login.js'
+import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/regenerateKeystore.js'
 import { add0x } from '/imports/lib/utils.js'
 
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, createKeystore, deleteKeystore, getKeystore, getSeedFromKeystore } from '/imports/lib/ethereum/wallet.js'
 
+// TODO: reconsider the location of the next code - perhaps move it to start.js ?
 if (Meteor.isClient) {
   // const keystoreAnonymous = getKeystore('anonymous')
   // console.log(add0x(keystoreAnonymous.getAddresses()[0]))
   Accounts.onLogin(function (user) {
     // User is logged in
     // const keystores = keystoresCheck()
-    // get the user's keystore
     console.log('onLogin')
+    // if any modal is still open, we can safely close it now to make it possible to open new ones
+    Modal.hide('login')
+    // get the user's keystore
     const keystore = getKeystore()
 
     if (Session.get('signup')) {
@@ -35,34 +39,32 @@ if (Meteor.isClient) {
           })
         })
       } else {
-        console.log('non anonymous keystore found')
+        // TODO: do something here...
+        console.log('no anonymous keystore found')
       }
     } else {
       if (keystore === null) {
-        // the user has no keystore (yet)
+        // this is an existing user (we are not in the singup process) , but the user has no keystore
         const anonymousKeystore = getKeystore('anonymous')
         console.log('ANON')
         console.log(anonymousKeystore)
         if (anonymousKeystore !== null) {
-
-        } else {
-          console.log('!!!! rigenera keystore')
+          console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
+          console.log('Showing regenerateKeystore..')
+          Modal.hide('login')
+          // TODO: this is NOT showing
           Modal.show('regenerateKeystore')
+        } else {
+          // this is a strange exception in which the no keystore at all has been found
+          console.log('!!!! rigenera keystore')
+          console.log('Showing regenerateKeystore..')
+          // Modal.hide()
+          Modal.show('regenerateKeystore', {}, )
         }
       } else {
         Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))
       }
     }
-    // Check if there is an anonymous keystore
-    // if (keystores.anonymous > 0) {
-    //   const keystoreAnonymous = getKeystore('anonymous')
-    //   Session.set('anonymousAddress', add0x(keystoreAnonymous.getAddresses()[0]))
-    //   console.log('keystore')
-    //   console.log(keystore)
-    //   console.log(add0x(keystore.getAddresses()[0]))
-    //   console.log('keystore anonymous')
-    //   console.log(add0x(keystoreAnonymous.getAddresses()[0]))
-    // }
   })
 
   Accounts.onLogout(function (user) {

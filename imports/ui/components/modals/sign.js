@@ -67,7 +67,6 @@ function formValidation (type) {
 }
 
 // Sign
-
 Template.modal_sign.helpers({
   isSignIn: (type) => type === 'sign_in',
   isSignUp: (type) => type === 'sign_up',
@@ -82,7 +81,6 @@ Template.modal_sign.onCreated(function () {
 })
 
 // Sign in
-
 Template.modal_sign_in.helpers({
   passwordType: () => Session.get('passwordType')
 })
@@ -109,7 +107,7 @@ Template.modal_sign_in.events({
           $email.addClass('error')
           $password.addClass('error')
         } else {
-          Modal.hide('modal_sign')
+          Modal.hide()
         }
       })
     }
@@ -140,6 +138,7 @@ Template.modal_sign_up.events({
     event.preventDefault()
     if (formValidation('sign-up')) {
       Accounts.createUser(userData, (err) => {
+      // Meteor.call('ATCreateUserServer', userData, (err) => {
         if (err) {
           if (err.reason === 'Need to set a username or email') {
             $email.addClass('error')

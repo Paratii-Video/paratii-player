@@ -107,7 +107,7 @@ Template.navigation.events({
   'click #nav-profile' (event) {
     if (!Meteor.user()) {
       event.preventDefault()
-      Modal.show('modal_sign', {
+      Modal.show('login', {
         type: 'sign_in'
       })
     }

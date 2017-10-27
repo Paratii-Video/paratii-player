@@ -35,7 +35,6 @@ if (Meteor.isServer) {
   Meteor.methods({
     'users.create' (options) {
       check(options, Object)
-      // here new wallet is create using user password for keystore encryption
       return Accounts.createUser(options)
     },
     'users.update' (data) {

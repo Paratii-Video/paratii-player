@@ -21,6 +21,23 @@ export function login (browser) {
   browser.click('#at-btn')
 }
 
+export function assertUserIsLoggedIn (browser ) {
+  // assert that the user is logged in
+  let userId =  browser.execute(function() {
+    return Meteor.userId()
+  }).value
+  assert.isOk(userId)
+}
+
+export function assertUserIsNotLoggedIn (browser ) {
+  // assert that the user is logged in
+  let userId =  browser.execute(function() {
+    return Meteor.userId()
+  }).value
+  assert.isNotOk(userId)
+}
+
+
 export function getSomeETH (amount) {
   const helpers = require('./imports/lib/ethereum/helpers.js')
   const users = require('./imports/api/users.js')

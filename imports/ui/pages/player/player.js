@@ -325,7 +325,7 @@ Template.player.events({
         videoid: Template.instance().currentVideo.get()._id // Video title
       })
     } else {
-      Modal.show('modal_sign', {
+      Modal.show('login', {
         type: 'sign_in'
       })
     }
