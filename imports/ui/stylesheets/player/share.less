@@ -5,9 +5,18 @@
 
   display: flex;
   flex-direction: column;
-  right: 30px;
+  left: 1000px;
   transition: opacity .2s;
   z-index: @zindex-player-share;
+
+  .query-tablet({
+    left: auto;
+    right: 35px;
+  });
+
+  .query-mini({
+    right: 29px;
+  });
 
   .playing & {
     opacity: 0;
@@ -15,14 +24,46 @@
   }
 
   &-button {
-    height: 20px;
-    margin: 0 0 5px;
+    &:extend(.hover-opacity all);
+
+    margin: 0 0 12px;
     width: 20px;
 
     &-icon {
       &:extend(.full-block all);
 
       fill: @color-white;
+
+      .active & {
+        fill: @color-purple;
+      }
+    }
+
+    &-add {
+      height: 15px;
+    }
+
+    &-share {
+      height: 17px;
+    }
+
+    &-later {
+      height: 20px;
+
+      &-watch {
+        .active & {
+          display: none;
+        }
+        
+      }
+
+      &-add {
+        display: none;
+
+        .active & {
+          display: block;
+        }
+      }
     }
   }
 }
