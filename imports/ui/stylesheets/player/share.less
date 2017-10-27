@@ -1,0 +1,28 @@
+// Player Info
+
+.player-share {
+  &:extend(.pos-a-vm all);
+
+  display: flex;
+  flex-direction: column;
+  right: 30px;
+  transition: opacity .2s;
+  z-index: @zindex-player-share;
+
+  .playing & {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &-button {
+    height: 20px;
+    margin: 0 0 5px;
+    width: 20px;
+
+    &-icon {
+      &:extend(.full-block all);
+
+      fill: @color-white;
+    }
+  }
+}
