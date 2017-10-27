@@ -2,7 +2,6 @@ import { createUser, resetDb, createUserAndLogin, assertUserIsLoggedIn, assertUs
 import { web3 } from '../imports/lib/ethereum/web3.js'
 import { assert } from 'chai'
 
-
 describe('account workflow', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
@@ -75,7 +74,6 @@ describe('account workflow', function () {
     // submit the form
     browser.$('#at-btn').click()
 
-
     // now a modal should be opened with the seed
     // (we wait a long time, because the wallet needs to be generated)
     browser.waitForVisible('#seed', 10000)
@@ -87,8 +85,6 @@ describe('account workflow', function () {
     assertUserIsLoggedIn(browser)
   })
 
-
-
   it('login as an existing user on the profile page (legacy test)', function () {
     // XXX: this test can be safely removed once the login form is removed from the profile page
     // TODO: when visiting he profile page if not logged in, the login dialog should be shown
@@ -96,7 +92,6 @@ describe('account workflow', function () {
 
     // create a meteor user
     server.execute(createUser)
-
 
     // log in as the created user
     browser.url('http://localhost:3000/profile')
@@ -106,7 +101,6 @@ describe('account workflow', function () {
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
       .setValue('[name="at-field-password"]', 'password')
     browser.click('#at-btn')
-
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForExist('#walletModal', 5000)
@@ -138,7 +132,6 @@ describe('account workflow', function () {
       .setValue('[name="at-field-password"]', 'password')
     browser.click('#at-btn')
 
-
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     // TODO: the modal does NOT open: why???
     // browser.waitForExist('#walletModal', 5000)
@@ -154,7 +147,6 @@ describe('account workflow', function () {
   })
 
   it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase [TODO: FIX] @watch', function () {
-
     browser.execute(nukeLocalStorage)
 
     // create a meteor user
@@ -187,7 +179,6 @@ describe('account workflow', function () {
     // the user is now logged in
     browser.pause(1000)
     assertUserIsLoggedIn(browser)
-
   })
   it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase (legacy)', function () {
     // legacy test with login using profile page, can be safely removed

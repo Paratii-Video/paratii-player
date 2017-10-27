@@ -59,7 +59,7 @@ if (Meteor.isClient) {
           console.log('!!!! rigenera keystore')
           console.log('Showing regenerateKeystore..')
           // Modal.hide()
-          Modal.show('regenerateKeystore', {}, )
+          Modal.show('regenerateKeystore', {})
         }
       } else {
         Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))
