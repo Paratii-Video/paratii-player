@@ -13,6 +13,8 @@ import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 
+import '/imports/ui/components/modals/modals.js'
+
 import './player.html'
 
 let controlsHandler
@@ -325,8 +327,11 @@ Template.player.events({
         videoid: Template.instance().currentVideo.get()._id // Video title
       })
     } else {
-      Modal.show('modal_sign', {
-        type: 'sign_in'
+      Modal.show('main_modal', {
+        modal: 'modal_sign',
+        data: {
+          type: 'modal_sign_in'
+        }
       })
     }
   },
