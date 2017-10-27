@@ -71,7 +71,7 @@
   pointer-events: none;
   position: relative;
 
-  .show-content & {
+  &.show-content {
     pointer-events: initial;
   }
 }
@@ -204,11 +204,13 @@
     &-close {
       &:extend(.hover-opacity all);
 
+      height: 15px;
       position: absolute;
       right: 20px;
       top: 23px;
       transform: scale(0);
       transition: opacity .3s, transform .35s @ease-smooth;
+      width: 15px;
       z-index: 2;
 
       .fade.in & {
@@ -221,9 +223,9 @@
       }
 
       &-svg {
-        display: block;
+        &:extend(.full-block all);
+
         fill: @color-grey-light;
-        width: 15px;
       }
     }
 
@@ -296,14 +298,26 @@
     position: absolute;
     width: 100%;
 
-    &-loading {
-      display: none;
-      font-weight: 500;
-      text-transform: uppercase;
+    .waiting & {
+      .button-text {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
 
-      .loading & {
+    &-waiting {
+      &:extend(.pos-a-vm all);
+
+      color: @color-grey-light;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      right: 0;
+      text-transform: uppercase;
+      transition: opacity .2s;
+
+      .waiting & {
         animation: blink .5s linear infinite;
-        display: block;
       }
     }
   }

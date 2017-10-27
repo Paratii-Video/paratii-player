@@ -12,6 +12,9 @@ import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
+import '/imports/ui/components/modals/regenerateKeystore.js'
+
+import '/imports/ui/components/modals/modals.js'
 
 import './player.html'
 
@@ -315,18 +318,25 @@ const setLoadedProgress = (instance) => {
 Template.player.events({
   'click #unlock-video' (event) {
     if (Meteor.user()) {
-      Modal.show('unlockVideo', {
-        type: 'PTI',
-        label: 'Unlock this video',
-        action: 'unlock_video',
-        price: event.target.dataset.price, // Video Price
-        address: event.target.dataset.address, // Creator PTI address
-        videotitle: event.target.dataset.title, // Video title
-        videoid: Template.instance().currentVideo.get()._id // Video title
+      Modal.show('main_modal', {
+        modal: 'unlockVideo',
+        data: {
+          type: 'PTI',
+          label: 'Unlock this video',
+          action: 'unlock_video',
+          price: event.target.dataset.price, // Video Price
+          address: event.target.dataset.address, // Creator PTI address
+          videotitle: event.target.dataset.title, // Video title
+          videoid: Template.instance().currentVideo.get()._id // Video title
+        }
       })
     } else {
-      Modal.show('modal_sign', {
-        type: 'sign_in'
+      // Modal.show('main_modal', { modal: 'regenerateKeystore' })
+      Modal.show('main_modal', {
+        modal: 'modal_sign',
+        data: {
+          type: 'modal_sign_in'
+        }
       })
     }
   },
@@ -490,10 +500,13 @@ Template.player.events({
   },
   'click #embed' (event, instance) {
     const videoId = Template.instance().currentVideo.get()._id
-    Modal.show('modal_share_video', {
-      type: 'links',
-      videoId: videoId,
-      embed: window.top !== window.self
+    Modal.show('main_modal', {
+      modal: 'modal_share_video',
+      data: {
+        type: 'modal_share_links',
+        videoId: videoId,
+        embed: window.top !== window.self
+      }
     })
   },
   'click .player-infos-button-description' (event, instance) {
