@@ -1,110 +1,103 @@
 <template name="modal_share_video">
-  <div class="modal fade main-modal main-modal-share {{ modalType }}">
-    <div class="main-modal-wrapper">
-      <button class="main-modal-button-close" data-dismiss="modal" data-fullscreen="{{ fullscreen }}">
-        <svg class="main-modal-button-close-svg" viewBox="609.5 451.9 15.5 15.5">
-          <path id="X" class="cls-1" d="M15.5,2.068,13.432,0,7.754,5.685,2.068,0,0,2.068,5.685,7.754,0,13.432,2.068,15.5,7.754,9.822,13.432,15.5,15.5,13.432,9.822,7.754Z" transform="translate(609.5 451.9)"/>
-        </svg>
-      </button>
-      <div class="main-modal-content">
-        {{#if isLinks modalType}}
-          {{> modal_share_links}}
-        {{/if}}
-        {{#if isEmbed modalType}}
-          {{> modal_share_embed}}
-        {{/if}}
-      </div>
-    </div>
-  </div>
+  {{#if isLinks modalType}}
+    {{> modal_share_links }}
+  {{/if}}
+  {{#if isEmbed modalType}}
+    {{> modal_share_embed }}
+  {{/if}}
 </template>
 
 
 <template name="modal_share_links">
-  <h3 class="main-modal-title main-modal-anim-1">Share this video</h3>
-  <input class="input-copy-code main-form-input main-modal-anim-2" onclick="this.focus();this.select()" readonly="readonly" value="{{ embedBaseUrl }}" />
+  <div class="main-modal-content main-modal-share">
+    <h3 class="main-modal-title main-modal-anim-1">Share this video</h3>
+    <input class="input-copy-code main-form-input main-modal-anim-2" onclick="this.focus();this.select()" readonly="readonly" value="{{ embedBaseUrl }}" />
 
-  <ul class="main-modal-share-list main-modal-anim-3">
-    <li class="main-modal-share-item">
-      <a class="main-modal-share-link" href="/">
-        <svg class="main-modal-share-link-svg">
-          <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-facebook"></use>
-        </svg> 
-      </a>
-    </li>
-    <li class="main-modal-share-item">
-      <a class="main-modal-share-link" href="/">
-        <svg class="main-modal-share-link-svg">
-          <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-twitter"></use>
-        </svg> 
-      </a>
-    </li>
-    <li class="main-modal-share-item">
-      <a class="main-modal-share-link" href="/">
-        <svg class="main-modal-share-link-svg">
-          <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-whatsapp"></use>
-        </svg> 
-      </a>
-    </li>
-    <li class="main-modal-share-item">
-      <a class="main-modal-share-link" href="/">
-        <svg class="main-modal-share-link-svg">
-          <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-email"></use>
-        </svg> 
-      </a>
-    </li>
-  </ul>
-  <div class="main-modal-footer main-modal-anim-4">
-    <pre id="to_clip" class="visually-hidden">{{ embedBaseUrl }}</pre>
-    <button class="button-text button-text--grey-light gotoembed">Get embed</button>
-    <button id="copy_url"  class="button-text" data-clipboard-target="#to_clip">Copy link</button>
+    <ul class="main-modal-share-list main-modal-anim-3">
+      <li class="main-modal-share-item">
+        <a class="main-modal-share-link" href="/">
+          <svg class="main-modal-share-link-svg">
+            <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-facebook"></use>
+          </svg> 
+        </a>
+      </li>
+      <li class="main-modal-share-item">
+        <a class="main-modal-share-link" href="/">
+          <svg class="main-modal-share-link-svg">
+            <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-twitter"></use>
+          </svg> 
+        </a>
+      </li>
+      <li class="main-modal-share-item">
+        <a class="main-modal-share-link" href="/">
+          <svg class="main-modal-share-link-svg">
+            <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-whatsapp"></use>
+          </svg> 
+        </a>
+      </li>
+      <li class="main-modal-share-item">
+        <a class="main-modal-share-link" href="/">
+          <svg class="main-modal-share-link-svg">
+            <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-email"></use>
+          </svg> 
+        </a>
+      </li>
+    </ul>
+    <div class="main-modal-footer main-modal-anim-4">
+      <pre id="to_clip" class="visually-hidden">{{ embedBaseUrl }}</pre>
+      <button class="button-text button-text--grey-light gotoembed">Get embed</button>
+      <button id="copy_url"  class="button-text" data-clipboard-target="#to_clip">Copy link</button>
+    </div>
   </div>
 </template>
 
 <template name="modal_share_embed">
-  <h3 class="main-modal-title main-modal-anim-1">Embed</h3>
-  <div class="main-modal-share-option main-modal-anim-2">
-    <p class="main-modal-subtitle">Capabilities:</p>
-    <div class="main-modal-share-options">
-      <label class="main-form-label main-form-label-checkbox fullscreen">
-        Fullscreen
-        <input class="main-form-checkbox" type="checkbox" name="fullscreen">
-        <span class="main-form-checkbox-checked"></span>
-      </label>
-      <label class="main-form-label main-form-label-checkbox autoplay">
-        Autoplay
-        <input class="main-form-checkbox" type="checkbox" name="autoplay">
-        <span class="main-form-checkbox-checked"></span>
-      </label>
-      <label class="main-form-label main-form-label-checkbox loop">
-        Loop
-        <input class="main-form-checkbox" type="checkbox" name="loop">
-        <span class="main-form-checkbox-checked"></span>
-      </label>
-      <label class="main-form-label main-form-label-checkbox playsinline">
-        Playsinline (iOS)
-        <input class="main-form-checkbox" type="checkbox" name="playsinline">
-        <span class="main-form-checkbox-checked"></span>
-      </label>
-    </div>
-  </div>
-  <div class="main-modal-share-option main-modal-anim-3">
-    <p class="main-modal-subtitle">Sizes:</p>
-    <div class="main-modal-share-options">
-      {{#each embedSizes}}
-        <label class="main-form-label main-form-label-checkbox playsinline">
-          {{ type }}
-          <input class="main-form-checkbox sizes" type="radio" name="sizes" value="{{ @index }}" checked=
-          {{isChecked @index}}>
+  <div class="main-modal-content main-modal-share">
+    <h3 class="main-modal-title main-modal-anim-1">Embed</h3>
+    <div class="main-modal-share-option main-modal-anim-2">
+      <p class="main-modal-subtitle">Capabilities:</p>
+      <div class="main-modal-share-options">
+        <label class="main-form-label main-form-label-checkbox fullscreen">
+          Fullscreen
+          <input class="main-form-checkbox" type="checkbox" name="fullscreen">
           <span class="main-form-checkbox-checked"></span>
         </label>
-      {{/each}}
+        <label class="main-form-label main-form-label-checkbox autoplay">
+          Autoplay
+          <input class="main-form-checkbox" type="checkbox" name="autoplay">
+          <span class="main-form-checkbox-checked"></span>
+        </label>
+        <label class="main-form-label main-form-label-checkbox loop">
+          Loop
+          <input class="main-form-checkbox" type="checkbox" name="loop">
+          <span class="main-form-checkbox-checked"></span>
+        </label>
+        <label class="main-form-label main-form-label-checkbox playsinline">
+          Playsinline (iOS)
+          <input class="main-form-checkbox" type="checkbox" name="playsinline">
+          <span class="main-form-checkbox-checked"></span>
+        </label>
+      </div>
     </div>
-  </div>
-  <input class="input-copy-code main-form-input main-modal-anim-4" onclick="this.focus();this.select()" readonly="readonly" value="{{ code }}" />
-  <pre id="to_clip" class="visually-hidden">{{ code }}</pre>
+    <div class="main-modal-share-option main-modal-anim-3">
+      <p class="main-modal-subtitle">Sizes:</p>
+      <div class="main-modal-share-options">
+        {{#each embedSizes}}
+          <label class="main-form-label main-form-label-checkbox playsinline">
+            {{ type }}
+            <input class="main-form-checkbox sizes" type="radio" name="sizes" value="{{ @index }}" checked=
+            {{isChecked @index}}>
+            <span class="main-form-checkbox-checked"></span>
+          </label>
+        {{/each}}
+      </div>
+    </div>
+    <input class="input-copy-code main-form-input main-modal-anim-4" onclick="this.focus();this.select()" readonly="readonly" value="{{ code }}" />
+    <pre id="to_clip" class="visually-hidden">{{ code }}</pre>
 
-  <div class="main-modal-footer main-modal-anim-5">
-    <button class="button-text button-text--grey-light gotolinks">Share video</button>
-    <button id="copy_embed_code"  class="button-text" data-clipboard-target="#to_clip">Copy code</button>
+    <div class="main-modal-footer main-modal-anim-5">
+      <button class="button-text button-text--grey-light gotolinks">Share video</button>
+      <button id="copy_embed_code"  class="button-text" data-clipboard-target="#to_clip">Copy code</button>
+    </div>
   </div>
 </template>

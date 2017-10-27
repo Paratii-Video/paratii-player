@@ -498,10 +498,13 @@ Template.player.events({
   },
   'click #embed' (event, instance) {
     const videoId = Template.instance().currentVideo.get()._id
-    Modal.show('modal_share_video', {
-      type: 'links',
-      videoId: videoId,
-      embed: window.top !== window.self
+    Modal.show('main_modal', {
+      modal: 'modal_share_video',
+      data: {
+        type: 'modal_share_links',
+        videoId: videoId,
+        embed: window.top !== window.self
+      }
     })
   },
   'click .player-infos-button-description' (event, instance) {
