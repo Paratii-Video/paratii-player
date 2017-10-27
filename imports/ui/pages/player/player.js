@@ -335,7 +335,7 @@ Template.player.events({
       Modal.show('main_modal', {
         modal: 'modal_sign',
         data: {
-          type: 'regenerateKeystore'
+          type: 'modal_sign_in'
         }
       })
     }
