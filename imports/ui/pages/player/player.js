@@ -317,14 +317,17 @@ const setLoadedProgress = (instance) => {
 Template.player.events({
   'click #unlock-video' (event) {
     if (Meteor.user()) {
-      Modal.show('unlockVideo', {
-        type: 'PTI',
-        label: 'Unlock this video',
-        action: 'unlock_video',
-        price: event.target.dataset.price, // Video Price
-        address: event.target.dataset.address, // Creator PTI address
-        videotitle: event.target.dataset.title, // Video title
-        videoid: Template.instance().currentVideo.get()._id // Video title
+      Modal.show('main_modal', {
+        modal: 'unlockVideo',
+        data: {
+          type: 'PTI',
+          label: 'Unlock this video',
+          action: 'unlock_video',
+          price: event.target.dataset.price, // Video Price
+          address: event.target.dataset.address, // Creator PTI address
+          videotitle: event.target.dataset.title, // Video title
+          videoid: Template.instance().currentVideo.get()._id // Video title
+        }
       })
     } else {
       Modal.show('main_modal', {
