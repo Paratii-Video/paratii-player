@@ -88,6 +88,7 @@ function setHead () {
     next()
   })
 }
+
 function twitterCardHeadPlayer (params, req, res, next) {
   var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
   var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '') + '/'
@@ -105,7 +106,7 @@ function twitterCardHeadPlayer (params, req, res, next) {
   req.dynamicHead += '<meta property="twitter:player:width" content="570" />'
   req.dynamicHead += '<meta property="twitter:player:height" content="320" />'
   if (thumbUrl) {
-    req.dynamicHead += '<meta property="twitter:image" content="' + rootUrl + thumbUrl + '" />'
+    req.dynamicHead += '<meta property="twitter:image" content="https://www.fillmurray.com/527/320" />'
   }
   req.dynamicHead += '<meta property="twitter:player:stream" content="' + ipfsGateway + ipfsSource + '" />'
   req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '?type=mini" />'
@@ -123,16 +124,17 @@ function facebookOGHeadPlayer (params, req, res, next) {
   var source = video.src
   var ipfsSource = source.split('/')
   ipfsSource = ipfsSource[ipfsSource.length - 1]
-  req.dynamicHead += '<meta property="og:video" content="' + ipfsGateway + ipfsSource + '" />'
+
+  req.dynamicHead += '<meta property="og:video:url" content="' + ipfsGateway + ipfsSource + '" />'
   req.dynamicHead += '<meta property="og:video:secure_url" content="' + ipfsGateway + ipfsSource + '" />'
-  req.dynamicHead += '<meta property="og:video:type" content="text/html">'
-  req.dynamicHead += '<meta property="og:video:width" content="527" />'
-  req.dynamicHead += '<meta property="og:video:height" content="320" />'
+  req.dynamicHead += '<meta property="og:video:type" content="video/mp4">'
+  req.dynamicHead += '<meta property="og:video:width" content="1920" />'
+  req.dynamicHead += '<meta property="og:video:height" content="1080" />'
   req.dynamicHead += '<meta property="og:type" content="video.other" />'
   req.dynamicHead += '<meta property="og:url" content="' + rootUrl + '/play/' + videoId + '" />'
   req.dynamicHead += '<meta property="og:title" content="' + videoTitle + 'y" />'
   if (thumbUrl) {
-    req.dynamicHead += '<meta property="og:image" content="' + rootUrl + thumbUrl + '" />'
+    req.dynamicHead += '<meta property="og:image" content="https://www.fillmurray.com/527/320" />'
   }
 
   if (videoDescription) {
