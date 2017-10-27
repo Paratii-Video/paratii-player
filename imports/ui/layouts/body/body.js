@@ -15,7 +15,6 @@ if (Meteor.isClient) {
     // const keystores = keystoresCheck()
     console.log('onLogin')
     // if any modal is still open, we can safely close it now to make it possible to open new ones
-    Modal.hide('login')
     // get the user's keystore
     const keystore = getKeystore()
 
@@ -50,16 +49,12 @@ if (Meteor.isClient) {
         console.log(anonymousKeystore)
         if (anonymousKeystore !== null) {
           console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
-          console.log('Showing regenerateKeystore..')
-          Modal.hide('login')
+          // Modal.hide('login')
           // TODO: this is NOT showing
-          Modal.show('regenerateKeystore')
         } else {
           // this is a strange exception in which the no keystore at all has been found
           console.log('!!!! rigenera keystore')
           console.log('Showing regenerateKeystore..')
-          // Modal.hide()
-          Modal.show('regenerateKeystore', {})
         }
       } else {
         Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))

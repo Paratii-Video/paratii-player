@@ -11,6 +11,7 @@ describe('account workflow', function () {
 
   afterEach(function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
+    server.execute(resetDb)
   })
 
   it('register a new user [legacy, siging up with profile page]', function () {
@@ -115,6 +116,8 @@ describe('account workflow', function () {
 
   it('login as an existing user on a device with no keystore - use existing anonymous keystore [TODO: finish this test] @watch', function () {
     browser.execute(nukeLocalStorage)
+    server.execute(resetDb)
+    browser.pause(1000)
 
     // create a meteor user
     server.execute(createUser)
@@ -132,22 +135,23 @@ describe('account workflow', function () {
       .setValue('[name="at-field-password"]', 'password')
     browser.click('#at-btn')
 
-    // we should now see a modal presenting a choice to restore the wallet or use a new one
-    // TODO: the modal does NOT open: why???
-    // browser.waitForExist('#walletModal', 5000)
-    // browser.pause(1000)
-    // browser.waitForEnabled('#create-wallet', 5000)
-    // browser.click('#create-wallet')
-
-    // TODO: check if wallet is created (is not implemented yet)
-
     // the user is now logged in
     browser.pause(1000)
     assertUserIsLoggedIn(browser)
+
+    // we should now see a modal presenting a choice to restore the wallet or use a new one
+    // TODO: the modal does NOT open: why???
+    browser.waitForExist('#walletModal', 10000)
+    browser.pause(1000)
+    browser.waitForEnabled('#create-wallet', 5000)
+    browser.click('#create-wallet')
+    // TODO: check if wallet is created (is not implemented yet)
   })
 
   it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase [TODO: FIX] @watch', function () {
     browser.execute(nukeLocalStorage)
+    server.execute(resetDb)
+    browser.pause(1000)
 
     // create a meteor user
     server.execute(createUser)

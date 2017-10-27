@@ -6,11 +6,12 @@ Template.regenerateKeystore.events({
     Modal.hide('regenerateKeystore')
     console.log('open restorekystore')
     // TODO: make this work
-    Modal.show('restoreKeystore', {})
+    // Modal.show('restoreKeystore', {})
+    Session.set('modalTemplate', 'restoreKeystore')
   },
   'click #create-wallet' () {
     // TODO
     console.log('TODO: merge the anonymous wallet to the new user')
-    Modal.hide('regenerateKeystore')
+    Modal.hide('modalTemplate')
   }
 })
