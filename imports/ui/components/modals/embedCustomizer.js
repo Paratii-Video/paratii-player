@@ -53,20 +53,24 @@ Template.modal_share_links.helpers({
     return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
   },
   facebook () {
-    var fbBaseUrl = 'https://www.facebook.com/sharer/sharer.php?u='
-    return fbBaseUrl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    var baseurl = 'https://www.facebook.com/sharer/sharer.php?u='
+    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
   },
   twitter () {
-    var twitterBaseUrl = 'https://twitter.com/intent/tweet?text='
-    return twitterBaseUrl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    var baseurl = 'https://twitter.com/intent/tweet?text='
+    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
   },
   whatsapp () {
-    var whatsappBaseUrl = 'whatsapp://send?text='
-    return whatsappBaseUrl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    var baseurl = 'whatsapp://send?text='
+    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  },
+  telegram () {
+    var baseurl = 'https://t.me/share/url?url='
+    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
   },
   email () {
-    var emailBaseUrl = 'mailto:?&subject=Paratii&body='
-    return emailBaseUrl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    var baseurl = 'mailto:?&subject=Paratii&body='
+    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
   }
 })
 
