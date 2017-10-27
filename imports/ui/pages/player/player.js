@@ -12,6 +12,7 @@ import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
+import '/imports/ui/components/modals/regenerateKeystore.js'
 
 import '/imports/ui/components/modals/modals.js'
 
@@ -330,10 +331,11 @@ Template.player.events({
         }
       })
     } else {
+      // Modal.show('main_modal', { modal: 'regenerateKeystore' })
       Modal.show('main_modal', {
         modal: 'modal_sign',
         data: {
-          type: 'modal_sign_in'
+          type: 'regenerateKeystore'
         }
       })
     }

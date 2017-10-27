@@ -4,7 +4,7 @@ import './regenerateKeystore.html'
 
 import '/imports/ui/components/modals/restoreKeystore.js'
 
-Template.regenerateKeystore.onRendered(() => Meteor.setTimeout(() => $('div.main-modal').addClass('show-content'), 860))
+Template.regenerateKeystore.onRendered(() => Meteor.setTimeout(() => $('div.main-modal-keystore').addClass('show-content'), 860))
 
 Template.regenerateKeystore.events({
   'click #restore-keystore' () {
