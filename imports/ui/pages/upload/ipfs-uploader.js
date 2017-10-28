@@ -98,11 +98,12 @@ function addToIPFS (files) {
           const file = res[0]
           console.log('Adding %s finished', file.path)
 
-          statusEl.innerHTML += `Added ${file.path} as ${file.hash} ` + '<br>'
+          statusEl.innerHTML = `Added ${file.path} as ${file.hash} ` + '<br>'
           // Trigger paratii transcoder signal
 
           let msg = paratiiIPFS.protocol.createCommand('transcode', {hash: file.hash, author: paratiiIPFS.id.id})
           window.ipfs.swarm.connect('/dns4/bootstrap.paratii.video/tcp/443/wss/ipfs/QmeUmy6UtuEs91TH6bKnfuU1Yvp63CkZJWm624MjBEBazW', (err, success) => {
+          // window.ipfs.swarm.connect('/ip4/127.0.0.1/tcp/4003/ws/ipfs/Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS', (err, success) => {
             if (err) throw err
             window.ipfs.swarm.peers((err, peers) => {
               console.log('peers: ', peers)
@@ -156,6 +157,18 @@ function addToIPFS (files) {
             if (err) throw err
             console.log('[upload] Video Uploaded: ', videoId)
             statusEl.innerHTML += '\n Video Uploaded go to <b><a href="/play/' + videoId + '">/play/' + videoId + '</a></b>\n'
+            let screenshots = result.screenshots
+            if (!screenshots) {
+              console.error('no screenshots generated')
+              return
+            }
+            statusEl.innerHTML += '<h5>screenshots</h5><ul>'
+            for (let i = 0; i < screenshots.length; i++) {
+              statusEl.innerHTML += '<li><a href="https://gateway.paratii.video/ipfs/' + result.master.hash + '/' + screenshots[i] + '">'
+              statusEl.innerHTML += '<img src="https://gateway.paratii.video/ipfs/' + result.master.hash + '/' + screenshots[i] + '"></a></li>'
+            }
+
+            statusEl.innerHTML += '</ul>'
           })
       }
     })
