@@ -70,6 +70,7 @@ function saveVideo (videoObject, cb) {
       if (err) throw err
       console.log('[upload] Video Uploaded: ', videoId)
       formContainer.innerHTML += '\n <br>Video Uploaded go to <b><a href="/play/' + videoId + '">/play/' + videoId + '</a></b>\n'
+
     })
 }
 
