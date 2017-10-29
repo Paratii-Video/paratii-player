@@ -4,7 +4,7 @@ import paratiiIPFS from '../../../lib/ipfs/index.js'
 
 const pull = require('pull-stream')
 const pullFilereader = require('pull-filereader')
-var dropAreaEl, statusEl, titleEl
+var dropAreaEl, statusEl, titleEl, formContainer
 
 document.addEventListener('DOMContentLoaded', (e) => {
   console.log('DOMContentLoaded', document)
@@ -27,6 +27,52 @@ document.addEventListener('DOMContentLoaded', (e) => {
     })
   }
 })
+
+function renderForm (formEl, videoObject, cb) {
+  // formEl.innerHTML = '<form class="upload-form" method="POST" action="#">'
+  formEl.innerHTML += 'Video Title:'
+  formEl.innerHTML += '<input name="title" id="input-title" type="text" class="form-control textbox">'
+  formEl.innerHTML += '<h5>screenshots</h5><ul>'
+
+  let screenshots = videoObject.screenshots
+  for (let i = 0; i < screenshots.length; i++) {
+    formEl.innerHTML += '<li><input type="radio" name="screenshot" value="https://gateway.paratii.video/ipfs/' + videoObject.master.hash + '/' + screenshots[i] + '">'
+    formEl.innerHTML += '<img width="240" src="https://gateway.paratii.video/ipfs/' + videoObject.master.hash + '/' + screenshots[i] + '"></li>'
+  }
+
+  formEl.innerHTML += '</ul>'
+  formEl.innerHTML += '<br><input class="btn btn-default" type="submit" value="submit">'
+
+  formEl.addEventListener('submit', (ev) => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    console.log(formEl.querySelector('input[type="radio"]:checked').value)
+    console.log('ev target: ', ev)
+    saveVideo(videoObject)
+  })
+}
+
+function saveVideo (videoObject, cb) {
+  titleEl = document.querySelector('#input-title')
+  console.log('titleEl: ', titleEl)
+
+  Meteor.call('videos.create', {
+    id: String(Math.random()).split('.')[1],
+    title: titleEl.value,
+    price: 0.0,
+    thumb: formContainer.querySelector('input[type="radio"]:checked').value,
+    src: '/ipfs/' + videoObject.master.hash,
+    mimetype: 'video/mp4',
+    stats: {
+      likes: 0,
+      dislikes: 0
+    }}, (err, videoId) => {
+      if (err) throw err
+      console.log('[upload] Video Uploaded: ', videoId)
+      formContainer.innerHTML += '\n <br>Video Uploaded go to <b><a href="/play/' + videoId + '">/play/' + videoId + '</a></b>\n'
+
+    })
+}
 
 function dragenter (ev) {
   statusEl = document.querySelector('.statusContainer')
@@ -127,7 +173,7 @@ function addToIPFS (files) {
         }
         if (files && files.length) {
           statusEl.innerHTML += `All Done!\n`
-          statusEl.innerHTML += `Don't Close this window. signaling transcoder...\n`
+          statusEl.innerHTML += `Don't Close this window. signaling transcoder...\n<br>`
         }
       })
     )
@@ -141,35 +187,9 @@ function addToIPFS (files) {
         console.log('args: ', args)
         console.log('result: ', result)
         statusEl.innerHTML += `Video HLS link: /ipfs/${result.master.hash}\n`
+        formContainer = document.querySelector('.upload-form')
 
-        titleEl = document.querySelector('#input-title')
-        console.log('titleEl: ', titleEl)
-        Meteor.call('videos.create', {
-          id: String(Math.random()).split('.')[1],
-          title: titleEl.value,
-          price: 0.0,
-          src: '/ipfs/' + result.master.hash,
-          mimetype: 'video/mp4',
-          stats: {
-            likes: 0,
-            dislikes: 0
-          }}, (err, videoId) => {
-            if (err) throw err
-            console.log('[upload] Video Uploaded: ', videoId)
-            statusEl.innerHTML += '\n Video Uploaded go to <b><a href="/play/' + videoId + '">/play/' + videoId + '</a></b>\n'
-            let screenshots = result.screenshots
-            if (!screenshots) {
-              console.error('no screenshots generated')
-              return
-            }
-            statusEl.innerHTML += '<h5>screenshots</h5><ul>'
-            for (let i = 0; i < screenshots.length; i++) {
-              statusEl.innerHTML += '<li><a href="https://gateway.paratii.video/ipfs/' + result.master.hash + '/' + screenshots[i] + '">'
-              statusEl.innerHTML += '<img src="https://gateway.paratii.video/ipfs/' + result.master.hash + '/' + screenshots[i] + '"></a></li>'
-            }
-
-            statusEl.innerHTML += '</ul>'
-          })
+        renderForm(formContainer, result)
       }
     })
   })
