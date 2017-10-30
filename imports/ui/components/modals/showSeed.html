@@ -1,60 +1,33 @@
 <template name="showSeed">
-
-  <div class="modal fade" id="showSeedModal">
-    <div class="modal-dialog">
-      <div class="modal-content" id="show-seed">
-        <div class="modal-header">
-          <h4 class="modal-title">The seed of your wallet</h4>
+  <div class="main-modal-content main-modal-showseed">
+    <h3 class="main-modal-title main-modal-anim-1">The seed of your wallet</h3>
+    <form id="form-show-seed" class="main-modal-form">
+      {{#if seed}}
+        <p class="main-modal-text main-modal-anim-2">
+          <span class="main-modal-showseed-important">
+            Please write these 12 words on a piece of paper and store it somewhere safe
+          </span>
+          (their order is important). This seed will allow you to recover your wallet.
+        </p>
+        <div class="main-modal-showseed-mnemonic main-modal-anim-2">
+          <tt>{{seed}}</tt>
         </div>
-        <form id="form-show-seed">
-          <div class="modal-body">
-            <div class="flex-container-row">
-              <div class="flex-grow">
-                {{#if seed}}
-                  <p>
-                    Please save these 12 words on somewhere safe (we recommend writting it down).
-                    <br />
-                    Without this seed you cannot recover your wallet and
-                    will result in <b>loss of all of your funds</b>.
-                  </p>
-                  <p class="text-danger">
-                    <b>WARNING:</b> Never disclose your seed.
-                  </p>
-                  <div class="panel panel-default">
-                    <div class="panel-body highlight" id="seed"><tt>{{seed}}</tt></div>
-                  </div>
-                  <p>
-                    This is not a Ethereum address and is not on Ethereum blockchain.
-                  </p>
-                {{else}}
-                  <div class="{{#if errorMessage}}has-error{{/if}}">
-                    {{#if errorMessage}}
-                      <label class="control-label">{{errorMessage}}</label>
-                      {{/if}}
-                      <div class="input-group">
-                        <span class="input-group-addon" id="sizing-addon3">Password</span>
-                        <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
-                      </div>
-                    </div>
-                {{/if}}
+        <p class="main-modal-text main-modal-text--small main-modal-anim-2">
+          This is not a Ethereum address and is not on Ethereum blockchain.
+        </p>
+      {{else}}
+        <div class="main-form-label password main-modal-anim-3">
+          <input class="main-form-input main-form-input-password password {{#if  errorMessage}}error{{/if}}" name="user_password" type="{{ passwordType }}" placeholder="Enter your password" aria-describedby="sizing-addon1" />
+          <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
+        </div>
+      {{/if}}
 
-              </div>
-            </div>
-            <div class="update-account-confirm">
-              <!-- <button class="btn btn-default red-button" id="button-change-password">Change password</button>
-              <input type="submit" class="btn btn-default blue-button" value="Save changes"/> -->
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-eth-close">Close</button>
-            {{#unless seed}}
-              <button type="submit" id="btn-show-seed" class="btn btn-default blue-button"
-                data-loading-text="Getting seed...">Get seed</button>
-            {{/unless}}
-          </div>
-        </form>
+      <div class="main-modal-footer main-modal-anim-4">
+        {{#unless seed}}
+          <button type="submit" id="btn-show-seed" class="button-text main-modal-button confirm" data-loading-text="Getting seed...">Get seed</button>
+        {{/unless}}
       </div>
-    </div>
+    </form>
   </div>
 
 </template>
