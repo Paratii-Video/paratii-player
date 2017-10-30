@@ -316,9 +316,11 @@ describe('account workflow', function () {
 
   it('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
+
     browser.pause(2000)
     browser.url('http://localhost:3000/profile')
-    browser.waitForEnabled('#show-seed', 5000)
+
+    browser.waitForEnabled('#show-seed', 10000)
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'wrong')
@@ -327,13 +329,13 @@ describe('account workflow', function () {
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('restore the keystore', function () {
+  it('restore the keystore @watch', function () {
+    browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
-
-    browser.pause(2000)
+    browser.pause(5000)
     browser.url('http://localhost:3000/profile')
+    browser.waitForEnabled('#show-seed', 5000)
 
-    browser.waitForExist('#show-seed', 5000)
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
