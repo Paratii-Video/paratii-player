@@ -304,12 +304,11 @@ describe('account workflow', function () {
     browser.click('#btn-eth-close')
   })
 
-  it('sends ether dialog is visible', function () {
+  it('send ether dialog is visible', function () {
     createUserAndLogin(browser)
-    //
     browser.pause(2000)
     browser.url('http://localhost:3000/profile')
-    browser.waitForExist('#send-eth', 5000)
+    browser.waitForExist('#send-eth', 10000)
     browser.click('#send-eth')
     browser.waitForExist('.modal-dialog', 5000)
   })
@@ -322,6 +321,7 @@ describe('account workflow', function () {
 
     browser.waitForEnabled('#show-seed', 10000)
     browser.click('#show-seed')
+
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'wrong')
     browser.click('#btn-show-seed')
@@ -334,14 +334,14 @@ describe('account workflow', function () {
     createUserAndLogin(browser)
     browser.pause(2000)
     browser.url('http://localhost:3000/profile')
-    browser.waitForEnabled('#show-seed', 10000)
 
+    browser.waitForEnabled('#show-seed', 10000)
     browser.click('#show-seed')
-    browser.waitForVisible('[name="user_password"]')
+    browser.waitForEnabled('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#btn-show-seed')
     browser.pause(1000)
-    browser.waitForVisible('#seed')
+    browser.waitForEnabled('#seed')
     const seed = browser.getHTML('#seed tt', false)
     const publicAddress = browser.getHTML('#public_address', false)
     browser.click('#btn-eth-close')
@@ -369,6 +369,7 @@ describe('account workflow', function () {
     createUserAndLogin(browser)
     browser.pause(2000)
     browser.url('http://localhost:3000/profile')
+
     browser.waitForExist('#show-seed', 10000)
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]', 5000)
