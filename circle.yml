@@ -23,8 +23,8 @@ test:
     - google-chrome --version
   override:
     - sleep 10
-    - yarn run test-headless:
-        timeout: 1020
+    # - yarn run test-headless:
+    #     timeout: 1020
     - npm run dev-concurrently:
         background: true
     - sleep 60
