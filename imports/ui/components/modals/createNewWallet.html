@@ -1,0 +1,18 @@
+<template name="createNewWallet">
+  new wallet
+  <div id="createNewWallet">
+    <form id="form-create-wallet">
+      <div class="{{#if errorMessage}}has-error{{/if}}">
+        {{#if errorMessage}}
+        <label class="control-label">{{errorMessage}}</label>
+        {{/if}}
+        <div class="input-group">
+          <span class="input-group-addon" id="sizing-addon3">Password</span>
+          <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
+        </div>
+        <button type="submit" id="btn-create-wallet" class="btn btn-default blue-button"
+          data-loading-text="Creating...">Create</button>
+      </div>
+    </form>
+  </div>
+</template>

@@ -1,5 +1,6 @@
-import { createUser, resetDb, createUserAndLogin, assertUserIsLoggedIn, assertUserIsNotLoggedIn, nukeLocalStorage, clearUserKeystoreFromLocalStorage, login } from './helpers.js'
+import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUserAndLogin, assertUserIsLoggedIn, assertUserIsNotLoggedIn, nukeLocalStorage, clearUserKeystoreFromLocalStorage, login, getUserPTIAddressFromBrowser } from './helpers.js'
 import { web3 } from '../imports/lib/ethereum/web3.js'
+import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
 describe('account workflow', function () {
@@ -114,7 +115,7 @@ describe('account workflow', function () {
     browser.waitForExist('#avatar')
   })
 
-  it('login as an existing user on a device with no keystore - use existing anonymous keystore [TODO: finish this test] @watch', function () {
+  it('login as an existing user on a device with no keystore - use existing anonymous keystore @watch', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     browser.pause(1000)
@@ -125,6 +126,8 @@ describe('account workflow', function () {
     // log in as the created user
     assertUserIsNotLoggedIn(browser)
     browser.url('http://localhost:3000')
+    browser.pause(2000)
+    const anonymousAddress = getAnonymousAddress()
     browser.waitForEnabled('#nav-profile')
     browser.click('#nav-profile')
 
@@ -141,21 +144,26 @@ describe('account workflow', function () {
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     // TODO: the modal does NOT open: why???
-    browser.waitForExist('#walletModal', 10000)
+    browser.waitForExist('#walletModal', 1000)
     browser.pause(1000)
-    browser.waitForEnabled('#create-wallet', 5000)
+    browser.waitForEnabled('#create-wallet', 1000)
     browser.click('#create-wallet')
+    browser.waitForEnabled('[name="user_password"]')
+    browser
+      .setValue('[name="user_password"]', 'password')
+    browser.click('#btn-create-wallet')
     // TODO: check if wallet is created (is not implemented yet)
+    browser.pause(5000)
+    const publicAddress = getUserPTIAddressFromBrowser()
+    assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase [TODO: FIX] @watch', function () {
+  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase @watch', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     browser.pause(1000)
-
     // create a meteor user
     server.execute(createUser)
-
     // log in as the created user
     assertUserIsNotLoggedIn(browser)
     browser.url('http://localhost:3000')
@@ -168,21 +176,24 @@ describe('account workflow', function () {
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
       .setValue('[name="at-field-password"]', 'password')
     browser.click('#at-btn')
-
-    // TODO: for some reason the regenerateKeystore will not open...
-    // // we should now see a modal presenting a choice to restore the wallet or use a new one
-    // browser.waitForExist('#walletModal', 5000)
-    //
-    // // we choose to restore the keystore
-    // browser.waitForEnabled('#restore-keystore', 5000)
-    // browser.pause(1000)
-    // browser.click('#restore-keystore')
-    //
-    // TODO: we now should see a modal in which we are asked for the seed to regenerate the keystore
-
     // the user is now logged in
     browser.pause(1000)
     assertUserIsLoggedIn(browser)
+    // // we should now see a modal presenting a choice to restore the wallet or use a new one
+    browser.waitForExist('#walletModal', 1000)
+    // we choose to restore the keystore
+    browser.waitForEnabled('#restore-keystore', 1000)
+    browser.pause(1000)
+    browser.click('#restore-keystore')
+    // we now should see a modal in which we are asked for the seed to regenerate the keystore
+    browser.waitForEnabled('[name="field-seed"]')
+    browser
+      .setValue('[name="field-seed"]', SEED)
+      .setValue('[name="field-password"]', 'password')
+    browser.click('#btn-restorekeystore-restore')
+    browser.pause(10000)
+    const publicAddress = getUserPTIAddressFromBrowser()
+    assert.equal(publicAddress, USERADDRESS)
   })
   it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase (legacy)', function () {
     // legacy test with login using profile page, can be safely removed

@@ -60,6 +60,14 @@ export function getUserPTIAddressFromBrowser () {
   }).value
 }
 
+export function getAnonymousAddress () {
+  return browser.execute(function () {
+    const wallet = require('./imports/lib/ethereum/wallet.js')
+    const keystore = wallet.getKeystore('anonymous')
+    return keystore.getAddresses()[0]
+  }).value
+}
+
 export function getRegistryAddressFromBrowser () {
   return browser.executeAsync(async function (done) {
     const contracts = require('./imports/lib/ethereum/contracts.js')

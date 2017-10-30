@@ -69,6 +69,7 @@ function createAnonymousKeystoreIfNotExists () {
   console.log('creating anonymous keystore')
   // if there isn't anonyous keystore, we create one
   if (keystores.anonymous === 0) {
+    Session.set('wallet-state', 'generating')
     createKeystore('password', undefined, function (err, seedPhrase) {
       if (err) {
         throw err

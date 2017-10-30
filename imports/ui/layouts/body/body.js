@@ -1,6 +1,5 @@
 import './body.html'
-import '/imports/ui/components/modals/login.js'
-import '/imports/ui/components/modals/sign.js'
+import '/imports/ui/components/modals/userModal.js'
 import '/imports/ui/components/modals/regenerateKeystore.js'
 import { add0x } from '/imports/lib/utils.js'
 
@@ -8,11 +7,8 @@ import { keystoresCheck, createAnonymousKeystoreIfNotExists, createKeystore, del
 
 // TODO: reconsider the location of the next code - perhaps move it to start.js ?
 if (Meteor.isClient) {
-  // const keystoreAnonymous = getKeystore('anonymous')
-  // console.log(add0x(keystoreAnonymous.getAddresses()[0]))
   Accounts.onLogin(function (user) {
     // User is logged in
-    // const keystores = keystoresCheck()
     console.log('onLogin')
     // if any modal is still open, we can safely close it now to make it possible to open new ones
     // get the user's keystore
@@ -28,13 +24,14 @@ if (Meteor.isClient) {
           if (err) {
             throw err
           }
-          Modal.show('showSeed', { type: 'show' })
+          // Modal.show('userModal', { type: 'show' })
           let password = Session.get('user-password')
           createKeystore(password, seedPhrase, function (error, result) {
             if (error) {
               throw error
             }
             deleteKeystore('anonymous')
+            Modal.show('userModal', { setTemplate: 'showSeed' })
           })
         })
       } else {
@@ -82,8 +79,7 @@ Template.App_body.onCreated(function () {
 
   // if the user is not logged in, we create an anonymous keystore to use for transacting
   if (Accounts.userId() === null) {
-    Session.set('wallet-state', 'generating')
-      // Create anonymouse keystore with 'password'
+    // Create anonymouse keystore with 'password'
     createAnonymousKeystoreIfNotExists()
   }
   // If user is not logged in and is not in profile page
@@ -92,7 +88,7 @@ Template.App_body.onCreated(function () {
     if (keystores.users > 0) {
       // There is at least one User keystore
       // Propose to login if not create anonymous keystore
-      Modal.show('login')
+      Modal.show('userModal', { setTemplate: 'login' })
     } else {
       // If there is no User keystore
     }
