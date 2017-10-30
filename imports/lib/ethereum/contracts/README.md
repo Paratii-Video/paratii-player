@@ -2,7 +2,7 @@ The .json files in this directory are the artefacts of truffle, and can be creat
 
 - get the repository https://github.com/Paratii-Video/paratii-contracts
 - follow the installation instructions
-- run `truffle build`
+- run `truffle compile`
 - the artefacts can be found in the `build` directory
 
 What is used in the code is the properties
