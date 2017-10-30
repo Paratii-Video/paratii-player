@@ -329,12 +329,12 @@ describe('account workflow', function () {
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('restore the keystore @watch', function () {
+  it('restore the keystore', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
-    browser.pause(5000)
+    browser.pause(2000)
     browser.url('http://localhost:3000/profile')
-    browser.waitForEnabled('#show-seed', 5000)
+    browser.waitForEnabled('#show-seed', 10000)
 
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
@@ -369,7 +369,7 @@ describe('account workflow', function () {
     createUserAndLogin(browser)
     browser.pause(2000)
     browser.url('http://localhost:3000/profile')
-    browser.waitForExist('#show-seed', 5000)
+    browser.waitForExist('#show-seed', 10000)
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]', 5000)
     browser.setValue('[name="user_password"]', 'password')
