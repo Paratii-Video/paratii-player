@@ -215,7 +215,7 @@ describe('account workflow', function () {
     assert.equal(publicAddress, newPublicAddress)
   })
 
-  it('do not restore keystore if wrong password @watch', function () {
+  it('do not restore keystore if wrong password', function () {
     createUserAndLogin(browser)
 
     browser.waitForExist('#show-seed', 5000)

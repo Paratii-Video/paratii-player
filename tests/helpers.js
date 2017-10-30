@@ -125,6 +125,21 @@ export function createVideo (id, title, price) {
   Meteor.call('videos.create', video)
 }
 
+export function createSearchableVideo (id, title, description, uploaderName, tag, price) {
+  const video = {
+    id: id,
+    title: title,
+    price: price,
+    src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
+    mimetype: 'video/mp4',
+    stats: {
+      likes: 150,
+      dislikes: 10
+    }
+  }
+  Meteor.call('videos.create', video)
+}
+
 export function createPlaylist (id, title, videos) {
   const playlist = {
     id: id,
