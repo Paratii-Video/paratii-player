@@ -1,4 +1,6 @@
 import { Videos } from '../../../../imports/api/videos.js'
+import { getUserPTIAddress } from '/imports/api/users.js'
+
 import './search.html'
 
 Template.search.onCreated(function () {
@@ -6,6 +8,24 @@ Template.search.onCreated(function () {
   this.keywords = new ReactiveVar()
   this.sorting = new ReactiveVar()
   this.sorting.set('price_asc')
+  this.results = new ReactiveVar()
+  this.lockeds = new ReactiveDict()
+  this.autorun(() => {
+    // subscribe to videos of the current playlist
+    console.log(Template.instance().results.get())
+    // for each video of the playlist checks if the user bought it
+    if (Template.instance().results.get() !== undefined) {
+      Template.instance().results.get().forEach((video) => {
+        console.log(video._id)
+        Meteor.call('videos.isLocked', video._id, getUserPTIAddress(), (err, result) => {
+          if (err) {
+            throw err
+          }
+          this.lockeds.set(video._id, result)
+        })
+      })
+    }
+  })
 })
 
 Template.search.events({
@@ -63,9 +83,23 @@ Template.search.helpers({
         console.log(buildQuery(queryKeywords))
         console.log(buildSorting(sorting))
         const videos = Videos.find(buildQuery(queryKeywords), buildSorting(sorting))
+        Template.instance().results.set(videos)
         return videos
       }
     }
+  },
+  isLocked (video) {
+    // console.log('locked' + video._id, Template.instance().lockeds.get(video._id))
+    return Template.instance().lockeds.get(video._id)
+  },
+  videoPath (video) {
+    const pathDef = 'player'
+    const params = { _id: video._id }
+    const path = FlowRouter.path(pathDef, params)
+    return path
+  },
+  hasPrice (video) {
+    return video && video.price && video.price > 0
   }
 
 })
