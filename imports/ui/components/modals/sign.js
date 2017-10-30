@@ -30,9 +30,21 @@ Template.modal_sign_in.onRendered(() => {
     timeIn += 850
   }
 
-  Meteor.setTimeout(() => $('div.main-modal-sign-in').addClass('show-content'), timeIn)
+// Sign
+Template.modal_sign.helpers({
+  isSignIn: (type) => type === 'sign_in',
+  isSignUp: (type) => type === 'sign_up',
+  isConfirm: (type) => type === 'confirm',
+  modalType: () => Template.instance().modalState.get('type')
 })
 
+Template.modal_sign.onCreated(function () {
+  isModalOpened = false
+  this.modalState = new ReactiveDict()
+  this.modalState.set('type', this.data.type)
+})
+
+// Sign in
 Template.modal_sign_in.helpers({
   passwordType: () => Session.get('passwordType')
 })
@@ -56,18 +68,16 @@ Template.modal_sign_in.events({
   },
   'submit form.main-modal-form' (event, instance) {
     event.preventDefault()
-
-    let $email = $('input[name=email]')
-    let $password = $('input[name=password]')
-
-    Meteor.loginWithPassword($email.val(), $password.val(), (err) => {
-      if (err) {
-        $email.addClass('error')
-        $password.addClass('error')
-      } else {
-        Modal.hide('modal_sign')
-      }
-    })
+    if (formValidation('sign-in')) {
+      Meteor.loginWithPassword(userData.email, userData.password, (err) => {
+        if (err) {
+          $email.addClass('error')
+          $password.addClass('error')
+        } else {
+          Modal.hide()
+        }
+      })
+    }
   }
 })
 
@@ -105,31 +115,28 @@ Template.modal_sign_up.events({
   },
   'submit form.main-modal-form' (event, instance) {
     event.preventDefault()
-
-    let $username = $('input[name=username]')
-    let $email = $('input[name=email]')
-    let $password = $('input[name=password]')
-
-    let userData = {
-      username: $username.val(),
-      email: $email.val(),
-      password: $password.val()
-    }
-
-    Accounts.createUser(userData, (err) => {
-      if (err) {
-        if (err.reason === 'Need to set a username or email') {
-          $email.addClass('error')
-          $username.addClass('error')
-          $password.removeClass('error')
-        } else if (err.reason === 'Password may not be empty') {
-          $email.removeClass('error')
-          $username.removeClass('error')
-          $password.addClass('error')
-        } else if (err.reason === 'Email already exists') {
-          $email.removeClass('error')
-          $username.removeClass('error')
-          $password.addClass('error')
+    if (formValidation('sign-up')) {
+      Accounts.createUser(userData, (err) => {
+      // Meteor.call('ATCreateUserServer', userData, (err) => {
+        if (err) {
+          if (err.reason === 'Need to set a username or email') {
+            $email.addClass('error')
+            $username.addClass('error')
+            $password.removeClass('error')
+          } else if (err.reason === 'Password may not be empty') {
+            $email.removeClass('error')
+            $username.removeClass('error')
+            $password.addClass('error')
+          } else if (err.reason === 'Email already exists') {
+            $email.removeClass('error')
+            $username.removeClass('error')
+            $password.addClass('error')
+          } else {
+            $email.removeClass('error')
+            $password.removeClass('error')
+            $username.removeClass('error')
+            console.log(err)
+          }
         } else {
           $email.removeClass('error')
           $password.removeClass('error')

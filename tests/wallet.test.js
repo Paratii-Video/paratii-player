@@ -14,6 +14,9 @@ describe('wallet', function () {
   beforeEach(function () {
     server.execute(resetDb)
     createUserAndLogin(browser)
+    // TODO: refactor and get the address directly using browser.execute
+    browser.pause(2000)
+    browser.url('http://127.0.0.1:3000/profile')
     browser.waitForExist('#public_address', 5000)
     userAccount = getUserPTIAddressFromBrowser()
   })
@@ -80,7 +83,7 @@ describe('wallet', function () {
     let description = 'Here is some ETH for you'
     browser.waitForExist('#public_address', 5000)
     browser.execute(getSomeETH, 3)
-    browser.waitForExist('#eth_amount', 5000)
+    browser.waitForExist('#eth_amount', 10000)
     // open the send ETH dialog
     browser.waitForExist('#send-eth', 5000)
     browser.click('#send-eth')

@@ -2,6 +2,7 @@
 import { web3 } from '../imports/lib/ethereum/web3.js'
 import { getParatiiContracts } from '../imports/lib/ethereum/contracts.js'
 import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
+import { assert } from 'chai'
 
 web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
 export { web3 }
@@ -14,11 +15,52 @@ export function getProvider () {
 }
 
 export function login (browser) {
-  browser.url('http://localhost:3000/profile')
-  browser.waitForExist('[name="at-field-email"]', 10000)
-  browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-  browser.setValue('[name="at-field-password"]', 'password')
-  browser.click('#at-btn')
+  // TODO: do not use profile page to login (just do 'browser.execute(Meteor.login) or something')
+  // browser.url('http://localhost:3000/profile')
+  // browser.waitForExist('[name="at-field-email"]', 10000)
+  // browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+  // browser.setValue('[name="at-field-password"]', 'password')
+  // // wait for the anon keystore to be generated
+  // browser.pause(1000)
+  // browser.click('#at-btn')
+  browser.execute(function () {
+    Meteor.loginWithPassword('guildenstern@rosencrantz.com', 'password')
+  })
+}
+
+export function createUserAndLogin (browser) {
+  server.execute(createUser)
+  // now log in
+  // browser.execute(createKeystore)
+
+  login(browser)
+  browser.execute(createKeystore)
+  browser.execute(function () { Modal.hide() })
+  // browser.waitForExist('#walletModal', 5000)
+  // browser.pause(1000)
+  // browser.waitForEnabled('#walletModal #create-wallet', 2000)
+  // browser.pause(200)
+  // browser.click('#walletModal #create-wallet')
+  // browser.waitForEnabled('[name="user_password"]')
+  // browser
+  //   .setValue('[name="user_password"]', 'password')
+  // browser.click('#btn-create-wallet')
+}
+
+export function assertUserIsLoggedIn (browser) {
+  // assert that the user is logged in
+  let userId = browser.execute(function () {
+    return Meteor.userId()
+  }).value
+  assert.isOk(userId)
+}
+
+export function assertUserIsNotLoggedIn (browser) {
+  // assert that the user is logged in
+  let userId = browser.execute(function () {
+    return Meteor.userId()
+  }).value
+  assert.isNotOk(userId)
 }
 
 export function getSomeETH (amount) {
@@ -40,6 +82,14 @@ export function getUserPTIAddressFromBrowser () {
     const users = require('./imports/api/users.js')
     let address = users.getUserPTIAddress()
     return address
+  }).value
+}
+
+export function getAnonymousAddress () {
+  return browser.execute(function () {
+    const wallet = require('./imports/lib/ethereum/wallet.js')
+    const keystore = wallet.getKeystore('anonymous')
+    return keystore.getAddresses()[0]
   }).value
 }
 
@@ -92,14 +142,6 @@ export function createKeystore (seed) {
     // where the user has seen and dismissed the dialog
     Session.set('seed', null)
   })
-}
-
-export function createUserAndLogin (browser) {
-  server.execute(createUser)
-  // now log in
-  login(browser)
-  browser.execute(createKeystore)
-  browser.waitForExist('#public_address', 5000)
 }
 
 export function clearUserKeystoreFromLocalStorage () {
