@@ -2,7 +2,7 @@
 import 'meteor/johnantoni:meteor-svginjector'
 import { web3 } from '/imports/lib/ethereum/web3.js'
 import paratiiIPFS from '/imports/lib/ipfs/index.js'
-import '/imports/ui/components/modals/sign.js'
+import '/imports/ui/components/modals/userModal.js'
 import './navigation.html'
 
 const loadSVG = () => {
@@ -107,8 +107,8 @@ Template.navigation.events({
   'click #nav-profile' (event) {
     if (!Meteor.user()) {
       event.preventDefault()
-      Modal.show('modal_sign', {
-        type: 'sign_in'
+      Modal.show('userModal', {
+        setTemplate: 'login'
       })
     }
   },

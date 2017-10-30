@@ -16,7 +16,7 @@ function fakeVideoUnlock (address) {
   // TODO: this function need to call the Contract instead of insert the transactin in Mongo
   // const transaction = {
   //   from: address,
-  //   _id: '5000',
+  //   _id: '5000',s
   //   videoid: '12345',
   //   blockNumber: 1
   // }
@@ -57,6 +57,8 @@ describe('price tag status', function () {
 
   it('when the video was bought [TODO]', () => {
     createUserAndLogin(browser)
+    browser.pause(5000)
+    browser.url('http:localhost:3000/profile')
     browser.waitForVisible('#public_address', 5000)
     const address = browser.getText('#public_address')
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
