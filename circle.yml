@@ -7,7 +7,7 @@ dependencies:
     # - if [ ! -f ~/.meteor/meteor ]; then curl https://install.meteor.com | /bin/sh; fi
     - curl https://install.meteor.com | /bin/sh
     # - touch ~/.meteor/packages/meteor-tool/1\.4\.3_1
-    - npm install
+    - yarn install
     # if any project packages were updated, this will download and install them
     - meteor list
   cache_directories:
@@ -23,13 +23,13 @@ test:
     - google-chrome --version
   override:
     - sleep 10
-    - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
+    - yarn run test-headless
         timeout: 1020
     - npm run dev-concurrently:
         background: true
     - sleep 60
-    - npm run chimp-test
-    - npm run lint
+    - yarn run chimp-test
+    - yarn run lint
   post:
     - pkill -f meteor
 

@@ -8,6 +8,7 @@
     "testrpc": "testrpc -a 10",
     "test": "meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754",
     "test-concurrently": "concurrently --kill-others \"npm run testrpc\" \"meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754\"",
+    "test-headless": "TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha --port 9999",
     "lint": "standard",
     "lint-fix": "standard --fix",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests --webdriverio.waitforTimeout=10000",
