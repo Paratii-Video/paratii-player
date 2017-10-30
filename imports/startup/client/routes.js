@@ -13,6 +13,7 @@ import '/imports/ui/pages/myvideos/myvideos.js'
 import '/imports/ui/pages/not-found/not-found.js'
 import '/imports/ui/pages/transactions/transactions.js'
 import '/imports/ui/pages/upload/upload.js'
+import '/imports/ui/pages/search/search.js'
 
 // Set up all routes in the app
 FlowRouter.route('/', {
@@ -68,6 +69,13 @@ FlowRouter.route('/upload', {
   name: 'upload',
   action () {
     BlazeLayout.render('App_body', { main: 'upload' })
+  }
+})
+
+FlowRouter.route('/search', {
+  name: 'search',
+  action () {
+    BlazeLayout.render('App_body', { main: 'search' })
   }
 })
 
