@@ -48,7 +48,7 @@ describe('account workflow', function () {
     browser.waitForExist('.walletContainer')
   })
 
-  it('register a new user', function () {
+  it('register a new user @watch', function () {
     browser.execute(nukeLocalStorage)
 
     browser.url('http://localhost:3000')
@@ -77,7 +77,6 @@ describe('account workflow', function () {
     browser.$('#at-btn').click()
 
     // now a modal should be opened with the seed
-    // (we wait a long time, because the wallet needs to be generated)
     browser.waitForVisible('#seed', 10000)
     browser.pause(2000)
     browser.waitForVisible('#btn-eth-close')
@@ -158,7 +157,7 @@ describe('account workflow', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase @watch', function () {
+  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     browser.pause(1000)

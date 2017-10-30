@@ -3,13 +3,19 @@ import { createAnonymousKeystoreIfNotExists } from '/imports/lib/ethereum/wallet
 import '/imports/api/users.js'
 import './login.html'
 
-Template.login.events({
-  'click button.submit' (event) {
-    console.log('login done')
-    // Modal.hide('login')
-    Session.set('modalTemplate', 'regenerateKeystore')
-  }
-})
+// Template.login.events({
+//   'click button.submit' (event) {
+//     if (Session.get('signup')) {
+//       console.log('signup')
+//       Modal.hide()
+//       const password = Session.get('user-password')
+//       createNewWalletFromAnonymousKeystore(password)
+//     } else {
+//       console.log('signin')
+//       Session.set('modalTemplate', 'regenerateKeystore')
+//     }
+//   }
+// })
 
 Template.login.onDestroyed(function () {
   console.log('distrutto')

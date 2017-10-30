@@ -32,6 +32,7 @@ if (Meteor.isClient) {
             }
             deleteKeystore('anonymous')
             Modal.show('userModal', { setTemplate: 'showSeed' })
+            Session.get('user-password', null)
           })
         })
       } else {
