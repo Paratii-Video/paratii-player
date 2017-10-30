@@ -28,7 +28,7 @@ describe('Video Store:', function () {
     sendSomeETH(userAccount, 2.1)
     sendSomePTI(userAccount, 300)
     // browser.execute(getSomeETH, 2.1)
-    browser.waitForExist('#eth_amount', 5000)
+    browser.waitForExist('#eth_amount', 10000)
     // browser.execute(getSomePTI, 300)
     // browser.click('a[href="#pti"]')
     // browser.waitForExist('#pti_amount', 5000)

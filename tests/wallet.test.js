@@ -83,7 +83,7 @@ describe('wallet', function () {
     let description = 'Here is some ETH for you'
     browser.waitForExist('#public_address', 5000)
     browser.execute(getSomeETH, 3)
-    browser.waitForExist('#eth_amount', 5000)
+    browser.waitForExist('#eth_amount', 10000)
     // open the send ETH dialog
     browser.waitForExist('#send-eth', 5000)
     browser.click('#send-eth')
