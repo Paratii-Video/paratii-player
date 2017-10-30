@@ -105,6 +105,9 @@ export function resetDb () {
   Meteor.users.remove({ 'emails.address': 'guildenstern@rosencrantz.com' })
   const { Videos } = require('/imports/api/videos')
   Videos.remove({'_id': '12345'})
+  Videos.remove({'_id': '12346'})
+  Videos.remove({'_id': '12347'})
+  Videos.remove({'_id': '12348'})
   Videos.remove({'_id': '23456'})
   const { Playlists } = require('/imports/api/playlists')
   Playlists.remove({'_id': '98765'})
@@ -152,11 +155,31 @@ export function nukeLocalStorage () {
   localStorage.clear()
 }
 
-export function createVideo (id, title, price) {
+// export function createVideo (id, title, price) {
+//   const video = {
+//     id: id,
+//     title: title,
+//     price: price,
+//     src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
+//     mimetype: 'video/mp4',
+//     stats: {
+//       likes: 150,
+//       dislikes: 10
+//     }
+//   }
+//   Meteor.call('videos.create', video)
+// }
+
+export function createVideo (id, title, description, uploaderName, tags, price) {
   const video = {
     id: id,
     title: title,
     price: price,
+    description: description,
+    uploader: {
+      name: uploaderName
+    },
+    tags: tags,
     src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
     mimetype: 'video/mp4',
     stats: {
