@@ -33,6 +33,7 @@ Template.search.events({
     const keywords = event.target.value
 
     Template.instance().keywords.set(keywords)
+    Session.set('lastsearch', keywords)
     console.log(keywords)
   },
   'change #sorting' (event) {
@@ -87,6 +88,11 @@ Template.search.helpers({
         return videos
       }
     }
+  },
+  lastsearch () {
+    const lastSearch = Session.get('lastsearch')
+    Template.instance().keywords.set(lastSearch)
+    return lastSearch
   },
   isLocked (video) {
     // console.log('locked' + video._id, Template.instance().lockeds.get(video._id))
