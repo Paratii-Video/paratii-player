@@ -2,7 +2,7 @@ import { web3, resetDb, createUserAndLogin, getOrDeployParatiiContracts, getUser
 import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('Video Store:', function () {
+describe('Video Store: @watch', function () {
   let contracts
   let videoId = '5' // this is  a known videoId defined in fixtures.js
 
@@ -28,7 +28,7 @@ describe('Video Store:', function () {
     sendSomeETH(userAccount, 2.1)
     sendSomePTI(userAccount, 300)
     // browser.execute(getSomeETH, 2.1)
-    browser.waitForExist('#eth_amount', 10000)
+    // browser.waitForExist('#eth_amount', 10000)
     // browser.execute(getSomePTI, 300)
     // browser.click('a[href="#pti"]')
     // browser.waitForExist('#pti_amount', 5000)
