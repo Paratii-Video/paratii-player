@@ -12,11 +12,9 @@ Template.search.onCreated(function () {
   this.lockeds = new ReactiveDict()
   this.autorun(() => {
     // subscribe to videos of the current playlist
-    console.log(Template.instance().results.get())
     // for each video of the playlist checks if the user bought it
     if (Template.instance().results.get() !== undefined) {
       Template.instance().results.get().forEach((video) => {
-        console.log(video._id)
         Meteor.call('videos.isLocked', video._id, getUserPTIAddress(), (err, result) => {
           if (err) {
             throw err
@@ -34,7 +32,6 @@ Template.search.events({
 
     Template.instance().keywords.set(keywords)
     Session.set('lastsearch', keywords)
-    console.log(keywords)
   },
   'change #sorting' (event) {
     const sorting = event.target.value
@@ -81,8 +78,6 @@ Template.search.helpers({
     if (keyword !== undefined) {
       if (keyword.length > 2) {
         const queryKeywords = new RegExp(keyword, 'i')
-        console.log(buildQuery(queryKeywords))
-        console.log(buildSorting(sorting))
         const videos = Videos.find(buildQuery(queryKeywords), buildSorting(sorting))
         Template.instance().results.set(videos)
         return videos
@@ -95,7 +90,6 @@ Template.search.helpers({
     return lastSearch
   },
   isLocked (video) {
-    // console.log('locked' + video._id, Template.instance().lockeds.get(video._id))
     return Template.instance().lockeds.get(video._id)
   },
   videoPath (video) {
