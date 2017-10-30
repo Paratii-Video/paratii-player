@@ -21,7 +21,7 @@ Template.profile.helpers({
     return Meteor.user().emails[0].address
   },
   hasKeystore () {
-    return (getKeystore() !== undefined) ? getKeystore() : false
+    return getKeystore() !== undefined ? getKeystore() : false
   },
   userPTIAddress () {
     let address = getUserPTIAddress()
@@ -42,7 +42,7 @@ Template.profile.helpers({
         const amount = web3.fromWei(balance, 'ether')
         return 'You own <b id="eth_amount">' + amount + '</b> Ether'
       } else {
-        return 'You don\'t own Ether'
+        return "You don't own Ether"
       }
     }
     return 'Connecting to blockchain...'
@@ -58,7 +58,7 @@ Template.profile.helpers({
         const amount = web3.fromWei(balance, 'ether')
         return 'You own <b id="pti_amount">' + amount + '</b> PTI'
       } else {
-        return 'You don\'t own Paratii'
+        return "You don't own Paratii"
       }
     }
     return 'Connecting to blockchain...'
@@ -66,7 +66,6 @@ Template.profile.helpers({
   wallet_is_generating () {
     return Session.get('wallet-state') === 'generating'
   }
-
 })
 
 Template.profile.events({
@@ -83,13 +82,14 @@ Template.profile.events({
     Modal.show('restoreKeystore', {})
   },
   'click #show-seed' () {
-    Modal.show('showSeed', { type: 'show' })
+    Modal.show('main_modal', {
+      modal: 'showSeed',
+      type: 'show'
+    })
   },
   'click #edit-profile' () {
-    const modalOptions = {
-    }
-    Modal.show('editProfile', {
-    }, modalOptions)
+    const modalOptions = {}
+    Modal.show('editProfile', {}, modalOptions)
   }
 })
 
