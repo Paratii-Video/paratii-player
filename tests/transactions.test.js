@@ -2,7 +2,7 @@
 /* eslint global-require: "off" */
 import { resetDb, clearUserKeystoreFromLocalStorage } from './helpers.js'
 
-describe('account workflow @watch', function () {
+describe('account workflow', function () {
   beforeEach(function () {
     browser.url('http://127.0.0.1:3000/')
     server.execute(resetDb)
