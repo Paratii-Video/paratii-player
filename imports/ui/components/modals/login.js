@@ -18,7 +18,7 @@ import './login.html'
 // })
 
 Template.login.onDestroyed(function () {
-  console.log('distrutto')
+  console.log('Login template destroyed')
   // Meteor.setTimeout(function () {
   //   console.log('Showing regenerateKeystore..')
   //   Modal.show('regenerateKeystore')

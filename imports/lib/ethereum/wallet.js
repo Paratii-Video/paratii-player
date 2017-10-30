@@ -48,7 +48,7 @@ function createKeystore (password, seedPhrase, cb) {
       }
       Session.set('generating-keystore', false)
       if (cb) {
-        cb(error, seedPhrase)
+        cb(error, seedPhrase, keystore)
       }
     })
   })
@@ -70,18 +70,21 @@ function createAnonymousKeystoreIfNotExists () {
   // if there isn't anonyous keystore, we create one
   if (keystores.anonymous === 0) {
     Session.set('wallet-state', 'generating')
-    createKeystore('password', undefined, function (err, seedPhrase) {
+    createKeystore('password', undefined, function (err, seedPhrase, keystore) {
       if (err) {
         throw err
       }
       // Need to save keystore
-      const keystore = Session.get('tempKeystore')
-      RLocalStorage.setItem(`keystore-anonymous`, keystore)
-      Session.set(`keystore-anonymous`, keystore)
-      Session.set(`seed-anonymous`, seedPhrase)
-      Session.set('tempKeystore', null)
-      Session.set('wallet-state', '')
-      console.log('Anonymous keystore created')
+      console.log('-----')
+      console.log(keystore)
+      RLocalStorage.setItem(`keystore-anonymous`, keystore.serialize())
+      if (keystore) {
+        Session.set(`keystore-anonymous`, keystore)
+        Session.set(`seed-anonymous`, seedPhrase)
+        Session.set('tempKeystore', null)
+        Session.set('wallet-state', '')
+        console.log('Anonymous keystore created')
+      }
     })
   }
 }
@@ -96,14 +99,16 @@ export function getKeystore (user = null) {
   if (user === 'anonymous' || userId === null) {
     userId = 'anonymous'
   }
-  serializedKeystore = Session.get(`keystore-${userId}`)
-  if (serializedKeystore === undefined) {
-    serializedKeystore = RLocalStorage.getItem(`keystore-${userId}`)
-    if (serializedKeystore !== null) {
-      Session.set(`keystore-${userId}`, serializedKeystore)
-    }
+  // serializedKeystore = Session.get(`keystore-${userId}`)
+  // if (serializedKeystore === undefined) {
+  serializedKeystore = RLocalStorage.getItem(`keystore-${userId}`)
+  if (serializedKeystore !== null) {
+    Session.set(`keystore-${userId}`, serializedKeystore)
   }
+  // }
   // using lightwallet to deserialize the keystore
+  console.log(`deserializing keystore for user ${userId}`)
+  console.log(serializedKeystore)
   if (serializedKeystore !== null) {
     const keystore = lightwallet.keystore.deserialize(serializedKeystore)
     // const address = keystore.getAddresses()[0]

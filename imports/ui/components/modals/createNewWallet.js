@@ -3,13 +3,26 @@ import { createKeystore, deleteKeystore, getKeystore, getSeedFromKeystore } from
 import '/imports/api/users.js'
 import './createNewWallet.html'
 
+Template.createNewWallet.onCreated(function () {
+  this.errorMessage = new ReactiveVar(null)
+})
+
+Template.createNewWallet.helpers({
+  errorMessage () {
+    return Template.instance().errorMessage.get()
+  }
+})
+
 Template.createNewWallet.events({
   'submit #form-create-wallet' (event, instance) {
     // Prevent default browser form submit
     event.preventDefault()
     const password = event.target.user_password.value
+    console.log('checking password')
     Meteor.call('checkPassword', password, (error, result) => {
+      console.log('checked password')
       if (error) { throw error }
+      console.log(result)
       if (result) {
         // TODO create a function
         // ----
@@ -41,6 +54,9 @@ Template.createNewWallet.events({
           console.log('no anonymous keystore found')
         }
         // ----
+      } else {
+        // TODO: password is not valid - inform the user
+        instance.errorMessage.set('Wrong password')
       }
     })
   }

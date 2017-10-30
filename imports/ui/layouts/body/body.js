@@ -42,17 +42,18 @@ if (Meteor.isClient) {
     } else {
       if (keystore === null) {
         // this is an existing user (we are not in the singup process) , but the user has no keystore
+        console.log('Getting anonymous keystore')
+
         const anonymousKeystore = getKeystore('anonymous')
-        console.log('ANON')
         console.log(anonymousKeystore)
         if (anonymousKeystore !== null) {
           console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
-          // Modal.hide('login')
-          // TODO: this is NOT showing
+          // TODO: why do we need to hide a previous modal?
+          Session.set('modalTemplate', 'regenerateKeystore')
+          Modal.show('userModal', { setTemplate: 'regenerateKeystore' })
         } else {
-          // this is a strange exception in which the no keystore at all has been found
-          console.log('!!!! rigenera keystore')
-          console.log('Showing regenerateKeystore..')
+          // TODO: we don't have an anonymous keystore. This could be a timing problem (the keystore is still beging generated)
+
         }
       } else {
         Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))

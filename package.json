@@ -10,8 +10,8 @@
     "test-concurrently": "concurrently --kill-others \"npm run testrpc\" \"meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754\"",
     "lint": "standard",
     "lint-fix": "standard --fix",
-    "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
-    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=5000"
+    "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests --webdriverio.waitforTimeout=10000",
+    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=10000"
   },
   "pre-commit": [
     "lint-fix"

@@ -15,10 +15,13 @@ export function getProvider () {
 }
 
 export function login (browser) {
+  // TODO: do not use profile page to login (just do 'browser.execute(Meteor.login) or something')
   browser.url('http://localhost:3000/profile')
   browser.waitForExist('[name="at-field-email"]', 10000)
   browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
   browser.setValue('[name="at-field-password"]', 'password')
+  // wait for the anon keystore to be generated
+  browser.pause(1000)
   browser.click('#at-btn')
 }
 
