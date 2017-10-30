@@ -305,11 +305,11 @@ describe('account workflow', function () {
   })
 
   it('send ether dialog is visible', function () {
+    browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
+    browser.pause(5000)
 
-    browser.pause(2000)
     browser.url('http://localhost:3000/profile')
-
     browser.waitForExist('#send-eth', 10000)
     browser.click('#send-eth')
     browser.waitForExist('.modal-dialog', 5000)
@@ -318,7 +318,7 @@ describe('account workflow', function () {
   it('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
 
-    browser.pause(2000)
+    browser.pause(5000)
     browser.url('http://localhost:3000/profile')
 
     browser.waitForEnabled('#show-seed', 10000)
