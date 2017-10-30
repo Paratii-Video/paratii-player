@@ -3,20 +3,16 @@
     <h3 class="main-modal-title main-modal-anim-1">The seed of your wallet</h3>
     <form id="form-show-seed" class="main-modal-form">
       {{#if seed}}
-        <p>
-          Please save these 12 words on somewhere safe (we recommend writting it down).
-          <br /> Without this seed you cannot recover your wallet and will result in
-          <b>loss of all of your funds</b>.
+        <p class="main-modal-text main-modal-anim-2">
+          <span class="main-modal-showseed-important">
+            Please write these 12 words on a piece of paper and store it somewhere safe
+          </span>
+          (their order is important). This seed will allow you to recover your wallet.
         </p>
-        <p class="text-danger">
-          <b>WARNING:</b> Never disclose your seed.
-        </p>
-        <div class="panel panel-default">
-          <div class="panel-body highlight" id="seed">
-            <tt>{{seed}}</tt>
-          </div>
+        <div class="main-modal-showseed-mnemonic main-modal-anim-2">
+          <tt>{{seed}}</tt>
         </div>
-        <p>
+        <p class="main-modal-text main-modal-text--small main-modal-anim-2">
           This is not a Ethereum address and is not on Ethereum blockchain.
         </p>
       {{else}}
