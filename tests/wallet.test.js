@@ -14,6 +14,9 @@ describe('wallet', function () {
   beforeEach(function () {
     server.execute(resetDb)
     createUserAndLogin(browser)
+    // TODO: refactor and get the address directly using browser.execute
+    browser.pause(2000)
+    browser.url('http://127.0.0.1:3000/profile')
     browser.waitForExist('#public_address', 5000)
     userAccount = getUserPTIAddressFromBrowser()
   })

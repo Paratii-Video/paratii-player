@@ -53,10 +53,10 @@ if (Meteor.isClient) {
           Modal.show('userModal', { setTemplate: 'regenerateKeystore' })
         } else {
           // TODO: we don't have an anonymous keystore. This could be a timing problem (the keystore is still beging generated)
-
         }
       } else {
         Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))
+        Modal.hide()
       }
     }
   })
