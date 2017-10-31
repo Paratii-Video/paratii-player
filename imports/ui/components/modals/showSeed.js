@@ -42,7 +42,3 @@ Template.showSeed.events({
     })
   }
 })
-
-// export function showSeed (type = 'show') {
-//   Modal.show('showSeed', { type })
-// }

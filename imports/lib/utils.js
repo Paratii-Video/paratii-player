@@ -27,4 +27,13 @@ function add0x (input) {
   return input
 }
 
-export { formatNumber, add0x, strip0x }
+function showModal (template) {
+  Session.set('modalTemplate', template)
+  Modal.show('mainModal', { setTemplate: template })
+}
+
+function hideModal (template) {
+  Modal.hide()
+}
+
+export { formatNumber, add0x, strip0x, showModal, hideModal }

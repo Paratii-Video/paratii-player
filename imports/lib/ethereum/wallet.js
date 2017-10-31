@@ -138,32 +138,6 @@ export function keystoresCheck () {
   return keystores
 }
 
-// export function createNewWalletFromAnonymousKeystore (password) {
-//   // user just signed up, we have to fix his keystore
-//   const anonymousKeystore = getKeystore('anonymous')
-//   if (anonymousKeystore !== null) {
-//     // we have an anonmous keystore - we need to regenarate a new keystore
-//     // with the same seed but the new password
-//     getSeedFromKeystore('password', anonymousKeystore, function (err, seedPhrase) {
-//       if (err) {
-//         throw err
-//       }
-//       createKeystore(password, seedPhrase, function (error, result) {
-//         if (error) {
-//           throw error
-//         }
-//         deleteKeystore('anonymous')
-//         // Modal.show('userModal', { setTemplate: 'showSeed' })
-//         Session.get('user-password', null)
-//         return seedPhrase
-//       })
-//     })
-//   } else {
-//     // TODO: do something here...
-//     console.log('no anonymous keystore found')
-//   }
-// }
-
 // returns the seed of the keystore
 export function getSeed (password, callback) {
   const keystore = getKeystore()

@@ -71,8 +71,7 @@ Template.profile.helpers({
 
 Template.profile.events({
   'click #create-wallet' () {
-    // Modal.show('showSeed', { type: 'create' })
-    Modal.show('userModal', { setTemplate: 'createNewWallet' })
+    Modal.show('mainModal', { setTemplate: 'createNewWallet' })
   },
   'click #send-eth' () {
     Modal.show('doTransaction', { type: 'Eth', label: 'Send Ether' })
@@ -84,8 +83,7 @@ Template.profile.events({
     Modal.show('restoreKeystore', {})
   },
   'click #show-seed' () {
-    // Modal.show('showSeed', { type: 'show' })
-    Modal.show('userModal', { setTemplate: 'showSeed' })
+    Modal.show('mainModal', { setTemplate: 'showSeed' })
   },
   'click #edit-profile' () {
     const modalOptions = {
