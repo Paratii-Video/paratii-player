@@ -1,9 +1,10 @@
 /* globals SVGInjector */
-import 'meteor/johnantoni:meteor-svginjector'
+import './navigation.html'
+import { showModal } from '/imports/lib/utils.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
 import paratiiIPFS from '/imports/lib/ipfs/index.js'
+import 'meteor/johnantoni:meteor-svginjector'
 import '/imports/ui/components/modals/mainModal.js'
-import './navigation.html'
 
 const loadSVG = () => {
   const mySVGsToInject = document.querySelectorAll('.svg')
@@ -107,9 +108,7 @@ Template.navigation.events({
   'click #nav-profile' (event) {
     if (!Meteor.user()) {
       event.preventDefault()
-      Modal.show('mainModal', {
-        setTemplate: 'login'
-      })
+      showModal('login')
     }
   },
   'click #logout' () {

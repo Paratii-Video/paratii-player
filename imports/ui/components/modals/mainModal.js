@@ -1,14 +1,16 @@
 import './mainModal.html'
-import '/imports/ui/components/modals/login.js'
-import '/imports/ui/components/modals/restoreKeystore.js'
-import '/imports/ui/components/modals/regenerateKeystore.js'
-import '/imports/ui/components/modals/createNewWallet.js'
-import '/imports/ui/components/modals/showSeed.js'
 
 Template.mainModal.onCreated(function () {
-  Session.set('modalTemplate', this.data.setTemplate)
+  // Set template
+  Session.set('contentTemplate', this.data.contentTemplate)
+  // Set options in a reactive var
+  this.options = new ReactiveVar()
+  this.options.set(this.data)
 })
 
 Template.mainModal.helpers({
-  setTemplate: () => Session.get('modalTemplate')
+  contentTemplate: () => Session.get('contentTemplate'),
+  options: function () {
+    return Template.instance().options.get()
+  }
 })

@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating'
 import { createKeystore, deleteKeystore, getKeystore, getSeedFromKeystore } from '/imports/lib/ethereum/wallet.js'
+import { hideModal } from '/imports/lib/utils.js'
 import '/imports/api/users.js'
 import './createNewWallet.html'
 
@@ -38,10 +39,9 @@ Template.createNewWallet.events({
               if (error) {
                 throw error
               }
+              hideModal()
               deleteKeystore('anonymous')
-              Modal.hide('mainModal')
               Session.set('user-password', null)
-              Session.set('modalTemplate', null)
             })
           })
         } else {

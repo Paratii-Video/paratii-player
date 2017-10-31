@@ -1,16 +1,17 @@
 /* globals Modal */
+import './profile.html'
 
 import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Events } from '/imports/api/events.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
-
+import { showModal } from '/imports/lib/utils.js'
+import '/imports/ui/components/modals/mainModal.js'
 import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
 import '/imports/ui/components/modals/createNewWallet.js'
 import '/imports/ui/components/modals/showSeed.js'
-import '../../components/pageheader/pageheader.js'
-import './profile.html'
+import '/imports/ui/components/pageheader/pageheader.js'
 
 Template.profile.helpers({
   events () {
@@ -21,7 +22,7 @@ Template.profile.helpers({
     return Meteor.user().emails[0].address
   },
   hasKeystore () {
-    return getKeystore() !== undefined ? getKeystore() : false
+    return (getKeystore() !== undefined) ? getKeystore() : false
   },
   userPTIAddress () {
     let address = getUserPTIAddress()
@@ -42,7 +43,7 @@ Template.profile.helpers({
         const amount = web3.fromWei(balance, 'ether')
         return 'You own <b id="eth_amount">' + amount + '</b> Ether'
       } else {
-        return "You don't own Ether"
+        return 'You don\'t own Ether'
       }
     }
     return 'Connecting to blockchain...'
@@ -58,7 +59,7 @@ Template.profile.helpers({
         const amount = web3.fromWei(balance, 'ether')
         return 'You own <b id="pti_amount">' + amount + '</b> PTI'
       } else {
-        return "You don't own Paratii"
+        return 'You don\'t own Paratii'
       }
     }
     return 'Connecting to blockchain...'
@@ -66,27 +67,27 @@ Template.profile.helpers({
   wallet_is_generating () {
     return Session.get('wallet-state') === 'generating'
   }
+
 })
 
 Template.profile.events({
   'click #create-wallet' () {
-    Modal.show('mainModal', { setTemplate: 'createNewWallet' })
+    showModal('createNewWallet')
   },
   'click #send-eth' () {
-    Modal.show('doTransaction', { type: 'Eth', label: 'Send Ether' })
+    showModal('doTransaction', { type: 'Eth', label: 'Send Ether' })
   },
   'click #send-pti' () {
-    Modal.show('doTransaction', { type: 'PTI', label: 'Send Paratii' })
+    showModal('doTransaction', { type: 'PTI', label: 'Send Paratii' })
   },
   'click #restore-keystore' () {
-    Modal.show('restoreKeystore', {})
+    showModal('restoreKeystore')
   },
   'click #show-seed' () {
-    Modal.show('mainModal', { setTemplate: 'showSeed' })
+    showModal('createNewWallet')
   },
   'click #edit-profile' () {
-    const modalOptions = {}
-    Modal.show('editProfile', {}, modalOptions)
+    showModal('editProfile')
   }
 })
 
