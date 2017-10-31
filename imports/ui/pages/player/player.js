@@ -13,8 +13,7 @@ import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 import '/imports/ui/components/modals/regenerateKeystore.js'
-
-import '/imports/ui/components/modals/modals.js'
+import '/imports/ui/components/modals/mainModal.js'
 
 import './player.html'
 
@@ -318,8 +317,20 @@ const setLoadedProgress = (instance) => {
 Template.player.events({
   'click #unlock-video' (event) {
     if (Meteor.user()) {
-      Modal.show('main_modal', {
-        modal: 'unlockVideo',
+      // Modal.show('main_modal', {
+      //   modal: 'unlockVideo',
+      //   data: {
+      //     type: 'PTI',
+      //     label: 'Unlock this video',
+      //     action: 'unlock_video',
+      //     price: event.target.dataset.price, // Video Price
+      //     address: event.target.dataset.address, // Creator PTI address
+      //     videotitle: event.target.dataset.title, // Video title
+      //     videoid: Template.instance().currentVideo.get()._id // Video title
+      //   }
+      // })
+      Modal.show('mainModal', {
+        setTemplate: 'unlockVideo',
         data: {
           type: 'PTI',
           label: 'Unlock this video',
@@ -331,8 +342,7 @@ Template.player.events({
         }
       })
     } else {
-      // Modal.show('login', { type: 'sign_in'})
-      Modal.show('userModal', {
+      Modal.show('mainModal', {
         setTemplate: 'login'
       })
     }
