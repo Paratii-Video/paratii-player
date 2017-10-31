@@ -34,19 +34,14 @@ Template.createNewWallet.events({
             if (err) {
               throw err
             }
-            // Session.set('modalTemplate', 'showSeed')
-            // Modal.show('userModal', { setTemplate: 'showSeed' })
-            // const password = Session.get('user-password')
-            // let password = 'password'
             createKeystore(password, seedPhrase, function (error, result) {
               if (error) {
                 throw error
               }
               deleteKeystore('anonymous')
-              Modal.hide('userModal')
+              Modal.hide('mainModal')
               Session.set('user-password', null)
               Session.set('modalTemplate', null)
-              // Modal.show('userModal', { setTemplate: 'showSeed' })
             })
           })
         } else {

@@ -4,15 +4,7 @@ import './showSeed.html'
 
 Template.showSeed.onCreated(function () {
   this.errorMessage = new ReactiveVar(null)
-  Session.set('passwordType', 'password')
 })
-
-Template.showSeed.onRendered(() =>
-  Meteor.setTimeout(
-    () => $('div.main-modal-showseed').addClass('show-content'),
-    1000
-  )
-)
 
 Template.showSeed.helpers({
   seed () {
@@ -21,9 +13,6 @@ Template.showSeed.helpers({
   },
   errorMessage () {
     return Template.instance().errorMessage.get()
-  },
-  passwordType () {
-    return Session.get('passwordType')
   }
 })
 
@@ -53,6 +42,3 @@ Template.showSeed.events({
     })
   }
 })
-// export function showSeed (type = 'show') {
-//   Modal.show('showSeed', { type })
-// }
