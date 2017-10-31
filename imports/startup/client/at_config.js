@@ -30,7 +30,7 @@ AccountsTemplates.avoidRedirect = true
 // https://github.com/meteor-useraccounts/core/blob/master/Guide.md#configuration-api
 AccountsTemplates.configure({
   // Behavior
-  confirmPassword: true,
+  confirmPassword: false,
   enablePasswordChange: true,
   forbidClientAccountCreation: false,
   overrideLoginErrors: true,
@@ -47,15 +47,15 @@ AccountsTemplates.configure({
 
   // Client-side Validation
   continuousValidation: false,
-  negativeFeedback: false,
+  negativeFeedback: true,
   negativeValidation: true,
   positiveValidation: true,
   positiveFeedback: true,
   showValidating: true,
 
   // Privacy Policy and Terms of Use
-  privacyUrl: 'privacy',
-  termsUrl: 'terms-of-use',
+  // privacyUrl: 'privacy',
+  // termsUrl: 'terms-of-use',
 
   // Redirects
   // homeRoutePath: '/account',
