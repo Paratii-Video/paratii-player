@@ -15,7 +15,7 @@ describe('account workflow', function () {
     server.execute(resetDb)
   })
 
-  it('register a new user [legacy, siging up with profile page]', function () {
+  it('register a new user [legacy, siging up with profile page] @watch', function () {
     // this test can be safely removed
     browser.execute(nukeLocalStorage)
 
@@ -41,7 +41,7 @@ describe('account workflow', function () {
     // (we wait a long time, because the wallet needs to be generated)
     browser.waitForVisible('#seed', 10000)
     browser.pause(1000)
-    browser.waitForVisible('#btn-eth-close', 1000)
+    browser.waitForVisible('#btn-eth-close', 10000)
     browser.click('#btn-eth-close')
 
     // the user is now be logged in, and on the profile page, where the avatar is visible

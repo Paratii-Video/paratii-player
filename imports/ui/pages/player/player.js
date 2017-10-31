@@ -501,7 +501,8 @@ Template.player.events({
       data: {
         type: 'modal_share_links',
         videoId: videoId,
-        embed: window.top !== window.self
+        embed: window.top !== window.self,
+        autoplay: !Template.instance().playerState.get('locked')
       }
     })
   },
