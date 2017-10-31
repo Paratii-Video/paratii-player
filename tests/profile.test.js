@@ -41,8 +41,8 @@ describe('account workflow', function () {
     // (we wait a long time, because the wallet needs to be generated)
     browser.waitForVisible('#seed')
     browser.pause(1000)
-    browser.waitForVisible('#btn-eth-close')
-    browser.click('#btn-eth-close')
+    browser.waitForEnabled('#closeModal')
+    browser.click('#closeModal')
 
     // the user is now be logged in, and on the profile page, where the avatar is visible
     browser.waitForExist('#avatar')
@@ -85,8 +85,8 @@ describe('account workflow', function () {
     // (we wait a long time, because the wallet needs to be generated)
     browser.waitForVisible('#seed')
     browser.pause(2000)
-    browser.waitForVisible('#btn-eth-close')
-    browser.click('#btn-eth-close')
+    browser.waitForEnabled('#closeModal')
+    browser.click('#closeModal')
 
     // the user is now be logged in, and on the profile page, where the avatar is visible
     assertUserIsLoggedIn(browser)
@@ -301,8 +301,9 @@ describe('account workflow', function () {
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#btn-show-seed')
-    browser.waitForVisible('#btn-eth-close')
-    browser.click('#btn-eth-close')
+    browser.pause(2000)
+    browser.waitForEnabled('#closeModal')
+    browser.click('#closeModal')
   })
 
   it('send ether dialog is visible', function () {
@@ -313,7 +314,7 @@ describe('account workflow', function () {
     browser.url('http://localhost:3000/profile')
     browser.waitForExist('#send-eth')
     browser.click('#send-eth')
-    browser.waitForExist('.modal-dialog')
+    browser.waitForExist('#form-doTransaction')
   })
 
   it('do not show the seed if wrong password', function () {
@@ -332,7 +333,7 @@ describe('account workflow', function () {
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('restore the keystore @watch', function () {
+  it('restore the keystore', function () {
     createUserAndLogin(browser)
     browser.pause(4000)
     browser.url('http://localhost:3000/profile')
@@ -346,7 +347,7 @@ describe('account workflow', function () {
     browser.waitForEnabled('#seed')
     const seed = browser.getHTML('#seed tt', false)
     const publicAddress = browser.getHTML('#public_address', false)
-    browser.click('#btn-eth-close')
+    browser.click('#closeModal')
 
     browser.execute(clearUserKeystoreFromLocalStorage)
 
@@ -382,7 +383,7 @@ describe('account workflow', function () {
     browser.waitForVisible('#seed')
     const seed = browser.getHTML('#seed tt', false)
     // const publicAddress = browser.getHTML('#public_address', false)
-    browser.click('#btn-eth-close')
+    browser.click('#closeModal')
     browser.execute(clearUserKeystoreFromLocalStorage)
     browser.refresh()
 
