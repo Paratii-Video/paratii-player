@@ -39,13 +39,13 @@ describe('account workflow', function () {
 
     // now a modal should be opened with the seed
     // (we wait a long time, because the wallet needs to be generated)
-    browser.waitForVisible('#seed', 10000)
+    browser.waitForVisible('#seed')
     browser.pause(1000)
-    browser.waitForVisible('#btn-eth-close', 10000)
+    browser.waitForVisible('#btn-eth-close')
     browser.click('#btn-eth-close')
 
     // the user is now be logged in, and on the profile page, where the avatar is visible
-    browser.waitForExist('#avatar', 10000)
+    browser.waitForExist('#avatar')
     // we should also see the wallet part
     browser.waitForExist('.walletContainer')
   })
@@ -83,7 +83,7 @@ describe('account workflow', function () {
 
     // now a modal should be opened with the seed
     // (we wait a long time, because the wallet needs to be generated)
-    browser.waitForVisible('#seed', 10000)
+    browser.waitForVisible('#seed')
     browser.pause(2000)
     browser.waitForVisible('#btn-eth-close')
     browser.click('#btn-eth-close')
@@ -110,9 +110,9 @@ describe('account workflow', function () {
     browser.click('#at-btn')
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
-    browser.waitForExist('#walletModal', 5000)
+    browser.waitForExist('#walletModal')
     browser.pause(1000)
-    browser.waitForEnabled('#create-wallet', 5000)
+    browser.waitForEnabled('#create-wallet')
 
     // TODO: check if wallet is created (is not implemented yet)
 
@@ -149,9 +149,9 @@ describe('account workflow', function () {
     assertUserIsLoggedIn(browser)
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
-    browser.waitForExist('#walletModal', 10000)
+    browser.waitForExist('#walletModal')
     browser.pause(1000)
-    browser.waitForEnabled('#create-wallet', 1000)
+    browser.waitForEnabled('#create-wallet')
     browser.click('#create-wallet')
     browser.waitForEnabled('[name="user_password"]')
     browser
@@ -186,9 +186,9 @@ describe('account workflow', function () {
     browser.pause(1000)
     assertUserIsLoggedIn(browser)
     // // we should now see a modal presenting a choice to restore the wallet or use a new one
-    browser.waitForExist('#walletModal', 1000)
+    browser.waitForExist('#walletModal')
     // we choose to restore the keystore
-    browser.waitForEnabled('#restore-keystore', 1000)
+    browser.waitForEnabled('#restore-keystore')
     browser.pause(1000)
     browser.click('#restore-keystore')
     // we now should see a modal in which we are asked for the seed to regenerate the keystore
@@ -219,8 +219,8 @@ describe('account workflow', function () {
   //   browser.click('#at-btn')
   //
   //   // we should now see a modal presenting a choice to restore the wallet or use a new one
-  //   browser.waitForExist('#walletModal', 5000)
-  //   browser.waitForEnabled('#restore-keystore', 5000)
+  //   browser.waitForExist('#walletModal')
+  //   browser.waitForEnabled('#restore-keystore')
   //   browser.pause(1000)
   //   browser.click('#restore-keystore')
   //
@@ -252,7 +252,7 @@ describe('account workflow', function () {
       .setValue('[name="at-field-password_again"]', 'password')
     // submit the form
     browser.$('#at-btn').click()
-    browser.waitForVisible('.at-error', 2000)
+    browser.waitForVisible('.at-error')
     const error = browser.getText('.at-error')
     assert.isNotNull(error, 'should exist a error message')
     assert.equal(error, 'Email already exists.')
@@ -260,7 +260,7 @@ describe('account workflow', function () {
 
   it('do not overwrite a user address if failed to register a new user with a used email [TODO]', function () {
     // createUserAndLogin(browser)
-    // browser.waitForVisible('#public_address', 5000)
+    // browser.waitForVisible('#public_address')
     // const address = browser.getText('#public_address')
     // browser.pause(5000)
     // // logout
@@ -274,7 +274,7 @@ describe('account workflow', function () {
     // browser.pause(2000)
     // browser.click('#at-signUp')
     // // fill in the form
-    // browser.waitForExist('[name="at-field-name"]', 6000)
+    // browser.waitForExist('[name="at-field-name"]')
     // browser
     //   .setValue('[name="at-field-name"]', 'Guildenstern')
     //   .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
@@ -285,7 +285,7 @@ describe('account workflow', function () {
     //
     // // verify if the address doesn't changed
     // login(browser)
-    // browser.waitForVisible('#public_address', 5000)
+    // browser.waitForVisible('#public_address')
     // const address2 = browser.getText('#public_address')
     // assert.equal(web3.toChecksumAddress(address), address2, 'The address is not the same')
     // browser.pause(5000)
@@ -296,7 +296,7 @@ describe('account workflow', function () {
     createUserAndLogin(browser)
     browser.pause(5000)
     browser.url('http://localhost:3000/profile')
-    browser.waitForEnabled('#show-seed', 5000)
+    browser.waitForEnabled('#show-seed')
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
@@ -311,9 +311,9 @@ describe('account workflow', function () {
     browser.pause(5000)
 
     browser.url('http://localhost:3000/profile')
-    browser.waitForExist('#send-eth', 10000)
+    browser.waitForExist('#send-eth')
     browser.click('#send-eth')
-    browser.waitForExist('.modal-dialog', 5000)
+    browser.waitForExist('.modal-dialog')
   })
 
   it('do not show the seed if wrong password', function () {
@@ -322,13 +322,13 @@ describe('account workflow', function () {
     browser.pause(4000)
     browser.url('http://localhost:3000/profile')
 
-    browser.waitForEnabled('#show-seed', 10000)
+    browser.waitForEnabled('#show-seed')
     browser.click('#show-seed')
 
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'wrong')
     browser.click('#btn-show-seed')
-    browser.waitForVisible('.control-label', 1000)
+    browser.waitForVisible('.control-label')
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
@@ -336,7 +336,7 @@ describe('account workflow', function () {
     createUserAndLogin(browser)
     browser.pause(4000)
     browser.url('http://localhost:3000/profile')
-    browser.waitForEnabled('#show-seed', 10000)
+    browser.waitForEnabled('#show-seed')
     browser.click('#show-seed')
     browser.waitForEnabled('[name="user_password"]')
     browser.pause(1000)
@@ -362,7 +362,7 @@ describe('account workflow', function () {
     browser.setValue('[name="field-seed"]', seed)
     browser.setValue('[name="field-password"]', 'password')
     browser.click('#btn-restorekeystore-restore')
-    browser.waitForExist('#public_address', 3000)
+    browser.waitForExist('#public_address')
     const newPublicAddress = browser.getHTML('#public_address', false)
     assert.equal(publicAddress, newPublicAddress)
   })
@@ -372,10 +372,10 @@ describe('account workflow', function () {
     browser.pause(4000)
     browser.url('http://localhost:3000/profile')
 
-    browser.waitForExist('#show-seed', 20000)
+    browser.waitForExist('#show-seed')
 
     browser.click('#show-seed')
-    browser.waitForVisible('[name="user_password"]', 5000)
+    browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#btn-show-seed')
     browser.pause(1000)
@@ -392,7 +392,7 @@ describe('account workflow', function () {
     browser.setValue('[name="field-seed"]', seed)
     browser.setValue('[name="field-password"]', 'wrong')
     browser.click('#btn-restorekeystore-restore')
-    browser.waitForVisible('.control-label', 2000)
+    browser.waitForVisible('.control-label')
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
@@ -423,16 +423,16 @@ describe('account workflow', function () {
     assertUserIsLoggedIn(browser)
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
-    browser.waitForExist('#walletModal', 10000)
+    browser.waitForExist('#walletModal')
     browser.pause(1000)
-    browser.waitForEnabled('#walletModal #create-wallet', 1000)
+    browser.waitForEnabled('#walletModal #create-wallet')
     browser.click('#walletModal #create-wallet')
     browser.waitForEnabled('[name="user_password"]')
     browser
       .setValue('[name="user_password"]', 'wrong password')
     browser.click('#btn-create-wallet')
 
-    browser.waitForVisible('.control-label', 10000)
+    browser.waitForVisible('.control-label')
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 })

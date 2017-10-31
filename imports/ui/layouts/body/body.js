@@ -1,6 +1,7 @@
 import './body.html'
 import '/imports/ui/components/modals/userModal.js'
 import '/imports/ui/components/modals/regenerateKeystore.js'
+import '/imports/ui/components/svgs/svgs.js'
 import { add0x } from '/imports/lib/utils.js'
 
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, createKeystore, deleteKeystore, getKeystore, getSeedFromKeystore } from '/imports/lib/ethereum/wallet.js'

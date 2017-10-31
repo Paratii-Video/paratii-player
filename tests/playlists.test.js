@@ -39,7 +39,7 @@ describe('price tag status', function () {
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videos-item', 2000)
+    browser.waitForExist('.videos-item')
 
     // .videoCardPrice should not exists
     const priceTag = browser.waitForExist('.videos-item-price', null, true)
@@ -51,7 +51,7 @@ describe('price tag status', function () {
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videos-item', 2000)
+    browser.waitForExist('.videos-item')
     assert.equal(browser.getText('.videos-item-price'), '10 PTI')
   })
 
@@ -59,13 +59,13 @@ describe('price tag status', function () {
     createUserAndLogin(browser)
     browser.pause(5000)
     browser.url('http:localhost:3000/profile')
-    browser.waitForVisible('#public_address', 5000)
+    browser.waitForVisible('#public_address')
     const address = browser.getText('#public_address')
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     server.execute(fakeVideoUnlock, address)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videos-item', 2000)
+    browser.waitForExist('.videos-item')
     // assert.equal(browser.getText('.videos-item-price'), '✓')
   })
 })

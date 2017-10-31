@@ -28,10 +28,10 @@ describe('Video Store:', function () {
     sendSomeETH(userAccount, 2.1)
     sendSomePTI(userAccount, 300)
     // browser.execute(getSomeETH, 2.1)
-    // browser.waitForExist('#eth_amount', 10000)
+    // browser.waitForExist('#eth_amount')
     // browser.execute(getSomePTI, 300)
     // browser.click('a[href="#pti"]')
-    // browser.waitForExist('#pti_amount', 5000)
+    // browser.waitForExist('#pti_amount')
     // const amount = browser.getHTML('#pti_amount', false)
     // assert.equal(amount, 300)
   })
@@ -40,7 +40,7 @@ describe('Video Store:', function () {
     // check sanity
     // set up the test..
     browser.url(`http://127.0.0.1:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video', 5000)
+    browser.waitForEnabled('#unlock-video')
     browser.click('#unlock-video')
     browser.waitForEnabled('[name="user_password"]')
     browser.pause(1000)
@@ -56,13 +56,13 @@ describe('Video Store:', function () {
     }, 10000)
     browser.url('http://127.0.0.1:3000/transactions')
     let description = 'Bought video 5'
-    browser.waitForExist('.transaction-description', 5000)
+    browser.waitForExist('.transaction-description')
     let msg = `Expected to find ${description} in the first from ${browser.getText('.transaction-description')}`
     assert.isOk(browser.getText('.transaction-description')[0].indexOf(description) > -1, msg)
 
     // the video should be unlocked now
     browser.url(`http://127.0.0.1:3000/play/${videoId}`)
-    browser.waitForExist('.player-controls', 5000)
+    browser.waitForExist('.player-controls')
 
     done()
   })
