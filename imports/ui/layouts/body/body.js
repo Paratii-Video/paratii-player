@@ -1,18 +1,17 @@
 import './body.html'
-import '/imports/ui/components/modals/login.js'
+import '/imports/ui/components/modals/userModal.js'
 import '/imports/ui/components/modals/regenerateKeystore.js'
 import { add0x } from '/imports/lib/utils.js'
 
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, createKeystore, deleteKeystore, getKeystore, getSeedFromKeystore } from '/imports/lib/ethereum/wallet.js'
 
+// TODO: reconsider the location of the next code - perhaps move it to start.js ?
 if (Meteor.isClient) {
-  // const keystoreAnonymous = getKeystore('anonymous')
-  // console.log(add0x(keystoreAnonymous.getAddresses()[0]))
   Accounts.onLogin(function (user) {
     // User is logged in
-    // const keystores = keystoresCheck()
-    // get the user's keystore
     console.log('onLogin')
+    // if any modal is still open, we can safely close it now to make it possible to open new ones
+    // get the user's keystore
     const keystore = getKeystore()
 
     if (Session.get('signup')) {
@@ -25,44 +24,41 @@ if (Meteor.isClient) {
           if (err) {
             throw err
           }
-          Modal.show('showSeed', { type: 'show' })
+          // Modal.show('userModal', { type: 'show' })
           let password = Session.get('user-password')
           createKeystore(password, seedPhrase, function (error, result) {
             if (error) {
               throw error
             }
             deleteKeystore('anonymous')
+            Modal.show('userModal', { setTemplate: 'showSeed' })
+            Session.get('user-password', null)
           })
         })
       } else {
-        console.log('non anonymous keystore found')
+        // TODO: do something here...
+        console.log('no anonymous keystore found')
       }
     } else {
       if (keystore === null) {
-        // the user has no keystore (yet)
+        // this is an existing user (we are not in the singup process) , but the user has no keystore
+        console.log('Getting anonymous keystore')
+
         const anonymousKeystore = getKeystore('anonymous')
-        console.log('ANON')
         console.log(anonymousKeystore)
         if (anonymousKeystore !== null) {
-
+          console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
+          // TODO: why do we need to hide a previous modal?
+          Session.set('modalTemplate', 'regenerateKeystore')
+          Modal.show('userModal', { setTemplate: 'regenerateKeystore' })
         } else {
-          console.log('!!!! rigenera keystore')
-          Modal.show('regenerateKeystore')
+          // TODO: we don't have an anonymous keystore. This could be a timing problem (the keystore is still beging generated)
         }
       } else {
         Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))
+        Modal.hide()
       }
     }
-    // Check if there is an anonymous keystore
-    // if (keystores.anonymous > 0) {
-    //   const keystoreAnonymous = getKeystore('anonymous')
-    //   Session.set('anonymousAddress', add0x(keystoreAnonymous.getAddresses()[0]))
-    //   console.log('keystore')
-    //   console.log(keystore)
-    //   console.log(add0x(keystore.getAddresses()[0]))
-    //   console.log('keystore anonymous')
-    //   console.log(add0x(keystoreAnonymous.getAddresses()[0]))
-    // }
   })
 
   Accounts.onLogout(function (user) {
@@ -85,8 +81,7 @@ Template.App_body.onCreated(function () {
 
   // if the user is not logged in, we create an anonymous keystore to use for transacting
   if (Accounts.userId() === null) {
-    Session.set('wallet-state', 'generating')
-      // Create anonymouse keystore with 'password'
+    // Create anonymouse keystore with 'password'
     createAnonymousKeystoreIfNotExists()
   }
   // If user is not logged in and is not in profile page
@@ -95,7 +90,7 @@ Template.App_body.onCreated(function () {
     if (keystores.users > 0) {
       // There is at least one User keystore
       // Propose to login if not create anonymous keystore
-      Modal.show('login')
+      Modal.show('userModal', { setTemplate: 'login' })
     } else {
       // If there is no User keystore
     }

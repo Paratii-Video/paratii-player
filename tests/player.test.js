@@ -12,7 +12,7 @@ describe('player workflow', function () {
   })
 
   it('play a free video', function () {
-    server.execute(createVideo, '12345', 'Test 1', 0)
+    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     browser.url('http://localhost:3000/play/12345')
     browser.waitForExist('#video-player')
     browser.waitForExist('.player-overlay')
@@ -29,7 +29,7 @@ describe('player workflow', function () {
   })
 
   it('click on the progress bar', function () {
-    server.execute(createVideo, '12345', 'Test 1', 0)
+    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     browser.url('http://localhost:3000/play/12345')
     browser.waitForExist('#video-player')
     // browser.waitForExist('#loaded-bar')
@@ -42,8 +42,8 @@ describe('player workflow', function () {
   })
 
   it('click on next video', () => {
-    server.execute(createVideo, '12345', 'Test 1', 0)
-    server.execute(createVideo, '23456', 'Test 2', 0)
+    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
+    server.execute(createVideo, '23456', 'Test 2', '', '', [''], 0)
     server.execute(createPlaylist, '98765', 'Playlist test', ['12345', '23456'])
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitForExist('.player-overlay')
@@ -59,8 +59,8 @@ describe('player workflow', function () {
   })
 
   it('click on previous video', () => {
-    server.execute(createVideo, '12345', 'Test 1', 0)
-    server.execute(createVideo, '23456', 'Test 2', 0)
+    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
+    server.execute(createVideo, '23456', 'Test 2', '', '', [''], 0)
     server.execute(createPlaylist, '98765', 'Playlist test', ['12345', '23456'])
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitForExist('.player-overlay')

@@ -68,11 +68,13 @@
           <input class="main-form-checkbox" type="checkbox" name="fullscreen">
           <span class="main-form-checkbox-checked"></span>
         </label>
+        {{#if autoplay}}
         <label class="main-form-label main-form-label-checkbox autoplay">
           Autoplay
           <input class="main-form-checkbox" type="checkbox" name="autoplay">
           <span class="main-form-checkbox-checked"></span>
         </label>
+        {{/if}}
         <label class="main-form-label main-form-label-checkbox loop">
           Loop
           <input class="main-form-checkbox" type="checkbox" name="loop">

@@ -7,7 +7,7 @@ import { web3 } from '/imports/lib/ethereum/web3.js'
 
 import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
-import '/imports/ui/components/modals/restoreKeystore.js'
+import '/imports/ui/components/modals/createNewWallet.js'
 import '/imports/ui/components/modals/showSeed.js'
 import '../../components/pageheader/pageheader.js'
 import './profile.html'
@@ -70,7 +70,8 @@ Template.profile.helpers({
 
 Template.profile.events({
   'click #create-wallet' () {
-    Modal.show('showSeed', { type: 'create' })
+    // Modal.show('showSeed', { type: 'create' })
+    Modal.show('userModal', { setTemplate: 'createNewWallet' })
   },
   'click #send-eth' () {
     Modal.show('doTransaction', { type: 'Eth', label: 'Send Ether' })
@@ -82,10 +83,8 @@ Template.profile.events({
     Modal.show('restoreKeystore', {})
   },
   'click #show-seed' () {
-    Modal.show('main_modal', {
-      modal: 'showSeed',
-      type: 'show'
-    })
+    // Modal.show('showSeed', { type: 'show' })
+    Modal.show('userModal', { setTemplate: 'showSeed' })
   },
   'click #edit-profile' () {
     const modalOptions = {}

@@ -331,12 +331,9 @@ Template.player.events({
         }
       })
     } else {
-      // Modal.show('main_modal', { modal: 'regenerateKeystore' })
-      Modal.show('main_modal', {
-        modal: 'modal_sign',
-        data: {
-          type: 'modal_sign_in'
-        }
+      // Modal.show('login', { type: 'sign_in'})
+      Modal.show('userModal', {
+        setTemplate: 'login'
       })
     }
   },
@@ -505,7 +502,8 @@ Template.player.events({
       data: {
         type: 'modal_share_links',
         videoId: videoId,
-        embed: window.top !== window.self
+        embed: window.top !== window.self,
+        autoplay: !Template.instance().playerState.get('locked')
       }
     })
   },
