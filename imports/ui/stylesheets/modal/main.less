@@ -74,6 +74,9 @@
   &.show-content {
     pointer-events: initial;
   }
+  .show-content & {
+    pointer-events: initial;
+  }
 }
 
 // Steps
@@ -204,13 +207,11 @@
     &-close {
       &:extend(.hover-opacity all);
 
-      height: 15px;
       position: absolute;
       right: 20px;
       top: 23px;
       transform: scale(0);
       transition: opacity .3s, transform .35s @ease-smooth;
-      width: 15px;
       z-index: 2;
 
       .fade.in & {
@@ -223,9 +224,9 @@
       }
 
       &-svg {
-        &:extend(.full-block all);
-
+        display: block;
         fill: @color-grey-light;
+        width: 15px;
       }
     }
 
@@ -298,26 +299,14 @@
     position: absolute;
     width: 100%;
 
-    .waiting & {
-      .button-text {
-        opacity: 0;
-        pointer-events: none;
-      }
-    }
-
-    &-waiting {
-      &:extend(.pos-a-vm all);
-
-      color: @color-grey-light;
+    &-loading {
+      display: none;
       font-weight: 500;
-      opacity: 0;
-      pointer-events: none;
-      right: 0;
       text-transform: uppercase;
-      transition: opacity .2s;
 
-      .waiting & {
+      .loading & {
         animation: blink .5s linear infinite;
+        display: block;
       }
     }
   }

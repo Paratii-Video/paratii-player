@@ -15,7 +15,7 @@ describe('account workflow', function () {
     server.execute(resetDb)
   })
 
-  it('register a new user [legacy, siging up with profile page] @watch', function () {
+  it('register a new user [legacy, siging up with profile page]', function () {
     // this test can be safely removed
     browser.execute(nukeLocalStorage)
 
