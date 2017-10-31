@@ -2,8 +2,6 @@ import { Template } from 'meteor/templating'
 import Clipboard from 'clipboard'
 import './embedCustomizer.html'
 
-//
-
 let clipboard
 const embedSizes = [
   {
@@ -19,30 +17,31 @@ const embedSizes = [
 
   }
 ]
-var isModalOpened = false
-const animIn = 10
-const animOut = 300
-var $modal
 
-// Share modal
+// Embed(wrapper)
 
 Template.modal_share_video.onCreated(function () {
-  isModalOpened = false
   this.modalState = new ReactiveDict()
   this.modalState.set('type', this.data.type)
 })
 
 Template.modal_share_video.helpers({
-  isLinks: (type) => type === 'links',
-  isEmbed: (type) => type === 'embed',
+  isLinks: (type) => type === 'modal_share_links',
+  isEmbed: (type) => type === 'modal_share_embed',
   modalType: () => Template.instance().modalState.get('type')
 })
 
 // Links
 
 Template.modal_share_links.onRendered(() => {
-  $modal = $('div.main-modal-share')
-  modalShowContent()
+  let timeIn = 10
+
+  if (!$('div.main-modal').hasClass('opened')) {
+    $('div.main-modal').addClass('opened')
+    timeIn += 850
+  }
+
+  Meteor.setTimeout(() => $('div.main-modal-share').addClass('show-content'), timeIn)
 })
 
 Template.modal_share_links.onCreated(function () {
@@ -52,18 +51,39 @@ Template.modal_share_links.onCreated(function () {
 Template.modal_share_links.helpers({
   embedBaseUrl () {
     return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  },
+  facebook () {
+    var baseurl = 'https://www.facebook.com/sharer/sharer.php?u='
+    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  },
+  twitter () {
+    var baseurl = 'https://twitter.com/intent/tweet?text='
+    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  },
+  whatsapp () {
+    var baseurl = 'whatsapp://send?text='
+    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  },
+  telegram () {
+    var baseurl = 'https://t.me/share/url?url='
+    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+  },
+  email () {
+    var baseurl = 'mailto:?&subject=Paratii&body='
+    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
   }
 })
 
 Template.modal_share_links.events({
   'click button.gotoembed' (event, instance) {
-    modalHideContent(instance.view.parentView.parentView, 'embed')
+    let templateView = instance.view.parentView.parentView
+
+    $('div.main-modal-share').removeClass('show-content')
+    Meteor.setTimeout(() => templateView.templateInstance().modalState.set('type', 'modal_share_embed'), 300)
   }
 })
 
 // Embed
-
-Template.modal_share_embed.onRendered(() => modalShowContent())
 
 Template.modal_share_embed.onCreated(function () {
   this.iframe = new ReactiveDict()
@@ -75,6 +95,17 @@ Template.modal_share_embed.onCreated(function () {
   this.iframe.set('playsinline', false)
 
   setClipboard('#copy_embed_code')
+})
+
+Template.modal_share_embed.onRendered(() => {
+  let timeIn = 10
+
+  if (!$('div.main-modal').hasClass('opened')) {
+    $('div.main-modal').addClass('opened')
+    timeIn += 850
+  }
+
+  Meteor.setTimeout(() => $('div.main-modal-share').addClass('show-content'), timeIn)
 })
 
 Template.modal_share_embed.helpers({
@@ -138,27 +169,12 @@ Template.modal_share_embed.events({
     Template.instance().iframe.set('playsinline', event.target.checked)
   },
   'click button.gotolinks' (event, instance) {
-    modalHideContent(instance.view.parentView.parentView, 'links')
+    let templateView = instance.view.parentView.parentView
+
+    $('div.main-modal-share').removeClass('show-content')
+    Meteor.setTimeout(() => templateView.templateInstance().modalState.set('type', 'modal_share_links'), 300)
   }
 })
-
-//
-
-function modalShowContent () {
-  let timeAnimIn = animIn
-
-  if (!isModalOpened) {
-    isModalOpened = true
-    timeAnimIn = animIn + 850
-  }
-
-  Meteor.setTimeout(() => $modal.addClass('show-content'), timeAnimIn)
-}
-
-function modalHideContent (template, type) {
-  $modal.removeClass('show-content')
-  Meteor.setTimeout(() => template.templateInstance().modalState.set('type', type), animOut)
-}
 
 //
 

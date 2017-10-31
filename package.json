@@ -8,10 +8,11 @@
     "testrpc": "testrpc -a 10",
     "test": "meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754",
     "test-concurrently": "concurrently --kill-others \"npm run testrpc\" \"meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754\"",
+    "test-headless": "TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha --port 9999",
     "lint": "standard",
     "lint-fix": "standard --fix",
-    "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
-    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=5000"
+    "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests --webdriverio.waitforTimeout=10000",
+    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=10000"
   },
   "pre-commit": [
     "lint-fix"
@@ -43,7 +44,7 @@
     "webworker-threads": "^0.7.13"
   },
   "devDependencies": {
-    "chimp": "^0.49.1",
+    "chimp": "^0.50.2",
     "chromedriver": "^2.30.1",
     "concurrently": "^3.5.0",
     "core-js": "^2.4.1",
@@ -55,6 +56,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "ethereumjs-testrpc": "^4.0.1",
+    "fibers": "^2.0.0",
     "mocha": "^3.4.1",
     "nightmare": "^2.10.0",
     "pre-commit": "^1.2.2",

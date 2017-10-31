@@ -2,6 +2,7 @@
 import { web3 } from '../imports/lib/ethereum/web3.js'
 import { getParatiiContracts } from '../imports/lib/ethereum/contracts.js'
 import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
+import { assert } from 'chai'
 
 web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
 export { web3 }
@@ -14,11 +15,52 @@ export function getProvider () {
 }
 
 export function login (browser) {
-  browser.url('http://localhost:3000/profile')
-  browser.waitForExist('[name="at-field-email"]', 10000)
-  browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-  browser.setValue('[name="at-field-password"]', 'password')
-  browser.click('#at-btn')
+  // TODO: do not use profile page to login (just do 'browser.execute(Meteor.login) or something')
+  // browser.url('http://localhost:3000/profile')
+  // browser.waitForExist('[name="at-field-email"]', 10000)
+  // browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+  // browser.setValue('[name="at-field-password"]', 'password')
+  // // wait for the anon keystore to be generated
+  // browser.pause(1000)
+  // browser.click('#at-btn')
+  browser.execute(function () {
+    Meteor.loginWithPassword('guildenstern@rosencrantz.com', 'password')
+  })
+}
+
+export function createUserAndLogin (browser) {
+  server.execute(createUser)
+  // now log in
+  // browser.execute(createKeystore)
+
+  login(browser)
+  browser.execute(createKeystore)
+  browser.execute(function () { Modal.hide() })
+  // browser.waitForExist('#walletModal', 5000)
+  // browser.pause(1000)
+  // browser.waitForEnabled('#walletModal #create-wallet', 2000)
+  // browser.pause(200)
+  // browser.click('#walletModal #create-wallet')
+  // browser.waitForEnabled('[name="user_password"]')
+  // browser
+  //   .setValue('[name="user_password"]', 'password')
+  // browser.click('#btn-create-wallet')
+}
+
+export function assertUserIsLoggedIn (browser) {
+  // assert that the user is logged in
+  let userId = browser.execute(function () {
+    return Meteor.userId()
+  }).value
+  assert.isOk(userId)
+}
+
+export function assertUserIsNotLoggedIn (browser) {
+  // assert that the user is logged in
+  let userId = browser.execute(function () {
+    return Meteor.userId()
+  }).value
+  assert.isNotOk(userId)
 }
 
 export function getSomeETH (amount) {
@@ -43,6 +85,14 @@ export function getUserPTIAddressFromBrowser () {
   }).value
 }
 
+export function getAnonymousAddress () {
+  return browser.execute(function () {
+    const wallet = require('./imports/lib/ethereum/wallet.js')
+    const keystore = wallet.getKeystore('anonymous')
+    return keystore.getAddresses()[0]
+  }).value
+}
+
 export function getRegistryAddressFromBrowser () {
   return browser.executeAsync(async function (done) {
     const contracts = require('./imports/lib/ethereum/contracts.js')
@@ -55,6 +105,9 @@ export function resetDb () {
   Meteor.users.remove({ 'emails.address': 'guildenstern@rosencrantz.com' })
   const { Videos } = require('/imports/api/videos')
   Videos.remove({'_id': '12345'})
+  Videos.remove({'_id': '12346'})
+  Videos.remove({'_id': '12347'})
+  Videos.remove({'_id': '12348'})
   Videos.remove({'_id': '23456'})
   const { Playlists } = require('/imports/api/playlists')
   Playlists.remove({'_id': '98765'})
@@ -94,14 +147,6 @@ export function createKeystore (seed) {
   })
 }
 
-export function createUserAndLogin (browser) {
-  server.execute(createUser)
-  // now log in
-  login(browser)
-  browser.execute(createKeystore)
-  browser.waitForExist('#public_address', 5000)
-}
-
 export function clearUserKeystoreFromLocalStorage () {
   localStorage.removeItem(`keystore-${Accounts.userId()}`)
 }
@@ -110,11 +155,31 @@ export function nukeLocalStorage () {
   localStorage.clear()
 }
 
-export function createVideo (id, title, price) {
+// export function createVideo (id, title, price) {
+//   const video = {
+//     id: id,
+//     title: title,
+//     price: price,
+//     src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
+//     mimetype: 'video/mp4',
+//     stats: {
+//       likes: 150,
+//       dislikes: 10
+//     }
+//   }
+//   Meteor.call('videos.create', video)
+// }
+
+export function createVideo (id, title, description, uploaderName, tags, price) {
   const video = {
     id: id,
     title: title,
     price: price,
+    description: description,
+    uploader: {
+      name: uploaderName
+    },
+    tags: tags,
     src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
     mimetype: 'video/mp4',
     stats: {

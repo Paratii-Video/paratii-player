@@ -67,10 +67,15 @@
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus,
     &:-webkit-autofill {
-      color: @color-grey-light;
+      color: @color-grey;
       font-size: 14px;
       font-weight: 300;
       -webkit-box-shadow: 0 0 0px 1000px white inset;
+      -webkit-text-fill-color: @color-grey;
+    }
+
+    &::placeholder {
+      color: @color-grey-light;
       -webkit-text-fill-color: @color-grey-light;
     }
 
@@ -129,7 +134,7 @@
     }
 
     &-forgot {
-      display: block;
+      display: inline-block;
       font-size: 12px;
     }
   }
