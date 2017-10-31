@@ -17,14 +17,14 @@ describe('wallet', function () {
     // TODO: refactor and get the address directly using browser.execute
     browser.pause(2000)
     browser.url('http://127.0.0.1:3000/profile')
-    browser.waitForExist('#public_address', 5000)
+    browser.waitForExist('#public_address')
     userAccount = getUserPTIAddressFromBrowser()
   })
 
   it('should show ETH balance', async function (done) {
     // sendSomeETH(userAccount, 3.1)
     browser.execute(getSomeETH, 3.1)
-    browser.waitForExist('#eth_amount', 5000)
+    browser.waitForExist('#eth_amount')
     const amount = await browser.getHTML('#eth_amount', false)
     assert.equal(amount, 3.1)
     done()
@@ -34,7 +34,7 @@ describe('wallet', function () {
     sendSomeETH(userAccount, 1)
     browser.execute(getSomePTI, 321)
     browser.click('a[href="#pti"]')
-    browser.waitForExist('#pti_amount', 5000)
+    browser.waitForExist('#pti_amount')
     const amount = await browser.getHTML('#pti_amount', false)
     assert.equal(amount, 321)
     done()
@@ -47,9 +47,9 @@ describe('wallet', function () {
     browser.execute(getSomePTI, 1412)
     // open the send PTI dialog
     browser.click('a[href="#pti"]')
-    browser.waitForExist('#send-pti', 5000)
+    browser.waitForExist('#send-pti')
     browser.click('#send-pti')
-    browser.waitForEnabled('[name="wallet_friend_number"]', 5000)
+    browser.waitForEnabled('[name="wallet_friend_number"]')
     browser.pause(1000)
     browser.setValue('[name="wallet_friend_number"]', toAddress)
     browser.setValue('[name="wallet_amount"]', '5')
@@ -58,7 +58,7 @@ describe('wallet', function () {
     browser.click('#send_trans_btn')
 
     // now check if the amount is updated correctly
-    browser.waitForExist('#pti_amount', 5000)
+    browser.waitForExist('#pti_amount')
     // this is the result of 3 - 1.234 ETH - transaction costs
     const expectedAmount = '1407'
     browser.waitUntil(function () {
@@ -68,7 +68,7 @@ describe('wallet', function () {
     // we should see our transaction description in the transaction history
     browser.click('#transaction-history')
 
-    browser.waitForExist('.transaction-to', 5000)
+    browser.waitForExist('.transaction-to')
     browser.pause(1000)
     assert.equal(browser.getText('.transaction-to')[0], toAddress)
 
@@ -81,13 +81,13 @@ describe('wallet', function () {
 
   it('should be able to send some ETH, update the balance and transaction history', function (done) {
     let description = 'Here is some ETH for you'
-    browser.waitForExist('#public_address', 5000)
+    browser.waitForExist('#public_address')
     browser.execute(getSomeETH, 3)
-    browser.waitForExist('#eth_amount', 10000)
+    browser.waitForExist('#eth_amount')
     // open the send ETH dialog
-    browser.waitForExist('#send-eth', 5000)
+    browser.waitForExist('#send-eth')
     browser.click('#send-eth')
-    browser.waitForEnabled('[name="wallet_amount"]', 5000)
+    browser.waitForEnabled('[name="wallet_amount"]')
     browser.pause(2000)
     browser.setValue('[name="wallet_friend_number"]', web3.eth.accounts[1])
     browser.setValue('[name="wallet_amount"]', '1.234')
@@ -96,7 +96,7 @@ describe('wallet', function () {
     browser.click('#send_trans_btn')
 
     // now check if the amount is updated correctly
-    browser.waitForExist('#eth_amount', 5000)
+    browser.waitForExist('#eth_amount')
     // this is the result of 3 - 1.234 ETH - transaction costs
     const expectedAmount = '1.76'
     browser.waitUntil(function () {
@@ -105,7 +105,7 @@ describe('wallet', function () {
 
     // we should see our transaction description in the transaction history
     browser.click('#transaction-history')
-    browser.waitForExist('.transaction-description', 5000)
+    browser.waitForExist('.transaction-description')
     assert.equal(browser.getText('.transaction-description'), description)
 
     done()

@@ -17,7 +17,7 @@ export function getProvider () {
 export function login (browser) {
   // TODO: do not use profile page to login (just do 'browser.execute(Meteor.login) or something')
   // browser.url('http://localhost:3000/profile')
-  // browser.waitForExist('[name="at-field-email"]', 10000)
+  // browser.waitForExist('[name="at-field-email"]')
   // browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
   // browser.setValue('[name="at-field-password"]', 'password')
   // // wait for the anon keystore to be generated
@@ -36,9 +36,9 @@ export function createUserAndLogin (browser) {
   login(browser)
   browser.execute(createKeystore)
   browser.execute(function () { Modal.hide() })
-  // browser.waitForExist('#walletModal', 5000)
+  // browser.waitForExist('#walletModal')
   // browser.pause(1000)
-  // browser.waitForEnabled('#walletModal #create-wallet', 2000)
+  // browser.waitForEnabled('#walletModal #create-wallet')
   // browser.pause(200)
   // browser.click('#walletModal #create-wallet')
   // browser.waitForEnabled('[name="user_password"]')
