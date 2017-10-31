@@ -9,6 +9,8 @@ import { showModal } from '/imports/lib/utils.js'
 import '/imports/ui/components/modals/mainModal.js'
 import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
+import '/imports/ui/components/modals/regenerateKeystore.js'
+import '/imports/ui/components/modals/restoreKeystore.js'
 import '/imports/ui/components/modals/createNewWallet.js'
 import '/imports/ui/components/modals/showSeed.js'
 import '/imports/ui/components/pageheader/pageheader.js'
@@ -84,7 +86,7 @@ Template.profile.events({
     showModal('restoreKeystore')
   },
   'click #show-seed' () {
-    showModal('createNewWallet')
+    showModal('showSeed')
   },
   'click #edit-profile' () {
     showModal('editProfile')

@@ -6,6 +6,7 @@ import paratiiIPFS from '/imports/lib/ipfs/index.js'
 import 'meteor/johnantoni:meteor-svginjector'
 import '/imports/ui/components/modals/login.js'
 import '/imports/ui/components/modals/mainModal.js'
+import '/imports/ui/components/modals/login.js'
 
 const loadSVG = () => {
   const mySVGsToInject = document.querySelectorAll('.svg')

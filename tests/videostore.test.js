@@ -2,7 +2,7 @@ import { web3, resetDb, createUserAndLogin, getOrDeployParatiiContracts, getUser
 import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('Video Store:', function () {
+describe('Video Store: ', function () {
   let contracts
   let videoId = '5' // this is  a known videoId defined in fixtures.js
 
@@ -24,7 +24,6 @@ describe('Video Store:', function () {
     browser.pause(2000)
     browser.url('http://127.0.0.1:3000/profile')
     let userAccount = getUserPTIAddressFromBrowser()
-    console.log(userAccount)
     sendSomeETH(userAccount, 2.1)
     sendSomePTI(userAccount, 300)
     // browser.execute(getSomeETH, 2.1)
@@ -108,7 +107,7 @@ describe('Video Store:', function () {
     // console.log('-------------------------------------------')
     // console.log(Number(tx))
 
-    console.log('check preconditions')
+    // console.log('check preconditions')
     // 1. paratiiRegistry from VideoStore is known
     tx = contracts.VideoStore.paratiiRegistry({from: web3.eth.accounts[0]})
     assert.equal(contracts.ParatiiRegistry.address, tx)
