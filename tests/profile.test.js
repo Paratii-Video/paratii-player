@@ -15,7 +15,7 @@ describe('account workflow', function () {
     server.execute(resetDb)
   })
 
-  it('register a new user [legacy, siging up with profile page] @watch', function () {
+  it('register a new user [legacy, siging up with profile page]', function () {
     // this test can be safely removed
     browser.execute(nukeLocalStorage)
 
@@ -332,11 +332,10 @@ describe('account workflow', function () {
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('restore the keystore', function () {
+  it('restore the keystore @watch', function () {
     createUserAndLogin(browser)
     browser.pause(2000)
     browser.url('http://localhost:3000/profile')
-
     browser.waitForEnabled('#show-seed', 10000)
     browser.click('#show-seed')
     browser.waitForEnabled('[name="user_password"]')
@@ -374,6 +373,7 @@ describe('account workflow', function () {
     browser.url('http://localhost:3000/profile')
 
     browser.waitForExist('#show-seed', 10000)
+
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]', 5000)
     browser.setValue('[name="user_password"]', 'password')
