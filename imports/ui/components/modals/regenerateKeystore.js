@@ -1,21 +1,16 @@
+import { Template } from 'meteor/templating'
 import './regenerateKeystore.html'
-
-// import { getKeystore } from '/imports/lib/ethereum/wallet.js'
-
-import '/imports/ui/components/modals/restoreKeystore.js'
-
-Template.regenerateKeystore.onRendered(() => Meteor.setTimeout(() => $('div.main-modal-keystore').addClass('show-content'), 860))
 
 Template.regenerateKeystore.events({
   'click #restore-keystore' () {
-    Modal.hide('regenerateKeystore')
-    console.log('open retstorekystore')
+    // Modal.hide('regenerateKeystore')
+    console.log('open restorekystore')
     // TODO: make this work
-    Modal.show('restoreKeystore', {})
+    // Modal.show('restoreKeystore', {})
+    Session.set('modalTemplate', 'restoreKeystore')
   },
   'click #create-wallet' () {
-    // TODO
     console.log('TODO: merge the anonymous wallet to the new user')
-    Modal.close('regenerateKeystore')
+    Session.set('modalTemplate', 'createNewWallet')
   }
 })

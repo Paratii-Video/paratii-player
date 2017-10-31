@@ -66,7 +66,7 @@ if you get out-of-memory errors, setting TOOL_NODE_FLAGS may help:
 
     export TOOL_NODE_FLAGS="--max_old_space_size=4096"
 
-## Embedding and Sharing the player and oEmbed service
+## Embedding and Sharing
 
 Deepen at:
 

@@ -101,6 +101,7 @@ Meteor.methods({
     check(video, {
       id: String,
       title: String,
+      description: String,
       price: Number,
       src: String,
       thumb: String,
@@ -108,15 +109,24 @@ Meteor.methods({
       stats: {
         likes: Number,
         dislikes: Number
-      }
+      },
+      uploader: {
+        name: String
+      },
+      tags: Array
     })
     Videos.insert({
       _id: video.id,
       title: video.title,
       price: video.price,
+      description: video.description,
       src: video.src,
       stats: video.stats,
-      mimetype: video.mimetype
+      mimetype: video.mimetype,
+      tags: video.tags,
+      uploader: {
+        name: video.uploader.name
+      }
     })
     return video.id
   }

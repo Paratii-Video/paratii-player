@@ -30,7 +30,10 @@ Template.restoreKeystore.events({
           if (err) {
             instance.errors.set('seed', 'Invalid seed!')
           } else {
-            Modal.hide('restoreKeystore')
+            // Modal.hide('restoreKeystore')
+            Modal.hide('userModal')
+            Session.set('user-password', null)
+            Session.set('modalTemplate', null)
           }
         })
       } else {
