@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating'
-import { formatNumber } from '/imports/lib/utils.js'
+import { formatNumber, showModal } from '/imports/lib/utils.js'
 import { Videos } from '../../../../imports/api/videos.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
@@ -91,7 +91,7 @@ Template.playlists.events({
     Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'))
   },
   'click #button-create-playlist' () {
-    Modal.show('modal_playlist', {
+    showModal('modal_playlist', {
       type: 'create'
     })
   }

@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating'
 import { restoreWallet } from '/imports/lib/ethereum/wallet.js'
-
+import { hideModal } from '/imports/lib/utils.js'
 import '/imports/api/users.js'
 import './restoreKeystore.html'
 
@@ -30,10 +30,8 @@ Template.restoreKeystore.events({
           if (err) {
             instance.errors.set('seed', 'Invalid seed!')
           } else {
-            // Modal.hide('restoreKeystore')
-            Modal.hide('mainModal')
+            hideModal()
             Session.set('user-password', null)
-            Session.set('modalTemplate', null)
           }
         })
       } else {

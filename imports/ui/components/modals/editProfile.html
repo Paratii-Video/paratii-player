@@ -1,11 +1,11 @@
 <template name="editProfile">
   <form id="form-update-profile">
-    <div class="modal fade">
+    <!-- <div class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content" id="show-seed">
           <div class="modal-header">
             <h4 class="modal-title">Confirmation</h4>
-          </div>
+          </div> -->
           <div class="modal-body">
             {{#if currentUser }}
               <div>
@@ -66,11 +66,10 @@
             {{/if}}
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-editprofile-close">Close</button>
             <input type="submit" id="btn-editprofile-save" class="btn btn-default blue-button" value="Save changes"/>
           </div>
-        </div>
+        <!-- </div>
       </div>
-    </div>
+    </div> -->
   </form>
 </template>

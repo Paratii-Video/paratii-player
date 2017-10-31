@@ -2,7 +2,7 @@ import { Template } from 'meteor/templating'
 import { Blaze } from 'meteor/blaze'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
-import { formatNumber } from '/imports/lib/utils.js'
+import { formatNumber, showModal } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos } from '../../../api/videos.js'
@@ -12,8 +12,7 @@ import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
-import '/imports/ui/components/modals/regenerateKeystore.js'
-
+// import '/imports/ui/components/modals/regenerateKeystore.js'
 import '/imports/ui/components/modals/modals.js'
 
 import './player.html'
@@ -318,9 +317,8 @@ const setLoadedProgress = (instance) => {
 Template.player.events({
   'click #unlock-video' (event) {
     if (Meteor.user()) {
-      Modal.show('main_modal', {
-        modal: 'unlockVideo',
-        data: {
+      showModal('unlockVideo',
+        {
           type: 'PTI',
           label: 'Unlock this video',
           action: 'unlock_video',
@@ -329,11 +327,9 @@ Template.player.events({
           videotitle: event.target.dataset.title, // Video title
           videoid: Template.instance().currentVideo.get()._id // Video title
         }
-      })
+      )
     } else {
-      Modal.show('login', {
-        type: 'sign_in'
-      })
+      showModal('login')
     }
   },
   'ended #video-player' (event, instance) {
@@ -496,15 +492,14 @@ Template.player.events({
   },
   'click #embed' (event, instance) {
     const videoId = Template.instance().currentVideo.get()._id
-    Modal.show('main_modal', {
-      modal: 'modal_share_video',
-      data: {
+    showModal('modal_share_video',
+      {
         type: 'modal_share_links',
         videoId: videoId,
         embed: window.top !== window.self,
         autoplay: !Template.instance().playerState.get('locked')
       }
-    })
+    )
   },
   'click .player-infos-button-description' (event, instance) {
     instance.playerState.set('showDescription', !instance.playerState.get('showDescription'))
