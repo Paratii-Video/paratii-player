@@ -41,6 +41,9 @@ Template.playlists.helpers({
     const playlists = Playlists.find()
     return playlists
   },
+  playlistCounter (playlist) {
+    return playlist.videos.length
+  },
   videos () {
     if (Playlists.find().fetch().length > 0) {
       if (FlowRouter.getParam('_id')) {
