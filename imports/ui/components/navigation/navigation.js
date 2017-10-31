@@ -4,6 +4,7 @@ import { showModal } from '/imports/lib/utils.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
 import paratiiIPFS from '/imports/lib/ipfs/index.js'
 import 'meteor/johnantoni:meteor-svginjector'
+import '/imports/ui/components/modals/login.js'
 import '/imports/ui/components/modals/mainModal.js'
 
 const loadSVG = () => {
