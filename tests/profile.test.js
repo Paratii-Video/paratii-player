@@ -319,7 +319,7 @@ describe('account workflow', function () {
   it('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
 
-    browser.pause(5000)
+    browser.pause(4000)
     browser.url('http://localhost:3000/profile')
 
     browser.waitForEnabled('#show-seed', 10000)
@@ -334,7 +334,7 @@ describe('account workflow', function () {
 
   it('restore the keystore @watch', function () {
     createUserAndLogin(browser)
-    browser.pause(2000)
+    browser.pause(4000)
     browser.url('http://localhost:3000/profile')
     browser.waitForEnabled('#show-seed', 10000)
     browser.click('#show-seed')
@@ -369,7 +369,7 @@ describe('account workflow', function () {
 
   it('do not restore keystore if wrong password', function () {
     createUserAndLogin(browser)
-    browser.pause(2000)
+    browser.pause(4000)
     browser.url('http://localhost:3000/profile')
 
     browser.waitForExist('#show-seed', 20000)
