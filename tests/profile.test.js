@@ -372,7 +372,7 @@ describe('account workflow', function () {
     browser.pause(2000)
     browser.url('http://localhost:3000/profile')
 
-    browser.waitForExist('#show-seed', 10000)
+    browser.waitForExist('#show-seed', 20000)
 
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]', 5000)
