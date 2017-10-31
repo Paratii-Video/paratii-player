@@ -1,20 +1,5 @@
-import { resetDb, clearUserKeystoreFromLocalStorage, createUserAndLogin } from './helpers.js'
+import { resetDb, createVideo, clearUserKeystoreFromLocalStorage, createUserAndLogin } from './helpers.js'
 import { assert } from 'chai'
-
-function createVideo (price) {
-  const video = {
-    id: '12345',
-    title: 'Rosencrantz and Guildenstern are dead',
-    price: price,
-    src: '/test/files/SampleVideo_1280x720_1mb.mp4',
-    mimetype: 'video/mp4',
-    stats: {
-      likes: 150,
-      dislikes: 10
-    }
-  }
-  Meteor.call('videos.create', video)
-}
 
 function createPlaylist () {
   const playlist = {
@@ -31,7 +16,7 @@ function fakeVideoUnlock (address) {
   // TODO: this function need to call the Contract instead of insert the transactin in Mongo
   // const transaction = {
   //   from: address,
-  //   _id: '5000',
+  //   _id: '5000',s
   //   videoid: '12345',
   //   blockNumber: 1
   // }
@@ -51,7 +36,7 @@ describe('price tag status', function () {
 
   it('when the video has no price', () => {
     createUserAndLogin(browser)
-    server.execute(createVideo, 0)
+    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.videos-item', 2000)
@@ -63,7 +48,7 @@ describe('price tag status', function () {
 
   it('when the video has a price  and wasn\'t bought', () => {
     createUserAndLogin(browser)
-    server.execute(createVideo, 10)
+    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.videos-item', 2000)
@@ -72,9 +57,11 @@ describe('price tag status', function () {
 
   it('when the video was bought [TODO]', () => {
     createUserAndLogin(browser)
+    browser.pause(5000)
+    browser.url('http:localhost:3000/profile')
     browser.waitForVisible('#public_address', 5000)
     const address = browser.getText('#public_address')
-    server.execute(createVideo, 10)
+    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     server.execute(fakeVideoUnlock, address)
     browser.url('http:localhost:3000/playlists/98765')
