@@ -5,46 +5,29 @@
         <div class="modal-header">
           <h4 class="modal-title">The seed of your wallet</h4>
         </div> -->
-        <form id="form-show-seed">
-          <div class="flex-container-row">
-            <div class="flex-grow">
-              {{#if seed}}
-                <p>
-                  Please save these 12 words on somewhere safe (we recommend writting it down).
-                  <br />
-                  Without this seed you cannot recover your wallet and
-                  will result in <b>loss of all of your funds</b>.
-                </p>
-                <p class="text-danger">
-                  <b>WARNING:</b> Never disclose your seed.
-                </p>
-                <div class="panel panel-default">
-                  <div class="panel-body highlight" id="seed"><tt>{{seed}}</tt></div>
-                </div>
-                <p>
-                  This is not a Ethereum address and is not on Ethereum blockchain.
-                </p>
-              {{else}}
-                <div class="{{#if errorMessage}}has-error{{/if}}">
-                  {{#if errorMessage}}
-                    <label class="control-label">{{errorMessage}}</label>
-                    {{/if}}
-                    <div class="input-group">
-                      <span class="input-group-addon" id="sizing-addon3">Password</span>
-                      <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
-                    </div>
-                  </div>
-              {{/if}}
-
-            </div>
-          </div>
-          
-          {{#unless seed}}
-            <button type="submit" id="btn-show-seed" class="btn btn-default blue-button"
-              data-loading-text="Getting seed...">Get seed</button>
-          {{/unless}}
-        </form>
-      <!-- </div>
-    </div>
-  </div> -->
+  <div class="main-modal-content show-content">
+    <h3 class="main-modal-title main-modal-anim-1">Wallet</h3>
+    {{#if seed}}
+        <p class="main-modal-text">Please save these 12 words on paper (order is important). This seed will allow you to recover your wallet in case of computer failure. Never disclose your seed. This is not a Ethereum address and is not on Ethereum blockchain.<br> Your wallet generation seed is:</p>
+        <br>
+        <p class="main-modal-text main-modal-text--red"><strong>{{seed}}</strong></p>
+    {{else}}
+      <form id="form-show-seed" class="main-modal-form" action="">
+        <div class="main-form-label main-modal-anim-2 password">
+          <!-- <input class="main-form-input main-form-input-password password" name="password" type="{{ passwordType }}" placeholder="password" /> -->
+          <input class="main-form-input main-form-input-password {{#if errorMessage}}error{{/if}}" name="user_password" type="{{ passwordType }}" placeholder="Enter your password" aria-describedby="sizing-addon1">
+          <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
+        </div>
+        <div class="main-modal-anim-2">
+          <button id="button-forgot" class="button-text button-text--grey-light button-text--nocase main-form-button-forgot" type="button">Forgot password?</button>
+        </div>
+        {{#unless seed}}
+        <div class="main-modal-footer main-modal-anim-3">
+          <button id="btn-show-seed" class="button-text main-modal-button signin" type="submit">Get seed</button>
+          <!-- <button type="submit" id="btn-show-seed" class="btn btn-default blue-button" data-loading-text="Getting seed...">Get seed</button> -->
+        </div>
+        {{/unless}}
+      </form>
+    {{/if}}
+  </div>
 </template>
