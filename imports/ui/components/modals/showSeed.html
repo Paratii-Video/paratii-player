@@ -6,7 +6,7 @@
           <h4 class="modal-title">The seed of your wallet</h4>
         </div> -->
   <div class="main-modal-content show-content">
-    <h3 class="main-modal-title main-modal-anim-1">Wallet</h3>
+    <h3 class="main-modal-title main-modal-anim-1">Seed wallet</h3>
     {{#if seed}}
         <p class="main-modal-text">Please save these 12 words on paper (order is important). This seed will allow you to recover your wallet in case of computer failure. Never disclose your seed. This is not a Ethereum address and is not on Ethereum blockchain.<br> Your wallet generation seed is:</p>
         <br>
@@ -14,7 +14,6 @@
     {{else}}
       <form id="form-show-seed" class="main-modal-form" action="">
         <div class="main-form-label main-modal-anim-2 password">
-          <!-- <input class="main-form-input main-form-input-password password" name="password" type="{{ passwordType }}" placeholder="password" /> -->
           <input class="main-form-input main-form-input-password {{#if errorMessage}}error{{/if}}" name="user_password" type="{{ passwordType }}" placeholder="Enter your password" aria-describedby="sizing-addon1">
           <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
         </div>
