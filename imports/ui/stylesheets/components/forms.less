@@ -54,15 +54,6 @@
     height: 35px;
     padding: 0 5px 0 0;
 
-    &.error {
-      animation: shakeAnim .5s @ease-smooth;
-      border-color: @color-red;
-    }
-
-    &.success {
-      border-color: @color-green;
-    }
-
     &,
     &::placeholder,
     &:-webkit-autofill:hover,
@@ -73,11 +64,43 @@
       font-weight: 300;
       -webkit-box-shadow: 0 0 0px 1000px white inset;
       -webkit-text-fill-color: @color-grey;
+
+      &.error {
+        color: @color-red;
+        -webkit-text-fill-color: @color-red;
+      }
+
+      &.success {
+        color: @color-green;
+      }
     }
 
     &::placeholder {
       color: @color-grey-light;
       -webkit-text-fill-color: @color-grey-light;
+    }
+
+    &.error {
+      animation: shakeAnim .5s @ease-smooth;
+      border-color: @color-red;
+
+      &,
+      &::placeholder,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill {
+        color: @color-red;
+        -webkit-text-fill-color: @color-red;
+      }
+
+      &::placeholder {
+        color: @color-red;
+        -webkit-text-fill-color: @color-red;
+      }
+    }
+
+    &.success {
+      border-color: @color-green;
     }
 
     &-password {
