@@ -4,21 +4,21 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-base@1.2.0             # Packages every Meteor app needs to have
-mobile-experience@1.0.5       # Packages for a great mobile UX
-mongo@1.3.0                   # The database Meteor supports right now
+meteor-base@1.1.0             # Packages every Meteor app needs to have
+mobile-experience@1.0.4       # Packages for a great mobile UX
+mongo@1.2.0                   # The database Meteor supports right now
 blaze-html-templates    # Compile .html files into Meteor Blaze views
 reactive-var@1.0.11            # Reactive variable for tracker
 tracker@1.1.3                 # Meteor's client-side reactive programming library
 
-standard-minifier-css@1.3.5   # CSS minifier run for production mode
-standard-minifier-js@2.2.0    # JS minifier run for production mode
+standard-minifier-css@1.3.4   # CSS minifier run for production mode
+standard-minifier-js@2.1.1    # JS minifier run for production mode
 es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.9.0              # Enable ECMAScript2015+ syntax in app code
+ecmascript@0.8.2              # Enable ECMAScript2015+ syntax in app code
 
 kadira:flow-router      # FlowRouter is a very simple router for Meteor
 kadira:blaze-layout     # Layout manager for blaze (works well with FlowRouter)
-less@2.7.11                    # Leaner CSS language
+less@2.7.9                    # Leaner CSS language
 
 
 practicalmeteor:mocha             # A package for writing and running your meteor app and package tests with mocha
@@ -27,8 +27,8 @@ session@1.1.7
 arillo:flow-router-helpers
 raix:handlebar-helpers
 tap:i18n
-accounts-ui@1.2.0
-accounts-password@1.5.0
+accounts-ui@1.1.9
+accounts-password@1.4.0
 # accounts-facebook
 # accounts-github
 twbs:bootstrap
@@ -40,7 +40,7 @@ sgi:sprintfjs
 hwillson:stub-collections
 dburles:factory
 practicalmeteor:sinon
-reactive-dict@1.2.0
+reactive-dict@1.1.9
 
 ethereum:accounts
 ethereum:blocks
@@ -53,11 +53,11 @@ xolvio:template-isolator
 xolvio:backdoor
 peppelg:bootstrap-3-modal
 simply:reactive-local-storage
-dynamic-import@0.2.0
+dynamic-import@0.1.1
 meteor-tool
 percolate:synced-cron
 simple:reactive-method
 jcbernack:reactive-aggregate
-shell-server@0.3.0
+shell-server@0.2.4
 meteorhacks:picker
 useraccounts:unstyled
