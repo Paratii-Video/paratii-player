@@ -21,8 +21,7 @@ Template.restoreKeystore.helpers({
     return Template.instance().errors.get(name)
   },
   passwordType () {
-    const seed = Session.get('passwordType')
-    return seed
+    return Session.get('passwordType')
   }
 })
 

@@ -29,8 +29,8 @@ Template.doTransaction.helpers({
     return check[name]
   },
   passwordType () {
-    const seed = Session.get('passwordType')
-    return seed
+    const type = Session.get('passwordType')
+    return type
   }
 })
 

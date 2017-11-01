@@ -17,8 +17,8 @@ Template.showSeed.helpers({
     return Template.instance().errorMessage.get()
   },
   passwordType () {
-    const seed = Session.get('passwordType')
-    return seed
+    const type = Session.get('passwordType')
+    return type
   }
 })
 
