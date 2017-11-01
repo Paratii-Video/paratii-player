@@ -2,7 +2,7 @@ import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUser
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('account workflow', function () {
+describe('account workflow @watch', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     server.execute(resetDb)
@@ -13,41 +13,6 @@ describe('account workflow', function () {
     // TODO: reset everything: call nukeLocalStorage here
     browser.execute(clearUserKeystoreFromLocalStorage)
     server.execute(resetDb)
-  })
-
-  it('register a new user [legacy, siging up with profile page]', function () {
-    // this test can be safely removed
-    browser.execute(nukeLocalStorage)
-
-    browser.url('http://localhost:3000/profile')
-
-    // TODO: use signup modal to log in
-    // we should see the login form, we click on the register link
-    browser.waitForEnabled('#at-signUp')
-    browser.pause(1000)
-    browser.$('#at-signUp').click()
-
-    // fill in the form
-    browser.waitForEnabled('[name="at-field-name"]')
-    browser
-      .setValue('[name="at-field-name"]', 'Guildenstern')
-      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-      .setValue('[name="at-field-password"]', 'password')
-      .setValue('[name="at-field-password_again"]', 'password')
-    // submit the form
-    browser.$('#at-btn').click()
-
-    // now a modal should be opened with the seed
-    // (we wait a long time, because the wallet needs to be generated)
-    browser.waitForVisible('#seed')
-    browser.pause(1000)
-    browser.waitForEnabled('#closeModal')
-    browser.click('#closeModal')
-
-    // the user is now be logged in, and on the profile page, where the avatar is visible
-    browser.waitForExist('#avatar')
-    // we should also see the wallet part
-    browser.waitForExist('.walletContainer')
   })
 
   it('register a new user', function () {
@@ -90,34 +55,6 @@ describe('account workflow', function () {
 
     // the user is now be logged in, and on the profile page, where the avatar is visible
     assertUserIsLoggedIn(browser)
-  })
-
-  it('login as an existing user on the profile page (legacy test)', function () {
-    // XXX: this test can be safely removed once the login form is removed from the profile page
-    // TODO: when visiting he profile page if not logged in, the login dialog should be shown
-    browser.execute(nukeLocalStorage)
-    // create a meteor user
-    server.execute(createUser)
-
-    // log in as the created user
-    browser.url('http://localhost:3000/profile')
-
-    browser.waitForExist('[name="at-field-email"]')
-    browser
-      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-      .setValue('[name="at-field-password"]', 'password')
-    browser.pause(2000)
-    browser.click('#at-btn')
-
-    // we should now see a modal presenting a choice to restore the wallet or use a new one
-    browser.waitForExist('#walletModal')
-    browser.pause(1000)
-    browser.waitForEnabled('#create-wallet')
-
-    // TODO: check if wallet is created (is not implemented yet)
-
-    // the user is now be logged in, and on the profile page, where the avatar is visible
-    browser.waitForExist('#avatar')
   })
 
   it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
@@ -201,34 +138,6 @@ describe('account workflow', function () {
     const publicAddress = getUserPTIAddressFromBrowser()
     assert.equal(publicAddress, USERADDRESS)
   })
-
-  // it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase (legacy)', function () {
-  //   // legacy test with login using profile page, can be safely removed
-  //   browser.execute(nukeLocalStorage)
-  //
-  //   // create a meteor user
-  //   server.execute(createUser)
-  //
-  //   // TODO: use logon modal to log in
-  //   browser.url('http://localhost:3000/profile')
-  //   browser.waitForExist('[name="at-field-email"]')
-  //   browser
-  //     .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-  //     .setValue('[name="at-field-password"]', 'password')
-  //   browser.pause(2000)
-  //   browser.click('#at-btn')
-  //
-  //   // we should now see a modal presenting a choice to restore the wallet or use a new one
-  //   browser.waitForExist('#walletModal')
-  //   browser.waitForEnabled('#restore-keystore')
-  //   browser.pause(1000)
-  //   browser.click('#restore-keystore')
-  //
-  //   // TODO: we now should see a modal in which we are asked for the seed to regenerate the keystore
-  //
-  //   // the user is now be logged in, and on the profile page, where the avatar is visible
-  //   browser.waitForExist('#avatar')
-  // })
 
   it('try to register a new account with a used email', function () {
     server.execute(createUser)
@@ -435,5 +344,9 @@ describe('account workflow', function () {
 
     browser.waitForVisible('.control-label')
     assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
+  })
+
+  it('arriving on profile page without being logged in will ask the user to sign in [TODO]', function () {
+    // TODO: implement the functionality and write this test
   })
 })
