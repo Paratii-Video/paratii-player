@@ -39,4 +39,9 @@ function hideModal (template) {
   Session.set('contentTemplate', null)
 }
 
-export { formatNumber, add0x, strip0x, showModal, hideModal }
+function changePasswordType () {
+  let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
+  Session.set('passwordType', inputType)
+}
+
+export { formatNumber, add0x, strip0x, showModal, hideModal, changePasswordType }
