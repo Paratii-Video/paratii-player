@@ -4,7 +4,7 @@ accounts-password@1.5.0
 accounts-ui@1.2.0
 accounts-ui-unstyled@1.3.0
 aldeed:browser-tests@0.1.1
-aldeed:simple-schema@1.3.3
+aldeed:simple-schema@1.5.3
 aldeed:template-extension@4.1.0
 alexvandesande:identicon@2.0.2
 allow-deny@1.1.0
@@ -24,8 +24,8 @@ caching-html-compiler@1.1.2
 callback-hook@1.0.10
 cfs:http-methods@0.0.32
 check@1.2.5
-coffeescript@1.0.17
-cosmos:browserify@0.4.0
+coffeescript@1.12.6_1
+cosmos:browserify@0.10.0
 dburles:factory@1.1.0
 ddp@1.4.0
 ddp-client@2.2.0
@@ -51,7 +51,7 @@ ethereum:web3@0.20.2
 frozeman:animation-helper@0.2.6
 frozeman:persistent-minimongo@0.1.8
 frozeman:storage@0.1.9
-frozeman:template-var@1.2.3
+frozeman:template-var@1.3.0
 geojson-utils@1.0.10
 hot-code-push@1.0.4
 html-tools@1.0.11
@@ -70,6 +70,7 @@ less@2.7.11
 livedata@1.0.18
 localstorage@1.2.0
 logging@1.1.19
+mdg:validation-error@0.5.1
 meteor@1.8.0
 meteor-base@1.2.0
 meteor-tool@1.6.0
