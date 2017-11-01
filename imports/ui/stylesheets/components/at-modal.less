@@ -1,0 +1,157 @@
+// at modal
+
+// classes
+
+.opacity-hide {
+  opacity: 0;
+  transition: opacity .25s linear 0s;
+}
+
+// Modal title
+
+.at-title {
+  &:extend(.opacity-hide all);
+
+  color: @color-grey;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  overflow: hidden;
+  padding: 0 25px 0 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+
+  .in & {
+    opacity: 1;
+    transition: opacity .35s linear 1s;
+  }
+}
+
+//
+
+.at-pwd-form {
+  &:extend(.opacity-hide all);
+
+  .in & {
+    opacity: 1;
+    transition: opacity .35s linear 1.2s;
+  }
+}
+
+//
+
+.at-input {
+  display: block;
+  font-size: 14px;
+  font-weight: 300;
+  margin: 0 0 15px;
+  position: relative;
+  width: 100%;
+  
+  label {
+    &:extend(.visually-hidden all);
+  }
+
+  input {
+    background: 0;
+    border-bottom: 1px solid @color-grey;
+    display: block;
+    font-size: 14px;
+    height: 35px;
+    padding: 0 5px 0 0;
+    transition: border-color .3s;
+    width: 100%;
+
+    &,
+    &::placeholder,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill {
+      color: @color-grey;
+      font-size: 14px;
+      font-weight: 300;
+      -webkit-box-shadow: 0 0 0px 1000px white inset;
+      -webkit-text-fill-color: @color-grey;
+    }
+
+    &::placeholder {
+      color: @color-grey-light;
+      -webkit-text-fill-color: @color-grey-light;
+    }
+  }
+
+  span {
+    &:extend(.visually-hidden all);
+  }
+  
+  &.has-error {
+    input {      
+      animation: shakeAnim .5s @ease-smooth;
+      border-color: @color-red;
+    }
+  }
+
+  &.has-success {
+    input {
+      border-color: @color-green;
+    }
+  }
+}
+
+//
+
+.at-btn {
+  &:extend(.hover-opacity all);
+  
+  bottom: 0;
+  color: @color-purple;
+  font-size: 14px;
+  font-weight: 500;
+  position: absolute;
+  right: 0;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+// 
+
+.at-terms-link,
+.at-signin-link,
+.at-signup-link {
+  &:extend(.opacity-hide all);
+
+  p {
+    color: @color-grey-light;
+    font-size: 14px;
+    font-weight: 300;
+  }
+  a {
+    &:extend(.hover-opacity all);
+
+    color: @color-purple;
+    font-weight: 500;
+  }
+
+  .in & {
+    opacity: 1;
+    transition: opacity .35s linear 1.4s;
+  }
+}
+
+//
+
+#at-forgotPwd {
+  &:extend(.hover-opacity all);
+
+  display: inline-block;
+  font-size: 12px;
+}
+
+
+
+// Hiddens
+
+.at-error {
+  &:extend(.visually-hidden);
+}

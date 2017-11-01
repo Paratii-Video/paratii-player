@@ -40,7 +40,7 @@ AccountsTemplates.configure({
 
   // Appearance
   showAddRemoveServices: false,
-  showForgotPasswordLink: false,
+  showForgotPasswordLink: true,
   showLabels: true,
   showPlaceholders: true,
   showResendVerificationEmailLink: false,
@@ -77,7 +77,7 @@ AccountsTemplates.configure({
       'meteor-developer': 'fa fa-rocket'
     },
     title: {
-      forgotPwd: 'Recover Your Password',
+      forgotPwd: 'Forgot password',
       signUp: 'Sign Up'
     }
   }
