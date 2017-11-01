@@ -2,7 +2,7 @@ import { web3, resetDb, createUserAndLogin, getOrDeployParatiiContracts, getUser
 import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('Video Store: @watch', function () {
+describe('Video Store:', function () {
   let contracts
   let videoId = '5' // this is  a known videoId defined in fixtures.js
 

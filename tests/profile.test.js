@@ -39,6 +39,7 @@ describe('account workflow', function () {
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
       .setValue('[name="at-field-password"]', 'password')
       // .setValue('[name="at-field-password_again"]', 'password')
+
     // submit the form
     browser.$('#at-btn').click()
 
