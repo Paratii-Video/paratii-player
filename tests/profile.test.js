@@ -2,7 +2,7 @@ import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUser
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('account workflow @watch', function () {
+describe('account workflow', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     server.execute(resetDb)
@@ -39,7 +39,7 @@ describe('account workflow @watch', function () {
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
       .setValue('[name="at-field-password"]', 'password')
       // .setValue('[name="at-field-password_again"]', 'password')
-      
+
     // submit the form
     browser.$('#at-btn').click()
 

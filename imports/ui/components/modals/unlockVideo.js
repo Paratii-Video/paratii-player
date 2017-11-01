@@ -39,19 +39,22 @@ Template.unlockVideo.events({
     Session.set('passwordType', inputType)
   },
   async 'submit #form-unlockVideo' (event) {
+    console.log('unlock video')
     event.preventDefault()
-    let amount = event.target.wallet_amount.value
+    // TODO: GET THE ACTUAL PRICE of the video
+    let price = web3.toWei(14)
     let videoId = this.videoid // Video id whne you unlock a video
     const password = event.target.user_password.value
     const check = Session.get('checkTransaction')
 
-    let balance
-    balance = web3.fromWei(Session.get('pti_balance'), 'ether')
-
-    if (parseFloat(amount) <= 0 || isNaN(parseFloat(amount)) === true) {
+    // let balance
+    // balance = web3.fromWei(Session.get('pti_balance'), 'ether')
+    let balance = Session.get('pti_balance')
+    if (parseFloat(price) <= 0 || isNaN(parseFloat(price)) === true) {
+      // TODO: if the price is 0, this is an error in the data, not a user error:
       check.wallet_amount = 'This value is not allowed'
-    } else if (parseFloat(amount) > parseFloat(balance)) {
-      check.wallet_amount = `You don't have enough PTI: your balance is ${balance}`
+    } else if (parseFloat(price) > parseFloat(balance)) {
+      check.wallet_amount = `You don't have enough PTI: your balance is ${web3.fromWei(balance)}`
     } else {
       check.wallet_amount = null
     }
@@ -75,7 +78,6 @@ Template.unlockVideo.events({
       // the transaction has two steps - we first approve that the paratiiavatar can move `price`, and then instruct the videoStore to buy the video
       // buyVideo(videoId)
       // check if the video is known and get the price
-      let price = web3.toWei(14)
       let videoRegistry = await getContract('VideoRegistry')
       console.log('videoRegistry located at:', videoRegistry.address)
       let videoInfo = await videoRegistry.getVideoInfo(videoId)
