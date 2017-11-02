@@ -12,24 +12,7 @@ describe('player workflow', function () {
   })
 
   it('play a free video', function () {
-    // server.execute(createVideo, '12345', 'Test 1', '', '', [''], '', 0)
-    server.execute(createVideo, {
-      id: '12345',
-      title:  'Test 1',
-      description: '',
-      price: 0,
-      src: '',
-      thumb: '',
-      mimetype: '',
-      stats: {
-        likes: 0,
-        dislikes: 0
-      },
-      uploader: {
-        name: 'test'
-      },
-      tags: ['']
-    })
+    server.execute(createVideo, '12345', 'Test 1', '', '', [''], '', 0)
     browser.url('http://localhost:3000/play/12345')
     browser.waitForExist('#video-player')
     browser.waitForExist('.player-overlay')
