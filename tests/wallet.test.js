@@ -6,7 +6,7 @@ describe('wallet', function () {
   let userAccount
 
   before(async function (done) {
-    browser.url('http://127.0.0.1:3000')
+    browser.url('http://localhost:3000')
     await getOrDeployParatiiContracts(server, browser)
     done()
   })
@@ -16,7 +16,7 @@ describe('wallet', function () {
     createUserAndLogin(browser)
     // TODO: refactor and get the address directly using browser.execute
     browser.pause(2000)
-    browser.url('http://127.0.0.1:3000/profile')
+    browser.url('http://localhost:3000/profile')
     browser.waitForExist('#public_address')
     userAccount = getUserPTIAddressFromBrowser()
   })
