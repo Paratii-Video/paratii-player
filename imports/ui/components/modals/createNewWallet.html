@@ -1,17 +1,15 @@
 <template name="createNewWallet">
-  new wallet
-  <div id="createNewWallet">
-    <form id="form-create-wallet">
-      <div class="{{#if errorMessage}}has-error{{/if}}">
-        {{#if errorMessage}}
-        <label class="control-label">{{errorMessage}}</label>
-        {{/if}}
-        <div class="input-group">
-          <span class="input-group-addon" id="sizing-addon3">Password</span>
-          <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
-        </div>
-        <button type="submit" id="btn-create-wallet" class="btn btn-default blue-button"
-          data-loading-text="Creating...">Create</button>
+  <div id="createNewWallet" class="main-modal-content show-content">
+    <h3 class="main-modal-title main-modal-anim-1">New wallet</h3>
+    <form id="form-create-wallet" class="main-modal-form" action="">
+      <div class="main-form-label main-modal-anim-2 password">
+        <input class="main-form-input main-form-input-password {{#if errorMessage}}error{{/if}}" name="user_password" type="{{ passwordType }}" placeholder="Enter your password" aria-describedby="sizing-addon1">
+        <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
+      </div>
+
+      <div class="main-modal-footer main-modal-anim-4">
+        <button id="btn-create-wallet" class="button-text main-modal-button signup" type="submit"
+          data-loading-text="Creating...">Restore</button>
       </div>
     </form>
   </div>
