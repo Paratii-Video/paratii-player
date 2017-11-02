@@ -3,6 +3,7 @@ import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
 import { web3 } from '/imports/lib/ethereum/connection.js'
 import { getContract } from '/imports/lib/ethereum/contracts.js'
 import { checkPassword, getUserPTIAddress } from '/imports/api/users.js'
+import { changePasswordType } from '/imports/lib/utils.js'
 import '/imports/lib/validate.js'
 import './unlockVideo.html'
 
@@ -10,6 +11,10 @@ var promisify = require('promisify-node')
 
 Template.unlockVideo.onCreated(() => {
   Session.set('passwordType', 'password')
+})
+
+Template.unlockVideo.onDestroyed(function () {
+  Session.set('passwordType', null)
 })
 
 Template.unlockVideo.onRendered(function () {
@@ -35,8 +40,7 @@ Template.unlockVideo.helpers({
 
 Template.unlockVideo.events({
   'click button.password' () {
-    let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
-    Session.set('passwordType', inputType)
+    changePasswordType()
   },
   async 'submit #form-unlockVideo' (event) {
     console.log('unlock video')
