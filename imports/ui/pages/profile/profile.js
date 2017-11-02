@@ -89,7 +89,7 @@ Template.profile.events({
     showModal('showSeed')
   },
   'click #edit-profile' () {
-    showModal('editProfile', { wrapperSize: 'wide' })
+    showModal('editProfile', { wrapperClass: 'wide' })
   }
 })
 
