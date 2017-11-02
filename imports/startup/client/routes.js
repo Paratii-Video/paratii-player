@@ -51,12 +51,16 @@ FlowRouter.route('/playlists/:_id', {
   }
 })
 
-FlowRouter.route('/profile', {
-  name: 'profile',
-  action () {
-    BlazeLayout.render('App_body', { main: 'profile' })
-  }
-})
+if (Meteor.userId()) {
+  FlowRouter.route('/profile', {
+    name: 'profile',
+    action () {
+      BlazeLayout.render('App_body', { main: 'profile' })
+    }
+  })
+} else {
+  FlowRouter.go('/')
+}
 
 FlowRouter.route('/transactions', {
   name: 'transactions',
