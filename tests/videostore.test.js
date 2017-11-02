@@ -7,7 +7,7 @@ describe('Video Store:', function () {
   let videoId = '5' // this is  a known videoId defined in fixtures.js
 
   before(async function (done) {
-    browser.url('http://127.0.0.1:3000')
+    browser.url('http://localhost:3000')
 
     contracts = await getOrDeployParatiiContracts(server, browser)
 
@@ -22,7 +22,7 @@ describe('Video Store:', function () {
     server.execute(resetDb)
     createUserAndLogin(browser)
     browser.pause(2000)
-    browser.url('http://127.0.0.1:3000/profile')
+    browser.url('http://localhost:3000/profile')
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
     sendSomePTI(userAccount, 300)
@@ -38,7 +38,7 @@ describe('Video Store:', function () {
   it('should be possible to buy (and unlock) a video [TODO]', function (done) {
     // check sanity
     // set up the test..
-    browser.url(`http://127.0.0.1:3000/play/${videoId}`)
+    browser.url(`http://localhost:3000/play/${videoId}`)
     browser.waitForEnabled('#unlock-video')
     browser.click('#unlock-video')
     browser.waitForEnabled('[name="user_password"]')
@@ -53,14 +53,14 @@ describe('Video Store:', function () {
       // the price was 14 PTI, so the users balance should be equal to 300 - 14
       return Number(balance) === Number(web3.toWei(300 - 14))
     }, 10000)
-    browser.url('http://127.0.0.1:3000/transactions')
+    browser.url('http://localhost:3000/transactions')
     let description = 'Bought video 5'
     browser.waitForExist('.transaction-description')
     let msg = `Expected to find ${description} in the first from ${browser.getText('.transaction-description')}`
     assert.isOk(browser.getText('.transaction-description')[0].indexOf(description) > -1, msg)
 
     // the video should be unlocked now
-    browser.url(`http://127.0.0.1:3000/play/${videoId}`)
+    browser.url(`http://localhost:3000/play/${videoId}`)
     browser.waitForExist('.player-controls')
 
     done()
