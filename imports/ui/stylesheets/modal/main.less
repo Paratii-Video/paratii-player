@@ -4,6 +4,7 @@
 
 @size-modal-wrapper-height: 280px;
 @size-modal-wrapper-width: 310px;
+@size-modal-wrapper-width-wide: 530px;
 
 // Main
 
@@ -59,6 +60,10 @@
   .fade.in & {
     transform: scaleY(1);
     transition: transform .75s @ease-smooth .3s;
+  }
+
+  &.wide {
+    width: @size-modal-wrapper-width-wide;
   }
 }
 
