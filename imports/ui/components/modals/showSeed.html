@@ -8,9 +8,13 @@
   <div class="main-modal-content show-content">
     <h3 class="main-modal-title main-modal-anim-1">Seed wallet</h3>
     {{#if seed}}
-        <p class="main-modal-text">Please save these 12 words on paper (order is important). This seed will allow you to recover your wallet in case of computer failure. Never disclose your seed. This is not a Ethereum address and is not on Ethereum blockchain.<br> Your wallet generation seed is:</p>
+        <p class="main-modal-text">
+          Please save the following 12 words.
+          You will need this to recover your information and assets.
+          This is not a Ethereum address and is not on Ethereum blockchain.
+        </p>
         <br>
-        <p class="main-modal-text"><strong>{{seed}}</strong></p>
+        <p class="main-modal-text" id="seed"><strong>{{seed}}</strong></p>
     {{else}}
       <form id="form-show-seed" class="main-modal-form" action="">
         <div class="main-form-label main-modal-anim-2 password">
