@@ -5,12 +5,15 @@
         <div class="modal-header">
           <h4 class="modal-title">The seed of your wallet</h4>
         </div> -->
-  <div class="main-modal-content show-content">
+  <div id="show-seed" class="main-modal-content show-content">
     <h3 class="main-modal-title main-modal-anim-1">Seed wallet</h3>
+    {{#if errorMessage}}
+    <p class="control-label visually-hidden">{{errorMessage}}</p>
+    {{/if}}
     {{#if seed}}
         <p class="main-modal-text">Please save these 12 words on paper (order is important). This seed will allow you to recover your wallet in case of computer failure. Never disclose your seed. This is not a Ethereum address and is not on Ethereum blockchain.<br> Your wallet generation seed is:</p>
         <br>
-        <p class="main-modal-text"><strong>{{seed}}</strong></p>
+        <p id="seed" class="main-modal-text"><strong>{{seed}}</strong></p>
     {{else}}
       <form id="form-show-seed" class="main-modal-form" action="">
         <div class="main-form-label main-modal-anim-2 password">
@@ -22,8 +25,7 @@
         </div>
         {{#unless seed}}
         <div class="main-modal-footer main-modal-anim-3">
-          <button id="btn-show-seed" class="button-text main-modal-button signin" type="submit">Get seed</button>
-          <!-- <button type="submit" id="btn-show-seed" class="btn btn-default blue-button" data-loading-text="Getting seed...">Get seed</button> -->
+          <button id="btn-show-seed" class="button-text main-modal-button signin" type="submit" data-loading-text="Getting seed...">Get seed</button>
         </div>
         {{/unless}}
       </form>

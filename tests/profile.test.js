@@ -255,7 +255,7 @@ describe('account workflow', function () {
     browser.click('#btn-show-seed')
     browser.pause(1000)
     browser.waitForEnabled('#seed')
-    const seed = browser.getHTML('#seed tt', false)
+    const seed = browser.getHTML('#seed strong', false)
     const publicAddress = browser.getHTML('#public_address', false)
     browser.click('#closeModal')
 
@@ -291,7 +291,7 @@ describe('account workflow', function () {
     browser.click('#btn-show-seed')
     browser.pause(1000)
     browser.waitForVisible('#seed')
-    const seed = browser.getHTML('#seed tt', false)
+    const seed = browser.getHTML('#seed strong', false)
     // const publicAddress = browser.getHTML('#public_address', false)
     browser.click('#closeModal')
     browser.execute(clearUserKeystoreFromLocalStorage)

@@ -2,6 +2,9 @@
   <div id="createNewWallet" class="main-modal-content show-content">
     <h3 class="main-modal-title main-modal-anim-1">New wallet</h3>
     <form id="form-create-wallet" class="main-modal-form" action="">
+      {{#if errorMessage}}
+      <label class="control-label visually-hidden">{{errorMessage}}</label>
+      {{/if}}
       <div class="main-form-label main-modal-anim-2 password">
         <input class="main-form-input main-form-input-password {{#if errorMessage}}error{{/if}}" name="user_password" type="{{ passwordType }}" placeholder="Enter your password" aria-describedby="sizing-addon1">
         <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
