@@ -93,7 +93,7 @@ Template.App_body.onCreated(function () {
     }
   }
 
-  Session.set({'alertMessage': null, 'alertClass': null})
+  Session.set({'alertMessage': undefined, 'alertClass': undefined})
 })
 
 Template.App_body.onRendered(function () {
@@ -111,7 +111,7 @@ Template.App_body.onRendered(function () {
 
   // Meteor.setTimeout(() => {
   //   Session.set({'alertMessage': '<strong>Error message</strong>. An error message', 'alertClass': 'red show'})
-  // }, 2000)
+  // }, 1000)
 })
 
 Template.App_body.helpers({
