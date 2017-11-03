@@ -101,6 +101,36 @@ describe('account workflow', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
+  it('show an error message if provided wrong password', function () {
+    browser.execute(clearUserKeystoreFromLocalStorage)
+    server.execute(resetDb)
+    browser.pause(1000)
+
+    // create a meteor user
+    server.execute(createUser)
+
+    // log in as the created user
+    assertUserIsNotLoggedIn(browser)
+
+    browser.url('http://localhost:3000')
+    browser.pause(2000)
+    browser.waitForEnabled('#nav-profile')
+    browser.click('#nav-profile')
+
+    browser.pause(1000)
+    browser.waitForEnabled('[name="at-field-email"]')
+    browser
+      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+      .setValue('[name="at-field-password"]', 'wrong password')
+    browser.click('#at-btn')
+
+    // the user is now logged in
+    browser.pause(2000)
+    assertUserIsNotLoggedIn(browser)
+    let errorMsg = browser.getText('.at-error')
+    assert.equal(errorMsg, 'Login forbidden')
+  })
+
   it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
@@ -281,7 +311,7 @@ describe('account workflow', function () {
     assert.equal(publicAddress, newPublicAddress)
   })
 
-  it('do not restore keystore if wrong password @watch', function () {
+  it('do not restore keystore if wrong password', function () {
     createUserAndLogin(browser)
     browser.pause(4000)
     browser.url('http://localhost:3000/profile')
@@ -313,7 +343,7 @@ describe('account workflow', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('do not create a new wallet if the password is wrong @watch', function () {
+  it('do not create a new wallet if the password is wrong', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     browser.pause(1000)
