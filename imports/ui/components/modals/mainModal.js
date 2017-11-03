@@ -7,6 +7,7 @@ Template.mainModal.onCreated(function () {
   // Set options in a reactive var
   this.options = new ReactiveVar()
   this.options.set(this.data)
+  console.log(this.data)
 })
 
 Template.mainModal.helpers({

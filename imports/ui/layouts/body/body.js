@@ -15,6 +15,7 @@ if (Meteor.isClient) {
     const keystore = getKeystore()
 
     if (Session.get('signup')) {
+      Session.set('signup', false)
       // user just signed up, we have to fix his keystore
       const anonymousKeystore = getKeystore('anonymous')
       if (anonymousKeystore !== null) {
@@ -42,7 +43,6 @@ if (Meteor.isClient) {
       if (keystore === null) {
         // this is an existing user (we are not in the singup process) , but the user has no keystore
         console.log('Getting anonymous keystore')
-
         const anonymousKeystore = getKeystore('anonymous')
         console.log(anonymousKeystore)
         if (anonymousKeystore !== null) {
@@ -63,7 +63,7 @@ if (Meteor.isClient) {
     console.log('logged out')
     // Reset all session values
     Session.set('userPTIAddress', null)
-    // Session.set('tempSeed', null)
+    Session.set('tempSeed', null)
     Session.set('tempKeystore', null)
     Session.set('tempAddress', null)
     Session.set('wallet-state', null)

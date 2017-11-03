@@ -5,6 +5,7 @@ import { web3 } from '/imports/lib/ethereum/web3.js'
 import paratiiIPFS from '/imports/lib/ipfs/index.js'
 import 'meteor/johnantoni:meteor-svginjector'
 import '/imports/ui/components/modals/login.js'
+import '/imports/ui/components/modals/confirmLogout.js'
 import '/imports/ui/components/modals/mainModal.js'
 
 const loadSVG = () => {
@@ -113,7 +114,7 @@ Template.navigation.events({
     }
   },
   'click #logout' () {
-    Meteor.logout()
+    showModal('confirmLogout')
   },
   'click #clear-repo' (ev) {
     console.log('clearing cache . ', ev.target)
