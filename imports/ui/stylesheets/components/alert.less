@@ -1,0 +1,75 @@
+// Main alert
+
+// Vars
+@size-main-alert-wrapper-width: 400px;
+
+//
+
+.main-alert {
+  height: 0;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: @zindex-alert;
+
+  &-wrapper {
+    background-color: @color-purple;
+    border-radius: 0 0 4px 4px;
+    margin: 0 auto;
+    padding: 15px;
+    position: relative;
+    transition: transform .5s @ease-smooth;
+    transform: translate3d(0, -100%, 0);
+    width: @size-main-alert-wrapper-width;
+
+    .main-modal & {
+      border-radius: 0;
+      width: 100%;
+    }
+
+    .red & {
+      background-color: @color-red;
+    }
+
+    .show & {
+      transition: transform .7s @ease-smooth;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  &-content {
+    color: @color-white-dark;
+    padding: 0 50px 0 0;
+
+    p {
+      &:extend(.font-text-small all);
+      
+      color: @color-white-dark;
+    }
+
+    a {
+      &:extend(.hover-opacity all);
+
+      border-bottom: 1px solid white;
+      color: @color-white-dark;
+    }
+  }
+
+  &-button {
+    &-close {
+      &:extend(.hover-opacity all);
+      &:extend(.pos-a-vm all);
+
+      height: 10px;
+      right: 15px;
+      width: 10px;
+
+      &-svg {
+        &:extend(.full-block all);
+
+        fill: @color-white-dark;
+      }
+    }
+  }
+}

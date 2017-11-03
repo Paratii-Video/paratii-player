@@ -3,6 +3,7 @@ import './body.html'
 import '/imports/ui/components/svgs/svgs.js'
 import { add0x, showModal, hideModal } from '/imports/lib/utils.js'
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, createKeystore, deleteKeystore, getKeystore, getSeedFromKeystore } from '/imports/lib/ethereum/wallet.js'
+import '/imports/ui/components/alert/alert.js'
 
 // TODO: reconsider the location of the next code - perhaps move it to start.js ?
 if (Meteor.isClient) {
