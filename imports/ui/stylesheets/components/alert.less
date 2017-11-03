@@ -19,8 +19,8 @@
     margin: 0 auto;
     padding: 15px;
     position: relative;
-    transition: transform .5s @ease-smooth;
-    transform: translate3d(0, -100%, 0);
+    transition: transform .4s @ease-smooth;
+    transform: translateY(-100%);
     width: @size-main-alert-wrapper-width;
 
     .main-modal & {
@@ -33,8 +33,8 @@
     }
 
     .show & {
-      transition: transform .7s @ease-smooth;
-      transform: translate3d(0, 0, 0);
+      transform: translateY(0);
+      transition: transform .6s @ease-smooth;
     }
   }
 

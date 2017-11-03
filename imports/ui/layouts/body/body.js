@@ -92,6 +92,8 @@ Template.App_body.onCreated(function () {
       // If there is no User keystore
     }
   }
+
+  Session.set({'alertMessage': null, 'alertClass': null})
 })
 
 Template.App_body.onRendered(function () {
@@ -106,6 +108,10 @@ Template.App_body.onRendered(function () {
       this.navState.set('minimized')
     }
   })
+
+  Meteor.setTimeout(() => {
+    Session.set({'alertMessage': '<strong>Error message</strong>. An error message', 'alertClass': 'red show'})
+  }, 2000)
 })
 
 Template.App_body.helpers({
@@ -116,6 +122,12 @@ Template.App_body.helpers({
     var current = FlowRouter.current()
     var route = current.route.name
     return route
+  },
+  setAlertMessage () {
+    return Session.get('alertMessage')
+  },
+  setAlertClass () {
+    return Session.get('alertClass')
   }
 })
 

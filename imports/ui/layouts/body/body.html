@@ -1,6 +1,11 @@
 <template name="App_body">
   {{> svgs }}
-  {{>alert message="<strong>An error here</strong>. This error occours becase <a href=\"/\">of that</a>. What you need to do to fix this erros is in <a href=\"/\">this link</a>" color="red"}}
+
+  {{#if setAlertMessage}}
+    {{>alert message=setAlertMessage class=setAlertClass}}
+  {{/if}}
+
+  
   <div class="main-app {{getRoute}}">
     <div class="nav-overlay {{light}}"></div>
     {{> navigation }}
