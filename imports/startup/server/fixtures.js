@@ -11,34 +11,36 @@ import { getParatiiContracts, setRegistryAddress } from '/imports/lib/ethereum/c
 import { web3 } from '/imports/lib/ethereum/web3.js'
 
 function populateMongoDb (fixture) {
-  // Videos
-  Videos.remove({})
-  console.log('populating video collection')
-  _.each(fixture.videos, (video) => {
-    console.log(video)
-    Videos.insert(video)
-    console.log('...')
-  })
-  console.log('done populating video collection')
-
   // Playlists
   Playlists.remove({})
+  console.log('these are the playlists')
+  console.log(Playlists.find({}))
   console.log('populating playlists collection')
 
   _.each(fixture.playlists, (playlist) => {
     Playlists.insert(playlist)
   })
   console.log('done populating playlist collection')
+  // Videos
+
+  console.log('populating video collection')
+  Videos.remove({})
+  console.log('removed existing videos')
+  _.each(fixture.videos, (video) => {
+    console.log(video)
+    Videos.insert(video)
+  })
+  console.log('done populating video collection')
 }
 
 export async function installFixture (fixture) {
+  await populateMongoDb(fixture)
   let contracts = await getParatiiContracts()
   for (let i = 0; i < fixture.videos.length; i++) {
     let video = fixture.videos[i]
     await contracts.VideoRegistry.registerVideo(String(video._id), video.uploader.address, Number(web3.toWei(video.price)), {from: web3.eth.accounts[0]})
     console.log(`registered video ${video._id} with price ${web3.toWei(video.price)} and owner ${video.uploader.address}`)
   }
-  populateMongoDb(fixture)
 }
 
 export async function deployContractsAndInstallFixture (fixture) {

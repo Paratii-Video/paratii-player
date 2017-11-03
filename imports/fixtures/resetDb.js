@@ -10,13 +10,11 @@
  *all @#$%% files* _except_ those in 'imports']
 */
 import { installFixture } from '/imports/startup/server/fixtures.js'
-import { Videos } from '/imports/api/videos.js'
-import { Playlists } from '/imports/api/playlists.js'
 
 function resetDb () {
   console.log('removing all data about videos from the database, and importing fixtures from octobersprintfixture.js')
-  Videos.remove({})
-  Playlists.remove({})
+  // Videos.remove({})
+  // Playlists.remove({})
   let fixture = require('/imports/fixtures/octobersprintfixture.js')
   installFixture(fixture)
 }
