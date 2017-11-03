@@ -1,11 +1,131 @@
-// Playlist: Intro to the Blockchain
-// How the blockchain will radically transform the economy - Bettina Warburg  Ted Talks  https://www.ted.com/talks/bettina_warburg_how_the_blockchain_will_radically_transform_the_economy
-// We've stopped trusting institutions and started trusting strangers  Ted Talks  https://www.ted.com/talks/rachel_botsman_we_ve_stopped_trusting_institutions_and_started_trusting_strangers
-// Could your language affect your ability to save money?  Ted Talks  https://www.ted.com/talks/keith_chen_could_your_language_affect_your_ability_to_save_money
-// Poverty isn't a lack of character; it's a lack of cash  Ted Talks  https://www.ted.com/talks/rutger_bregman_poverty_isn_t_a_lack_of_character_it_s_a_lack_of_cash
-// How the blockchain is changing money and business  Ted Talks  https://www.ted.com/talks/don_tapscott_how_the_blockchain_is_changing_money_and_business
-// How we'll earn money in a future without jobs  Ted Talks  https://www.ted.com/talks/martin_ford_how_we_ll_earn_money_in_a_future_without_jobs
-// The mathematician who cracked Wall Street | Jim Simons  Ted Talks  https://www.youtube.com/watch?v=U5kIdtMJGc8
+function videoInfo (opts) {
+  let defaults = {
+    _id: '1',
+    // title: 'How the blockchain will radically transform the economy',
+    // description: 'Bettina Warburg. Ted Talks<br>Source: https://www.ted.com/talks/bettina_warburg_how_the_blockchain_will_radically_transform_the_economy',
+    thumb: '/img/cover/thumb1-img.png',
+    duration: '',
+    price: 0,
+    uploader: {
+      address: '',
+      name: '',
+      avatar: ''
+    },
+    stats: {
+      likes_percentage: 84,
+      views: 15524,
+      likes: 2345555,
+      dislikes: 7
+    },
+    tags: ['NATURE'],
+    src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
+    mimetype: 'video/webm'
+  }
+  return Object.assign(defaults, opts)
+}
+
+export const playlists = [
+  {
+    _id: '1',
+    title: 'Intro to the blockchain',
+    description: '',
+    url: 'intro-to-the-blockchain',
+    videos: ['1', 2, 3, 4, 5, 6, 7]
+  }
+]
+
+let videosDef = [
+// Playlist: Into to the blockchain
+  {
+    _id: '1',
+    title: 'How the blockchain will radically transform the economy',
+    description: 'Bettina Warburg. Ted Talks<br>Source: https://www.ted.com/talks/bettina_warburg_how_the_blockchain_will_radically_transform_the_economy'
+  },
+  {
+    _id: '2',
+    title: 'We\'ve stopped trusting institutions and started trusting strangers',
+    description: 'Ted Talks.<br>Source:  https://www.ted.com/talks/rachel_botsman_we_ve_stopped_trusting_institutions_and_started_trusting_strangers'
+  },
+  {
+    _id: '3',
+    title: 'Could your language affect your ability to save money?',
+    description: ' Ted Talks  https://www.ted.com/talks/keith_chen_could_your_language_affect_your_ability_to_save_money'
+  },
+  {
+    _id: '4',
+    title: 'Poverty isn\'t a lack of character; it\'s a lack of cash',
+    description: 'Poverty isn\'t a lack of character; it\'s a lack of cash  Ted Talks  https://www.ted.com/talks/rutger_bregman_poverty_isn_t_a_lack_of_character_it_s_a_lack_of_cash'
+  },
+  {
+    _id: '5',
+    title: 'How the blockchain is changing money and business',
+    description: 'How the blockchain is changing money and business  Ted Talks  https://www.ted.com/talks/don_tapscott_how_the_blockchain_is_changing_money_and_business'
+  },
+  {
+    _id: '6',
+    title: 'How we\'ll earn money in a future without jobs',
+    description: 'How we\'ll earn money in a future without jobs  Ted Talks  https://www.ted.com/talks/martin_ford_how_we_ll_earn_money_in_a_future_without_jobs'
+  },
+  {
+    _id: '7',
+    title: 'The mathematician who cracked Wall Street',
+    description: 'The mathematician who cracked Wall Street | Jim Simons  Ted Talks  https://www.youtube.com/watch?v=U5kIdtMJGc8'
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  },
+  {
+    _id: '',
+    title: '',
+    description: ''
+  }
 //
 // Playlist: Cryptoeconomy & Events
 // CESC2017 - Balaji Srinivasan - Quantifying Decentralization  Blockchain at Berkeley  https://www.youtube.com/watch?v=2GwN3vc_9ic
@@ -58,39 +178,5 @@
 // Teaser 1 Around the Block  Paratii  is there already
 // Teaser 2 Around the Block  Paratii  is there already
 // Trailer Around the Block  Paratii  (provisory) https://www.youtube.com/watch?v=LR1fOVVxqZU&feature=youtu.be
-export const videos = [
-
-  // Playlist: Intro to the Blockchain
-  {
-    _id: '1',
-    title: 'How the blockchain will radically transform the economy',
-    description: 'Bettina Warburg. Ted Talks<br>Source: https://www.ted.com/talks/bettina_warburg_how_the_blockchain_will_radically_transform_the_economy',
-    thumb: '/img/cover/thumb1-img.png',
-    duration: '',
-    price: 0,
-    uploader: {
-      address: '',
-      name: '',
-      avatar: ''
-    },
-    stats: {
-      likes_percentage: 84,
-      views: 15524,
-      likes: 2345555,
-      dislikes: 7
-    },
-    tags: ['NATURE'],
-    src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
-    mimetype: 'video/webm'
-  }
 ]
-
-export const playlists = [
-  {
-    _id: '1',
-    title: 'Intro to the blockchain',
-    description: '',
-    url: 'intro-to-the-blockchain',
-    videos: [1]
-  }
-]
+export const videos = videosDef.map(videoInfo)

@@ -10,29 +10,25 @@ import { watchEvents } from '/imports/api/transactions.js'
 import { getParatiiContracts, setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
 
-async function populateMongoDb (fixture) {
+function populateMongoDb (fixture) {
   // Videos
-  const populateVideos = (videos) => {
-    Videos.remove({})
-    console.log('|'); console.log('|')
-    console.log('--> populate video collection')
-    _.each(videos, (video) => {
-      Videos.insert(video)
-    })
-  }
+  Videos.remove({})
+  console.log('populating video collection')
+  _.each(fixture.videos, (video) => {
+    console.log(video)
+    Videos.insert(video)
+    console.log('...')
+  })
+  console.log('done populating video collection')
 
   // Playlists
-  const populatePlaylist = (playlists) => {
-    Playlists.remove({})
-    console.log('--> populate playlists collection')
+  Playlists.remove({})
+  console.log('populating playlists collection')
 
-    _.each(playlists, (playlist) => {
-      Playlists.insert(playlist)
-    })
-    console.log('--> done.')
-  }
-  populateVideos(fixture.videos)
-  populatePlaylist(fixture.playlists)
+  _.each(fixture.playlists, (playlist) => {
+    Playlists.insert(playlist)
+  })
+  console.log('done populating playlist collection')
 }
 
 export async function installFixture (fixture) {
@@ -66,8 +62,9 @@ export async function deployContractsAndInstallFixture (fixture) {
 
 if (Meteor.settings.public.isTestEnv) {
   // if we are in a test environment, we will deploy the contracts before starting to watch
+  // let testFixture = require('/imports/fixtures/testFixture.js')
   // we can do all this easily, because accounts[0] is unlocked in testrpc, and has lots of Ether.
-  let testFixture = require('/imports/fixtures/testFixture.js')
+  let testFixture = require('/imports/fixtures/octobersprintfixture.js')
   deployContractsAndInstallFixture(testFixture).then(function (contracts) {
     setRegistryAddress(contracts.ParatiiRegistry.address)
     Meteor.startup(
