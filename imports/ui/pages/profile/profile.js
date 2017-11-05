@@ -9,6 +9,7 @@ import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
 import '/imports/ui/components/modals/createNewWallet.js'
 import '/imports/ui/components/modals/showSeed.js'
+import '/imports/ui/components/modals/modals.js'
 import '../../components/pageheader/pageheader.js'
 import './profile.html'
 
@@ -92,6 +93,14 @@ Template.profile.events({
     }
     Modal.show('editProfile', {
     }, modalOptions)
+  },
+  'click .earn-button' (event) {
+    Modal.show('main_modal', {
+      modal: `modal_earn_${event.target.getAttribute('id') === 'earn-eth' ? 'pti' : 'pti'}`,
+      data: {
+        type: 'PTI'
+      }
+    })
   }
 })
 
