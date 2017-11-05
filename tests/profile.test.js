@@ -70,6 +70,7 @@ describe('Profile and accounts workflow:', function () {
         return localStorage.getItem(`keystore-anonymous`)
       }).value
     })
+    
     const anonymousAddress = getAnonymousAddress()
     browser.waitForClickable('#nav-profile')
     browser.click('#nav-profile')
