@@ -4,6 +4,7 @@
 
 @size-modal-wrapper-height: 280px;
 @size-modal-wrapper-width: 310px;
+@modal-footer-height: 20px;
 
 // Main
 
@@ -189,6 +190,7 @@
     color: @color-grey-light;
     font-size: 14px;
     font-weight: 300;
+    margin-bottom: @modal-footer-height;
 
     &--alert {
       color: @color-red;
@@ -299,6 +301,7 @@
     justify-content: flex-end;
     position: absolute;
     width: 100%;
+    height: @modal-footer-height;
 
     &-loading {
       display: none;
