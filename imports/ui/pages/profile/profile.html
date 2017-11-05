@@ -2,12 +2,15 @@
   <div class="app-content scrollable-y">
     {{#if currentUser }} {{#isAuthorized}}
 
-    {{> pageheader title="Profile" }}
-
     <div class="walletContainer">
       <div class="profile-container">
         <div class="profile-info">
-          <div class="profile-info profile-info-name">{{currentUser.profile.name}} </div>
+          <div class="profile-info-name-wrapper">
+            {{> backButton }}
+            <div class="profile-info profile-info-name">
+              {{currentUser.profile.name}}
+            </div>
+          </div>
           <div class="profile-info profile-info-email"> {{userEmail}}</div>
         </div>
 
