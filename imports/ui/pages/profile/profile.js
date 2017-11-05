@@ -41,7 +41,7 @@ Template.profile.helpers({
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
-        return 'You own <b id="eth_amount">' + amount + '</b> Ether'
+        return `${amount} <span class="unit"> ETH</span>`
       } else {
         return 'You don\'t own Ether'
       }
@@ -57,7 +57,7 @@ Template.profile.helpers({
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
-        return 'You own <b id="pti_amount">' + amount + '</b> PTI'
+        return `${amount} <span class="unit"> PTI</span>`
       } else {
         return 'You don\'t own Paratii'
       }
