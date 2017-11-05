@@ -1,4 +1,19 @@
 <template name="editProfile">
+    <div class="modal main-modal fade">
+      <div class="main-modal-wrapper edit-profile-modal">
+        <div class="edit-profile-content">
+          <ul>
+            <li><button>Change Username</button></li>
+            <li><button>Change Email</button></li>
+            <li><button>Change password</button></li>
+            <li><button>Update new image</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</template>
+
+<template name="foo">
   <form id="form-update-profile">
     <div class="modal fade">
       <div class="modal-dialog">
@@ -36,7 +51,7 @@
                             {{/if}}
                           </td>
                           <td>
-                            <!-- TODO: plese move this style rule to css  -->
+                            <!-- TODO: plese move this style rule to css -->
                             <style>
                             [hidden] {
                               display: none !important;
@@ -55,8 +70,8 @@
                   </div>
                 </div>
                 <div class="update-account-confirm">
-                  <!-- <button class="btn btn-default red-button" id="button-change-password">Change password</button>
-                  <input type="submit" class="btn btn-default blue-button" value="Save changes"/> -->
+                   <button class="btn btn-default red-button" id="button-change-password">Change password</button>
+                  <input type="submit" class="btn btn-default blue-button" value="Save changes"/>
                 </div>
               </div>
             {{else}}

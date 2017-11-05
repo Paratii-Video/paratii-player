@@ -89,10 +89,7 @@ Template.profile.events({
     Modal.show('userModal', { setTemplate: 'showSeed' })
   },
   'click #edit-profile' () {
-    const modalOptions = {
-    }
-    Modal.show('editProfile', {
-    }, modalOptions)
+    Modal.show('editProfile', {})
   },
   'click .earn-button' (event) {
     Modal.show('main_modal', {
