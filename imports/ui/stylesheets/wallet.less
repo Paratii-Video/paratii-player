@@ -1,12 +1,31 @@
 
 .walletContainer {
-  border-radius: 7px;
-  border: 1px solid #ddd;
-  /*display: inline-block;*/
-  width: 400px;
-  float: left;
-  margin: 20px;
-  padding: 20px;
+  width: 100%;
+  padding: 35px;
+  display: flex;
+
+  .profile-info {
+    flex: 1 1 0;
+  }
+
+  .profile-actions {
+    flex: 0 0 20%;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      width: 20px;
+      height: 20px;
+
+      .full-screen-svg {
+        fill: @color-grey;
+      }
+
+      &:not(:last-child) {
+        margin-right: 15px;
+      }
+    }
+  }
 }
 
 .centerIcon {
@@ -27,8 +46,12 @@
   font-size: 20px;
   font-family:'Roboto';
   font-weight: 200;
-  color: dimgrey;
+  color: @color-grey;
   margin-bottom: 10px;
+
+  &.profile-info-name {
+    font-weight: 600;
+  }
 }
 
 .wallet-textfield {

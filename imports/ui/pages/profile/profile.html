@@ -5,20 +5,19 @@
     {{> pageheader title="Profile" }}
 
     <div class="walletContainer">
-      <div class="centerIcon">
-        <!-- {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-large"}} -->
-        {{#if currentUser.profile.image }}
-          <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url( {{ currentUser.profile.image }} )"></span>
-        {{else}}
-          <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url('/img/avatar_img.svg')"></span>
-        {{/if}}
+      <div class="profile-info">
+        <div class="profile-info profile-info-name">{{currentUser.profile.name}} </div>
+        <div class="profile-info profile-info-email"> {{userEmail}}</div>
       </div>
-      <div class="profile-label"> Name:</div>
-      <div class="profile-info">{{currentUser.profile.name}} </div>
-      <div class="profile-label"> Email:</div>
-      <div class="profile-info"> {{userEmail}}</div>
-      <!-- Action Buttons -->
-      <button class="btn btn-default blue-button btn-block" id="edit-profile">Edit Profile</button>
+
+      <div class="profile-actions">
+        <button id="edit-profile">
+          {{> icon_full_screen }}
+        </button>
+        <button class="profile-full-screen">
+          {{> icon_full_screen }}
+        </button>
+      </div>
     </div>
     {{#if userPTIAddress }}
 

@@ -1,4 +1,5 @@
 import './body.html'
+import '/imports/ui/icons/fullscreen.html'
 import '/imports/ui/components/modals/userModal.js'
 import '/imports/ui/components/modals/regenerateKeystore.js'
 import { add0x } from '/imports/lib/utils.js'
