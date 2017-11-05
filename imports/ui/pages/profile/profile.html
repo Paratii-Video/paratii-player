@@ -5,48 +5,53 @@
     {{> pageheader title="Profile" }}
 
     <div class="walletContainer">
-      <div class="profile-info">
-        <div class="profile-info profile-info-name">{{currentUser.profile.name}} </div>
-        <div class="profile-info profile-info-email"> {{userEmail}}</div>
-      </div>
+      <div class="profile-container">
+        <div class="profile-info">
+          <div class="profile-info profile-info-name">{{currentUser.profile.name}} </div>
+          <div class="profile-info profile-info-email"> {{userEmail}}</div>
+        </div>
 
-      <div class="profile-actions">
-        <button id="edit-profile">
-          {{> icon_full_screen }}
-        </button>
-        <button class="profile-full-screen">
-          {{> icon_full_screen }}
-        </button>
+        <div class="profile-actions">
+          <button id="edit-profile">
+            {{> icon_full_screen }}
+          </button>
+          <button class="profile-full-screen">
+            {{> icon_full_screen }}
+          </button>
+        </div>
       </div>
     </div>
     {{#if userPTIAddress }}
-
-      <div class="walletContainer">
-        <div class="descriptionContainer">
-          <div>
-            <ul class="nav nav-tabs nav-justified">
-              <li class="active">
-                <a href="#eth" data-toggle="tab">ETH</a>
-              </li>
-              <li>
-                <a href="#pti" data-toggle="tab">PTI</a>
-              </li>
-            </ul>
+    <div class="walletContainer">
+      <div class="wallet-contents">
+        <ul class="nav nav-tabs nav-justified">
+          <li class="active">
+            <a href="#eth" data-toggle="tab">
+              Paratii
+              <div class="balance">{{{ eth_balance }}}</div>
+            </a>
+          </li>
+          <li>
+            <a href="#pti" data-toggle="tab">
+              Ether
+              <div class="balance">{{{ pti_balance }}}</div>
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content wallet-tab-content">
+          <div class="tab-pane active" id="eth">
+            <button class="earn-button">Earn more ETH</button>
+            <!-- <button class="btn btn-default blue-button btn-block" id="send-eth">Send Ether</button> -->
           </div>
-          <div class="tab-content wallet-tab-content">
-            <div class="tab-pane active" id="eth">
-              <h3>{{{ eth_balance }}}</h3>
-              <button class="btn btn-default blue-button btn-block" id="send-eth">Send Ether</button>
-            </div>
-            <div class="tab-pane" id="pti">
-              <h3>{{{ pti_balance }}}</h3>
-              <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button>
-            </div>
-            <a href="/transactions" class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</a>
-            <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button>
+          <div class="tab-pane" id="pti">
+            <button class="earn-button">Earn more PTI</button>
+            <!-- <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button> -->
           </div>
+          <!-- <a href="/transactions" class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</a>
+          <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button> -->
         </div>
       </div>
+    </div>
 
     {{else}}
       <div class="walletContainer">

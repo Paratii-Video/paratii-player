@@ -2,28 +2,75 @@
 .walletContainer {
   width: 100%;
   padding: 35px;
-  display: flex;
 
-  .profile-info {
-    flex: 1 1 0;
-  }
-
-  .profile-actions {
-    flex: 0 0 20%;
+  .profile-container {
     display: flex;
-    justify-content: flex-end;
+    width: 100%;
 
-    button {
-      width: 20px;
-      height: 20px;
+    .profile-info {
+      flex: 1 1 0;
+      font-size: 20px;
+      font-family:'Roboto';
+      font-weight: 200;
+      color: @color-grey;
+      margin-bottom: 10px;
 
-      .full-screen-svg {
-        fill: @color-grey;
+      &.profile-info-name {
+        font-weight: 600;
       }
+    }
 
+    .profile-actions {
+      flex: 0 0 20%;
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        width: 20px;
+        height: 20px;
+
+        .full-screen-svg {
+          fill: @color-grey;
+        }
+
+        &:not(:last-child) {
+          margin-right: 15px;
+        }
+      }
+    }
+  }
+}
+
+.wallet-contents {
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+
+  .nav.nav-tabs {
+    display: flex;
+
+    li {
+
+      flex: 0 0 50%;
       &:not(:last-child) {
-        margin-right: 15px;
+        margin-right: 5px;
       }
+
+      a {
+        &:extend(.btn, .btn-default);
+        border-radius: 3px;
+        font-weight: 300;
+        font-size: 14px;
+        text-transform: none;
+        flex: 0 0 40%;
+        height: 120px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    li.active a {
+      background-color: @color-purple;
+      color: @color-white;
     }
   }
 }
@@ -40,18 +87,6 @@
   font-weight: 400;
   color: dimgrey;
   margin-top: 10px;
-}
-
-.profile-info {
-  font-size: 20px;
-  font-family:'Roboto';
-  font-weight: 200;
-  color: @color-grey;
-  margin-bottom: 10px;
-
-  &.profile-info-name {
-    font-weight: 600;
-  }
 }
 
 .wallet-textfield {
@@ -82,12 +117,10 @@
 }
 
 .wallet-tab-content {
-  padding: 10px;
-  border-radius: 0px 0px 4px 4px;
-  border-bottom: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-top: 1px solid transparent;
+  margin-top: 5px;
+  .earn-button {
+    color: @color-purple;
+  }
 }
 
 .send .amountTrans{
