@@ -2,7 +2,7 @@ import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUser
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('account workflow', function () {
+describe('account workflow ', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     server.execute(resetDb)
@@ -270,7 +270,7 @@ describe('account workflow', function () {
     browser.setValue('[name="user_password"]', 'wrong')
     browser.click('#btn-show-seed')
 
-    browser.waitForVisible('.main-form-input-password.error')
+    browser.waitForVisible('.main-form-input-password.error', 30000)
     // // TODO: next test checks for error message - temp comment to get the test to pass
     // browser.waitForVisible('.control-label')
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
@@ -385,7 +385,7 @@ describe('account workflow', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('arriving on profile page without being logged shoudl redirect to home @watch', function () {
+  it('arriving on profile page without being logged shoudl redirect to home ', function () {
     // TODO: implement the functionality and write this test
     browser.url('http://localhost:3000/profile')
     const url = browser.url()
