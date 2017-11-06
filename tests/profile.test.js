@@ -2,7 +2,7 @@ import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUser
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('account workflow ', function () {
+describe('account workflow', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     server.execute(resetDb)
@@ -311,12 +311,12 @@ describe('account workflow ', function () {
     assert.equal(publicAddress, newPublicAddress)
   })
 
-  it('do not restore keystore if wrong password', function () {
+  it('do not restore keystore if wrong password @watch', function () {
     createUserAndLogin(browser)
     browser.pause(4000)
     browser.url('http://localhost:3000/profile')
 
-    browser.waitForExist('#show-seed')
+    browser.waitForExist('#show-seed', 10000)
 
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
