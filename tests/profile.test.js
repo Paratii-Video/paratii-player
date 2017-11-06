@@ -385,7 +385,14 @@ describe('account workflow', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('arriving on profile page without being logged in will ask the user to sign in [TODO]', function () {
+  it('arriving on profile page without being logged shoudl redirect to home [TODO]', function () {
     // TODO: implement the functionality and write this test
+
+  })
+  it('arriving in the application without being logged in, but with an existing user keystore, should ask for confirmation [TODO]', function () {
+    // TODO: at the present moment, we see the 'sigin/signup ' modal, without explanation. This is confusign.
+    // instead, we show a modal with a short explation :
+    // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
+    // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
   })
 })
