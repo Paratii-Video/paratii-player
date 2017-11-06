@@ -1,5 +1,8 @@
 <template name="App_body">
   {{> svgs }}
+
+  {{>alert message=setAlertMessage class=setAlertClass}}
+  
   <div class="main-app {{getRoute}}">
     <div class="nav-overlay {{light}}"></div>
     {{> navigation }}

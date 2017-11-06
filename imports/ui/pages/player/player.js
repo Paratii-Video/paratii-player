@@ -13,7 +13,6 @@ import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 // import '/imports/ui/components/modals/regenerateKeystore.js'
-import '/imports/ui/components/modals/modals.js'
 
 import './player.html'
 
@@ -316,7 +315,9 @@ const setLoadedProgress = (instance) => {
 
 Template.player.events({
   'click #unlock-video' (event) {
+    event.stopPropagation()
     if (Meteor.user()) {
+      console.log(event.target)
       showModal('unlockVideo',
         {
           type: 'PTI',
