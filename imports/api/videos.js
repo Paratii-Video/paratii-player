@@ -31,8 +31,9 @@ if (Meteor.isServer) {
 
   // Publish searched videos
   Meteor.publish('searchedVideos', function (keyword) {
-    console.log('from server search', keyword)
-    // const queryKeywords = new RegExp(keyword, 'i')
+    const queryKeywords = new RegExp(keyword, '')
+    console.log('from server search', queryKeywords)
+
     const query = {
       $text: {
         $search: keyword
