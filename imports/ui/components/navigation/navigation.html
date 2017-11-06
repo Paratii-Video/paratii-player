@@ -61,7 +61,7 @@
           </svg>
         </a>
       </li>
-      {#if userIsLoggedIn }
+      {{#if userIsLoggedIn }}
       <li id="logout" class="main-nav-item">
         <a class="main-nav-link" href="/">
           <div class="main-nav-icon">
@@ -72,7 +72,7 @@
           <span class="main-nav-text">Logout</span>
         </a>
       </li>
-      {#/if}
+      {{/if}}
     </ul>
   </nav>
 </template>

@@ -44,7 +44,7 @@ Template.navigation.helpers({
     return (Template.instance().navState.get() === 'maximized')
   },
   userIsLoggedIn () {
-    return Meteor.userId()
+    if (Meteor.userId()) { return true } else { return false }
   }
 })
 
