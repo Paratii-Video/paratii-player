@@ -385,10 +385,13 @@ describe('account workflow', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('arriving on profile page without being logged shoudl redirect to home [TODO]', function () {
+  it('arriving on profile page without being logged shoudl redirect to home @watch', function () {
     // TODO: implement the functionality and write this test
-
+    browser.url('http://localhost:3000/profile')
+    const url = browser.url()
+    assert.equal(url.value, 'http://localhost:3000/')
   })
+
   it('arriving in the application without being logged in, but with an existing user keystore, should ask for confirmation [TODO]', function () {
     // TODO: at the present moment, we see the 'sigin/signup ' modal, without explanation. This is confusign.
     // instead, we show a modal with a short explation :
