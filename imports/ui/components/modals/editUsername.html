@@ -1,0 +1,21 @@
+<template name="editUsername">
+  <div class="modal main-modal fade">
+    <div class="main-modal-wrapper edit-username-modal">
+      <h4 class="modal-title">New username</h4>
+      <form class="main-form">
+        <div class="modal-body">
+          <div class="input-group">
+            <input id="new-username" name="new-username" type="username" class="main-form-input" aria-describedby="sizing-addon1" required>
+            <label for="new-username" class="main-form-label dynamic">
+              new username
+            </label>
+          </div>
+        </div>
+        <div class="main-form-footer">
+          <span class="form-error-message">{{{errorMessage}}}</span>
+          <button type="submit" id="save-username" class="save-button" data-loading-text="Saving...">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>

@@ -3,6 +3,7 @@
 import { Template } from 'meteor/templating'
 import '/imports/api/users.js'
 import '/imports/ui/components/modals/editPassword.js'
+import '/imports/ui/components/modals/editUsername.js'
 import './editProfile.html'
 
 Modal.allowMultiple = true
@@ -59,5 +60,10 @@ Template.editProfile.events({
     Modal.hide('editProfile')
 
     Modal.show('editPassword', {})
+  },
+  'click .edit-username' () {
+    Modal.hide('editProfile')
+
+    Modal.show('editUsername')
   }
 })
