@@ -5,7 +5,7 @@ import { sprintf } from 'meteor/sgi:sprintfjs'
 import { formatNumber, showModal } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
-import { Videos } from '../../../api/videos.js'
+import { Videos, RelatedVideos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import * as HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
@@ -70,7 +70,6 @@ Template.player.onCreated(function () {
   const userPTIAddress = getUserPTIAddress()
   const instance = Template.instance()
   const bodyView = Blaze.getView('Template.App_body')
-
   // embed/extra parameters
   const autoplay = parseInt(FlowRouter.getQueryParam('autoplay'))
   const loop = parseInt(FlowRouter.getQueryParam('loop'))
@@ -127,6 +126,7 @@ Template.player.onCreated(function () {
   })
 
   Meteor.subscribe('playlists')
+  Meteor.subscribe('relatedVideos', videoId, userPTIAddress)
 
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id'), getUserPTIAddress(), function (err, results) {
     if (err) {
@@ -151,6 +151,7 @@ Template.player.onDestroyed(function () {
 Template.player.helpers({
   currentVideo () {
     const videoId = FlowRouter.getParam('_id')
+
     Template.instance().currentVideo.set(Videos.findOne({ _id: videoId }))
     renderVideoElement(Template.instance())
   },
@@ -233,6 +234,15 @@ Template.player.helpers({
   },
   descriptionClass () {
     return Template.instance().playerState.get('showDescription') ? 'show-description' : ''
+  },
+  relatedVideos () {
+    return RelatedVideos.find()
+  },
+  videoPath (video) {
+    const pathDef = 'player'
+    const params = { _id: video._id }
+    const path = FlowRouter.path(pathDef, params)
+    return path
   }
 })
 
@@ -267,12 +277,16 @@ const pauseVideo = (instance) => {
   Meteor.clearTimeout(controlsHandler)
   instance.playerState.set('hideControls', false)
   $('#app-container').removeClass('playing')
+  $('#app-container').removeClass('related')
   $('div.main-app').removeClass('hide-nav')
 }
 
 const endedVideo = (instance) => {
   instance.playerState.set('ended', true)
-  $('#app-container').addClass('related')
+  if (!FlowRouter.getQueryParam('playlist')) {
+    // show related only if there's no playlist
+    $('#app-container').addClass('related')
+  }
   $('#app-container').removeClass('playing')
 }
 const playVideo = (instance) => {
@@ -458,7 +472,12 @@ Template.player.events({
     const videoPlayer = instance.find('#video-player')
     const duration = Math.floor(videoPlayer.duration)
     instance.playerState.set('totalTime', duration)
+    // reset player state frontend
     instance.playerState.set('currentTime', 0)
+    instance.playerState.set('playedProgress', 0.0)
+    instance.playerState.set('scrubberTranslate', 0)
+
+    pauseVideo(Template.instance())
     setLoadedProgress(instance)
   },
   'mousemove' (event, instance) {
