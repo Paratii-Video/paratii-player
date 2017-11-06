@@ -85,6 +85,7 @@ Template.player.onCreated(function () {
 
   this.playerState = new ReactiveDict()
   this.playerState.set('playing', false)
+  this.playerState.set('ended', false)
   this.playerState.set('currentTime', 0)
   this.playerState.set('totalTime', 0)
   this.playerState.set('hideControls', false)
@@ -135,6 +136,7 @@ Template.player.onCreated(function () {
       // hide everything if the video is unlocked and autoplay is true
       if (self.playerState.get('autoplay') && !self.playerState.get('locked')) {
         self.playerState.set('playing', true)
+
         self.playerState.set('hideControls', true)
         self.navState.set('closed')
       }
@@ -210,6 +212,9 @@ Template.player.helpers({
   hasPlaylistId () {
     return FlowRouter.getQueryParam('playlist') != null
   },
+  relatedIsShowable () {
+    return FlowRouter.getQueryParam('playlist') == null
+  },
   autoplay () {
     if (Template.instance().playerState.get('locked')) return ''
     return Template.instance().playerState.get('autoplay') === true ? 'autoplay' : ''
@@ -265,6 +270,11 @@ const pauseVideo = (instance) => {
   $('div.main-app').removeClass('hide-nav')
 }
 
+const endedVideo = (instance) => {
+  instance.playerState.set('ended', true)
+  $('#app-container').addClass('related')
+  $('#app-container').removeClass('playing')
+}
 const playVideo = (instance) => {
   const dict = instance.playerState
   const navState = instance.navState
@@ -273,6 +283,7 @@ const playVideo = (instance) => {
   navState.set('closed')
   videoPlayer.play()
   $('#app-container').addClass('playing')
+  $('#app-container').removeClass('related')
   $('div.main-app').addClass('hide-nav')
   controlsHandler = Meteor.setTimeout(() => {
     if (!videoPlayer.paused) {
@@ -333,6 +344,7 @@ Template.player.events({
   'ended #video-player' (event, instance) {
     const navState = instance.navState
     instance.playerState.set('playing', false)
+    endedVideo(instance)
     navState.set('minimized')
   },
   'click #play-pause-button' (event, instance) {
@@ -427,6 +439,7 @@ Template.player.events({
     videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration
     instance.playerState.set('playedProgress', (offset / barWidth) * 100)
     instance.playerState.set('scrubberTranslate', (offset / barWidth) * 100)
+    $('#app-container').removeClass('related')
   },
   'click #vol-control' (event, instance) {
     const barWidth = instance.find('#vol-control').offsetWidth

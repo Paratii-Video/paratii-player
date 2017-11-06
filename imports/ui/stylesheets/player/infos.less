@@ -32,10 +32,29 @@
       padding: 0 20px;
     }
 
+    .player-related{
+      display: none
+    }
+
     .playing & {
       opacity: 0;
       transition: opacity .25s, padding .8s @ease-smooth;
       pointer-events: none;
+
+
+    }
+
+    .related & {
+      opacity: 1;
+      transition: opacity .25s, padding .8s @ease-smooth;
+      .player-related{
+        display: block
+      }
+
+      .player-infos-holder{
+        opacity: 0;
+        display: none;
+      }
     }
   }
 
