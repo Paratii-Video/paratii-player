@@ -104,6 +104,7 @@ Meteor.methods({
       description: String,
       price: Number,
       src: String,
+      thumb: String,
       mimetype: String,
       stats: {
         likes: Number,
