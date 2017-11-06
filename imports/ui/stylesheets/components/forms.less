@@ -12,6 +12,18 @@
     position: relative;
     width: 100%;
 
+    &.dynamic {
+      cursor: text;
+      position: absolute;
+      top: 7px;
+      transition: top 150ms ease-in-out;
+    }
+
+    input:focus + &.dynamic,
+    input:valid + &.dynamic {
+      top: -10px;
+    }
+
     &-checkbox {
       color: @color-grey-light;
       cursor: pointer;

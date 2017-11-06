@@ -2,7 +2,10 @@
 
 import { Template } from 'meteor/templating'
 import '/imports/api/users.js'
+import '/imports/ui/components/modals/editPassword.js'
 import './editProfile.html'
+
+Modal.allowMultiple = true
 
 Template.editProfile.helpers({
   ima () {
@@ -51,5 +54,10 @@ Template.editProfile.events({
       Session.set('dataUrl', dataUrl)
     }
     fileReader.readAsDataURL(file)
+  },
+  'click .edit-password' () {
+    Modal.hide('editProfile')
+
+    Modal.show('editPassword', {})
   }
 })
