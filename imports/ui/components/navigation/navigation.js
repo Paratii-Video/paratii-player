@@ -33,52 +33,6 @@ Template.navigation.helpers({
   navState () {
     return Template.instance().navState.get()
   },
-  navLinks () {
-    let links = []
-
-    links = links.concat([
-      {
-        icon: '/img/playlists_icon.svg',
-        text: 'Playlist',
-        path: FlowRouter.path('playlists'),
-        id: 'playlist'
-      }, {
-        icon: '/img/myvideos_icon.svg',
-        text: 'My Videos',
-        path: FlowRouter.path('myvideos'),
-        id: 'myvideos',
-        locked: true
-      }, {
-        icon: '/img/upload_icon.svg',
-        text: 'Upload',
-        path: FlowRouter.path('upload'),
-        id: 'upload',
-        locked: true
-      }, {
-        icon: '/img/lock_icon.svg',
-        text: 'DEBUG',
-        path: FlowRouter.path('debug'),
-        id: 'debug'
-      }, {
-        icon: '/img/lock_icon.svg',
-        text: 'Clear Cache',
-        path: '#',
-        id: 'clear-repo'
-      }
-    ])
-
-    if (Meteor.userId()) {
-      links = links.concat([
-        {
-          icon: '/img/avatar_img.svg',
-          text: 'Log out',
-          path: '/',
-          id: 'logout'
-        }
-      ])
-    }
-    return links
-  },
   aboutLink () {
     return {
       icon: '/img/logo_paratii.svg',
@@ -88,6 +42,9 @@ Template.navigation.helpers({
   },
   isMaximized () {
     return (Template.instance().navState.get() === 'maximized')
+  },
+  userIsLoggedIn () {
+    return Meteor.userId()
   }
 })
 
