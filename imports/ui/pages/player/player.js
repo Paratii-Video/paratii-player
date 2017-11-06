@@ -382,7 +382,8 @@ Template.player.events({
     }
   },
   'click #fullscreen-button' (event, instance) {
-    const videoPlayer = instance.find('#player-container')
+    const bodyView = Blaze.getView('Template.App_body')
+    const videoPlayer = bodyView.templateInstance().find('#player-fullscreen-container')
     if (fullscreen()) {
       requestCancelFullscreen(document)
     } else {
