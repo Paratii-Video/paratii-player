@@ -4,7 +4,7 @@ import { getUserPTIAddress } from '/imports/api/users.js'
 import './search.html'
 
 Template.search.onCreated(function () {
-  Meteor.subscribe('videos')
+  // Meteor.subscribe('searchedVideos', '')
   this.keywords = new ReactiveVar()
   this.sorting = new ReactiveVar()
   this.sorting.set('price_asc')
@@ -40,45 +40,14 @@ Template.search.events({
 
 })
 
-function buildQuery (queryKeywords) {
-  const query = {
-    $or: [
-      { title: queryKeywords },
-      { description: queryKeywords },
-      { 'uploader.name': queryKeywords },
-      { tags: queryKeywords }
-    ]
-  }
-
-  return query
-}
-
-function buildSorting (sorting) {
-  let sort = {}
-  if (sorting !== undefined) {
-    switch (sorting) {
-      case 'price_desc':
-        sort = {
-          sort: {price: -1}
-        }
-        return sort
-      case 'price_asc':
-        sort = {
-          sort: {price: 1}
-        }
-        return sort
-    }
-  }
-}
-
 Template.search.helpers({
   videos () {
     const keyword = Template.instance().keywords.get()
-    const sorting = Template.instance().sorting.get()
     if (keyword !== undefined) {
       if (keyword.length > 2) {
-        const queryKeywords = new RegExp(keyword, 'i')
-        const videos = Videos.find(buildQuery(queryKeywords), buildSorting(sorting))
+        Meteor.subscribe('searchedVideos', keyword)
+        const videos = Videos.find({}, { sort: [['score', 'desc']] })
+        console.log(videos)
         Template.instance().results.set(videos)
         return videos
       }

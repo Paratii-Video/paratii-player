@@ -16,9 +16,48 @@ export function userDislikesVideo (userId, videoId) {
 }
 
 if (Meteor.isServer) {
+  // define video indexes
+  Videos._ensureIndex({
+    'title': 'text',
+    'description': 'text',
+    'uploader.name': 'text',
+    'tags': 'text'
+  })
   // Publish all videos
+
   Meteor.publish('videos', function () {
     return Videos.find()
+  })
+
+  // Publish searched videos
+  Meteor.publish('searchedVideos', function (keyword) {
+    console.log('from server search', keyword)
+    // const queryKeywords = new RegExp(keyword, 'i')
+    const query = {
+      $text: {
+        $search: keyword
+      }
+      // $or: [
+      //   { title: queryKeywords },
+      //   { description: queryKeywords },
+      //   { 'uploader.name': queryKeywords },
+      //   { tags: queryKeywords }
+      // ]
+    }
+
+    const relevanceSettings = {
+      fields: {
+        score: {
+          $meta: 'textScore'
+        }
+      },
+      sort: {
+        score: {
+          $meta: 'textScore'
+        }
+      }
+    }
+    return Videos.find(query, relevanceSettings)
   })
 
   // Publish one video by id
