@@ -10,7 +10,15 @@
       <form class="main-form">
         <div class="modal-body">
           <div class="input-group">
-            <input id="new-username" name="new-username" type="username" class="main-form-input" aria-describedby="sizing-addon1" required>
+            <label for="current-username" class="main-form-label">
+              current username
+            </label>
+            <div class="main-form-data-display">
+              {{{currentUser.profile.name}}}
+            </div>
+          </div>
+          <div class="input-group">
+            <input id="new-username" name="new-username" type="text" class="main-form-input" aria-describedby="sizing-addon1" required>
             <label for="new-username" class="main-form-label dynamic">
               new username
             </label>
