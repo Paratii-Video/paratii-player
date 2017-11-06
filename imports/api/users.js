@@ -47,11 +47,17 @@ if (Meteor.isServer) {
         // delete data.email;
 
         // save oldEmail address
-        const oldEmail = Meteor.users.findOne(this.userId).emails[0].address
-        // remove old email address
-        Accounts.removeEmail(this.userId, oldEmail)
+        const user = Meteor.users.findOne(this.userId)
+        const oldEmail = user.emails && user.emails[0] && user.emails[0].address
+
         // add new email address
-        Accounts.addEmail(this.userId, data.email, false)
+        if (
+          Accounts.addEmail(this.userId, data.email, false) &&
+          oldEmail
+        ) {
+          // remove old email address
+          Accounts.removeEmail(this.userId, oldEmail)
+        }
       }
       // check if name is defined, if it is -> update.
       // TODO compare with old name, if it's different then update
