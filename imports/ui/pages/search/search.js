@@ -61,6 +61,13 @@ Template.search.helpers({
   isLocked (video) {
     return Template.instance().lockeds.get(video._id)
   },
+  noResults () {
+    if (Template.instance().keywords.get().length > 2) {
+      return 'No results for: ' + Template.instance().keywords.get()
+    } else {
+      return 'Please enter almost 3 characters'
+    }
+  },
   videoPath (video) {
     const pathDef = 'player'
     const params = { _id: video._id }
