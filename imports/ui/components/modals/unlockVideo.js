@@ -76,6 +76,7 @@ Template.unlockVideo.events({
     let ethBalance = Session.get('eth_balance')
 
     if (ethBalance === 0) {
+      // TODO: check that the user has enough ether for a minimal transaction
       msg = `You need some Ether for sending a transaction - but you have none`
       check.wallet_amount = msg
       setModalError(msg)
