@@ -5,6 +5,7 @@ import '/imports/api/users.js'
 import '/imports/ui/components/modals/editPassword.js'
 import '/imports/ui/components/modals/editUsername.js'
 import '/imports/ui/components/modals/editEmail.js'
+import '/imports/ui/components/modals/editAvatar.js'
 import './editProfile.html'
 
 Modal.allowMultiple = true
@@ -71,5 +72,10 @@ Template.editProfile.events({
     Modal.hide('editProfile')
 
     Modal.show('editEmail')
+  },
+  'click .edit-avatar' () {
+    Modal.hide('editProfile')
+
+    Modal.show('editAvatar')
   }
 })

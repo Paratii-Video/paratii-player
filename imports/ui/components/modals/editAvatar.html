@@ -1,0 +1,26 @@
+<template name="editAvatar">
+  <div class="modal main-modal fade">
+    <div class="main-modal-wrapper edit-avatar-modal">
+      <button class="main-modal-button-close" data-dismiss="modal">
+        <svg class="main-modal-button-close-svg">
+          <use class="main-modal-button-close-svg-use" xlink:href="#icon-close"></use>
+        </svg>
+      </button>
+      <h4 class="modal-title">New picture</h4>
+      <form class="main-form">
+        <div class="modal-body">
+          <div class="avatar-wrapper">
+            <img class="current-avatar" src="{{imageUrl}}" />
+            <label class="btn btn-default white-button upload-avatar">
+              Upload Picture <input type="file" name="new-avatar" hidden>
+            </label>
+          </div>
+        </div>
+        <div class="main-form-footer">
+          <span class="form-error-message">{{{errorMessage}}}</span>
+          <button type="submit" id="save-avatar" class="save-button" data-loading-text="Saving..." {{disabled}}>Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
