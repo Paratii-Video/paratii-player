@@ -168,9 +168,6 @@ Template.player.helpers({
   totalTime () {
     return Template.instance().playerState.get('totalTime')
   },
-  // hasPrice () {
-  //   return Template.instance().currentVideo.get().price && Template.instance().currentVideo.get().price > 0
-  // },
   hideControls () {
     return Template.instance().playerState.get('hideControls') ? 'toggleFade' : ''
   },
