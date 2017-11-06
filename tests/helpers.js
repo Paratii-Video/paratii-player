@@ -25,6 +25,7 @@ export function logout (browser) {
     Meteor.logout()
   })
 }
+
 export function createUserAndLogin (browser) {
   server.execute(createUser)
   login(browser)

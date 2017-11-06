@@ -9,7 +9,7 @@ import { getContract } from './contracts.js'
 
 // createKeystore will create a new keystore
 // save it in the session object and in local storage
-// generate an address, and save that in the sesssion too
+// generate an address, and save that in the session too
 function createKeystore (password, seedPhrase, cb) {
   // create a new seedPhrase if we have none
   Session.set('generating-keystore', true)

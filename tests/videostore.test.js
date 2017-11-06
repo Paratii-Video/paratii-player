@@ -2,7 +2,7 @@ import { web3, logout, createUserAndLogin, getOrDeployParatiiContracts, getUserP
 import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('Video Store @watch:', function () {
+describe('Video Store:', function () {
   let contracts
   let videoId = '5' // this is  a known videoId defined in fixtures.js
 
@@ -26,8 +26,8 @@ describe('Video Store @watch:', function () {
     browser.url('http://localhost:3000/profile')
   })
   afterEach(function () {
-    browser.execute(nukeLocalStorage)
-    server.execute(resetDb)
+    // browser.execute(nukeLocalStorage)
+    // server.execute(resetDb)
   })
 
   it('should be possible to buy (and unlock) a video', function (done) {
