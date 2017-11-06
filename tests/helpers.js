@@ -20,6 +20,11 @@ export function login (browser) {
   })
 }
 
+export function logout (browser) {
+  browser.execute(function () {
+    Meteor.logout()
+  })
+}
 export function createUserAndLogin (browser) {
   server.execute(createUser)
   login(browser)
