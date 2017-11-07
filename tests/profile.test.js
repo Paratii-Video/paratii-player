@@ -218,7 +218,7 @@ describe('account workflow', function () {
     // browser.pause(5000)
   })
 
-  it('shows the seed @watch', function () {
+  it('shows the seed', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)

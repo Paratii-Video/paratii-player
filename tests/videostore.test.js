@@ -22,13 +22,13 @@ describe('Video Store:', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     createUserAndLogin(browser)
-    browser.pause(2000)
+    // browser.pause(2000)
     // browser.url('http://localhost:3000/profile')
   })
 
   afterEach(function () {
-    browser.execute(nukeLocalStorage)
-    server.execute(resetDb)
+    // browser.execute(nukeLocalStorage)
+    // server.execute(resetDb)
   })
 
   it('should be possible to buy (and unlock) a video @watch', function () {

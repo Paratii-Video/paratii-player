@@ -52,7 +52,13 @@ export function createUserAndLogin (browser) {
   })
   login(browser)
   waitForUserIsLoggedIn(browser)
-  // console.log(`created ${userId} and logged in`)
+
+  // set the user's address to that of the wallet -
+  // TODO: this should be done on login, automagically, I suppose
+  let address = getUserPTIAddressFromBrowser()
+  server.execute(function (userId, address) {
+    Meteor.users.update(userId, {$set: { 'profile.ptiAddress': address }})
+  }, userId, address)
   return userId
 }
 
