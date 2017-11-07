@@ -92,6 +92,7 @@ function createAnonymousKeystoreIfNotExists () {
 
 function mergeOrCreateNewWallet (password) {
   const anonymousKeystore = getKeystore('anonymous')
+  const key = Meteor.userId()
   if (password !== undefined) {
     if (anonymousKeystore !== null) {
       // we have an anonmous keystore - we need to regenarate a new keystore
@@ -100,7 +101,7 @@ function mergeOrCreateNewWallet (password) {
         if (err) {
           throw err
         }
-        createKeystore(password, seedPhrase, function (error, result) {
+        createKeystore(password, seedPhrase, key, function (error, result) {
           if (error) {
             throw error
           }
@@ -114,7 +115,7 @@ function mergeOrCreateNewWallet (password) {
     } else {
       // There is no anonymous keystore, i create a keystore
       console.log('no anonymous keystore found')
-      createKeystore(password, null, function (error, result) {
+      createKeystore(password, null, key, function (error, result) {
         if (error) {
           throw error
         }

@@ -1,8 +1,10 @@
 <template name="App_body">
   {{> svgs }}
 
-  {{>alert message=setAlertMessage class=setAlertClass}}
-  
+  {{#if setAlertMessage }}
+    {{> alert message=setAlertMessage class=setAlertClass}}
+  {{/if}}
+
   <div class="main-app {{getRoute}}">
     <div class="nav-overlay {{light}}"></div>
     {{> navigation }}

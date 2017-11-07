@@ -6,7 +6,7 @@ import { checkPassword, getUserPTIAddress } from '/imports/api/users.js'
 import { changePasswordType, setModalError, setModalState } from '/imports/lib/utils.js'
 import '/imports/lib/validate.js'
 import './unlockVideo.html'
-import { modalHelpers } from './mainModal.js'
+// import { modalHelpers } from './mainModal.js'
 
 var promisify = require('promisify-node')
 
@@ -22,7 +22,7 @@ Template.unlockVideo.onRendered(function () {
   Meteor.setTimeout(() => $('div.main-modal-unlock').addClass('show-content'), 1000)
 })
 
-Template.unlockVideo.helpers(modalHelpers)
+// Template.unlockVideo.helpers(modalHelpers)
 Template.unlockVideo.helpers({
   ima () {
     return Session.get('dataUrl')
