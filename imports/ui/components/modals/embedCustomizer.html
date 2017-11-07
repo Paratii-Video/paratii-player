@@ -5,6 +5,9 @@
   {{#if isEmbed modalType}}
     {{> modal_share_embed }}
   {{/if}}
+  {{#if isEmailSharing modalType}}
+    {{> modal_share_via_email }}
+  {{/if}}
 </template>
 
 
@@ -42,7 +45,7 @@
         </a>
       </li>
       <li class="main-modal-share-item">
-        <a class="main-modal-share-link" href="{{ email }}">
+        <a class="main-modal-share-link gotoemailsharing" href="#">
           <svg class="main-modal-share-link-svg">
             <use class="main-modal-share-link-svg-use" xlink:href="#icon-share-email"></use>
           </svg>
@@ -54,6 +57,25 @@
       <button class="button-text button-text--grey-light gotoembed">Get embed</button>
       <button id="copy_url"  class="button-text" data-clipboard-target="#to_clip">Copy link</button>
     </div>
+  </div>
+</template>
+
+
+<template name="modal_share_via_email">
+  <div class="main-modal-content main-modal-share">
+    <form class="" id="send_email">
+      <h3 class="main-modal-title main-modal-anim-1">Share this video via email</h3>
+      <div class="main-modal-anim-2">
+
+          <input type="email" name="email" placeholder="Friend email">
+
+
+      </div>
+      <div class="main-modal-footer main-modal-anim-4">
+        <button class="button-text button-text--grey-light gotolinks">Share video</button>
+        <button type="submit" class="button-text">Send</button>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -88,7 +110,7 @@
       </div>
     </div>
     <!--  Hide tiny/mini choice until these things are implemented..
-    
+
     <div class="main-modal-share-option main-modal-anim-3">
       <p class="main-modal-subtitle">Sizes:</p>
       <div class="main-modal-share-options">
