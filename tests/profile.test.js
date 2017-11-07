@@ -126,7 +126,7 @@ describe('account workflow', function () {
     assert.equal(errorMsg, 'Login forbidden')
   })
 
-  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase @watch', function () {
+  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     // create a meteor user

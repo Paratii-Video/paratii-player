@@ -21,6 +21,11 @@ before(async function (done) {
   done()
 })
 
+beforeEach(function () {
+  server.execute(resetDb)
+  browser.execute(nukeLocalStorage)
+})
+
 export function getProvider () {
   return Meteor.settings.public.http_provider
 }
@@ -40,9 +45,15 @@ export function logout (browser) {
 export function createUserAndLogin (browser) {
   let userId = server.execute(createUser)
   browser.execute(createKeystore, null, userId)
+  browser.waitUntil(function () {
+    return browser.execute(function (userId) {
+      return localStorage.getItem(`keystore-${userId}`)
+    }, userId).value
+  })
   login(browser)
-  // the login handler will open a modal window (because a keystore is not available yet), which we need to close
-  // browser.execute(function () { Modal.hide() })
+  waitForUserIsLoggedIn(browser)
+  // console.log(`created ${userId} and logged in`)
+  return userId
 }
 
 export function assertUserIsLoggedIn (browser) {

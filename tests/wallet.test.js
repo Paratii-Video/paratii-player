@@ -1,17 +1,16 @@
-import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
+import { web3, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
 import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('wallet', function () {
+describe('wallet @watch', function () {
   let userAccount
 
   beforeEach(function () {
-    server.execute(resetDb)
     createUserAndLogin(browser)
     // TODO: refactor and get the address directly using browser.execute
-    browser.pause(2000)
+    // browser.pause(2000)
     browser.url('http://localhost:3000/profile')
-    browser.waitForExist('#public_address')
+    // browser.waitForExist('#public_address')
     userAccount = getUserPTIAddressFromBrowser()
   })
 
