@@ -65,7 +65,7 @@ export function assertUserIsLoggedIn (browser) {
 }
 
 export function waitForUserIsLoggedIn (browser) {
-  // assert that the user is logged in
+  // wait until the user is logged in
   browser.waitUntil(function () {
     return browser.execute(function () {
       return Meteor.userId()
@@ -73,6 +73,18 @@ export function waitForUserIsLoggedIn (browser) {
   })
 }
 
+export function waitForKeystore (browser) {
+  let userId = browser.execute(function () {
+    return Meteor.userId()
+  }).value
+
+  browser.waitUntil(function () {
+    return browser.execute(function (userId) {
+      return localStorage.getItem(`keystore-${userId}`)
+    }, userId).value
+  })
+  return userId
+}
 export function assertUserIsNotLoggedIn (browser) {
   // assert that the user is logged in
   let userId = browser.execute(function () {

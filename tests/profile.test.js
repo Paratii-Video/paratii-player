@@ -1,9 +1,9 @@
 /* global localStorage */
-import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUserAndLogin, assertUserIsLoggedIn, waitForUserIsLoggedIn, assertUserIsNotLoggedIn, nukeLocalStorage, clearUserKeystoreFromLocalStorage, getUserPTIAddressFromBrowser } from './helpers.js'
+import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUserAndLogin, assertUserIsLoggedIn, waitForUserIsLoggedIn, assertUserIsNotLoggedIn, nukeLocalStorage, clearUserKeystoreFromLocalStorage, getUserPTIAddressFromBrowser, waitForKeystore } from './helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('account workflow', function () {
+describe('account workflow @watch', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
   })
@@ -13,9 +13,8 @@ describe('account workflow', function () {
     server.execute(resetDb)
   })
 
-  it('register a new user', function () {
+  it('register a new user ', function () {
     browser.execute(nukeLocalStorage)
-
     browser.url('http://localhost:3000')
 
     // log in as the created user
@@ -42,19 +41,19 @@ describe('account workflow', function () {
     // the new user is automaticaly logged in after account creation
     waitForUserIsLoggedIn(browser)
 
+    // wait for the keystore to be generated
+    waitForKeystore(browser)
     // now a modal should be opened with the seed
-    // (we wait a long time, because the wallet needs to be generated)
     browser.waitForClickable('#seed')
     browser.pause(1000)
     browser.waitForClickable('#closeModal')
-    browser.pause(1000)
     browser.click('#closeModal')
 
-    // the user is now be logged in, and on the profile page, where the avatar is visible
+    // the user is now logged in
     assertUserIsLoggedIn(browser)
   })
 
-  it('login as an existing user on a device with no keystore - use existing anonymous keystore @watch', function () {
+  it('login as an existing user on a device with no keystore - use existing anonymous keystore ', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
 
@@ -90,8 +89,10 @@ describe('account workflow', function () {
     browser.waitForClickable('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#btn-create-wallet')
-    // TODO: check if wallet is created (is not implemented yet)
-    browser.pause(4000)
+
+    waitForKeystore(browser)
+
+    // the address of the new keystore should be the same as the old 'anonymous' address
     const publicAddress = getUserPTIAddressFromBrowser()
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
@@ -179,7 +180,7 @@ describe('account workflow', function () {
     browser.setValue('[name="at-field-password"]', 'password')
     // .setValue('[name="at-field-password_again"]', 'password')
     // submit the form
-    browser.$('#at-btn').click()
+    browser.click('#at-btn')
     browser.waitForVisible('.at-error')
     const error = browser.getText('.at-error')
     assert.isNotNull(error, 'should exist a error message')
@@ -237,7 +238,6 @@ describe('account workflow', function () {
   it('send ether dialog is visible', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
-    browser.pause(5000)
 
     browser.url('http://localhost:3000/profile')
     browser.waitForExist('#send-eth')
@@ -301,24 +301,22 @@ describe('account workflow', function () {
 
   it('do not restore keystore if wrong password', function () {
     createUserAndLogin(browser)
-    browser.pause(4000)
     browser.url('http://localhost:3000/profile')
-
-    browser.waitForExist('#show-seed', 10000)
-
+    browser.waitForClickable('#show-seed')
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
+    browser.waitForClickable('#btn-show-seed')
     browser.click('#btn-show-seed')
-    browser.pause(1000)
-    browser.waitForVisible('#seed')
+    browser.waitForClickable('#seed')
     const seed = browser.getHTML('#seed strong', false)
     // const publicAddress = browser.getHTML('#public_address', false)
+    browser.waitForClickable('#closeModal')
     browser.click('#closeModal')
     browser.execute(clearUserKeystoreFromLocalStorage)
     browser.refresh()
 
-    browser.waitForVisible('#walletModal #restore-keystore')
+    browser.waitForClickable('#walletModal #restore-keystore')
     browser.click('#walletModal #restore-keystore')
     browser.waitForVisible('[name="field-seed"]')
     browser.setValue('[name="field-seed"]', seed)
@@ -332,39 +330,32 @@ describe('account workflow', function () {
   })
 
   it('do not create a new wallet if the password is wrong', function () {
-    browser.execute(nukeLocalStorage)
     server.execute(resetDb)
-    browser.pause(1000)
+    browser.execute(nukeLocalStorage)
 
     // create a meteor user
     server.execute(createUser)
+    assertUserIsNotLoggedIn(browser)
 
     // log in as the created user
-    assertUserIsNotLoggedIn(browser)
     browser.url('http://localhost:3000')
-    browser.pause(2000)
-    browser.waitForEnabled('#nav-profile')
+    browser.waitForClickable('#nav-profile')
     browser.click('#nav-profile')
 
-    browser.pause(1000)
-    browser.waitForEnabled('[name="at-field-email"]')
-    browser
-      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-      .setValue('[name="at-field-password"]', 'password')
+    browser.waitForClickable('[name="at-field-email"]')
+    browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+    browser.setValue('[name="at-field-password"]', 'password')
     browser.click('#at-btn')
 
     // the user is now logged in
-    browser.pause(2000)
-    assertUserIsLoggedIn(browser)
+    waitForUserIsLoggedIn(browser)
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
-    browser.waitForExist('#walletModal')
-    browser.pause(1000)
+    browser.waitForClickable('#walletModal')
     browser.waitForEnabled('#walletModal #create-wallet')
     browser.click('#walletModal #create-wallet')
     browser.waitForEnabled('[name="user_password"]')
-    browser
-      .setValue('[name="user_password"]', 'wrong password')
+    browser.setValue('[name="user_password"]', 'wrong password')
     browser.click('#btn-create-wallet')
 
     browser.waitForVisible('.main-form-input-password.error')
@@ -373,11 +364,10 @@ describe('account workflow', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('arriving on profile page without being logged shoudl redirect to home', function () {
+  it('arriving on profile page without being logged should redirect to home', function () {
     // TODO: implement the functionality and write this test
     browser.url('http://localhost:3000/profile')
     const url = browser.url()
-
     browser.pause(1000)
     assert.equal(url.value, 'http://localhost:3000/')
   })
