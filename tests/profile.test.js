@@ -10,9 +10,8 @@ describe('account workflow', function () {
   })
 
   afterEach(function () {
-    // TODO: reset everything: call nukeLocalStorage here
-    browser.execute(clearUserKeystoreFromLocalStorage)
-    server.execute(resetDb)
+    // browser.execute(nukeLocalStorage)
+    // server.execute(resetDb)
   })
 
   it('register a new user', function () {
@@ -60,15 +59,16 @@ describe('account workflow', function () {
 
   it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
+    browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     browser.pause(1000)
 
     // create a meteor user
     server.execute(createUser)
 
-    // log in as the created user
     assertUserIsNotLoggedIn(browser)
 
+    // go to the home page
     browser.url('http://localhost:3000')
     browser.pause(2000)
     const anonymousAddress = getAnonymousAddress()
@@ -131,14 +131,14 @@ describe('account workflow', function () {
     assert.equal(errorMsg, 'Login forbidden')
   })
 
-  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase', function () {
+  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase @watch', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     browser.pause(1000)
     // create a meteor user
     server.execute(createUser)
-    // log in as the created user
     assertUserIsNotLoggedIn(browser)
+
     browser.url('http://localhost:3000')
     browser.waitForEnabled('#nav-profile')
     browser.click('#nav-profile')
@@ -165,7 +165,7 @@ describe('account workflow', function () {
       .setValue('[name="field-seed"]', SEED)
       .setValue('[name="field-password"]', 'password')
     browser.click('#btn-restorekeystore-restore')
-    browser.pause(10000)
+    browser.pause(5000)
     const publicAddress = getUserPTIAddressFromBrowser()
     assert.equal(publicAddress, USERADDRESS)
   })
@@ -257,7 +257,7 @@ describe('account workflow', function () {
     browser.waitForExist('#form-doTransaction')
   })
 
-  it('do not show the seed if wrong password', function () {
+  it('do not show the seed if wrong password @watch', function () {
     createUserAndLogin(browser)
 
     browser.pause(4000)
