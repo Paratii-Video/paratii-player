@@ -1,4 +1,4 @@
-import { Videos } from '../../../../imports/api/videos.js'
+import { VideosResults } from '../../../../imports/api/videos.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 
 import './search.html'
@@ -13,6 +13,12 @@ Template.search.onCreated(function () {
   this.autorun(() => {
     // subscribe to videos of the current playlist
     // for each video of the playlist checks if the user bought it
+
+    var self = this
+    self.autorun(function () {
+      self.subscribe('searchedVideos', Session.get('lastsearch'))
+    })
+
     if (Template.instance().results.get() !== undefined) {
       Template.instance().results.get().forEach((video) => {
         Meteor.call('videos.isLocked', video._id, getUserPTIAddress(), (err, result) => {
@@ -45,8 +51,8 @@ Template.search.helpers({
     const keyword = Template.instance().keywords.get()
     if (keyword !== undefined) {
       if (keyword.length > 2) {
-        Meteor.subscribe('searchedVideos', keyword)
-        const videos = Videos.find({}, { sort: [['score', 'desc']] })
+        // Meteor.subscribe('searchedVideos', keyword)
+        const videos = VideosResults.find({}, { sort: [['score', 'desc']] })
         console.log(videos)
         Template.instance().results.set(videos)
         return videos

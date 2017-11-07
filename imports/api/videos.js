@@ -5,6 +5,7 @@ import { check } from 'meteor/check'
 import { Playlists } from '/imports/api/playlists.js'
 
 export const Videos = new Mongo.Collection('videos')
+export const VideosResults = new Mongo.Collection('SearchResults')
 export const RelatedVideos = new Mongo.Collection('RelatedVideos')
 
 export function userLikesVideo (userId, videoId) {
@@ -62,7 +63,11 @@ if (Meteor.isServer) {
         }
       }
     }
-    return Videos.find(query, relevanceSettings)
+
+    // i've changed the cursor in order to clean query
+    Mongo.Collection._publishCursor(Videos.find(query, relevanceSettings), this, 'SearchResults')
+    this.ready()
+    // return Videos.find(query, relevanceSettings)
   })
 
   // Publish one video by id
