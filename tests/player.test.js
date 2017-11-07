@@ -13,10 +13,6 @@ describe('player workflow', function () {
     browser.waitForExist('#video-player')
     browser.waitForExist('.player-overlay')
     assert.equal(browser.getText('.player-title'), 'Test 1')
-    // Close modal
-    // browser.waitForExist('#loginModal')
-    // browser.click('#btn-editprofile-close')
-    // browser.pause(2000)
     browser.waitForExist('.player-controls')
     browser.click('#play-pause-button')
     assert.isTrue(browser.getAttribute('#nav', 'class').includes('closed'))
@@ -24,7 +20,7 @@ describe('player workflow', function () {
     assert.isTrue(browser.getAttribute('.player-overlay', 'class').includes('pause'))
   })
 
-  it('click on the progress bar', function () {
+  it('click on the progress bar [TODO]', function () {
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     browser.url('http://localhost:3000/play/12345')
     browser.waitForExist('#video-player')

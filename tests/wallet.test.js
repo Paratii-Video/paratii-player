@@ -1,15 +1,9 @@
-import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser, getOrDeployParatiiContracts } from './helpers.js'
+import { web3, resetDb, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
 import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
 describe('wallet', function () {
   let userAccount
-
-  before(async function (done) {
-    browser.url('http://localhost:3000')
-    await getOrDeployParatiiContracts(server, browser)
-    done()
-  })
 
   beforeEach(function () {
     server.execute(resetDb)
@@ -40,7 +34,7 @@ describe('wallet', function () {
     done()
   })
 
-  it('should be able to send some PTI, update the balance and transaction history @watch', function (done) {
+  it('should be able to send some PTI, update the balance and transaction history', function (done) {
     sendSomeETH(userAccount, 1)
     let description = 'Here is some PTI for you'
     let toAddress = web3.eth.accounts[2]

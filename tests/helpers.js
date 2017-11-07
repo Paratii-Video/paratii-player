@@ -10,11 +10,15 @@ export { web3 }
 export const SEED = 'road inherit leave arm unlock estate option merge mechanic rate blade dumb'
 export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
 
-before(function () {
+before(async function (done) {
   browser.addCommand('waitForClickable', function (selector, timeout) {
     this.waitForVisible(selector, timeout)
     this.waitForEnabled(selector, timeout)
   })
+
+  browser.url('http://localhost:3000')
+  await getOrDeployParatiiContracts(server, browser)
+  done()
 })
 
 export function getProvider () {
@@ -47,6 +51,15 @@ export function assertUserIsLoggedIn (browser) {
     return Meteor.userId()
   }).value
   assert.isOk(userId)
+}
+
+export function waitForUserIsLoggedIn (browser) {
+  // assert that the user is logged in
+  browser.waitUntil(function () {
+    return browser.execute(function () {
+      return Meteor.userId()
+    }).value
+  })
 }
 
 export function assertUserIsNotLoggedIn (browser) {
