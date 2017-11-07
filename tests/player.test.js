@@ -15,8 +15,9 @@ describe('player workflow', function () {
     assert.equal(browser.getText('.player-title'), 'Test 1')
     browser.waitForExist('.player-controls')
     assert.isTrue(browser.getAttribute('.player-controls', 'class').includes('play'))
+    browser.waitForClickable('#play-pause-button')
+    browser.pause(1000) //
     browser.click('#play-pause-button')
-    browser.pause(2000) // need to wait for the animation to finish
     assert.isTrue(browser.getAttribute('#nav', 'class').includes('closed'))
     assert.isTrue(browser.getAttribute('.player-controls', 'class').includes('pause'))
     assert.isTrue(browser.getAttribute('.player-overlay', 'class').includes('pause'))
