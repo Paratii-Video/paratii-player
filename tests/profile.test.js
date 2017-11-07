@@ -2,7 +2,7 @@ import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUser
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('account workflow @watch', function () {
+describe('account workflow', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     browser.execute(clearUserKeystoreFromLocalStorage)
@@ -57,7 +57,7 @@ describe('account workflow @watch', function () {
     assertUserIsLoggedIn(browser)
   })
 
-  it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
+  it('login as an existing user on a device with no keystore - use existing anonymous keystore @watch', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
@@ -96,7 +96,7 @@ describe('account workflow @watch', function () {
       .setValue('[name="user_password"]', 'password')
     browser.click('#btn-create-wallet')
     // TODO: check if wallet is created (is not implemented yet)
-    browser.pause(2000)
+    browser.pause(4000)
     const publicAddress = getUserPTIAddressFromBrowser()
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
