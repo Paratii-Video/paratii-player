@@ -1,21 +1,18 @@
-import { web3, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
+import { assertUserIsLoggedIn, web3, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
 import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('wallet:', function () {
+describe('wallet @watch:', function () {
   let userAccount
 
   beforeEach(function () {
     createUserAndLogin(browser)
-    // TODO: refactor and get the address directly using browser.execute
-    // browser.pause(2000)
     browser.url('http://localhost:3000/profile')
-    // browser.waitForExist('#public_address')
     userAccount = getUserPTIAddressFromBrowser()
+    assertUserIsLoggedIn(browser)
   })
 
   it('should show ETH balance', async function (done) {
-    // sendSomeETH(userAccount, 3.1)
     browser.execute(getSomeETH, 3.1)
     browser.waitForClickable('#eth_amount')
     const amount = await browser.getHTML('#eth_amount', false)

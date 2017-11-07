@@ -10,6 +10,7 @@ export { web3 }
 export const SEED = 'road inherit leave arm unlock estate option merge mechanic rate blade dumb'
 export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
 
+// The before  function will be run once, before all tests
 before(async function (done) {
   browser.addCommand('waitForClickable', function (selector, timeout) {
     this.waitForVisible(selector, timeout)
@@ -21,6 +22,7 @@ before(async function (done) {
   done()
 })
 
+// The beforeEac  function is run before each single est
 beforeEach(function () {
   server.execute(resetDb)
   browser.execute(nukeLocalStorage)
