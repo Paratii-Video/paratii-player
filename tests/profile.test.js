@@ -3,7 +3,7 @@ import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUser
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('account workflow @watch', function () {
+describe('account workflow', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
   })
@@ -109,20 +109,19 @@ describe('account workflow @watch', function () {
     assertUserIsNotLoggedIn(browser)
 
     browser.url('http://localhost:3000')
-    browser.pause(2000)
-    browser.waitForEnabled('#nav-profile')
+    browser.waitForClickable('#nav-profile')
     browser.click('#nav-profile')
 
-    browser.pause(1000)
     browser.waitForClickable('[name="at-field-email"]')
 
     browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
     browser.setValue('[name="at-field-password"]', 'wrong password')
     browser.click('#at-btn')
 
-    // the user is now logged in
-    browser.pause(2000)
+    // the user is now still not logged in
     assertUserIsNotLoggedIn(browser)
+
+    browser.waitForClickable('.at-error')
     let errorMsg = browser.getText('.at-error')
     assert.equal(errorMsg, 'Login forbidden')
   })
@@ -169,8 +168,7 @@ describe('account workflow @watch', function () {
     browser.click('#nav-profile')
 
     // we should see the login form, we click on the register link
-    browser.waitForExist('#at-signUp')
-    browser.pause(2000)
+    browser.waitForClickable('#at-signUp')
     browser.click('#at-signUp')
 
     // fill in the form
@@ -220,19 +218,18 @@ describe('account workflow @watch', function () {
     // browser.pause(5000)
   })
 
-  it('shows the seed', function () {
+  it('shows the seed @watch', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
-    browser.pause(5000)
+    waitForUserIsLoggedIn(browser)
     browser.url('http://localhost:3000/profile')
     browser.waitForEnabled('#show-seed')
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#btn-show-seed')
-    browser.pause(2000)
-    browser.waitForEnabled('#closeModal')
-    browser.click('#closeModal')
+    browser.waitForClickable('#closeModal')
+    // browser.click('#closeModal')
   })
 
   it('send ether dialog is visible', function () {

@@ -31,7 +31,7 @@ describe('Video Store:', function () {
     server.execute(resetDb)
   })
 
-  it('should be possible to buy (and unlock) a video', function () {
+  it('should be possible to buy (and unlock) a video @watch', function () {
     // make sure we have enough funds
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
