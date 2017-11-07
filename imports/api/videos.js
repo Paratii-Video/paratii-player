@@ -1,8 +1,13 @@
+/* globals ReactiveAggregate */
+
 import { check } from 'meteor/check'
 // import { Transactions } from '/imports/api/transactions.js'
 import { Playlists } from '/imports/api/playlists.js'
 
 export const Videos = new Mongo.Collection('videos')
+export const VideosResults = new Mongo.Collection('SearchResults')
+export const RelatedVideos = new Mongo.Collection('RelatedVideos')
+
 export function userLikesVideo (userId, videoId) {
   return Boolean(
     Meteor.users.findOne({ _id: userId, 'stats.likes': { $in: [videoId] } })
@@ -58,7 +63,23 @@ if (Meteor.isServer) {
         }
       }
     }
-    return Videos.find(query, relevanceSettings)
+
+    // i've changed the cursor in order to clean query
+    Mongo.Collection._publishCursor(Videos.find(query, relevanceSettings), this, 'SearchResults')
+    this.ready()
+    // return Videos.find(query, relevanceSettings)
+  })
+
+  // Publish one video by id
+  Meteor.publish('relatedVideos', function (_id, userID) {
+    console.log('Videos related to', _id)
+    console.log('for the user', userID)
+    ReactiveAggregate(this, Videos, [
+      { $sample: { size: 6 } }
+    ]
+      ,
+    {clientCollection: 'RelatedVideos'}
+    )
   })
 
   // Publish one video by id

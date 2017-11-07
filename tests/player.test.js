@@ -70,4 +70,12 @@ describe('player workflow', function () {
     browser.waitForExist('.player-overlay')
     assert.equal(browser.getText('.player-title'), 'Test 2')
   })
+
+  it('if a player is within a playlist and it is ended related videos don\'t show up', (done) => {
+    done()
+  })
+
+  it('if a player is not within a playlist and it is ended related videos show up', (done) => {
+    done()
+  })
 })

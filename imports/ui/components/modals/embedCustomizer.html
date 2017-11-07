@@ -51,7 +51,7 @@
     </ul>
     <div class="main-modal-footer main-modal-anim-4">
       <pre id="to_clip" class="visually-hidden">{{ embedBaseUrl }}</pre>
-      <button class="button-text button-text--grey-light gotoembed">Get embed</button>
+      <button class="button-text button-text--grey-light gotoembed">Embed video</button>
       <button id="copy_url"  class="button-text" data-clipboard-target="#to_clip">Copy link</button>
     </div>
   </div>
@@ -59,7 +59,7 @@
 
 <template name="modal_share_embed">
   <div class="main-modal-content main-modal-share">
-    <h3 class="main-modal-title main-modal-anim-1">Embed</h3>
+    <h3 class="main-modal-title main-modal-anim-1">Embed video</h3>
     <div class="main-modal-share-option main-modal-anim-2">
       <p class="main-modal-subtitle">Capabilities:</p>
       <div class="main-modal-share-options">
@@ -87,6 +87,8 @@
         </label>
       </div>
     </div>
+    <br>
+    <p class="main-modal-text main-modal-anim-4">Add the following code to your website</p>
     <!--  Hide tiny/mini choice until these things are implemented..
     
     <div class="main-modal-share-option main-modal-anim-3">
@@ -103,7 +105,7 @@
       </div>
     </div>
   -->
-    <input class="input-copy-code main-form-input main-modal-anim-4" onclick="this.focus();this.select()" readonly="readonly" value="{{ code }}" />
+    <input class="input-copy-code main-form-input main-modal-anim-5" onclick="this.focus();this.select()" readonly="readonly" value="{{ code }}" />
     <pre id="to_clip" class="visually-hidden">{{ code }}</pre>
 
     <div class="main-modal-footer main-modal-anim-5">

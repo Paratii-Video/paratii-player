@@ -272,7 +272,10 @@ describe('account workflow', function () {
     browser.waitForEnabled('#btn-show-seed')
     browser.pause(1000)
     browser.click('#btn-show-seed')
+
+    // browser.waitForVisible('.main-form-input-password.error', 30000)
     browser.waitForVisible('.main-form-input-password.error')
+
     // // TODO: next test checks for error message - temp comment to get the test to pass
     // browser.waitForVisible('.control-label')
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
@@ -318,7 +321,10 @@ describe('account workflow', function () {
     createUserAndLogin(browser)
     browser.pause(2000)
     browser.url('http://localhost:3000/profile')
+
+    // browser.waitForExist('#show-seed', 10000)
     browser.waitForEnabled('#show-seed')
+
     browser.click('#show-seed')
     browser.waitForEnabled('[name="user_password"]')
     browser.pause(500)
@@ -388,10 +394,15 @@ describe('account workflow', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('arriving on profile page without being logged shoudl redirect to home [TODO]', function () {
+  it('arriving on profile page without being logged shoudl redirect to home @watch', function () {
     // TODO: implement the functionality and write this test
+    browser.url('http://localhost:3000/profile')
+    const url = browser.url()
 
+    browser.pause(1000)
+    assert.equal(url.value, 'http://localhost:3000/')
   })
+
   it('arriving in the application without being logged in, but with an existing user keystore, should ask for confirmation [TODO]', function () {
     // TODO: at the present moment, we see the 'sigin/signup ' modal, without explanation. This is confusign.
     // instead, we show a modal with a short explation :
