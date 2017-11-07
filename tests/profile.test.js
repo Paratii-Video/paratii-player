@@ -6,12 +6,12 @@ describe('account workflow', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     server.execute(resetDb)
-    browser.execute(clearUserKeystoreFromLocalStorage)
+    browser.execute(nukeLocalStorage)
   })
 
   afterEach(function () {
-    // browser.execute(nukeLocalStorage)
-    // server.execute(resetDb)
+    browser.execute(nukeLocalStorage)
+    server.execute(resetDb)
   })
 
   it('register a new user', function () {
@@ -23,16 +23,14 @@ describe('account workflow', function () {
     assertUserIsNotLoggedIn(browser)
 
     browser.url('http://localhost:3000')
-    browser.waitForEnabled('#nav-profile')
+    browser.waitForClickable('#nav-profile')
     browser.click('#nav-profile')
 
-    browser.pause(1000)
-    browser.waitForEnabled('#at-signUp')
+    browser.waitForClickable('#at-signUp')
     browser.click('#at-signUp')
 
-    browser.pause(1000)
     // fill in the form
-    browser.waitForEnabled('[name="at-field-name"]')
+    browser.waitForClickable('[name="at-field-name"]')
     browser
       .setValue('[name="at-field-name"]', 'Guildenstern')
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
@@ -48,9 +46,9 @@ describe('account workflow', function () {
 
     // now a modal should be opened with the seed
     // (we wait a long time, because the wallet needs to be generated)
-    browser.waitForVisible('#seed')
-    browser.pause(2000)
-    browser.waitForEnabled('#closeModal')
+    browser.waitForClickable('#seed')
+    browser.pause(1000)
+    browser.waitForClickable('#closeModal')
     browser.click('#closeModal')
 
     // the user is now be logged in, and on the profile page, where the avatar is visible
@@ -58,7 +56,6 @@ describe('account workflow', function () {
   })
 
   it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
-    browser.execute(clearUserKeystoreFromLocalStorage)
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     browser.pause(1000)
@@ -72,11 +69,10 @@ describe('account workflow', function () {
     browser.url('http://localhost:3000')
     browser.pause(2000)
     const anonymousAddress = getAnonymousAddress()
-    browser.waitForEnabled('#nav-profile')
+    browser.waitForClickable('#nav-profile')
     browser.click('#nav-profile')
 
-    browser.pause(1000)
-    browser.waitForEnabled('[name="at-field-email"]')
+    browser.waitForClickable('[name="at-field-email"]')
     browser
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
       .setValue('[name="at-field-password"]', 'password')
@@ -87,16 +83,15 @@ describe('account workflow', function () {
     assertUserIsLoggedIn(browser)
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
-    browser.waitForExist('#walletModal')
+    browser.waitForClickable('#walletModal')
     browser.pause(1000)
-    browser.waitForEnabled('#create-wallet')
+    browser.waitForClickable('#create-wallet')
     browser.click('#create-wallet')
-    browser.waitForEnabled('[name="user_password"]')
-    browser
-      .setValue('[name="user_password"]', 'password')
+    browser.waitForClickable('[name="user_password"]')
+    browser.setValue('[name="user_password"]', 'password')
     browser.click('#btn-create-wallet')
     // TODO: check if wallet is created (is not implemented yet)
-    browser.pause(5000)
+    browser.pause(4000)
     const publicAddress = getUserPTIAddressFromBrowser()
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
@@ -131,7 +126,7 @@ describe('account workflow', function () {
     assert.equal(errorMsg, 'Login forbidden')
   })
 
-  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase @watch', function () {
+  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     browser.pause(1000)
@@ -257,7 +252,7 @@ describe('account workflow', function () {
     browser.waitForExist('#form-doTransaction')
   })
 
-  it('do not show the seed if wrong password @watch', function () {
+  it('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
 
     browser.pause(4000)
@@ -385,7 +380,7 @@ describe('account workflow', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('arriving on profile page without being logged shoudl redirect to home @watch', function () {
+  it('arriving on profile page without being logged shoudl redirect to home', function () {
     // TODO: implement the functionality and write this test
     browser.url('http://localhost:3000/profile')
     const url = browser.url()

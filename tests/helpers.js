@@ -10,6 +10,13 @@ export { web3 }
 export const SEED = 'road inherit leave arm unlock estate option merge mechanic rate blade dumb'
 export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
 
+before(function () {
+  browser.addCommand('waitForClickable', function (selector, timeout) {
+    this.waitForVisible(selector, timeout)
+    this.waitForEnabled(selector, timeout)
+  })
+})
+
 export function getProvider () {
   return Meteor.settings.public.http_provider
 }

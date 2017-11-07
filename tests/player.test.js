@@ -2,10 +2,6 @@ import { assert } from 'chai'
 import { clearUserKeystoreFromLocalStorage, createVideo, resetDb, createPlaylist } from './helpers.js'
 
 describe('player workflow', function () {
-  beforeEach(function () {
-    // browser.execute(clearUserKeystoreFromLocalStorage)
-  })
-
   afterEach(function () {
     server.execute(resetDb)
     browser.execute(clearUserKeystoreFromLocalStorage)
