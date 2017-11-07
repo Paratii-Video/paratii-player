@@ -339,7 +339,6 @@ Template.player.events({
   'click #unlock-video' (event) {
     event.stopPropagation()
     if (Meteor.user()) {
-      console.log(event.target)
       showModal('unlockVideo',
         {
           type: 'PTI',

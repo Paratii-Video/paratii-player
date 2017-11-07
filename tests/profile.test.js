@@ -57,7 +57,7 @@ describe('account workflow', function () {
     assertUserIsLoggedIn(browser)
   })
 
-  it('login as an existing user on a device with no keystore - use existing anonymous keystore @watch', function () {
+  it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
@@ -394,7 +394,7 @@ describe('account workflow', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('arriving on profile page without being logged shoudl redirect to home @watch', function () {
+  it('arriving on profile page without being logged shoudl redirect to home', function () {
     // TODO: implement the functionality and write this test
     browser.url('http://localhost:3000/profile')
     const url = browser.url()

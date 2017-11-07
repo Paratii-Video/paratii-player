@@ -39,16 +39,21 @@ export function hideModal (template) {
 }
 
 // Manage error on Modals
-export function setModalError (message) {
-  Session.set('modalErrorMessage', message)
-  Meteor.setTimeout(() => {
-    console.log('set modal')
-    Session.set('classAlertModal', 'show')
-  }, 200)
+export function modalAlert (message, style) {
+  Session.set('modalAlertMessage', message)
+  Session.set('modalAlertType', 'modal')
+  Session.set('classAlertModal', style)
 }
 
 export function setModalState (message) {
   Session.set('modalStateMessage', message)
+}
+
+// Manage global errors
+export function globalAlert (message, style) {
+  Session.set('globalAlertMessage', message)
+  Session.set('globalAlertType', 'global')
+  Session.set('classAlertGlobal', style)
 }
 
 export function changePasswordType () {

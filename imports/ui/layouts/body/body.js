@@ -67,7 +67,7 @@ Template.App_body.onCreated(function () {
     }
   }
 
-  Session.set({'alertMessage': undefined, 'alertClass': undefined})
+  Session.set({'globalErrorMessage': undefined, 'classAlertGlobal': undefined})
 })
 
 Template.App_body.onRendered(function () {
@@ -83,9 +83,7 @@ Template.App_body.onRendered(function () {
     }
   })
 
-  Meteor.setTimeout(() => {
-    Session.set({'alertMessage': '<strong>Error message</strong>. An error message', 'alertClass': 'red show'})
-  }, 1000)
+  // globalAlert('<strong>globalAlert</strong> and <strong>modalAlert</strong> You can <a href="/profile">go to a page</a> or <a href="/profile" data-showmodal="confirmLogout">open a modal</a> or <a href="/profile" data-showmodal="confirmLogout" data-closealert>open a modal and close the alert</a>', 'warning')
 })
 
 Template.App_body.helpers({
@@ -98,10 +96,13 @@ Template.App_body.helpers({
     return route
   },
   setAlertMessage () {
-    return Session.get('alertMessage')
+    return Session.get('globalAlertMessage')
   },
   setAlertClass () {
-    return Session.get('alertClass')
+    return Session.get('classAlertGlobal')
+  },
+  setAlertType () {
+    return Session.get('globalAlertType')
   }
 })
 

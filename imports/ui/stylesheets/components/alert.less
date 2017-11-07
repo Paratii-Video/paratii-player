@@ -28,7 +28,7 @@
       width: 100%;
     }
 
-    .red & {
+    .error & {
       background-color: @color-red;
     }
 
@@ -36,8 +36,13 @@
       background-color: @color-green;
     }
 
+    .warning & {
+      background-color: @color-yellow;
+    }
+
     .show & {
       transform: translateY(0);
+      transition: transform .65s @ease-smooth;
     }
   }
 
