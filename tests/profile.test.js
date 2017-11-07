@@ -2,16 +2,16 @@ import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUser
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('account workflow', function () {
+describe('account workflow @watch', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
-    server.execute(resetDb)
     browser.execute(clearUserKeystoreFromLocalStorage)
+    server.execute(resetDb)
   })
 
   afterEach(function () {
-    // browser.execute(nukeLocalStorage)
-    // server.execute(resetDb)
+    browser.execute(nukeLocalStorage)
+    server.execute(resetDb)
   })
 
   it('register a new user', function () {
@@ -24,10 +24,10 @@ describe('account workflow', function () {
 
     browser.url('http://localhost:3000')
     browser.waitForEnabled('#nav-profile')
+    browser.pause(500)
     browser.click('#nav-profile')
-
-    browser.pause(1000)
     browser.waitForEnabled('#at-signUp')
+    browser.pause(1000)
     browser.click('#at-signUp')
 
     browser.pause(1000)
@@ -48,7 +48,7 @@ describe('account workflow', function () {
 
     // now a modal should be opened with the seed
     // (we wait a long time, because the wallet needs to be generated)
-    browser.waitForVisible('#seed')
+    browser.waitForEnabled('#seed')
     browser.pause(2000)
     browser.waitForEnabled('#closeModal')
     browser.click('#closeModal')
@@ -83,7 +83,7 @@ describe('account workflow', function () {
     browser.click('#at-btn')
 
     // the user is now logged in
-    browser.pause(2000)
+    browser.pause(500)
     assertUserIsLoggedIn(browser)
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
@@ -96,7 +96,7 @@ describe('account workflow', function () {
       .setValue('[name="user_password"]', 'password')
     browser.click('#btn-create-wallet')
     // TODO: check if wallet is created (is not implemented yet)
-    browser.pause(5000)
+    browser.pause(2000)
     const publicAddress = getUserPTIAddressFromBrowser()
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
@@ -115,10 +115,12 @@ describe('account workflow', function () {
     browser.url('http://localhost:3000')
     browser.pause(2000)
     browser.waitForEnabled('#nav-profile')
+    browser.pause(500)
     browser.click('#nav-profile')
 
     browser.pause(1000)
     browser.waitForEnabled('[name="at-field-email"]')
+    browser.pause(500)
     browser
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
       .setValue('[name="at-field-password"]', 'wrong password')
@@ -131,7 +133,7 @@ describe('account workflow', function () {
     assert.equal(errorMsg, 'Login forbidden')
   })
 
-  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase @watch', function () {
+  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     browser.pause(1000)
@@ -234,14 +236,15 @@ describe('account workflow', function () {
   it('shows the seed', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
-    browser.pause(5000)
+    browser.pause(3000)
     browser.url('http://localhost:3000/profile')
     browser.waitForEnabled('#show-seed')
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
+    browser.waitForEnabled('#btn-show-seed')
+    browser.pause(1000)
     browser.click('#btn-show-seed')
-    browser.pause(2000)
     browser.waitForEnabled('#closeModal')
     browser.click('#closeModal')
   })
@@ -249,28 +252,30 @@ describe('account workflow', function () {
   it('send ether dialog is visible', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
-    browser.pause(5000)
-
+    browser.pause(2000)
     browser.url('http://localhost:3000/profile')
-    browser.waitForExist('#send-eth')
+    browser.waitForEnabled('#send-eth')
+    browser.pause(1000)
     browser.click('#send-eth')
     browser.waitForExist('#form-doTransaction')
+    browser.pause(1000)
   })
 
-  it('do not show the seed if wrong password @watch', function () {
+  it('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
-
-    browser.pause(4000)
+    browser.pause(3000)
     browser.url('http://localhost:3000/profile')
-
     browser.waitForEnabled('#show-seed')
     browser.click('#show-seed')
-
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'wrong')
+    browser.waitForEnabled('#btn-show-seed')
+    browser.pause(1000)
     browser.click('#btn-show-seed')
 
-    browser.waitForVisible('.main-form-input-password.error', 30000)
+    // browser.waitForVisible('.main-form-input-password.error', 30000)
+    browser.waitForVisible('.main-form-input-password.error')
+
     // // TODO: next test checks for error message - temp comment to get the test to pass
     // browser.waitForVisible('.control-label')
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
@@ -285,6 +290,7 @@ describe('account workflow', function () {
     browser.waitForEnabled('[name="user_password"]')
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
+    browser.waitForEnabled('#btn-show-seed')
     browser.click('#btn-show-seed')
     browser.pause(1000)
     browser.waitForEnabled('#seed')
@@ -313,16 +319,19 @@ describe('account workflow', function () {
 
   it('do not restore keystore if wrong password', function () {
     createUserAndLogin(browser)
-    browser.pause(4000)
+    browser.pause(2000)
     browser.url('http://localhost:3000/profile')
 
-    browser.waitForExist('#show-seed', 10000)
+    // browser.waitForExist('#show-seed', 10000)
+    browser.waitForEnabled('#show-seed')
 
     browser.click('#show-seed')
-    browser.waitForVisible('[name="user_password"]')
+    browser.waitForEnabled('[name="user_password"]')
+    browser.pause(500)
     browser.setValue('[name="user_password"]', 'password')
+    browser.waitForEnabled('#btn-show-seed')
+    browser.pause(500)
     browser.click('#btn-show-seed')
-    browser.pause(1000)
     browser.waitForVisible('#seed')
     const seed = browser.getHTML('#seed strong', false)
     // const publicAddress = browser.getHTML('#public_address', false)

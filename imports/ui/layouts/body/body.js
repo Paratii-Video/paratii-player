@@ -2,7 +2,7 @@
 import './body.html'
 import '/imports/ui/components/svgs/svgs.js'
 import { add0x, showModal, hideModal } from '/imports/lib/utils.js'
-import { keystoresCheck, createAnonymousKeystoreIfNotExists, createKeystore, deleteKeystore, getKeystore, getSeedFromKeystore } from '/imports/lib/ethereum/wallet.js'
+import { keystoresCheck, createAnonymousKeystoreIfNotExists, getKeystore, mergeOrCreateNewWallet } from '/imports/lib/ethereum/wallet.js'
 import '/imports/ui/components/alert/alert.js'
 
 // TODO: reconsider the location of the next code - perhaps move it to start.js ?
@@ -13,45 +13,19 @@ if (Meteor.isClient) {
     // if any modal is still open, we can safely close it now to make it possible to open new ones
     // get the user's keystore
     const keystore = getKeystore()
-
     if (Session.get('signup')) {
       Session.set('signup', false)
+      const password = Session.get('user-password')
       // user just signed up, we have to fix his keystore
-      const anonymousKeystore = getKeystore('anonymous')
-      if (anonymousKeystore !== null) {
-        // we have an anonmous keystore - we need to regenarate a new keystore
-        // with the same seed but the new password
-        getSeedFromKeystore('password', anonymousKeystore, function (err, seedPhrase) {
-          if (err) {
-            throw err
-          }
-          let password = Session.get('user-password')
-          createKeystore(password, seedPhrase, Meteor.userId(), function (error, result) {
-            if (error) {
-              throw error
-            }
-            deleteKeystore('anonymous')
-            showModal('showSeed')
-            Session.get('user-password', null)
-          })
-        })
-      } else {
-        // TODO: do something here...
-        console.log('no anonymous keystore found')
-      }
+      mergeOrCreateNewWallet(password)
     } else {
       if (keystore === null) {
         // this is an existing user (we are not in the singup process) , but the user has no keystore
+        // mergeOrCreateNewWallet passing empty password, a modal will ask user the passw
         console.log('Getting anonymous keystore')
-        const anonymousKeystore = getKeystore('anonymous')
-        console.log(anonymousKeystore)
-        if (anonymousKeystore !== null) {
-          console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
-          showModal('regenerateKeystore')
-        } else {
-          // TODO: we don't have an anonymous keystore. This could be a timing problem (the keystore is still beging generated)
-        }
+        mergeOrCreateNewWallet()
       } else {
+        // The normal login, the user has already a wallet on this browser
         Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))
         hideModal()
       }
