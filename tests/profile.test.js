@@ -311,7 +311,7 @@ describe('account workflow', function () {
     assert.equal(publicAddress, newPublicAddress)
   })
 
-  it('do not restore keystore if wrong password @watch', function () {
+  it('do not restore keystore if wrong password', function () {
     createUserAndLogin(browser)
     browser.pause(4000)
     browser.url('http://localhost:3000/profile')
@@ -385,10 +385,12 @@ describe('account workflow', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('arriving on profile page without being logged shoudl redirect to home ', function () {
+  it('arriving on profile page without being logged shoudl redirect to home @watch', function () {
     // TODO: implement the functionality and write this test
     browser.url('http://localhost:3000/profile')
     const url = browser.url()
+
+    browser.pause(1000)
     assert.equal(url.value, 'http://localhost:3000/')
   })
 

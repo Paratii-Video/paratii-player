@@ -74,7 +74,7 @@ describe('Video Store:', function () {
     browser.getText('h3', 'Sign in')
   })
 
-  it('should show an error if the user does not have enough PTI @watch', function () {
+  it('should show an error if the user does not have enough PTI', function () {
     // make sure we have enough funds
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
