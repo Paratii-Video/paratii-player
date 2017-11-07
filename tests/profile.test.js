@@ -1,3 +1,4 @@
+/* global localStorage */
 import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUserAndLogin, assertUserIsLoggedIn, waitForUserIsLoggedIn, assertUserIsNotLoggedIn, nukeLocalStorage, clearUserKeystoreFromLocalStorage, getUserPTIAddressFromBrowser } from './helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
@@ -5,8 +6,6 @@ import { assert } from 'chai'
 describe('account workflow', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
-    server.execute(resetDb)
-    browser.execute(nukeLocalStorage)
   })
 
   afterEach(function () {
@@ -31,34 +30,33 @@ describe('account workflow', function () {
 
     // fill in the form
     browser.waitForClickable('[name="at-field-name"]')
-    browser
-      .setValue('[name="at-field-name"]', 'Guildenstern')
-      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-      .setValue('[name="at-field-password"]', 'password')
-      // .setValue('[name="at-field-password_again"]', 'password')
+    browser.setValue('[name="at-field-name"]', 'Guildenstern')
+    browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+    browser.setValue('[name="at-field-password"]', 'password')
+    // .setValue('[name="at-field-password_again"]', 'password')
 
     // submit the form
-    browser.$('#at-btn').click()
+    browser.waitForClickable('#at-btn')
+    browser.click('#at-btn')
 
     // the new user is automaticaly logged in after account creation
-    browser.pause(1000)
-    assertUserIsLoggedIn(browser)
+    waitForUserIsLoggedIn(browser)
 
     // now a modal should be opened with the seed
     // (we wait a long time, because the wallet needs to be generated)
     browser.waitForClickable('#seed')
     browser.pause(1000)
     browser.waitForClickable('#closeModal')
+    browser.pause(1000)
     browser.click('#closeModal')
 
     // the user is now be logged in, and on the profile page, where the avatar is visible
     assertUserIsLoggedIn(browser)
   })
 
-  it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
+  it('login as an existing user on a device with no keystore - use existing anonymous keystore @watch', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
-    browser.pause(1000)
 
     // create a meteor user
     server.execute(createUser)
@@ -67,24 +65,26 @@ describe('account workflow', function () {
 
     // go to the home page
     browser.url('http://localhost:3000')
-    browser.pause(2000)
+    // wait until we have an anymous keystore available
+    browser.waitUntil(function () {
+      return browser.execute(function () {
+        return localStorage.getItem(`keystore-anonymous`)
+      }).value
+    })
     const anonymousAddress = getAnonymousAddress()
     browser.waitForClickable('#nav-profile')
     browser.click('#nav-profile')
 
     browser.waitForClickable('[name="at-field-email"]')
-    browser
-      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-      .setValue('[name="at-field-password"]', 'password')
+    browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+    browser.setValue('[name="at-field-password"]', 'password')
     browser.click('#at-btn')
 
     // the user is now logged in
-    browser.pause(2000)
-    assertUserIsLoggedIn(browser)
+    waitForUserIsLoggedIn(browser)
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForClickable('#walletModal')
-    browser.pause(1000)
     browser.waitForClickable('#create-wallet')
     browser.click('#create-wallet')
     browser.waitForClickable('[name="user_password"]')
@@ -113,10 +113,10 @@ describe('account workflow', function () {
     browser.click('#nav-profile')
 
     browser.pause(1000)
-    browser.waitForEnabled('[name="at-field-email"]')
-    browser
-      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-      .setValue('[name="at-field-password"]', 'wrong password')
+    browser.waitForClickable('[name="at-field-email"]')
+
+    browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+    browser.setValue('[name="at-field-password"]', 'wrong password')
     browser.click('#at-btn')
 
     // the user is now logged in
@@ -174,11 +174,10 @@ describe('account workflow', function () {
 
     // fill in the form
     browser.waitForExist('[name="at-field-name"]')
-    browser
-      .setValue('[name="at-field-name"]', 'Guildenstern')
-      .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-      .setValue('[name="at-field-password"]', 'password')
-      // .setValue('[name="at-field-password_again"]', 'password')
+    browser.setValue('[name="at-field-name"]', 'Guildenstern')
+    browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+    browser.setValue('[name="at-field-password"]', 'password')
+    // .setValue('[name="at-field-password_again"]', 'password')
     // submit the form
     browser.$('#at-btn').click()
     browser.waitForVisible('.at-error')

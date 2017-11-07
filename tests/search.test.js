@@ -2,7 +2,7 @@
 import { createVideo } from './helpers.js'
 import { assert } from 'chai'
 
-describe('Search video @watch:', function () {
+describe('Search video :', function () {
   beforeEach(function () {
     browser.url('http:localhost:3000/search')
   })
