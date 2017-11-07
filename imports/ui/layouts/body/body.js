@@ -83,9 +83,9 @@ Template.App_body.onRendered(function () {
     }
   })
 
-  // Meteor.setTimeout(() => {
-  //   Session.set({'alertMessage': '<strong>Error message</strong>. An error message', 'alertClass': 'red show'})
-  // }, 1000)
+  Meteor.setTimeout(() => {
+    Session.set({'alertMessage': '<strong>Error message</strong>. An error message', 'alertClass': 'red show'})
+  }, 1000)
 })
 
 Template.App_body.helpers({

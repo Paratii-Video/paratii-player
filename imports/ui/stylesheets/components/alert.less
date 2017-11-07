@@ -14,13 +14,12 @@
   z-index: @zindex-alert;
 
   &-wrapper {
+    animation: hideFullUp .6s @ease-smooth forwards;
     background-color: @color-purple;
     border-radius: 0 0 4px 4px;
     margin: 0 auto;
     padding: 15px;
     position: relative;
-    transition: transform .4s @ease-smooth;
-    transform: translateY(-100%);
     width: @size-main-alert-wrapper-width;
 
     .main-modal & {
@@ -37,8 +36,8 @@
     }
 
     .show & {
-      transform: translateY(0);
-      transition: transform .6s @ease-smooth;
+      // transform: translateY(0);
+      animation: showFullDown .6s @ease-smooth forwards;
     }
   }
 
