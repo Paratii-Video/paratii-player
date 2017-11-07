@@ -8,6 +8,7 @@ Template.alert.events({
     Session.set('classAlertModal', null)
     Meteor.setTimeout(() => {
       Session.set('modalErrorMessage', null)
+      Session.set('globalErrorMessage', null)
     }, 600)
   },
   'show' () {

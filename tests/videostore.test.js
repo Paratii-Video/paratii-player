@@ -72,7 +72,7 @@ describe('Video Store:', function () {
     browser.getText('h3', 'Sign in')
   })
 
-  it('should show an error if the user does not have enough PTI', function () {
+  it('should show an error if the user does not have enough PTI @watch', function () {
     // make sure we have enough funds
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
@@ -89,7 +89,7 @@ describe('Video Store:', function () {
     browser.pause(4000)
 
     let expectedErrorMessage = 'You don\'t have enough PTI: your balance is 0'
-    assert.equal(browser.getText('.main-modal .error'), expectedErrorMessage)
+    assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
   })
 
   it('should show an error if the user does not have enough ETH', function () {

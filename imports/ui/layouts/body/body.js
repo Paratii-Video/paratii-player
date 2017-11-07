@@ -67,7 +67,7 @@ Template.App_body.onCreated(function () {
     }
   }
 
-  Session.set({'alertMessage': undefined, 'alertClass': undefined})
+  Session.set({'globalErrorMessage': undefined, 'classAlertGlobal': undefined})
 })
 
 Template.App_body.onRendered(function () {
@@ -82,10 +82,6 @@ Template.App_body.onRendered(function () {
       this.navState.set('minimized')
     }
   })
-
-  Meteor.setTimeout(() => {
-    Session.set({'alertMessage': '<strong>Error message</strong>. An error message', 'alertClass': 'red show'})
-  }, 1000)
 })
 
 Template.App_body.helpers({
@@ -98,10 +94,10 @@ Template.App_body.helpers({
     return route
   },
   setAlertMessage () {
-    return Session.get('alertMessage')
+    return Session.get('globalErrorMessage')
   },
   setAlertClass () {
-    return Session.get('alertClass')
+    return Session.get('classAlertGlobal')
   }
 })
 
