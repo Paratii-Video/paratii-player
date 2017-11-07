@@ -14,12 +14,13 @@
   z-index: @zindex-alert;
 
   &-wrapper {
-    animation: hideFullUp .45s @ease-smooth forwards;
     background-color: @color-purple;
     border-radius: 0 0 4px 4px;
     margin: 0 auto;
     padding: 15px;
     position: relative;
+    transform: translateY(-100%);
+    transition: transform .45s @ease-smooth;
     width: @size-main-alert-wrapper-width;
 
     .main-modal & {
@@ -36,8 +37,7 @@
     }
 
     .show & {
-      // transform: translateY(0);
-      animation: showFullDown .6s @ease-smooth forwards;
+      transform: translateY(0);
     }
   }
 
@@ -66,7 +66,7 @@
       height: 10px;
       position: absolute;
       right: 15px;
-      top: 20px;
+      top: 18px;
       width: 10px;
 
       &-svg {
