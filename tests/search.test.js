@@ -84,10 +84,10 @@ describe('Search video:', function () {
     done()
   })
 
-  it('search must return a video with a matching field and player should open in the right video', function (done) {
+  it('search must return a video with a matching field and player should open in the right video @watch', function (done) {
     server.execute(createVideo, '12345', 'fookeyword1foo', '', '', ['foo', 'matching-keyword-tag'], 0)
     browser.setValue('[name="search"]', 'keyword')
-    browser.pause(500)
+    browser.pause(2000)
     let results = browser.elements('.videos-list li')
     assert.equal(results.value.length, 1)
     let title = browser.getText('.videos-item-title')

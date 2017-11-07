@@ -131,7 +131,7 @@ describe('account workflow', function () {
     assert.equal(errorMsg, 'Login forbidden')
   })
 
-  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase @watch', function () {
+  it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase ', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     browser.pause(1000)
@@ -257,7 +257,7 @@ describe('account workflow', function () {
     browser.waitForExist('#form-doTransaction')
   })
 
-  it('do not show the seed if wrong password @watch', function () {
+  it('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
 
     browser.pause(4000)
@@ -385,7 +385,7 @@ describe('account workflow', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('arriving on profile page without being logged shoudl redirect to home @watch', function () {
+  it('arriving on profile page without being logged shoudl redirect to home ', function () {
     // TODO: implement the functionality and write this test
     browser.url('http://localhost:3000/profile')
     const url = browser.url()
