@@ -6,6 +6,7 @@ describe('wallet @watch:', function () {
   let userAccount
 
   beforeEach(function () {
+    browser.url('http://localhost:3000/')
     createUserAndLogin(browser)
     browser.url('http://localhost:3000/profile')
     userAccount = getUserPTIAddressFromBrowser()
