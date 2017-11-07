@@ -2,7 +2,7 @@ import { web3, logout, createUserAndLogin, getOrDeployParatiiContracts, getUserP
 import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('Video Store:', function () {
+describe('Video Store @watch:', function () {
   let contracts
   let videoId = '5' // this is  a known videoId defined in fixtures.js
 
@@ -23,16 +23,16 @@ describe('Video Store:', function () {
     server.execute(resetDb)
     createUserAndLogin(browser)
     browser.pause(2000)
-    browser.url('http://localhost:3000/profile')
+    // browser.url('http://localhost:3000/profile')
   })
+
   afterEach(function () {
-    // browser.execute(nukeLocalStorage)
-    // server.execute(resetDb)
+    browser.execute(nukeLocalStorage)
+    server.execute(resetDb)
   })
 
-  it('should be possible to buy (and unlock) a video', function (done) {
+  it('should be possible to buy (and unlock) a video', function () {
     // make sure we have enough funds
-
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
     sendSomePTI(userAccount, 300)
@@ -60,8 +60,6 @@ describe('Video Store:', function () {
     // the video should be unlocked now
     browser.url(`http://localhost:3000/play/${videoId}`)
     browser.waitForExist('.player-controls')
-
-    done()
   })
 
   it('should show the signin form if the user is not logged in', function () {
@@ -114,7 +112,7 @@ describe('Video Store:', function () {
     assert.equal(browser.getText('.main-modal .error'), expectedErrorMessage)
   })
 
-  it('test individual steps', function (done) {
+  it('test individual steps', function () {
     let buyer = web3.eth.accounts[1]
     let tx
     // console.log(`transfer some PTI to ${buyer}`)
@@ -201,6 +199,5 @@ describe('Video Store:', function () {
     // console.log('TO TRANSFER        :', Number(price))
     // console.log('PTIbalance of buyer:', Number(contracts.ParatiiToken.balanceOf(buyer)))
     // console.log('ETHbalance of buyer:', web3.eth.getBalance(buyer))
-    done()
   })
 })

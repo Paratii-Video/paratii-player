@@ -27,10 +27,11 @@ export function logout (browser) {
 }
 
 export function createUserAndLogin (browser) {
-  server.execute(createUser)
+  let userId = server.execute(createUser)
+  browser.execute(createKeystore, null, userId)
   login(browser)
-  browser.execute(createKeystore)
-  browser.execute(function () { Modal.hide() })
+  // the login handler will open a modal window (because a keystore is not available yet), which we need to close
+  // browser.execute(function () { Modal.hide() })
 }
 
 export function assertUserIsLoggedIn (browser) {
@@ -118,15 +119,15 @@ export async function getOrDeployParatiiContracts (server, browser) {
 }
 
 export function createUser () {
-  Accounts.createUser({
+  return Accounts.createUser({
     email: 'guildenstern@rosencrantz.com',
     password: 'password'
   })
 }
 
-export function createKeystore (seed) {
+export function createKeystore (seed, userId) {
   const wallet = require('./imports/lib/ethereum/wallet.js')
-  wallet.createKeystore('password', seed, function () {
+  wallet.createKeystore('password', seed, userId, function () {
     // remove the seed from the Session to simulate the situation
     // where the user has seen and dismissed the dialog
     Session.set('seed', null)
