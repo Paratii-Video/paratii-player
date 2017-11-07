@@ -23,6 +23,7 @@ Template.alert.events({
     }, 600)
   },
   'click a[data-showmodal]' (event, instance) {
+    event.preventDefault()
     showModal($(event.target).data('showmodal'))
   }
 })
