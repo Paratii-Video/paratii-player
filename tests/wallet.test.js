@@ -2,7 +2,7 @@ import { web3, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFrom
 import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('wallet @watch', function () {
+describe('wallet ', function () {
   let userAccount
 
   beforeEach(function () {
