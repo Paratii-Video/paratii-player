@@ -53,7 +53,7 @@ if (Meteor.isServer) {
       }
       }
     ],
-      {clientCollection: 'userTransactions'}
+    {clientCollection: 'userTransactions'}
     )
   })
 } // this bracket closes Meteor.isServer()

@@ -86,7 +86,7 @@ describe('Video Store @watch:', function () {
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#send_trans_btn')
-    browser.pause(1000)
+    browser.pause(4000)
 
     let expectedErrorMessage = 'You don\'t have enough PTI: your balance is 0'
     assert.equal(browser.getText('.main-modal .error'), expectedErrorMessage)

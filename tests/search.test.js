@@ -2,7 +2,7 @@
 import { createVideo, resetDb } from './helpers.js'
 import { assert } from 'chai'
 
-describe('Search video: ', function () {
+describe('Search video:', function () {
   beforeEach(function () {
     browser.url('http:localhost:3000/search')
     server.execute(resetDb)
@@ -11,7 +11,7 @@ describe('Search video: ', function () {
   })
 
   it('search is triggered if user enter a 3 character lenght keyword', function (done) {
-    server.execute(createVideo, '12345', 'this is the video keyword title', 'this is the video keyword description ', 'Uploader keyword name', ['foo', 'keyword'], 0)
+    server.execute(createVideo, '12345', 'this is the video key title', 'this is the video key description ', 'Uploader key name', ['foo', 'keyword'], 0)
     browser.setValue('[name="search"]', 'k')
     browser.pause(500)
     let results = browser.elements('.videos-list li')
@@ -37,10 +37,10 @@ describe('Search video: ', function () {
   })
 
   it('search must return 4 video with matching keyword in different field', function (done) {
-    server.execute(createVideo, '12345', 'fookeyword1foo', 'fookeyword1foo', 'fookeyword1foo', ['foo', 'fookeyword1foo'], 0)
-    server.execute(createVideo, '12346', 'fookeyword2foo', 'fookeyword2foo', 'fookeyword2foo', ['foo', 'fookeyword2foo'], 0)
-    server.execute(createVideo, '12347', 'fookeyword3foo', 'fookeyword3foo', 'fookeyword3foo', ['foo', 'fookeyword3foo'], 0)
-    server.execute(createVideo, '12348', 'fookeyword4foo', 'fookeyword4foo', 'fookeyword4foo', ['foo', 'fookeyword4foo'], 0)
+    server.execute(createVideo, '12345', 'foo keyword foo', 'fookeyword1foo', 'fookeyword1foo', ['foo', 'fookeyword1foo'], 0)
+    server.execute(createVideo, '12346', 'fookeyword2foo', 'foo keyword foo', 'fookeyword2foo', ['foo', 'fookeyword2foo'], 0)
+    server.execute(createVideo, '12347', 'fookeyword3foo', 'fookeyword3foo', 'foo keyword foo', ['foo', 'fookeyword3foo'], 0)
+    server.execute(createVideo, '12348', 'fookeyword4foo', 'fookeyword4foo', 'fookeyword4foo', ['foo', 'foo keyword foo'], 0)
     browser.setValue('[name="search"]', 'keyword')
     browser.pause(500)
     let results = browser.elements('.videos-list li')

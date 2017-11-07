@@ -67,6 +67,8 @@
     </button>
     {{/unless }}
 
+
+
     {{#with video}}
     <div class="player-overlay player-infos {{playPause}}">
       <div class="player-uploader player-infos-uploader">{{ uploader.name }} <img class="player-infos-uploader-image" src="{{ uploader.avatar }}"/></div>
@@ -79,6 +81,7 @@
             <p class="player-infos-description-text">{{ description }}</p>
             <button class="button-text button-text--white button-text--nocase player-infos-button-description" type="button">Hide description</button>
           </div>
+
           <div class="player-infos-holder">
             <p class="player-related player-infos-related">
               {{#each tag in tags }}
@@ -112,6 +115,33 @@
             {{/if}}
           </div>
           {{#if isShowDescription}}
+          {{/if}}
+          {{#if relatedIsShowable }}
+          <div class="player-related-videos">
+            <ul class="videos-list">
+              {{#each relatedVideos}}
+                <li class="videos-item">
+                  <a class="videos-item-link" href="{{videoPath this}}">
+                    <h4 class="videos-item-title">{{ title }}</h4>
+                    <button class="videos-item-button">
+                      <svg class="videos-item-button-svg">
+                        <use class="videos-item-button-svg-use" xlink:href="#icon-reticence"></use>
+                      </svg>
+                    </button>
+                    <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
+
+
+                    <div class="videos-item-time">{{ duration }}</div>
+                    {{#if thumb}}
+                      <img class="videos-item-image" src="{{ thumb }}"/>
+                    {{else}}
+                      <img class="videos-item-image" src="/img/cover/default-thumb.png"/>
+                    {{/if}}
+                  </a>
+                </li>
+              {{/each}}
+            </ul>
+          </div>
           {{/if}}
           {{#if isLocked }}
             <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">
