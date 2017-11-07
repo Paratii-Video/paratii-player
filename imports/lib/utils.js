@@ -41,6 +41,10 @@ export function hideModal (template) {
 // Manage error on Modals
 export function setModalError (message) {
   Session.set('modalErrorMessage', message)
+  Meteor.setTimeout(() => {
+    console.log('set modal')
+    Session.set('classAlertModal', 'show')
+  }, 200)
 }
 
 export function setModalState (message) {
