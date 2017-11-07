@@ -109,7 +109,7 @@ describe('Video Store:', function () {
     browser.click('#send_trans_btn')
     browser.pause(1000)
     let expectedErrorMessage = 'You need some Ether for sending a transaction - but you have none'
-    assert.equal(browser.getText('.main-modal .error'), expectedErrorMessage)
+    assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
   })
 
   it('test individual steps', function () {

@@ -1,15 +1,6 @@
 import './alert.html'
 import { showModal } from '/imports/lib/utils.js'
 
-function closeAlert (type) {
-  console.log(type)
-  if (type === 'modal') {
-    Session.set('modalAlertMessage', null)
-  } else {
-    Session.set('globalAlertMessage', null)
-  }
-}
-
 Template.alert.onRendered(() => {
   const fistNode = $(Template.instance().firstNode)
   Meteor.setTimeout(() => {
@@ -24,7 +15,11 @@ Template.alert.events({
     $(Template.instance().firstNode).removeClass('show')
 
     Meteor.setTimeout(() => {
-      closeAlert(type)
+      if (type === 'modal') {
+        Session.set('modalAlertMessage', null)
+      } else {
+        Session.set('globalAlertMessage', null)
+      }
     }, 600)
   },
   'click a[data-showmodal]' (event, instance) {
