@@ -1,7 +1,7 @@
 import * as RLocalStorage from 'meteor/simply:reactive-local-storage'
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js'
 import { Accounts } from 'meteor/accounts-base'
-import { add0x } from '/imports/lib/utils.js'
+import { add0x, showModal } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { web3 } from './web3.js'
 import { GAS_PRICE, GAS_LIMIT } from './connection.js'
@@ -90,6 +90,44 @@ function createAnonymousKeystoreIfNotExists () {
   }
 }
 
+function mergeOrCreateNewWallet (password) {
+  const anonymousKeystore = getKeystore('anonymous')
+  if (password !== undefined) {
+    if (anonymousKeystore !== null) {
+      // we have an anonmous keystore - we need to regenarate a new keystore
+      // with the same seed but the new password
+      getSeedFromKeystore('password', anonymousKeystore, function (err, seedPhrase) {
+        if (err) {
+          throw err
+        }
+        createKeystore(password, seedPhrase, function (error, result) {
+          if (error) {
+            throw error
+          }
+          // hideModal()
+          console.log('show seed')
+          showModal('showSeed')
+          deleteKeystore('anonymous')
+          Session.set('user-password', null)
+        })
+      })
+    } else {
+      // There is no anonymous keystore, i create a keystore
+      console.log('no anonymous keystore found')
+      createKeystore(password, null, function (error, result) {
+        if (error) {
+          throw error
+        }
+        // hideModal()
+        showModal('showSeed')
+      })
+    }
+  } else {
+    console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
+    showModal('regenerateKeystore')
+  }
+}
+
 // getKeystore tries to load the keystore from the Session,
 // or, if it is not found there, restore it from localstorage.
 // If no keystore can be found, it returns undefined.
@@ -164,7 +202,8 @@ export function getSeedFromKeystore (password, keystore, callback) {
 }
 
 function restoreWallet (password, seedPhrase, cb) {
-  return createKeystore(password, seedPhrase, Meteor.userId(), cb)
+  const userId = Meteor.userId()
+  return createKeystore(password, seedPhrase, userId, cb)
 }
 
 function sendTransaction (password, contractName, functionName, args, value, callback) {
@@ -212,4 +251,4 @@ function sendTransaction (password, contractName, functionName, args, value, cal
   })
 }
 
-export { deleteKeystore, createKeystore, restoreWallet, sendTransaction, saveKeystore, createAnonymousKeystoreIfNotExists }
+export { mergeOrCreateNewWallet, deleteKeystore, createKeystore, restoreWallet, sendTransaction, saveKeystore, createAnonymousKeystoreIfNotExists }

@@ -80,6 +80,13 @@ export function getAnonymousAddress () {
   }).value
 }
 
+export function createAnonymousAddress () {
+  return browser.execute(function () {
+    const wallet = require('./imports/lib/ethereum/wallet.js')
+    wallet.createAnonymousKeystoreIfNotExists()
+  }).value
+}
+
 export function getRegistryAddressFromBrowser () {
   return browser.executeAsync(async function (done) {
     const contracts = require('./imports/lib/ethereum/contracts.js')
