@@ -49,7 +49,7 @@ Template.unlockVideo.events({
 
     setModalState('')
     // TODO: GET THE ACTUAL PRICE of the video
-    let price = web3.toWei(14)
+    let price = web3.toWei(this.price)
     let videoId = this.videoid // Video id whne you unlock a video
     let msg
     const password = event.target.user_password.value
@@ -76,6 +76,7 @@ Template.unlockVideo.events({
     let ethBalance = Session.get('eth_balance')
 
     if (ethBalance === 0) {
+      // TODO: check that the user has enough ether for a minimal transaction
       msg = `You need some Ether for sending a transaction - but you have none`
       check.wallet_amount = msg
       setModalError(msg)
@@ -97,8 +98,9 @@ Template.unlockVideo.events({
     Session.set('checkTransaction', check)
     if (errors === undefined) {
       setModalState('Processing transaction..')
+      // TODO: refactor: create a 'buyVideo' function that does not depend on Meteor and can be unittested separately
+
       // the transaction has two steps - we first approve that the paratiiavatar can move `price`, and then instruct the videoStore to buy the video
-      // buyVideo(videoId)
       // check if the video is known and get the price
       let videoRegistry = await getContract('VideoRegistry')
       console.log('videoRegistry located at:', videoRegistry.address)
@@ -109,7 +111,7 @@ Template.unlockVideo.events({
         throw Error(`A video with id ${videoId} was not found in the registry`)
       }
 
-      console.log(`price: ${Number(videoInfo[1])}`)
+      console.log(`price from BC: ${Number(videoInfo[1])}`)
       console.log(`approve ${price}`, price)
       let paratiiAvatar = await getContract('ParatiiAvatar')
       console.log(`approve ${price}`, price)
@@ -119,8 +121,14 @@ Template.unlockVideo.events({
       console.log('allowance:', Number(await paratiiToken.allowance(getUserPTIAddress(), paratiiAvatar.address)))
 
       console.log(`now calling buyVideo ${videoId}`)
-      await promisify(sendTransaction)(password, 'VideoStore', 'buyVideo', [videoId], 0)
-      Modal.hide('unlockVideo')
+      sendTransaction(password, 'VideoStore', 'buyVideo', [videoId], 0, function (error, result) {
+        if (error) {
+          setModalState('')
+          setModalError('An error occurred: ' + error)
+        } else {
+          Modal.hide('unlockVideo')
+        }
+      })
     }
   }
 })

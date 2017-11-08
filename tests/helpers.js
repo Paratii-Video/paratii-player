@@ -10,6 +10,24 @@ export { web3 }
 export const SEED = 'road inherit leave arm unlock estate option merge mechanic rate blade dumb'
 export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
 
+// The before  function will be run once, before all tests
+before(async function (done) {
+  browser.addCommand('waitForClickable', function (selector, timeout) {
+    this.waitForVisible(selector, timeout)
+    this.waitForEnabled(selector, timeout)
+  })
+
+  browser.url('http://localhost:3000')
+  await getOrDeployParatiiContracts(server, browser)
+  done()
+})
+
+// The beforeEac  function is run before each single est
+beforeEach(function () {
+  server.execute(resetDb)
+  browser.execute(nukeLocalStorage)
+})
+
 export function getProvider () {
   return Meteor.settings.public.http_provider
 }
@@ -25,11 +43,25 @@ export function logout (browser) {
     Meteor.logout()
   })
 }
+
 export function createUserAndLogin (browser) {
-  server.execute(createUser)
+  let userId = server.execute(createUser)
+  browser.execute(createKeystore, null, userId)
+  browser.waitUntil(function () {
+    return browser.execute(function (userId) {
+      return localStorage.getItem(`keystore-${userId}`)
+    }, userId).value
+  })
   login(browser)
-  browser.execute(createKeystore)
-  browser.execute(function () { Modal.hide() })
+  waitForUserIsLoggedIn(browser)
+
+  // set the user's address to that of the wallet -
+  // TODO: this should be done on login, automagically, I suppose
+  let address = getUserPTIAddressFromBrowser()
+  server.execute(function (userId, address) {
+    Meteor.users.update(userId, {$set: { 'profile.ptiAddress': address }})
+  }, userId, address)
+  return userId
 }
 
 export function assertUserIsLoggedIn (browser) {
@@ -40,6 +72,27 @@ export function assertUserIsLoggedIn (browser) {
   assert.isOk(userId)
 }
 
+export function waitForUserIsLoggedIn (browser) {
+  // wait until the user is logged in
+  browser.waitUntil(function () {
+    return browser.execute(function () {
+      return Meteor.userId()
+    }).value
+  })
+}
+
+export function waitForKeystore (browser) {
+  let userId = browser.execute(function () {
+    return Meteor.userId()
+  }).value
+
+  browser.waitUntil(function () {
+    return browser.execute(function (userId) {
+      return localStorage.getItem(`keystore-${userId}`)
+    }, userId).value
+  })
+  return userId
+}
 export function assertUserIsNotLoggedIn (browser) {
   // assert that the user is logged in
   let userId = browser.execute(function () {
@@ -117,15 +170,15 @@ export async function getOrDeployParatiiContracts (server, browser) {
 }
 
 export function createUser () {
-  Accounts.createUser({
+  return Accounts.createUser({
     email: 'guildenstern@rosencrantz.com',
     password: 'password'
   })
 }
 
-export function createKeystore (seed) {
+export function createKeystore (seed, userId) {
   const wallet = require('./imports/lib/ethereum/wallet.js')
-  wallet.createKeystore('password', seed, function () {
+  wallet.createKeystore('password', seed, userId, function () {
     // remove the seed from the Session to simulate the situation
     // where the user has seen and dismissed the dialog
     Session.set('seed', null)
