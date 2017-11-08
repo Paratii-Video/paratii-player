@@ -170,19 +170,19 @@ describe('account workflow', function () {
     assert.equal(publicAddress, USERADDRESS)
   })
 
-  it('try to register a new account with a used email', function () {
+  it('try to register a new account with a used email @watch', function () {
     server.execute(createUser)
     // browser.url('http://localhost:3000/profile')
 
     browser.url('http://localhost:3000/')
     browser.waitForEnabled('#nav-profile')
     browser.click('#nav-profile')
-
+    browser.pause(2000)
     // we should see the login form, we click on the register link
     browser.waitForExist('#at-signUp')
     browser.pause(2000)
     browser.click('#at-signUp')
-
+    browser.pause(2000)
     // fill in the form
     browser.waitForExist('[name="at-field-name"]')
     browser
