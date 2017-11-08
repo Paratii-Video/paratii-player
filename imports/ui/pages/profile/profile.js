@@ -95,14 +95,6 @@ Template.profile.events({
   },
   'click #edit-profile' () {
     Modal.show('editProfile', {})
-  },
-  'click .earn-button' (event) {
-    Modal.show('main_modal', {
-      modal: `modal_earn_${event.target.getAttribute('id') === 'earn-eth' ? 'pti' : 'pti'}`,
-      data: {
-        type: 'PTI'
-      }
-    })
   }
 })
 
