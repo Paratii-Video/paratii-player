@@ -516,12 +516,14 @@ Template.player.events({
   },
   'click #button-like' () {
     const videoId = Template.instance().currentVideo.get()._id
+    const userAddress = getUserPTIAddress()
     // const videoId = this._id // works as well
-    Meteor.call('videos.like', videoId)
+    Meteor.call('videos.like', userAddress, videoId)
   },
   'click #button-dislike' () {
     const videoId = Template.instance().currentVideo.get()._id
-    Meteor.call('videos.dislike', videoId)
+    const userAddress = getUserPTIAddress()
+    Meteor.call('videos.dislike', userAddress, videoId)
   },
   'click #embed' (event, instance) {
     const videoId = Template.instance().currentVideo.get()._id

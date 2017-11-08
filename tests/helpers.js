@@ -221,8 +221,10 @@ export function createVideo (id, title, description, uploaderName, tags, price) 
     src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
     mimetype: 'video/mp4',
     stats: {
-      likes: 150,
-      dislikes: 10
+      likes: 0,
+      likers: [],
+      dislikes: 0,
+      dislikers: []
     }
   }
   Meteor.call('videos.create', video)

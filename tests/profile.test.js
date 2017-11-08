@@ -3,7 +3,7 @@ import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUser
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('Profile and accounts workflow: @watch', function () {
+describe('Profile and accounts workflow:', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
   })
@@ -159,7 +159,7 @@ describe('Profile and accounts workflow: @watch', function () {
     })
   })
 
-  it('try to register a new account with a used email @watch', function () {
+  it('try to register a new account with a used email', function () {
     server.execute(createUser)
     // browser.url('http://localhost:3000/profile')
 

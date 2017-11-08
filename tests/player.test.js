@@ -1,14 +1,14 @@
 import { assert } from 'chai'
-import { clearUserKeystoreFromLocalStorage, createVideo, resetDb, createPlaylist } from './helpers.js'
+import { assertUserIsLoggedIn, assertUserIsNotLoggedIn, createUserAndLogin, createPlaylist, createVideo } from './helpers.js'
 
-describe('player workflow', function () {
-  afterEach(function () {
-    server.execute(resetDb)
-    browser.execute(clearUserKeystoreFromLocalStorage)
+describe('Player:', function () {
+  beforeEach(function () {
+    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
+    server.execute(createVideo, '23456', 'Test 2', '', '', [''], 0)
+    server.execute(createPlaylist, '98765', 'Playlist test', ['12345', '23456'])
   })
 
   it('play a free video', function () {
-    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     browser.url('http://localhost:3000/play/12345')
     browser.waitForExist('#video-player')
     browser.waitForExist('.player-overlay')
@@ -24,7 +24,6 @@ describe('player workflow', function () {
   })
 
   it('click on the progress bar [TODO]', function () {
-    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     browser.url('http://localhost:3000/play/12345')
     browser.waitForExist('#video-player')
     // browser.waitForExist('#loaded-bar')
@@ -37,9 +36,6 @@ describe('player workflow', function () {
   })
 
   it('click on next video', () => {
-    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
-    server.execute(createVideo, '23456', 'Test 2', '', '', [''], 0)
-    server.execute(createPlaylist, '98765', 'Playlist test', ['12345', '23456'])
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitForExist('.player-overlay')
     assert.equal(browser.getText('.player-title'), 'Test 1')
@@ -54,9 +50,6 @@ describe('player workflow', function () {
   })
 
   it('click on previous video', () => {
-    server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
-    server.execute(createVideo, '23456', 'Test 2', '', '', [''], 0)
-    server.execute(createPlaylist, '98765', 'Playlist test', ['12345', '23456'])
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitForExist('.player-overlay')
     assert.equal(browser.getText('.player-title'), 'Test 1')
@@ -66,11 +59,41 @@ describe('player workflow', function () {
     assert.equal(browser.getText('.player-title'), 'Test 2')
   })
 
-  it('if a player is within a playlist and it is ended related videos don\'t show up', (done) => {
-    done()
+  it('if a player is within a playlist and it ended related videos don\'t show up [TODO]', () => {
   })
 
-  it('if a player is not within a playlist and it is ended related videos show up', (done) => {
-    done()
+  it('if a player is not within a playlist and it ended related videos show up [TODO]', () => {
+  })
+
+  it('like and dislike a video as an anonymous user', () => {
+    assertUserIsNotLoggedIn(browser)
+    browser.url('http://localhost:3000/play/12345?playlist=98765')
+    browser.waitForClickable('#button-like')
+    assert.equal(browser.getText('#button-like'), '')
+    assert.equal(browser.getText('#button-dislike'), '')
+
+    browser.click('#button-like')
+    assert.equal(browser.getText('#button-like'), '1')
+    assert.equal(browser.getText('#button-dislike'), '')
+
+    browser.click('#button-dislike')
+    assert.equal(browser.getText('#button-like'), '')
+    assert.equal(browser.getText('#button-dislike'), '1')
+  })
+  it('like and dislike a video as a logged-in user', () => {
+    createUserAndLogin(browser)
+    assertUserIsLoggedIn(browser)
+    browser.url('http://localhost:3000/play/12345?playlist=98765')
+    browser.waitForClickable('#button-like')
+    assert.equal(browser.getText('#button-like'), '')
+    assert.equal(browser.getText('#button-dislike'), '')
+
+    browser.click('#button-like')
+    assert.equal(browser.getText('#button-like'), '1')
+    assert.equal(browser.getText('#button-dislike'), '')
+
+    browser.click('#button-dislike')
+    assert.equal(browser.getText('#button-like'), '')
+    assert.equal(browser.getText('#button-dislike'), '1')
   })
 })

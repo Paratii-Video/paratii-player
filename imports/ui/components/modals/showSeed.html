@@ -1,17 +1,12 @@
 <template name="showSeed">
-  <!-- <div class="modal fade" id="showSeedModal">
-    <div class="modal-dialog">
-      <div class="modal-content" id="show-seed">
-        <div class="modal-header">
-          <h4 class="modal-title">The seed of your wallet</h4>
-        </div> -->
   <div id="show-seed" class="main-modal-content show-content">
-    <h3 class="main-modal-title main-modal-anim-1">Seed wallet</h3>
+    <h3 class="main-modal-title main-modal-anim-1">Show the seed phrase</h3>
     {{#if errorMessage}}
     <p class="control-label visually-hidden">{{errorMessage}}</p>
     {{/if}}
     {{#if seed}}
-        <p class="main-modal-text"><strong class="main-modal-text--red">Please write these 12 words on a piece of paper and store it somewhere safe</strong> (their order is important). This seed will allow you to recover your wallet</p>
+        <p class="main-modal-text"><strong class="main-modal-text--red">Please write down the following 12 words</strong>
+        This phrase is <strong>the only way</strong> to recover your account</p>
         <br>
         <p id="seed" class="main-modal-text"><strong class="main-modal-text--dark">{{seed}}</strong></p>
     {{else}}
