@@ -129,6 +129,8 @@ Template.player.onCreated(function () {
   Meteor.subscribe('relatedVideos', videoId, userPTIAddress)
 
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id'), getUserPTIAddress(), function (err, results) {
+    console.log('0000')
+    console.log(results)
     if (err) {
       throw err
     } else {
