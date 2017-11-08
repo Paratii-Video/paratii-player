@@ -108,7 +108,7 @@ describe('Video Store: @watch', function () {
     browser.setValue('[name="user_password"]', 'password')
     browser.waitForClickable('#send_trans_btn')
     browser.click('#send_trans_btn')
-    browser.pause(1000)
+    browser.pause(2000)
     let expectedErrorMessage = 'You need some Ether for sending a transaction - but you have none'
     assert.equal(browser.getText('.main-modal .error'), expectedErrorMessage)
   })

@@ -4,6 +4,7 @@ import '../imports/startup/server'
 import '../imports/startup/both'
 import '../imports/startup/server/fixtures.js'
 import '../imports/api/users.js'
+import '../imports/api/mail.js'
 import { setHead } from '/imports/lib/head'
 
 import { watchEvents, syncTransactions } from '/imports/api/transactions.js'
@@ -15,6 +16,10 @@ if (Meteor.settings.public.first_block === undefined) {
 setHead()
 
 Meteor.startup(async function () {
+  if (Meteor.settings.env.mail_server) {
+    process.env.MAIL_URL = Meteor.settings.env.mail_server
+  }
+
   Meteor.defer(function () {
     // sync the transaction history - update the collection to include the latest blocks
     // chain start sync from block 267 because it takes to long start from 0

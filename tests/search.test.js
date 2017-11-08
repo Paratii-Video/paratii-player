@@ -10,7 +10,7 @@ describe('Search video :', function () {
   it('search is triggered if user enter a 3 character lenght keyword', function (done) {
     server.execute(createVideo, '12345', 'this is the video key title', 'this is the video key description ', 'Uploader key name', ['foo', 'keyword'], 0)
     browser.setValue('[name="search"]', 'k')
-    browser.pause(500)
+    browser.pause(2000)
     let results = browser.elements('.videos-list li')
     assert.equal(results.value.length, 0)
 
@@ -27,7 +27,7 @@ describe('Search video :', function () {
   it('search must return no video with no matching title', function (done) {
     server.execute(createVideo, '12345', 'matching-keyword-title', 'matching-keyword-description', 'matching-keyword-user', ['foo', 'keyword'], 0)
     browser.setValue('[name="search"]', 'noresultkeyword')
-    browser.pause(500)
+    browser.pause(2000)
     let results = browser.elements('.videos-list li')
     assert.equal(results.value.length, 0)
     done()
@@ -84,7 +84,7 @@ describe('Search video :', function () {
   it('search must return a video with a matching field and player should open in the right video', function (done) {
     server.execute(createVideo, '12345', 'fookeyword1foo', '', '', ['foo', 'matching-keyword-tag'], 0)
     browser.setValue('[name="search"]', 'keyword')
-    browser.waitForExist('.videos-list li')
+    browser.waitForClickable('.videos-list li')
     let results = browser.elements('.videos-list li')
     assert.equal(results.value.length, 1)
     let title = browser.getText('.videos-item-title')

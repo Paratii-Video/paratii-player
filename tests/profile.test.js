@@ -97,10 +97,10 @@ describe('account workflow', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('show an error message if provided wrong password', function () {
+  it('show an error message if provided wrong password ', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     server.execute(resetDb)
-    browser.pause(1000)
+    browser.pause(2000)
 
     // create a meteor user
     server.execute(createUser)
@@ -159,18 +159,18 @@ describe('account workflow', function () {
     })
   })
 
-  it('try to register a new account with a used email', function () {
+  it('try to register a new account with a used email @watch', function () {
     server.execute(createUser)
     // browser.url('http://localhost:3000/profile')
 
     browser.url('http://localhost:3000/')
     browser.waitForClickable('#nav-profile')
     browser.click('#nav-profile')
-
+    browser.pause(2000)
     // we should see the login form, we click on the register link
     browser.waitForClickable('#at-signUp')
     browser.click('#at-signUp')
-
+    browser.pause(2000)
     // fill in the form
     browser.waitForExist('[name="at-field-name"]')
     browser.setValue('[name="at-field-name"]', 'Guildenstern')
@@ -328,7 +328,7 @@ describe('account workflow', function () {
 
   it('do not create a new wallet if the password is wrong', function () {
     server.execute(resetDb)
-    browser.execute(nukeLocalStorage)
+    browser.pause(2000)
 
     // create a meteor user
     server.execute(createUser)
