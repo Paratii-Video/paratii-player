@@ -3,7 +3,7 @@ import { SEED, USERADDRESS, getAnonymousAddress, createUser, resetDb, createUser
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('account workflow', function () {
+describe('Profile and accounts workflow: @watch', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
   })
