@@ -21,7 +21,7 @@ const videoList = [
     uploader: {
       address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
       name: 'Pole Pole Channel',
-      avatar: 'http://i.pravatar.cc/150?img=1'
+      avatar: '/img/icon/android-chrome-256x256.png'
     },
     stats: {
       likes_percentage: 84,
@@ -43,7 +43,7 @@ const videoList = [
     uploader: {
       address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
       name: 'John Doe',
-      avatar: 'http://i.pravatar.cc/150?img=2'
+      avatar: '/img/icon/android-chrome-256x256.png'
     },
     stats: {
       likes_percentage: 98,
@@ -65,7 +65,7 @@ const videoList = [
     uploader: {
       address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
       name: 'Mike Torrent',
-      avatar: 'http://i.pravatar.cc/150?img=3'
+      avatar: '/img/icon/android-chrome-256x256.png'
     },
     stats: {
       likes_percentage: 98,
@@ -87,7 +87,7 @@ const videoList = [
     uploader: {
       address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
       name: 'Paratii',
-      avatar: 'http://i.pravatar.cc/150?img=4'
+      avatar: '/img/icon/android-chrome-256x256.png'
     },
     stats: {
       likes_percentage: 98,
@@ -109,7 +109,7 @@ const videoList = [
     uploader: {
       address: web3.eth.accounts[2],
       name: 'Paratii',
-      avatar: 'http://i.pravatar.cc/150?img=4'
+      avatar: '/img/icon/android-chrome-256x256.png'
     },
     stats: {
       likes_percentage: 98,
@@ -131,7 +131,7 @@ const videoList = [
     uploader: {
       address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
       name: 'Paratii',
-      avatar: 'http://i.pravatar.cc/150?img=4'
+      avatar: '/img/icon/android-chrome-256x256.png'
     },
     stats: {
       likes_percentage: 98,
@@ -154,7 +154,7 @@ const videoList = [
     uploader: {
       address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
       name: 'Paratii',
-      avatar: 'http://i.pravatar.cc/150?img=4'
+      avatar: '/img/icon/android-chrome-256x256.png'
     },
     stats: {
       likes_percentage: 98,
@@ -176,7 +176,7 @@ const videoList = [
     uploader: {
       address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
       name: 'Paratii',
-      avatar: 'http://i.pravatar.cc/150?img=4'
+      avatar: '/img/icon/android-chrome-256x256.png'
     },
     stats: {
       likes_percentage: 98,
@@ -197,7 +197,7 @@ const videoList = [
     uploader: {
       address: '0xe19678107410951a9ed1f6906ba4c913eb0e44d4',
       name: 'Paratii',
-      avatar: 'http://i.pravatar.cc/150?img=4'
+      avatar: '/img/icon/android-chrome-256x256.png'
     },
     stats: {
       likes_percentage: 98,
