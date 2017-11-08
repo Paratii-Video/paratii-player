@@ -155,7 +155,6 @@ Template.player.helpers({
     const videoId = FlowRouter.getParam('_id')
 
     Template.instance().currentVideo.set(Videos.findOne({ _id: videoId }))
-    renderVideoElement(Template.instance())
   },
   isLocked () {
     return Template.instance().playerState.get('locked')
