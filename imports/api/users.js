@@ -51,10 +51,9 @@ if (Meteor.isServer) {
         const oldEmail = user.emails && user.emails[0] && user.emails[0].address
 
         // add new email address
-        if (
-          Accounts.addEmail(this.userId, data.email, false) &&
-          oldEmail
-        ) {
+        Accounts.addEmail(this.userId, data.email, false)
+
+        if (oldEmail) {
           // remove old email address
           Accounts.removeEmail(this.userId, oldEmail)
         }

@@ -2,10 +2,8 @@
 
 import { Template } from 'meteor/templating'
 import '/imports/api/users.js'
+import '/imports/ui/components/modals/editProfileInfo.js'
 import '/imports/ui/components/modals/editPassword.js'
-import '/imports/ui/components/modals/editUsername.js'
-import '/imports/ui/components/modals/editEmail.js'
-import '/imports/ui/components/modals/editAvatar.js'
 import './editProfile.html'
 
 Modal.allowMultiple = true
@@ -58,24 +56,14 @@ Template.editProfile.events({
     }
     fileReader.readAsDataURL(file)
   },
+  'click .edit-profile-info' () {
+    Modal.hide('editProfile')
+
+    Modal.show('editProfileInfo')
+  },
   'click .edit-password' () {
     Modal.hide('editProfile')
 
     Modal.show('editPassword', {})
-  },
-  'click .edit-username' () {
-    Modal.hide('editProfile')
-
-    Modal.show('editUsername')
-  },
-  'click .edit-email' () {
-    Modal.hide('editProfile')
-
-    Modal.show('editEmail')
-  },
-  'click .edit-avatar' () {
-    Modal.hide('editProfile')
-
-    Modal.show('editAvatar')
   }
 })

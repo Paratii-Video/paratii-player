@@ -1,0 +1,40 @@
+<template name="editProfileInfo">
+  <div class="modal main-modal fade">
+    <div class="main-modal-wrapper edit-profile-info-modal">
+      <button class="main-modal-button-close" data-dismiss="modal">
+        <svg class="main-modal-button-close-svg">
+          <use class="main-modal-button-close-svg-use" xlink:href="#icon-close"></use>
+        </svg>
+      </button>
+      <h4 class="modal-title">Edit profile</h4>
+      <form class="main-form">
+        <div class="modal-body">
+          <div class="avatar-wrapper">
+            <img class="current-avatar" src="{{imageUrl}}" />
+            <label class="btn btn-default white-button upload-avatar">
+              Upload Picture <input type="file" name="new-avatar" hidden>
+            </label>
+          </div>
+          <div class="name-email-wrapper">
+            <div class="input-group">
+              <label for="new-username" class="main-form-label">
+                Name
+              </label>
+              <input id="new-username" name="new-username" type="text" class="main-form-input" aria-describedby="sizing-addon1" placeholder="{{currentUser.profile.name}}">
+            </div>
+            <div class="input-group">
+              <label for="new-email" class="main-form-label">
+                Email
+              </label>
+              <input id="new-email" name="new-email" type="text" class="main-form-input" aria-describedby="sizing-addon1" placeholder="{{currentEmail}}">
+            </div>
+          </div>
+        </div>
+        <div class="main-form-footer">
+          <span class="form-error-message">{{{errorMessage}}}</span>
+          <button type="submit" id="save-profile-info" class="save-button" data-loading-text="Saving..." {{disabled}}>Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
