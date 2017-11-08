@@ -47,7 +47,7 @@ Template.createNewWallet.events({
             if (err) {
               throw err
             }
-            createKeystore(password, seedPhrase, function (error, result) {
+            createKeystore(password, seedPhrase, Meteor.userId(), function (error, result) {
               if (error) {
                 throw error
               }

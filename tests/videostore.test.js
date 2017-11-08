@@ -2,7 +2,7 @@ import { web3, logout, createUserAndLogin, getOrDeployParatiiContracts, getUserP
 import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('Video Store @watch:', function () {
+describe('Video Store: @watch', function () {
   let contracts
   let videoId = '5' // this is  a known videoId defined in fixtures.js
 
@@ -22,25 +22,25 @@ describe('Video Store @watch:', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     createUserAndLogin(browser)
-    browser.pause(2000)
-    browser.url('http://localhost:3000/profile')
+    // browser.pause(2000)
+    // browser.url('http://localhost:3000/profile')
   })
+
   afterEach(function () {
-    browser.execute(nukeLocalStorage)
-    server.execute(resetDb)
+    // browser.execute(nukeLocalStorage)
+    // server.execute(resetDb)
   })
 
-  it('should be possible to buy (and unlock) a video', function (done) {
+  it('should be possible to buy (and unlock) a video', function () {
     // make sure we have enough funds
-
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
     sendSomePTI(userAccount, 300)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    browser.waitForEnabled('[name="user_password"]')
+    browser.waitForClickable('[name="user_password"]')
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#send_trans_btn')
@@ -60,8 +60,6 @@ describe('Video Store @watch:', function () {
     // the video should be unlocked now
     browser.url(`http://localhost:3000/play/${videoId}`)
     browser.waitForExist('.player-controls')
-
-    done()
   })
 
   it('should show the signin form if the user is not logged in', function () {
@@ -69,7 +67,7 @@ describe('Video Store @watch:', function () {
     browser.execute(nukeLocalStorage)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
     browser.getText('h3', 'Sign in')
   })
@@ -82,13 +80,13 @@ describe('Video Store @watch:', function () {
     assert.equal(ptiBalance, 0)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    browser.waitForEnabled('[name="user_password"]')
+    browser.waitForClickable('[name="user_password"]')
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#send_trans_btn')
-    browser.pause(1000)
+    browser.pause(4000)
 
     let expectedErrorMessage = 'You don\'t have enough PTI: your balance is 0'
     assert.equal(browser.getText('.main-modal .error'), expectedErrorMessage)
@@ -103,18 +101,19 @@ describe('Video Store @watch:', function () {
     // assert.equal(userBalance, 0)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    browser.waitForEnabled('[name="user_password"]')
+    browser.waitForClickable('[name="user_password"]')
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
+    browser.waitForClickable('#send_trans_btn')
     browser.click('#send_trans_btn')
-    browser.pause(1000)
+    browser.pause(2000)
     let expectedErrorMessage = 'You need some Ether for sending a transaction - but you have none'
     assert.equal(browser.getText('.main-modal .error'), expectedErrorMessage)
   })
 
-  it('test individual steps', function (done) {
+  it('test individual steps', function () {
     let buyer = web3.eth.accounts[1]
     let tx
     // console.log(`transfer some PTI to ${buyer}`)
@@ -201,6 +200,5 @@ describe('Video Store @watch:', function () {
     // console.log('TO TRANSFER        :', Number(price))
     // console.log('PTIbalance of buyer:', Number(contracts.ParatiiToken.balanceOf(buyer)))
     // console.log('ETHbalance of buyer:', web3.eth.getBalance(buyer))
-    done()
   })
 })

@@ -15,7 +15,6 @@ export async function PTIContract () {
 
 export async function updateSession () {
   /* update Session variables with latest information from the blockchain */
-  console.log('updating Sesssion')
   Session.set('eth_host', web3.currentProvider.host)
 
   /* if Web3 is running over testrpc test contract is deployed */

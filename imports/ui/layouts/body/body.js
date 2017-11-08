@@ -28,7 +28,7 @@ if (Meteor.isClient) {
             throw err
           }
           let password = Session.get('user-password')
-          createKeystore(password, seedPhrase, function (error, result) {
+          createKeystore(password, seedPhrase, Meteor.userId(), function (error, result) {
             if (error) {
               throw error
             }
