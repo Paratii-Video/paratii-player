@@ -101,7 +101,7 @@ describe('account workflow', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('show an error message if provided wrong password @watch', function () {
+  it('show an error message if provided wrong password ', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     server.execute(resetDb)
     browser.pause(2000)
