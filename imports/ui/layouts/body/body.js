@@ -82,8 +82,6 @@ Template.App_body.onRendered(function () {
       this.navState.set('minimized')
     }
   })
-
-  // globalAlert('<strong>globalAlert</strong> and <strong>modalAlert</strong> You can <a href="/profile">go to a page</a> or <a href="/profile" data-showmodal="confirmLogout">open a modal</a> or <a href="/profile" data-showmodal="confirmLogout" data-closealert>open a modal and close the alert</a>', 'warning')
 })
 
 Template.App_body.helpers({
