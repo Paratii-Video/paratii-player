@@ -5,6 +5,7 @@
 @size-modal-wrapper-height: 280px;
 @size-modal-wrapper-width: 310px;
 @modal-footer-height: 20px;
+@size-modal-wrapper-width-wide: 530px;
 
 // Main
 
@@ -48,7 +49,7 @@
 .main-modal-wrapper {
   background-color: white;
   border-radius: 3px;
-  //height: @size-modal-wrapper-height;
+  height: @size-modal-wrapper-height;
   overflow: hidden;
   padding: 20px;
   position: relative;
@@ -60,6 +61,10 @@
   .fade.in & {
     transform: scaleY(1);
     transition: transform .75s @ease-smooth .3s;
+  }
+
+  &.wide {
+    width: @size-modal-wrapper-width-wide;
   }
 }
 
@@ -110,51 +115,53 @@
 
 // Animation
 
-.main-modal-anim {
-  &-1 {
-    &:extend(.anim-element-out all);
+.main-modal-anim-1 {
+  &:extend(.anim-element-out all);
 
-    .show-content & {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      transition: opacity .3s linear .1s, transform .75s @ease-smooth;
-    }
+  .show-content & {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity .3s linear .1s, transform .75s @ease-smooth;
   }
-  &-2 {
-    &:extend(.anim-element-out all);
+}
 
-    .show-content & {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      transition: opacity .3s linear .2s, transform .75s @ease-smooth .1s;
-    }
+.main-modal-anim-2 {
+  &:extend(.anim-element-out all);
+
+  .show-content & {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity .3s linear .2s, transform .75s @ease-smooth .1s;
   }
-  &-3 {
-    &:extend(.anim-element-out all);
+}
 
-    .show-content & {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      transition: opacity .3s linear .3s, transform .75s @ease-smooth .2s;
-    }
+.main-modal-anim-3 {
+  &:extend(.anim-element-out all);
+
+  .show-content & {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity .3s linear .3s, transform .75s @ease-smooth .2s;
   }
-  &-4 {
-    &:extend(.anim-element-out all);
+}
 
-    .show-content & {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      transition: opacity .3s linear .4s, transform .75s @ease-smooth .3s;
-    }
+.main-modal-anim-4 {
+  &:extend(.anim-element-out all);
+
+  .show-content & {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity .3s linear .4s, transform .75s @ease-smooth .3s;
   }
-  &-5 {
-    &:extend(.anim-element-out all);
+}
 
-    .show-content & {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      transition: opacity .3s linear .5s, transform .75s @ease-smooth .4s;
-    }
+.main-modal-anim-5 {
+  &:extend(.anim-element-out all);
+
+  .show-content & {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity .3s linear .5s, transform .75s @ease-smooth .4s;
   }
 }
 
@@ -197,8 +204,24 @@
       text-transform: uppercase;
     }
 
+    &--dark {
+      color: @color-grey;
+    }
+
+    &--green {
+      color: @color-green;
+    }
+
+    &--red {
+      color: @color-red;
+    }
+
     &--small {
       font-size: 12px;
+    }
+
+    &--big {
+      font-size: 16px;
     }
   }
 

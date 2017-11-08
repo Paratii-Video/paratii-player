@@ -20,6 +20,6 @@ Template.editProfile.events({
   'click .edit-password' () {
     Modal.hide('editProfile')
 
-    Modal.show('editPassword', {})
+    Modal.show('editPassword')
   }
 })

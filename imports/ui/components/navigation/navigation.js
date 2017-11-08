@@ -1,9 +1,12 @@
 /* globals SVGInjector */
-import 'meteor/johnantoni:meteor-svginjector'
+import './navigation.html'
+import { showModal } from '/imports/lib/utils.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
 import paratiiIPFS from '/imports/lib/ipfs/index.js'
-import '/imports/ui/components/modals/userModal.js'
-import './navigation.html'
+import 'meteor/johnantoni:meteor-svginjector'
+import '/imports/ui/components/modals/login.js'
+import '/imports/ui/components/modals/confirmLogout.js'
+import '/imports/ui/components/modals/mainModal.js'
 
 const loadSVG = () => {
   const mySVGsToInject = document.querySelectorAll('.svg')
@@ -30,52 +33,6 @@ Template.navigation.helpers({
   navState () {
     return Template.instance().navState.get()
   },
-  navLinks () {
-    let links = []
-
-    links = links.concat([
-      {
-        icon: '/img/playlists_icon.svg',
-        text: 'Playlist',
-        path: FlowRouter.path('playlists'),
-        id: 'playlist'
-      }, {
-        icon: '/img/myvideos_icon.svg',
-        text: 'My Videos',
-        path: FlowRouter.path('myvideos'),
-        id: 'myvideos',
-        locked: true
-      }, {
-        icon: '/img/upload_icon.svg',
-        text: 'Upload',
-        path: FlowRouter.path('upload'),
-        id: 'upload',
-        locked: true
-      }, {
-        icon: '/img/lock_icon.svg',
-        text: 'DEBUG',
-        path: FlowRouter.path('debug'),
-        id: 'debug'
-      }, {
-        icon: '/img/lock_icon.svg',
-        text: 'Clear Cache',
-        path: '#',
-        id: 'clear-repo'
-      }
-    ])
-
-    if (Meteor.userId()) {
-      links = links.concat([
-        {
-          icon: '/img/avatar_img.svg',
-          text: 'Log out',
-          path: '/',
-          id: 'logout'
-        }
-      ])
-    }
-    return links
-  },
   aboutLink () {
     return {
       icon: '/img/logo_paratii.svg',
@@ -85,6 +42,9 @@ Template.navigation.helpers({
   },
   isMaximized () {
     return (Template.instance().navState.get() === 'maximized')
+  },
+  userIsLoggedIn () {
+    if (Meteor.userId()) { return true } else { return false }
   }
 })
 
@@ -107,13 +67,11 @@ Template.navigation.events({
   'click #nav-profile' (event) {
     if (!Meteor.user()) {
       event.preventDefault()
-      Modal.show('userModal', {
-        setTemplate: 'login'
-      })
+      showModal('login')
     }
   },
   'click #logout' () {
-    Meteor.logout()
+    showModal('confirmLogout')
   },
   'click #clear-repo' (ev) {
     console.log('clearing cache . ', ev.target)

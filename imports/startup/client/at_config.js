@@ -1,6 +1,7 @@
 // import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 // import { showSeed } from '/imports/ui/components/modals/showSeed.js'
 import { AccountsTemplates } from 'meteor/useraccounts:core'
+import { showModal, hideModal } from '/imports/lib/utils.js'
 
 const mySubmitFunc = function (error, state) {
   if (error) {
@@ -12,8 +13,8 @@ const mySubmitFunc = function (error, state) {
     // we should have an anonymous keystore - we want to re-encode thsi with the password of the new user
     console.log('SIGNUP')
     // TODO:there is a modal still open at this point, but this is not expected. Which one?
-    Modal.hide()
-    Modal.show('userModal', { setTemplate: 'showSeed' })
+    hideModal()
+    showModal('showSeed')
   }
 }
 
@@ -29,7 +30,7 @@ AccountsTemplates.avoidRedirect = true
 // https://github.com/meteor-useraccounts/core/blob/master/Guide.md#configuration-api
 AccountsTemplates.configure({
   // Behavior
-  confirmPassword: true,
+  confirmPassword: false,
   enablePasswordChange: true,
   forbidClientAccountCreation: false,
   overrideLoginErrors: true,
@@ -39,22 +40,22 @@ AccountsTemplates.configure({
 
   // Appearance
   showAddRemoveServices: false,
-  showForgotPasswordLink: false,
+  showForgotPasswordLink: true,
   showLabels: true,
   showPlaceholders: true,
   showResendVerificationEmailLink: false,
 
   // Client-side Validation
   continuousValidation: false,
-  negativeFeedback: false,
+  negativeFeedback: true,
   negativeValidation: true,
   positiveValidation: true,
   positiveFeedback: true,
   showValidating: true,
 
   // Privacy Policy and Terms of Use
-  privacyUrl: 'privacy',
-  termsUrl: 'terms-of-use',
+  // privacyUrl: 'privacy',
+  // termsUrl: 'terms-of-use',
 
   // Redirects
   // homeRoutePath: '/account',
@@ -69,14 +70,14 @@ AccountsTemplates.configure({
   // Texts
   texts: {
     button: {
-      signUp: 'Create your account'
+      signUp: 'Sign up'
     },
     // socialSignUp: "Register...",
     socialIcons: {
       'meteor-developer': 'fa fa-rocket'
     },
     title: {
-      forgotPwd: 'Recover Your Password',
+      forgotPwd: 'Forgot password',
       signUp: 'Sign Up'
     }
   }

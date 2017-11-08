@@ -1,0 +1,71 @@
+// Player Info
+
+.player-share {
+  &:extend(.pos-a-vm all);
+
+  display: flex;
+  flex-direction: column;
+  left: 1000px;
+  transition: opacity .2s;
+  z-index: @zindex-player-share;
+
+  .query-tablet({
+    left: auto;
+    right: 35px;
+  });
+
+  .query-mini({
+    right: 29px;
+  });
+
+  .playing & {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &-button {
+    &:extend(.hover-opacity all);
+
+    margin: 0 0 12px;
+    width: 20px;
+
+    &-icon {
+      &:extend(.full-block all);
+
+      fill: @color-white;
+
+      .active & {
+        fill: @color-purple;
+      }
+    }
+
+    &-add {
+      display: none;
+      height: 15px;
+    }
+
+    &-share {
+      height: 17px;
+    }
+
+    &-later {
+      display: none;
+      height: 20px;
+
+      &-watch {
+        .active & {
+          display: none;
+        }
+        
+      }
+
+      &-add {
+        display: none;
+
+        .active & {
+          display: block;
+        }
+      }
+    }
+  }
+}

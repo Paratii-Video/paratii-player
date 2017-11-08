@@ -1,6 +1,8 @@
 <template name="unlockVideo">
   <div class="main-modal-content main-modal-unlock">
-    <h3 class="main-modal-title main-modal-anim-1">{{ videotitle }}</h3>
+
+
+    <h3 class="main-modal-title main-modal-anim-1">Unlock {{ videotitle }} {{ modalError }} {{modalState}}</h3>
     <div class="main-modal-unlock-info main-modal-anim-2">
       <div class="main-modal-avatar">
         {{#if currentUser }}
@@ -23,7 +25,7 @@
           <svg class="main-modal-unlock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45.3 40.1">
             <path class="st0" d="M7.2 19.9v.1c0 .8.7 1.5 1.5 1.5h24.2l-8 8c-.6.6-.6 1.5 0 2.1l.1.1c.6.6 1.5.6 2.1 0l10.5-10.5c.3-.3.6-.7.6-1.2v-.1c0-.6-.3-1.1-.8-1.3L27 8.3c-.6-.6-1.5-.6-2.1 0l-.1.1c-.6.6-.6 1.5 0 2.1l8 8H8.7c-.9 0-1.5.6-1.5 1.4z"/>
           </svg>
-          <p class="main-modal-unlock-text visually-hidden">10 US$</p>
+          <p class="main-modal-unlock-text visually-hidden">10 PTI</p>
           <p class="player-tooltip player-tooltip--small">{{price}} {{ type }}</p>
         </div>
 
@@ -49,6 +51,7 @@
 
     <form id="form-unlockVideo" class="main-modal-form {{ action }}" action="">
       {{#if action}}
+        <!-- TODO: this field does not seem to be actually used -->
         <input name="wallet_amount" type="text" value="{{price}}" class="visually-hidden" aria-describedby="sizing-addon1" readonly>
       {{/if}}
       <div class="main-form-label main-modal-unlock-label password } main-modal-anim-3">
@@ -57,7 +60,13 @@
       </div>
       <a class="button-text button-text--grey-light button-text--lowercase main-form-button-forgot main-modal-unlock-anchor } main-modal-anim-3" href="#" target="_blank">Forgot password?</a>
       <div class="main-modal-footer main-modal-anim-4">
-        <span class="main-modal-footer-waiting">Loading...</span>
+        {{#if modalError }}
+        <span class="main-modal-footer-waiting error">{{ modalError }}</span>
+        {{/if}}
+
+        {{#if modalState }}
+        <span class="main-modal-footer-waiting status">{{ modalState }}</span>
+        {{/if}}
         <button id="send_trans_btn" class="button-text main-modal-button main-modal-unlock-button-confirm confirm" type="submit">Confirm</button>
         <button class="button-text main-modal-button main-modal-unlock-button-watch watch" type="button">Watch the video</button>
       </div>

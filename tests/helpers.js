@@ -15,36 +15,21 @@ export function getProvider () {
 }
 
 export function login (browser) {
-  // TODO: do not use profile page to login (just do 'browser.execute(Meteor.login) or something')
-  // browser.url('http://localhost:3000/profile')
-  // browser.waitForExist('[name="at-field-email"]')
-  // browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-  // browser.setValue('[name="at-field-password"]', 'password')
-  // // wait for the anon keystore to be generated
-  // browser.pause(1000)
-  // browser.click('#at-btn')
   browser.execute(function () {
     Meteor.loginWithPassword('guildenstern@rosencrantz.com', 'password')
   })
 }
 
+export function logout (browser) {
+  browser.execute(function () {
+    Meteor.logout()
+  })
+}
 export function createUserAndLogin (browser) {
   server.execute(createUser)
-  // now log in
-  // browser.execute(createKeystore)
-
   login(browser)
   browser.execute(createKeystore)
   browser.execute(function () { Modal.hide() })
-  // browser.waitForExist('#walletModal')
-  // browser.pause(1000)
-  // browser.waitForEnabled('#walletModal #create-wallet')
-  // browser.pause(200)
-  // browser.click('#walletModal #create-wallet')
-  // browser.waitForEnabled('[name="user_password"]')
-  // browser
-  //   .setValue('[name="user_password"]', 'password')
-  // browser.click('#btn-create-wallet')
 }
 
 export function assertUserIsLoggedIn (browser) {

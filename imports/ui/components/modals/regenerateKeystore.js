@@ -1,16 +1,15 @@
-import { Template } from 'meteor/templating'
 import './regenerateKeystore.html'
+import { Template } from 'meteor/templating'
+import { showModal } from '/imports/lib/utils.js'
 
 Template.regenerateKeystore.events({
   'click #restore-keystore' () {
-    // Modal.hide('regenerateKeystore')
     console.log('open restorekystore')
     // TODO: make this work
-    // Modal.show('restoreKeystore', {})
-    Session.set('modalTemplate', 'restoreKeystore')
+    showModal('restoreKeystore', {backdrop: 'static'})
   },
   'click #create-wallet' () {
     console.log('TODO: merge the anonymous wallet to the new user')
-    Session.set('modalTemplate', 'createNewWallet')
+    showModal('createNewWallet', {backdrop: 'static'})
   }
 })

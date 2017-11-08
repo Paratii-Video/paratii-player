@@ -1,9 +1,12 @@
 /* eslint-env browser */
 import { getSeedFromKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js'
+import { changePasswordType } from '/imports/lib/utils.js'
 import './showSeed.html'
+import '/imports/ui/components/alert/alert.html'
 
 Template.showSeed.onCreated(function () {
   this.errorMessage = new ReactiveVar(null)
+  Session.set('passwordType', 'password')
 })
 
 Template.showSeed.helpers({
@@ -13,14 +16,22 @@ Template.showSeed.helpers({
   },
   errorMessage () {
     return Template.instance().errorMessage.get()
+  },
+  passwordType () {
+    const type = Session.get('passwordType')
+    return type
   }
 })
 
 Template.showSeed.onDestroyed(function () {
   Session.set('seed', null)
+  Session.set('passwordType', null)
 })
 
 Template.showSeed.events({
+  'click button.password' () {
+    changePasswordType()
+  },
   'submit #form-show-seed' (event, instance) {
     event.preventDefault()
     const password = event.target.user_password.value
@@ -42,7 +53,3 @@ Template.showSeed.events({
     })
   }
 })
-
-// export function showSeed (type = 'show') {
-//   Modal.show('showSeed', { type })
-// }

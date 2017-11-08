@@ -66,9 +66,9 @@ function saveKeystore (seedPhrase, keystore, address) {
 
 function createAnonymousKeystoreIfNotExists () {
   const keystores = keystoresCheck()
-  console.log('creating anonymous keystore')
   // if there isn't anonyous keystore, we create one
   if (keystores.anonymous === 0) {
+    console.log('creating anonymous keystore')
     Session.set('wallet-state', 'generating')
     createKeystore('password', undefined, function (err, seedPhrase, keystore) {
       if (err) {
@@ -107,8 +107,6 @@ export function getKeystore (user = null) {
   }
   // }
   // using lightwallet to deserialize the keystore
-  console.log(`deserializing keystore for user ${userId}`)
-  console.log(serializedKeystore)
   if (serializedKeystore !== null) {
     const keystore = lightwallet.keystore.deserialize(serializedKeystore)
     // const address = keystore.getAddresses()[0]
@@ -137,32 +135,6 @@ export function keystoresCheck () {
   })
   return keystores
 }
-
-// export function createNewWalletFromAnonymousKeystore (password) {
-//   // user just signed up, we have to fix his keystore
-//   const anonymousKeystore = getKeystore('anonymous')
-//   if (anonymousKeystore !== null) {
-//     // we have an anonmous keystore - we need to regenarate a new keystore
-//     // with the same seed but the new password
-//     getSeedFromKeystore('password', anonymousKeystore, function (err, seedPhrase) {
-//       if (err) {
-//         throw err
-//       }
-//       createKeystore(password, seedPhrase, function (error, result) {
-//         if (error) {
-//           throw error
-//         }
-//         deleteKeystore('anonymous')
-//         // Modal.show('userModal', { setTemplate: 'showSeed' })
-//         Session.get('user-password', null)
-//         return seedPhrase
-//       })
-//     })
-//   } else {
-//     // TODO: do something here...
-//     console.log('no anonymous keystore found')
-//   }
-// }
 
 // returns the seed of the keystore
 export function getSeed (password, callback) {
@@ -224,7 +196,7 @@ function sendTransaction (password, contractName, functionName, args, value, cal
     txOptions.value = web3.toHex(value)
     rawTx = lightwallet.txutils.functionTx(contract.abi, functionName, args, txOptions)
     console.log('Signing transaction')
-    console.log(fromAddr)
+    // console.log(fromAddr)
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr)
     web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
       console.log('Transaction sent: calling callback', callback)

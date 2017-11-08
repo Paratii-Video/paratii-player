@@ -1,19 +1,32 @@
 import { Template } from 'meteor/templating'
 import { createKeystore, deleteKeystore, getKeystore, getSeedFromKeystore } from '/imports/lib/ethereum/wallet.js'
+import { hideModal, changePasswordType } from '/imports/lib/utils.js'
 import '/imports/api/users.js'
 import './createNewWallet.html'
 
 Template.createNewWallet.onCreated(function () {
   this.errorMessage = new ReactiveVar(null)
+
+  Session.set('passwordType', 'password')
+})
+
+Template.doTransaction.onDestroyed(function () {
+  Session.set('passwordType', null)
 })
 
 Template.createNewWallet.helpers({
   errorMessage () {
     return Template.instance().errorMessage.get()
+  },
+  passwordType () {
+    return Session.get('passwordType')
   }
 })
 
 Template.createNewWallet.events({
+  'click button.password' () {
+    changePasswordType()
+  },
   'submit #form-create-wallet' (event, instance) {
     // Prevent default browser form submit
     event.preventDefault()
@@ -34,19 +47,13 @@ Template.createNewWallet.events({
             if (err) {
               throw err
             }
-            // Session.set('modalTemplate', 'showSeed')
-            // Modal.show('userModal', { setTemplate: 'showSeed' })
-            // const password = Session.get('user-password')
-            // let password = 'password'
             createKeystore(password, seedPhrase, function (error, result) {
               if (error) {
                 throw error
               }
+              hideModal()
               deleteKeystore('anonymous')
-              Modal.hide('userModal')
               Session.set('user-password', null)
-              Session.set('modalTemplate', null)
-              // Modal.show('userModal', { setTemplate: 'showSeed' })
             })
           })
         } else {

@@ -2,11 +2,10 @@ import './body.html'
 import '/imports/ui/icons/fullscreen.html'
 import '/imports/ui/icons/gear.html'
 import '/imports/ui/components/buttons/backButton.js'
-import '/imports/ui/components/modals/userModal.js'
-import '/imports/ui/components/modals/regenerateKeystore.js'
-import { add0x } from '/imports/lib/utils.js'
-
+import '/imports/ui/components/svgs/svgs.js'
+import { add0x, showModal, hideModal } from '/imports/lib/utils.js'
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, createKeystore, deleteKeystore, getKeystore, getSeedFromKeystore } from '/imports/lib/ethereum/wallet.js'
+import '/imports/ui/components/alert/alert.js'
 
 // TODO: reconsider the location of the next code - perhaps move it to start.js ?
 if (Meteor.isClient) {
@@ -18,6 +17,7 @@ if (Meteor.isClient) {
     const keystore = getKeystore()
 
     if (Session.get('signup')) {
+      Session.set('signup', false)
       // user just signed up, we have to fix his keystore
       const anonymousKeystore = getKeystore('anonymous')
       if (anonymousKeystore !== null) {
@@ -27,14 +27,13 @@ if (Meteor.isClient) {
           if (err) {
             throw err
           }
-          // Modal.show('userModal', { type: 'show' })
           let password = Session.get('user-password')
           createKeystore(password, seedPhrase, function (error, result) {
             if (error) {
               throw error
             }
             deleteKeystore('anonymous')
-            Modal.show('userModal', { setTemplate: 'showSeed' })
+            showModal('showSeed')
             Session.get('user-password', null)
           })
         })
@@ -46,20 +45,17 @@ if (Meteor.isClient) {
       if (keystore === null) {
         // this is an existing user (we are not in the singup process) , but the user has no keystore
         console.log('Getting anonymous keystore')
-
         const anonymousKeystore = getKeystore('anonymous')
         console.log(anonymousKeystore)
         if (anonymousKeystore !== null) {
           console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
-          // TODO: why do we need to hide a previous modal?
-          Session.set('modalTemplate', 'regenerateKeystore')
-          Modal.show('userModal', { setTemplate: 'regenerateKeystore' })
+          showModal('regenerateKeystore')
         } else {
           // TODO: we don't have an anonymous keystore. This could be a timing problem (the keystore is still beging generated)
         }
       } else {
         Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))
-        Modal.hide()
+        hideModal()
       }
     }
   })
@@ -69,7 +65,7 @@ if (Meteor.isClient) {
     console.log('logged out')
     // Reset all session values
     Session.set('userPTIAddress', null)
-    // Session.set('tempSeed', null)
+    Session.set('tempSeed', null)
     Session.set('tempKeystore', null)
     Session.set('tempAddress', null)
     Session.set('wallet-state', null)
@@ -93,11 +89,13 @@ Template.App_body.onCreated(function () {
     if (keystores.users > 0) {
       // There is at least one User keystore
       // Propose to login if not create anonymous keystore
-      Modal.show('userModal', { setTemplate: 'login' })
+      showModal('login')
     } else {
       // If there is no User keystore
     }
   }
+
+  Session.set({'alertMessage': undefined, 'alertClass': undefined})
 })
 
 Template.App_body.onRendered(function () {
@@ -112,6 +110,10 @@ Template.App_body.onRendered(function () {
       this.navState.set('minimized')
     }
   })
+
+  // Meteor.setTimeout(() => {
+  //   Session.set({'alertMessage': '<strong>Error message</strong>. An error message', 'alertClass': 'red show'})
+  // }, 1000)
 })
 
 Template.App_body.helpers({
@@ -122,6 +124,12 @@ Template.App_body.helpers({
     var current = FlowRouter.current()
     var route = current.route.name
     return route
+  },
+  setAlertMessage () {
+    return Session.get('alertMessage')
+  },
+  setAlertClass () {
+    return Session.get('alertClass')
   }
 })
 
