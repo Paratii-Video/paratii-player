@@ -39,14 +39,14 @@ Template.profile.helpers({
   },
   eth_balance () {
     const connected = Session.get('eth_isConnected')
-    const balance = Session.get('eth_balance')
+    const balance = Session.get('eth_balance') || 129041724747417270000000000000000
     if (!connected) {
       return 'Not connected to blockchain'
     }
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
-        return `${amount} <span class="unit"> ETH</span>`
+        return `<span class="amount">${amount}</span> <span class="unit"> ETH</span>`
       } else {
         return 'You don\'t own Ether'
       }
@@ -62,7 +62,7 @@ Template.profile.helpers({
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
-        return `${amount} <span class="unit"> PTI</span>`
+        return `<span class="amount">${amount}</span> <span class="unit"> PTI</span>`
       } else {
         return 'You don\'t own Paratii'
       }
