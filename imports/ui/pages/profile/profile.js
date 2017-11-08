@@ -12,9 +12,13 @@ import '/imports/ui/components/modals/showSeed.js'
 import '/imports/ui/components/modals/modals.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
 import '../../components/pageheader/pageheader.js'
+import './editProfileButton.js'
 import './profile.html'
 
 Template.profile.helpers({
+  editProfileButton () {
+    return 'editProfileButton'
+  },
   events () {
     // Perform a reactive database query against minimongo
     return Events.find()

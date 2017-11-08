@@ -3,24 +3,8 @@
     {{#if currentUser }} {{#isAuthorized}}
 
     <div class="walletContainer">
-      <div class="profile-container">
-        <div class="profile-info">
-          <div class="profile-info-name-wrapper">
-            {{> backButton }}
-            <div class="profile-info profile-info-name">
-              {{currentUser.profile.name}}
-            </div>
-          </div>
-          <div class="profile-info profile-info-email"> {{userEmail}}</div>
-        </div>
-
-        <div class="profile-actions">
-          <button id="edit-profile">
-            {{> icon_gear }}
-          </button>
-          {{> fullScreenButton }}
-        </div>
-      </div>
+      {{ >pageheader title=currentUser.profile.name addlButtons=editProfileButton }}
+      <div class="profile-info profile-info-email"> {{userEmail}}</div>
     </div>
     {{#if userPTIAddress }}
     <div class="walletContainer">
