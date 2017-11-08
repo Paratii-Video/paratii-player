@@ -1,6 +1,7 @@
 /* eslint-env browser */
 
 import { Template } from 'meteor/templating'
+import '/imports/api/users.js'
 import './editProfileInfo.html'
 
 Template.editProfileInfo.onCreated(function () {
