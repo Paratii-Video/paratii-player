@@ -13,6 +13,7 @@ import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 import '/imports/ui/components/modals/regenerateKeystore.js'
+import '/imports/ui/components/buttons/fullScreenButton.js'
 
 import '/imports/ui/components/modals/modals.js'
 
@@ -22,13 +23,6 @@ let controlsHandler
 let volumeHandler
 let previousVolume = 100
 // let _video = new ReactiveVar()
-
-const fullscreen = () => {
-  return document.fullscreenElement ||
-    document.mozFullScreenElement ||
-    document.webkitFullscreenElement ||
-    document.msFullscreenElement
-}
 
 // function getVideo () {
 //   const videoId = FlowRouter.getParam('_id')
@@ -149,6 +143,9 @@ Template.player.onDestroyed(function () {
 })
 
 Template.player.helpers({
+  videoPlayer () {
+    return Template.instance().find('#player-container')
+  },
   currentVideo () {
     const videoId = FlowRouter.getParam('_id')
     Template.instance().currentVideo.set(Videos.findOne({ _id: videoId }))
@@ -235,30 +232,6 @@ Template.player.helpers({
     return Template.instance().playerState.get('showDescription') ? 'show-description' : ''
   }
 })
-
-const requestFullscreen = (element) => {
-  if (element.requestFullscreen) {
-    element.requestFullscreen()
-  } else if (element.mozRequestFullScreen) {
-    element.mozRequestFullScreen()
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen()
-  } else {
-    // console.log('Unsuported fullscreen.');
-  }
-}
-
-const requestCancelFullscreen = (element) => {
-  if (element.exitFullscreen) {
-    element.exitFullscreen()
-  } else if (element.mozCancelFullScreen) {
-    element.mozCancelFullScreen()
-  } else if (element.webkitExitFullscreen) {
-    element.webkitExitFullscreen()
-  } else {
-    // console.log('Unsuported fullscreen.');
-  }
-}
 
 const pauseVideo = (instance) => {
   instance.playerState.set('playing', false)
@@ -385,14 +358,6 @@ Template.player.events({
       const params = { _id: previousId }
       const queryParams = { playlist: playlistId }
       FlowRouter.go(pathDef, params, queryParams)
-    }
-  },
-  'click #fullscreen-button' (event, instance) {
-    const videoPlayer = instance.find('#player-container')
-    if (fullscreen()) {
-      requestCancelFullscreen(document)
-    } else {
-      requestFullscreen(videoPlayer)
     }
   },
   'timeupdate' (event, instance) {

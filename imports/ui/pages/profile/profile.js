@@ -10,6 +10,7 @@ import '/imports/ui/components/modals/doTransaction.js'
 import '/imports/ui/components/modals/createNewWallet.js'
 import '/imports/ui/components/modals/showSeed.js'
 import '/imports/ui/components/modals/modals.js'
+import '/imports/ui/components/buttons/fullScreenButton.js'
 import '../../components/pageheader/pageheader.js'
 import './profile.html'
 
