@@ -38,7 +38,7 @@ describe('Video Store: @watch', function () {
     sendSomePTI(userAccount, 300)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
     browser.waitForEnabled('[name="user_password"]')
     browser.pause(1000)
@@ -67,7 +67,7 @@ describe('Video Store: @watch', function () {
     browser.execute(nukeLocalStorage)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
     browser.getText('h3', 'Sign in')
   })
@@ -80,7 +80,7 @@ describe('Video Store: @watch', function () {
     assert.equal(ptiBalance, 0)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
     browser.waitForEnabled('[name="user_password"]')
     browser.pause(1000)

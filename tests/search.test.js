@@ -89,6 +89,7 @@ describe('Search video :', function () {
     assert.equal(results.value.length, 1)
     let title = browser.getText('.videos-item-title')
     browser.click('.videos-list li')
+    browser.waitForClickable('.player-title')
     let videoTitle = browser.getText('.player-title')
     assert.equal(title, videoTitle)
     done()
