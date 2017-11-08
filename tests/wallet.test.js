@@ -50,7 +50,7 @@ describe('wallet', function () {
     browser.waitForExist('#send-pti')
     browser.click('#send-pti')
     browser.waitForEnabled('[name="wallet_friend_number"]')
-    browser.pause(1000)
+    browser.pause(2000)
     browser.setValue('[name="wallet_friend_number"]', toAddress)
     browser.setValue('[name="wallet_amount"]', '5')
     browser.setValue('[name="tx_description"]', description)
@@ -69,7 +69,7 @@ describe('wallet', function () {
     browser.click('#transaction-history')
 
     browser.waitForExist('.transaction-to')
-    browser.pause(1000)
+    browser.pause(2000)
     assert.equal(browser.getText('.transaction-to')[0], toAddress)
 
     // TODO: do the PTI transactions via a custom contact that logs the description, so we can get the description from there

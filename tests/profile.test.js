@@ -26,11 +26,11 @@ describe('account workflow', function () {
     browser.waitForEnabled('#nav-profile')
     browser.click('#nav-profile')
 
-    browser.pause(1000)
+    browser.pause(2000)
     browser.waitForEnabled('#at-signUp')
     browser.click('#at-signUp')
 
-    browser.pause(1000)
+    browser.pause(2000)
     // fill in the form
     browser.waitForEnabled('[name="at-field-name"]')
     browser
@@ -43,7 +43,7 @@ describe('account workflow', function () {
     browser.$('#at-btn').click()
 
     // the new user is automaticaly logged in after account creation
-    browser.pause(1000)
+    browser.pause(2000)
     assertUserIsLoggedIn(browser)
 
     // now a modal should be opened with the seed
@@ -61,7 +61,7 @@ describe('account workflow', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
-    browser.pause(1000)
+    browser.pause(2000)
 
     // create a meteor user
     server.execute(createUser)
@@ -75,7 +75,7 @@ describe('account workflow', function () {
     browser.waitForEnabled('#nav-profile')
     browser.click('#nav-profile')
 
-    browser.pause(1000)
+    browser.pause(2000)
     browser.waitForEnabled('[name="at-field-email"]')
     browser
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
@@ -88,7 +88,7 @@ describe('account workflow', function () {
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForExist('#walletModal')
-    browser.pause(1000)
+    browser.pause(2000)
     browser.waitForEnabled('#create-wallet')
     browser.click('#create-wallet')
     browser.waitForEnabled('[name="user_password"]')
@@ -134,7 +134,7 @@ describe('account workflow', function () {
   it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase ', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
-    browser.pause(1000)
+    browser.pause(2000)
     // create a meteor user
     server.execute(createUser)
     assertUserIsNotLoggedIn(browser)
@@ -143,7 +143,7 @@ describe('account workflow', function () {
     browser.waitForEnabled('#nav-profile')
     browser.click('#nav-profile')
 
-    browser.pause(1000)
+    browser.pause(2000)
     browser.waitForEnabled('[name="at-field-email"]')
     browser
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
@@ -151,13 +151,13 @@ describe('account workflow', function () {
     browser.pause(2000)
     browser.click('#at-btn')
     // the user is now logged in
-    browser.pause(1000)
+    browser.pause(2000)
     assertUserIsLoggedIn(browser)
     // // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForExist('#walletModal')
     // we choose to restore the keystore
     browser.waitForEnabled('#restore-keystore')
-    browser.pause(1000)
+    browser.pause(2000)
     browser.click('#restore-keystore')
     // we now should see a modal in which we are asked for the seed to regenerate the keystore
     browser.waitForEnabled('[name="field-seed"]')
@@ -283,10 +283,10 @@ describe('account workflow', function () {
     browser.waitForEnabled('#show-seed')
     browser.click('#show-seed')
     browser.waitForEnabled('[name="user_password"]')
-    browser.pause(1000)
+    browser.pause(2000)
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#btn-show-seed')
-    browser.pause(1000)
+    browser.pause(2000)
     browser.waitForEnabled('#seed')
     const seed = browser.getHTML('#seed strong', false)
     const publicAddress = browser.getHTML('#public_address', false)
@@ -322,7 +322,7 @@ describe('account workflow', function () {
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#btn-show-seed')
-    browser.pause(1000)
+    browser.pause(2000)
     browser.waitForVisible('#seed')
     const seed = browser.getHTML('#seed strong', false)
     // const publicAddress = browser.getHTML('#public_address', false)
@@ -346,7 +346,7 @@ describe('account workflow', function () {
   it('do not create a new wallet if the password is wrong', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
-    browser.pause(1000)
+    browser.pause(2000)
 
     // create a meteor user
     server.execute(createUser)
@@ -358,7 +358,7 @@ describe('account workflow', function () {
     browser.waitForEnabled('#nav-profile')
     browser.click('#nav-profile')
 
-    browser.pause(1000)
+    browser.pause(2000)
     browser.waitForEnabled('[name="at-field-email"]')
     browser
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
@@ -371,7 +371,7 @@ describe('account workflow', function () {
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForExist('#walletModal')
-    browser.pause(1000)
+    browser.pause(2000)
     browser.waitForEnabled('#walletModal #create-wallet')
     browser.click('#walletModal #create-wallet')
     browser.waitForEnabled('[name="user_password"]')
@@ -390,7 +390,7 @@ describe('account workflow', function () {
     browser.url('http://localhost:3000/profile')
     const url = browser.url()
 
-    browser.pause(1000)
+    browser.pause(2000)
     assert.equal(url.value, 'http://localhost:3000/')
   })
 
