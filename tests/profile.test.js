@@ -101,10 +101,10 @@ describe('account workflow', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('show an error message if provided wrong password', function () {
+  it('show an error message if provided wrong password @watch', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     server.execute(resetDb)
-    browser.pause(1000)
+    browser.pause(2000)
 
     // create a meteor user
     server.execute(createUser)
@@ -117,7 +117,7 @@ describe('account workflow', function () {
     browser.waitForEnabled('#nav-profile')
     browser.click('#nav-profile')
 
-    browser.pause(1000)
+    browser.pause(2000)
     browser.waitForEnabled('[name="at-field-email"]')
     browser
       .setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
