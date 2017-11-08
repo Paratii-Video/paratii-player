@@ -1,4 +1,5 @@
 import { Template } from 'meteor/templating'
+import { showModal, hideModal } from '/imports/lib/utils.js'
 import '/imports/ui/components/modals/editProfileInfo.js'
 import '/imports/ui/components/modals/editPassword.js'
 import './editProfile.html'
@@ -18,8 +19,8 @@ Template.editProfile.events({
     Modal.show('editProfileInfo')
   },
   'click .edit-password' () {
-    Modal.hide('editProfile')
+    hideModal('editProfile')
 
-    Modal.show('editPassword')
+    showModal('editPassword')
   }
 })
