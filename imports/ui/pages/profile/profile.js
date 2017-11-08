@@ -39,7 +39,7 @@ Template.profile.helpers({
   },
   eth_balance () {
     const connected = Session.get('eth_isConnected')
-    const balance = Session.get('eth_balance') || 129041724747417270000000000000000
+    const balance = Session.get('eth_balance')
     if (!connected) {
       return 'Not connected to blockchain'
     }
