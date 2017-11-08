@@ -164,7 +164,7 @@ describe('account workflow', function () {
     // browser.url('http://localhost:3000/profile')
 
     browser.url('http://localhost:3000/')
-    browser.waitForEnabled('#nav-profile')
+    browser.waitForClickable('#nav-profile')
     browser.click('#nav-profile')
 
     // we should see the login form, we click on the register link
@@ -194,10 +194,10 @@ describe('account workflow', function () {
     // browser.$('#logout').click()
     // // browser.url('http://localhost:3000/profile')
     // browser.url('http://localhost:3000')
-    // browser.waitForEnabled('#nav-profile')
+    // browser.waitForClickable('#nav-profile')
     // browser.click('#nav-profile')
     // // we should see the login form, we click on the register link
-    // browser.waitForEnabled('#at-signUp')
+    // browser.waitForClickable('#at-signUp')
     // browser.pause(2000)
     // browser.click('#at-signUp')
     // // fill in the form
@@ -223,7 +223,7 @@ describe('account workflow', function () {
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
     browser.url('http://localhost:3000/profile')
-    browser.waitForEnabled('#show-seed')
+    browser.waitForClickable('#show-seed')
     browser.click('#show-seed')
     browser.waitForVisible('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'password')
@@ -248,7 +248,7 @@ describe('account workflow', function () {
     browser.pause(4000)
     browser.url('http://localhost:3000/profile')
 
-    browser.waitForEnabled('#show-seed')
+    browser.waitForClickable('#show-seed')
     browser.click('#show-seed')
 
     browser.waitForVisible('[name="user_password"]')
@@ -265,14 +265,14 @@ describe('account workflow', function () {
     createUserAndLogin(browser)
     browser.pause(4000)
     browser.url('http://localhost:3000/profile')
-    browser.waitForEnabled('#show-seed')
+    browser.waitForClickable('#show-seed')
     browser.click('#show-seed')
-    browser.waitForEnabled('[name="user_password"]')
+    browser.waitForClickable('[name="user_password"]')
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#btn-show-seed')
     browser.pause(1000)
-    browser.waitForEnabled('#seed')
+    browser.waitForClickable('#seed')
     const seed = browser.getHTML('#seed strong', false)
     const publicAddress = browser.getHTML('#public_address', false)
 
@@ -285,9 +285,9 @@ describe('account workflow', function () {
     // TODO: in this case, the user is logged in, but has removed his keystore after logging in, the bastard
     // we need to show a blocking modal here
     //
-    browser.waitForEnabled('#walletModal #restore-keystore')
+    browser.waitForClickable('#walletModal #restore-keystore')
     browser.click('#walletModal #restore-keystore')
-    browser.waitForEnabled('[name="field-seed"]')
+    browser.waitForClickable('[name="field-seed"]')
     browser.setValue('[name="field-seed"]', seed)
     browser.setValue('[name="field-password"]', 'password')
     browser.click('#btn-restorekeystore-restore')
@@ -349,9 +349,9 @@ describe('account workflow', function () {
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForClickable('#walletModal')
-    browser.waitForEnabled('#walletModal #create-wallet')
+    browser.waitForClickable('#walletModal #create-wallet')
     browser.click('#walletModal #create-wallet')
-    browser.waitForEnabled('[name="user_password"]')
+    browser.waitForClickable('[name="user_password"]')
     browser.setValue('[name="user_password"]', 'wrong password')
     browser.click('#btn-create-wallet')
 

@@ -14,7 +14,8 @@ describe('wallet @watch:', function () {
   })
 
   it('should show ETH balance', async function (done) {
-    browser.execute(getSomeETH, 3.1)
+    // browser.execute(getSomeETH, 3.1)
+    sendSomeETH(userAccount, 3.1)
     browser.waitForClickable('#eth_amount')
     const amount = await browser.getHTML('#eth_amount', false)
     assert.equal(amount, 3.1)
