@@ -24,8 +24,7 @@ caching-html-compiler@1.1.2
 callback-hook@1.0.10
 cfs:http-methods@0.0.32
 check@1.2.5
-coffeescript@1.12.7_3
-coffeescript-compiler@1.12.7_3
+coffeescript@1.12.6_1
 cosmos:browserify@0.10.0
 dburles:factory@1.1.0
 ddp@1.4.0
@@ -72,7 +71,7 @@ livedata@1.0.18
 localstorage@1.2.0
 logging@1.1.19
 mdg:validation-error@0.5.1
-meteor@1.8.0
+meteor@1.8.1
 meteor-base@1.2.0
 meteor-tool@1.6.0
 meteorhacks:aggregate@1.3.0
