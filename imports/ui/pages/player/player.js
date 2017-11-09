@@ -118,8 +118,6 @@ Template.player.onCreated(function () {
   Meteor.subscribe('relatedVideos', videoId, userPTIAddress)
 
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id'), getUserPTIAddress(), function (err, results) {
-    console.log('0000')
-    console.log(results)
     if (err) {
       throw err
     } else {
@@ -332,17 +330,13 @@ Template.player.events({
     const price = web3.toWei(button.dataset.price)
     const balance = Session.get('pti_balance')
     const ethBalance = Session.get('eth_balance')
-    console.log(price, balance, ethBalance)
-    console.log(event.target)
     if (Meteor.user()) {
       if (ethBalance === 0) {
         // check that the user has enough ether for a minimal transaction
         globalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
-        console.log('no eth')
       } else if (parseFloat(price) > parseFloat(balance)) {
         // The user balance is lower than the video price
         globalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
-        console.log('no pti')
       } else {
         showModal('unlockVideo',
           {
