@@ -4,6 +4,7 @@ import '/imports/ui/components/svgs/svgs.js'
 import { add0x, showModal, hideModal } from '/imports/lib/utils.js'
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, getKeystore, mergeOrCreateNewWallet } from '/imports/lib/ethereum/wallet.js'
 import '/imports/ui/components/alert/alert.js'
+import '/imports/ui/components/modals/foundKeystore.js'
 
 // TODO: reconsider the location of the next code - perhaps move it to start.js ?
 if (Meteor.isClient) {
@@ -61,7 +62,7 @@ Template.App_body.onCreated(function () {
     if (keystores.users > 0) {
       // There is at least one User keystore
       // Propose to login if not create anonymous keystore
-      showModal('login')
+      showModal('foundKeystore')
     } else {
       // If there is no User keystore
     }

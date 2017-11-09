@@ -31,7 +31,7 @@ AccountsTemplates.avoidRedirect = true
 AccountsTemplates.configure({
   // Behavior
   confirmPassword: false,
-  enablePasswordChange: true,
+  enablePasswordChange: false,
   forbidClientAccountCreation: false,
   overrideLoginErrors: true,
   sendVerificationEmail: false,
@@ -40,7 +40,7 @@ AccountsTemplates.configure({
 
   // Appearance
   showAddRemoveServices: false,
-  showForgotPasswordLink: true,
+  showForgotPasswordLink: false,
   showLabels: true,
   showPlaceholders: true,
   showResendVerificationEmailLink: false,

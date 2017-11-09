@@ -7,6 +7,8 @@ describe('Video Store:', function () {
   let videoId = '5' // this is  a known videoId defined in fixtures.js
 
   before(async function (done) {
+    browser.execute(nukeLocalStorage)
+    server.execute(resetDb)
     browser.url('http://localhost:3000')
 
     contracts = await getOrDeployParatiiContracts(server, browser)
@@ -80,36 +82,39 @@ describe('Video Store:', function () {
     assert.equal(ptiBalance, 0)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
+    browser.pause(1000)
     browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    browser.waitForClickable('[name="user_password"]')
-    browser.pause(1000)
-    browser.setValue('[name="user_password"]', 'password')
-    browser.click('#send_trans_btn')
-    browser.pause(4000)
-
+    // browser.waitForClickable('[name="user_password"]')
+    // browser.pause(1000)
+    // browser.setValue('[name="user_password"]', 'password')
+    // browser.waitForClickable('#send_trans_btn')
+    // browser.click('#send_trans_btn')
+    // browser.pause(2000)
     let expectedErrorMessage = 'You don\'t have enough PTI: your balance is 0'
+    browser.waitForClickable('.main-alert-content')
     assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
   })
 
-  it('should show an error if the user does not have enough ETH', function () {
+  it('should show an error if the user does not have enough ETH @watch', function () {
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomePTI(userAccount, 300)
-
     // ... need to await the getBalance, but async messes up the rest of the test
     // let userBalance = getBalance(userAccount)
     // assert.equal(userBalance, 0)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
+    browser.pause(1000)
     browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    browser.waitForClickable('[name="user_password"]')
-    browser.pause(1000)
-    browser.setValue('[name="user_password"]', 'password')
-    browser.waitForClickable('#send_trans_btn')
-    browser.click('#send_trans_btn')
-    browser.pause(2000)
+    // browser.waitForClickable('[name="user_password"]')
+    // browser.pause(1000)
+    // browser.setValue('[name="user_password"]', 'password')
+    // browser.waitForClickable('#send_trans_btn')
+    // browser.click('#send_trans_btn')
+    // browser.pause(2000)
     let expectedErrorMessage = 'You need some Ether for sending a transaction - but you have none'
+    browser.waitForClickable('.main-alert-content')
     assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
   })
 

@@ -1,8 +1,8 @@
 import { Template } from 'meteor/templating'
 import { Blaze } from 'meteor/blaze'
-// import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
-import { formatNumber, showModal } from '/imports/lib/utils.js'
+import { web3 } from '/imports/lib/ethereum/connection.js'
+import { formatNumber, showModal, globalAlert } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos, RelatedVideos } from '../../../api/videos.js'
@@ -12,14 +12,11 @@ import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
-// import '/imports/ui/components/modals/regenerateKeystore.js'
-
 import './player.html'
 
 let controlsHandler
 let volumeHandler
 let previousVolume = 100
-// let _video = new ReactiveVar()
 
 const fullscreen = () => {
   return document.fullscreenElement ||
@@ -27,14 +24,6 @@ const fullscreen = () => {
     document.webkitFullscreenElement ||
     document.msFullscreenElement
 }
-
-// function getVideo () {
-//   const videoId = FlowRouter.getParam('_id')
-//   if (!_video || _video.id !== videoId) {
-//     _video = Videos.findOne({ _id: videoId })
-//   }
-//   return _video
-// }
 
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
@@ -339,18 +328,33 @@ const setLoadedProgress = (instance) => {
 Template.player.events({
   'click #unlock-video' (event) {
     event.stopPropagation()
+    const button = event.currentTarget
+    const price = web3.toWei(button.dataset.price)
+    const balance = Session.get('pti_balance')
+    const ethBalance = Session.get('eth_balance')
+
     if (Meteor.user()) {
-      showModal('unlockVideo',
-        {
-          type: 'PTI',
-          label: 'Unlock this video',
-          action: 'unlock_video',
-          price: event.currentTarget.dataset.price, // Video Price
-          address: event.currentTarget.dataset.address, // Creator PTI address
-          videotitle: event.currentTarget.dataset.title, // Video title
-          videoid: Template.instance().currentVideo.get()._id // Video title
-        }
-      )
+      if (ethBalance === 0) {
+        // check that the user has enough ether for a minimal transaction
+        globalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
+        console.log('no eth')
+      } else if (parseFloat(price) > parseFloat(balance)) {
+        // The user balance is lower than the video price
+        globalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
+        console.log('no pti')
+      } else {
+        showModal('unlockVideo',
+          {
+            type: 'PTI',
+            label: 'Unlock this video',
+            action: 'unlock_video',
+            price: button.dataset.price, // Video Price
+            address: button.dataset.address, // Creator PTI address
+            videotitle: button.dataset.title, // Video title
+            videoid: Template.instance().currentVideo.get()._id // Video title
+          }
+        )
+      }
     } else {
       showModal('login')
     }

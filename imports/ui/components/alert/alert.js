@@ -5,7 +5,7 @@ Template.alert.onRendered(() => {
   const fistNode = $(Template.instance().firstNode)
   Meteor.setTimeout(() => {
     fistNode.addClass('show')
-  }, 1)
+  }, 100)
 })
 
 Template.alert.helpers({
