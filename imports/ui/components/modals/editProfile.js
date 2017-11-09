@@ -4,8 +4,6 @@ import '/imports/ui/components/modals/editProfileInfo.js'
 import '/imports/ui/components/modals/editPassword.js'
 import './editProfile.html'
 
-Modal.allowMultiple = true
-
 Template.editProfile.helpers({
   userEmail () {
     return Meteor.user().emails[0].address
@@ -14,13 +12,19 @@ Template.editProfile.helpers({
 
 Template.editProfile.events({
   'click .edit-profile-info' () {
-    Modal.hide('editProfile')
+    hideModal()
 
-    Modal.show('editProfileInfo')
+    setTimeout(() => {
+      showModal('editProfileInfo', {
+        wrapperClass: 'edit-profile-info-modal'
+      })
+    }, 500)
   },
   'click .edit-password' () {
-    hideModal('editProfile')
+    hideModal()
 
-    showModal('editPassword')
+    setTimeout(() => {
+      showModal('editPassword')
+    }, 500)
   }
 })

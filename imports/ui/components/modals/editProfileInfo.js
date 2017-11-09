@@ -1,6 +1,7 @@
 /* eslint-env browser */
 
 import { Template } from 'meteor/templating'
+import { hideModal } from '/imports/lib/utils.js'
 import '/imports/api/users.js'
 import './editProfileInfo.html'
 
@@ -56,7 +57,7 @@ Template.editProfileInfo.events({
   'keyup #new-username, change #new-username' (e) {
     Template.instance().newUsername.set(e.target.value)
   },
-  'submit .edit-profile-info-modal form' (e) {
+  'submit #edit-profile-info-form' (e) {
     e.preventDefault()
 
     const templateInstance = Template.instance()
@@ -79,7 +80,7 @@ Template.editProfileInfo.events({
       if (error) {
         templateInstance.errorMessage.set(error.reason)
       } else {
-        Modal.hide(templateInstance)
+        hideModal()
       }
     })
   }

@@ -111,21 +111,16 @@
   }
 }
 
-.main-modal-wrapper.edit-password-modal {
-  width: 330px;
-  height: auto;
-}
-
 .main-modal-wrapper.edit-profile-info-modal {
-
   width: 85%;
   max-width: 500px;
   height: auto;
 
-  .modal-body {
+  .edit-profile-inputs-wrapper {
     display: flex;
+    flex-wrap: wrap;
     padding: 10px;
-    margin-top: 20px;
+    margin: 20px 0;
 
     .main-form-label {
       margin-bottom: 0;
@@ -166,7 +161,6 @@
 .save-button {
   text-transform: uppercase;
   color: @color-purple;
-  float: right;
 
   &[disabled] {
     color: @color-grey-light;

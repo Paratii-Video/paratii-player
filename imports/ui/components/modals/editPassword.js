@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating'
 import { Accounts } from 'meteor/accounts-base'
+import { hideModal } from '/imports/lib/utils.js'
 import './editPassword.html'
 
 Template.editPassword.onCreated(function () {
@@ -43,7 +44,7 @@ Template.editPassword.events({
           templateInstance.errorMessage.set('Current password is incorrect')
         } else {
           templateInstance.errorMessage.set('')
-          Modal.hide(templateInstance)
+          hideModal()
         }
       }
     )
