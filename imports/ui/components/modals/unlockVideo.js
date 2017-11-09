@@ -3,9 +3,10 @@ import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
 import { web3 } from '/imports/lib/ethereum/connection.js'
 import { getContract } from '/imports/lib/ethereum/contracts.js'
 import { checkPassword, getUserPTIAddress } from '/imports/api/users.js'
-import { changePasswordType } from '/imports/lib/utils.js'
+import { changePasswordType, setModalError, setModalState } from '/imports/lib/utils.js'
 import '/imports/lib/validate.js'
 import './unlockVideo.html'
+import { modalHelpers } from './mainModal.js'
 
 var promisify = require('promisify-node')
 
@@ -21,6 +22,7 @@ Template.unlockVideo.onRendered(function () {
   Meteor.setTimeout(() => $('div.main-modal-unlock').addClass('show-content'), 1000)
 })
 
+Template.unlockVideo.helpers(modalHelpers)
 Template.unlockVideo.helpers({
   ima () {
     return Session.get('dataUrl')
@@ -43,11 +45,13 @@ Template.unlockVideo.events({
     changePasswordType()
   },
   async 'submit #form-unlockVideo' (event) {
-    console.log('unlock video')
     event.preventDefault()
+
+    setModalState('')
     // TODO: GET THE ACTUAL PRICE of the video
-    let price = web3.toWei(14)
+    let price = web3.toWei(this.price)
     let videoId = this.videoid // Video id whne you unlock a video
+    let msg
     const password = event.target.user_password.value
     const check = Session.get('checkTransaction')
 
@@ -56,9 +60,15 @@ Template.unlockVideo.events({
     let balance = Session.get('pti_balance')
     if (parseFloat(price) <= 0 || isNaN(parseFloat(price)) === true) {
       // TODO: if the price is 0, this is an error in the data, not a user error:
+      msg = `You don't have enough PTI: your balance is ${web3.fromWei(balance)}`
       check.wallet_amount = 'This value is not allowed'
+      setModalError(msg)
+      return
     } else if (parseFloat(price) > parseFloat(balance)) {
-      check.wallet_amount = `You don't have enough PTI: your balance is ${web3.fromWei(balance)}`
+      msg = `You don't have enough PTI: your balance is ${web3.fromWei(balance)}`
+      check.wallet_amount = msg
+      setModalError(msg)
+      return
     } else {
       check.wallet_amount = null
     }
@@ -66,21 +76,31 @@ Template.unlockVideo.events({
     let ethBalance = Session.get('eth_balance')
 
     if (ethBalance === 0) {
-      check.wallet_amount = `You need some Ether for sending a transaction - but you have none`
+      // TODO: check that the user has enough ether for a minimal transaction
+      msg = `You need some Ether for sending a transaction - but you have none`
+      check.wallet_amount = msg
+      setModalError(msg)
+      return
     }
+
     const isvalid = await checkPassword(password)
     if (isvalid === true) {
       check.user_password = null
     } else {
-      check.user_password = 'Wrong password'
+      msg = 'Wrong password'
+      check.user_password = msg
+      setModalError(msg)
+      return
     }
     const errors = _.find(check, function (value) {
       return value != null
     })
     Session.set('checkTransaction', check)
     if (errors === undefined) {
+      setModalState('Processing transaction..')
+      // TODO: refactor: create a 'buyVideo' function that does not depend on Meteor and can be unittested separately
+
       // the transaction has two steps - we first approve that the paratiiavatar can move `price`, and then instruct the videoStore to buy the video
-      // buyVideo(videoId)
       // check if the video is known and get the price
       let videoRegistry = await getContract('VideoRegistry')
       console.log('videoRegistry located at:', videoRegistry.address)
@@ -91,7 +111,7 @@ Template.unlockVideo.events({
         throw Error(`A video with id ${videoId} was not found in the registry`)
       }
 
-      console.log(`price: ${Number(videoInfo[1])}`)
+      console.log(`price from BC: ${Number(videoInfo[1])}`)
       console.log(`approve ${price}`, price)
       let paratiiAvatar = await getContract('ParatiiAvatar')
       console.log(`approve ${price}`, price)
@@ -101,8 +121,14 @@ Template.unlockVideo.events({
       console.log('allowance:', Number(await paratiiToken.allowance(getUserPTIAddress(), paratiiAvatar.address)))
 
       console.log(`now calling buyVideo ${videoId}`)
-      await promisify(sendTransaction)(password, 'VideoStore', 'buyVideo', [videoId], 0)
-      Modal.hide('unlockVideo')
+      sendTransaction(password, 'VideoStore', 'buyVideo', [videoId], 0, function (error, result) {
+        if (error) {
+          setModalState('')
+          setModalError('An error occurred: ' + error)
+        } else {
+          Modal.hide('unlockVideo')
+        }
+      })
     }
   }
 })

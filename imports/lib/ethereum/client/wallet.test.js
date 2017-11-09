@@ -9,7 +9,7 @@ describe('ethereum wallet', function () {
   it('create a wallet with a random seedPhrase', function (done) {
     const password = 'mypass'
     // createKeystore returns a seed
-    createKeystore(password, null, function (error, seed) {
+    createKeystore(password, null, null, function (error, seed) {
       if (error) { throw error }
       assert.equal(seed.split(' ').length, 12)
       done()
@@ -20,7 +20,7 @@ describe('ethereum wallet', function () {
     const password = 'mypass'
     const seedPhrase = 'fire child menu visa cupboard audit reason announce output hungry bulk vessel'
     // createKeystore returns a seed
-    createKeystore(password, seedPhrase, function (error, seed) {
+    createKeystore(password, seedPhrase, null, function (error, seed) {
       if (error) { throw error }
       assert.equal(seed.split(' ').length, 12)
       done()
@@ -36,9 +36,9 @@ describe('ethereum wallet', function () {
   //   let ks1,
   //     ks2;
   //   const seedPhrase = lightwallet.keystore.generateRandomSeed();
-  //   createKeystore(password, seedPhrase,
+  //   createKeystore(password, seedPhrase, null,
   //     function (ks1) {
-  //       createKeystore('another-password', seedPhrase, function (ks2) {
+  //       createKeystore('another-password', seedPhrase, null, function (ks2) {
   //         assert.isAtLeast(ks1.getAddresses().length, 1);
   //         assert.equal(ks1.getAddresses(), ks2.getAddresses());
   //         done();

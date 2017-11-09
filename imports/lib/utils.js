@@ -1,4 +1,4 @@
-function formatNumber (number) {
+export function formatNumber (number) {
   if (!number) {
     return false
   }
@@ -7,7 +7,7 @@ function formatNumber (number) {
   return parts.join('.')
 }
 
-function strip0x (input) {
+export function strip0x (input) {
   if (typeof (input) !== 'string') {
     return input
   } else if (input.length >= 2 && input.slice(0, 2) === '0x') {
@@ -17,7 +17,7 @@ function strip0x (input) {
   return input
 }
 
-function add0x (input) {
+export function add0x (input) {
   if (typeof (input) !== 'string') {
     return input
   } else if (input.length < 2 || input.slice(0, 2) !== '0x') {
@@ -27,21 +27,27 @@ function add0x (input) {
   return input
 }
 
-function showModal (templateName, options = null) {
+export function showModal (templateName, options = null) {
   const template = { contentTemplate: templateName }
   const modalOptions = Object.assign(template, options)
   Session.set('contentTemplate', templateName)
   Modal.show('mainModal', modalOptions)
 }
 
-function hideModal (template) {
+export function setModalError (message) {
+  Session.set('modalErrorMessage', message)
+}
+
+export function setModalState (message) {
+  Session.set('modalStateMessage', message)
+}
+
+export function hideModal (template) {
   Modal.hide()
   Session.set('contentTemplate', null)
 }
 
-function changePasswordType () {
+export function changePasswordType () {
   let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
   Session.set('passwordType', inputType)
 }
-
-export { formatNumber, add0x, strip0x, showModal, hideModal, changePasswordType }

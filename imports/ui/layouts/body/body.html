@@ -1,6 +1,9 @@
 <template name="App_body">
   {{> svgs }}
-  <div class="main-app {{getRoute}}">
+
+  {{>alert message=setAlertMessage class=setAlertClass}}
+
+  <div id="player-fullscreen-container" class="main-app {{getRoute}}">
     <div class="nav-overlay {{light}}"></div>
     {{> navigation }}
     <div id="app-container" class="app-container">

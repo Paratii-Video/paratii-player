@@ -32,10 +32,29 @@
       padding: 0 20px;
     }
 
+    .player-related-videos{
+      display: none
+    }
+
     .playing & {
       opacity: 0;
       transition: opacity .25s, padding .8s @ease-smooth;
       pointer-events: none;
+
+
+    }
+
+    .related & {
+      opacity: 1;
+      transition: opacity .25s, padding .8s @ease-smooth;
+      .player-related-videos{
+        display: block
+      }
+
+      .player-infos-holder{
+        opacity: 0;
+        display: none;
+      }
     }
   }
 
@@ -190,6 +209,7 @@
       background: linear-gradient(to right, @color-purple 0%,@color-purple 50%,#7068e2 51%,@color-purple 100%);
       height: 40px;
       width: 50px;
+      pointer-events: none;
     }
   }
 }

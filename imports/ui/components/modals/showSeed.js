@@ -2,6 +2,7 @@
 import { getSeedFromKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { changePasswordType } from '/imports/lib/utils.js'
 import './showSeed.html'
+import '/imports/ui/components/alert/alert.html'
 
 Template.showSeed.onCreated(function () {
   this.errorMessage = new ReactiveVar(null)
