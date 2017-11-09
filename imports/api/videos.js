@@ -8,15 +8,15 @@ export const Videos = new Mongo.Collection('videos')
 export const VideosResults = new Mongo.Collection('SearchResults')
 export const RelatedVideos = new Mongo.Collection('RelatedVideos')
 
-export function userLikesVideo (userId, videoId) {
+export function userLikesVideo (userAddress, videoId) {
   return Boolean(
-    Meteor.users.findOne({ _id: userId, 'stats.likes': { $in: [videoId] } })
+    Videos.findOne({ _id: videoId, 'stats.likers': { $in: [userAddress] } })
   )
 }
 
-export function userDislikesVideo (userId, videoId) {
+export function userDislikesVideo (userAddress, videoId) {
   return Boolean(
-    Meteor.users.findOne({ _id: userId, 'stats.dislikes': { $in: [videoId] } })
+    Videos.findOne({ _id: videoId, 'stats.dislikers': { $in: [userAddress] } })
   )
 }
 
@@ -114,48 +114,42 @@ if (Meteor.isServer) {
   })
 }
 Meteor.methods({
-  'videos.like' (videoId) {
+  'videos.like' (address, videoId) {
     check(videoId, String)
-    const currentUserId = Meteor.userId()
-    if (!currentUserId) {
-      return false
-    }
+    const currentUserAddress = address
 
     // if the user has already likes this video, we don't do anything
-    if (userLikesVideo(currentUserId, videoId)) {
+    if (userLikesVideo(currentUserAddress, videoId)) {
       return false
     }
     // if the user has disliked this video, we remove the dislike
-    if (userDislikesVideo(currentUserId, videoId)) {
+    if (userDislikesVideo(currentUserAddress, videoId)) {
       Videos.update(videoId, { $inc: { 'stats.dislikes': -1 } })
-      Meteor.users.update(this.userId, { $pull: { 'stats.dislikes': videoId } })
+      Videos.update(videoId, { $pull: { 'stats.dislikers': currentUserAddress } })
     }
 
-    Meteor.users.update(currentUserId, { $addToSet: { 'stats.likes': videoId } })
+    Videos.update(videoId, { $addToSet: { 'stats.likers': currentUserAddress } })
     Videos.update(videoId, { $inc: { 'stats.likes': 1 } })
     return true
   },
-  'videos.dislike' (videoId) {
+  'videos.dislike' (address, videoId) {
     check(videoId, String)
-
-    const currentUserId = Meteor.userId()
-
-    if (!currentUserId) {
-      return false
-    }
+    const currentUserAddress = address
 
     // if the user has already likes this video, we don't do anything
-    if (userDislikesVideo(currentUserId, videoId)) {
+    if (userDislikesVideo(currentUserAddress, videoId)) {
       return false
     }
     // if the user has disliked this video, we remove the dislike
-    if (userLikesVideo(currentUserId, videoId)) {
+    if (userLikesVideo(currentUserAddress, videoId)) {
       Videos.update(videoId, { $inc: { 'stats.likes': -1 } })
-      Meteor.users.update(this.userId, { $pull: { 'stats.likes': videoId } })
+      Videos.update(videoId, { $pull: { 'stats.likers': currentUserAddress } })
+      // Meteor.users.update(this.userId, { $pull: { 'stats.likes': videoId } })
     }
 
-    Meteor.users.update(currentUserId, { $addToSet: { 'stats.dislikes': videoId } })
+    // Meteor.users.update(currentUserId, { $addToSet: { 'stats.dislikes': videoId } })
     Videos.update(videoId, { $inc: { 'stats.dislikes': 1 } })
+    Videos.update(videoId, { $addToSet: { 'stats.dislikers': currentUserAddress } })
     return true
   },
   'videos.create' (video) {
@@ -168,7 +162,9 @@ Meteor.methods({
       mimetype: String,
       stats: {
         likes: Number,
-        dislikes: Number
+        dislikes: Number,
+        likers: Array,
+        dislikers: Array
       },
       uploader: {
         name: String

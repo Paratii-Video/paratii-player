@@ -110,11 +110,6 @@ export function getUserPTIAddress () {
     }
   }
   return address
-  // if (keystore !== undefined) {
-  //   address = add0x(keystore.ksData[keystore.defaultHdPathString].addresses[0]);
-  //   return address;
-  // }
-  // return undefined;
 }
 
 export function checkPassword (password) {

@@ -10,6 +10,24 @@ export { web3 }
 export const SEED = 'road inherit leave arm unlock estate option merge mechanic rate blade dumb'
 export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
 
+// The before  function will be run once, before all tests
+before(async function (done) {
+  browser.addCommand('waitForClickable', function (selector, timeout) {
+    this.waitForVisible(selector, timeout)
+    this.waitForEnabled(selector, timeout)
+  })
+
+  browser.url('http://localhost:3000')
+  await getOrDeployParatiiContracts(server, browser)
+  done()
+})
+
+// The beforeEac  function is run before each single est
+beforeEach(function () {
+  server.execute(resetDb)
+  browser.execute(nukeLocalStorage)
+})
+
 export function getProvider () {
   return Meteor.settings.public.http_provider
 }
@@ -29,9 +47,21 @@ export function logout (browser) {
 export function createUserAndLogin (browser) {
   let userId = server.execute(createUser)
   browser.execute(createKeystore, null, userId)
+  browser.waitUntil(function () {
+    return browser.execute(function (userId) {
+      return localStorage.getItem(`keystore-${userId}`)
+    }, userId).value
+  })
   login(browser)
-  // the login handler will open a modal window (because a keystore is not available yet), which we need to close
-  // browser.execute(function () { Modal.hide() })
+  waitForUserIsLoggedIn(browser)
+
+  // set the user's address to that of the wallet -
+  // TODO: this should be done on login, automagically, I suppose
+  let address = getUserPTIAddressFromBrowser()
+  server.execute(function (userId, address) {
+    Meteor.users.update(userId, {$set: { 'profile.ptiAddress': address }})
+  }, userId, address)
+  return userId
 }
 
 export function assertUserIsLoggedIn (browser) {
@@ -42,6 +72,27 @@ export function assertUserIsLoggedIn (browser) {
   assert.isOk(userId)
 }
 
+export function waitForUserIsLoggedIn (browser) {
+  // wait until the user is logged in
+  browser.waitUntil(function () {
+    return browser.execute(function () {
+      return Meteor.userId()
+    }).value
+  })
+}
+
+export function waitForKeystore (browser) {
+  let userId = browser.execute(function () {
+    return Meteor.userId()
+  }).value
+
+  browser.waitUntil(function () {
+    return browser.execute(function (userId) {
+      return localStorage.getItem(`keystore-${userId}`)
+    }, userId).value
+  })
+  return userId
+}
 export function assertUserIsNotLoggedIn (browser) {
   // assert that the user is logged in
   let userId = browser.execute(function () {
@@ -177,8 +228,10 @@ export function createVideo (id, title, description, uploaderName, tags, price) 
     src: 'https://raw.githubusercontent.com/Paratii-Video/paratiisite/master/imagens/Paratii_UI_v5_mobile.webm',
     mimetype: 'video/mp4',
     stats: {
-      likes: 150,
-      dislikes: 10
+      likes: 0,
+      likers: [],
+      dislikes: 0,
+      dislikers: []
     }
   }
   Meteor.call('videos.create', video)

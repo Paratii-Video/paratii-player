@@ -1,6 +1,6 @@
 /* eslint-env browser */
 import { getSeedFromKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js'
-import { changePasswordType } from '/imports/lib/utils.js'
+import { changePasswordType, modalAlert } from '/imports/lib/utils.js'
 import './showSeed.html'
 import '/imports/ui/components/alert/alert.html'
 
@@ -40,6 +40,7 @@ Template.showSeed.events({
     button.button('loading')
     Meteor.call('checkPassword', password, (error, result) => {
       if (error) {
+        modalAlert(error, 'error')
         throw error
       }
       if (result) {
@@ -48,6 +49,7 @@ Template.showSeed.events({
         })
       } else {
         instance.errorMessage.set('Wrong password')
+        modalAlert(instance.errorMessage.get(), 'error')
         button.button('reset')
       }
     })
