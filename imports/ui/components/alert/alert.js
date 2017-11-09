@@ -1,26 +1,29 @@
 import './alert.html'
+import { showModal } from '/imports/lib/utils.js'
 
-Template.alert.onCreated(() => {
+Template.alert.onRendered(() => {
+  const fistNode = $(Template.instance().firstNode)
+  Meteor.setTimeout(() => {
+    fistNode.addClass('show')
+  }, 1)
 })
 
 Template.alert.events({
-  'click button.main-alert-button-close' (event, instance) {
-    Session.set('classAlertModal', null)
+  'click button.main-alert-button-close, click a[data-closealert]' (event, instance) {
+    let type = instance.data.type
+
+    $(Template.instance().firstNode).removeClass('show')
+
     Meteor.setTimeout(() => {
-      Session.set('modalErrorMessage', null)
-      Session.set('globalErrorMessage', null)
+      if (type === 'modal') {
+        Session.set('modalAlertMessage', null)
+      } else {
+        Session.set('globalAlertMessage', null)
+      }
     }, 600)
   },
-  'show' () {
-    console.log('you fired a alert show event')
-  },
-  'hide' () {
-    console.log('you fired a alert hide event')
-  }
-})
-
-Template.alert.helpers({
-  'class' () {
-    return Session.get('classAlertModal')
+  'click a[data-showmodal]' (event, instance) {
+    event.preventDefault()
+    showModal($(event.target).data('showmodal'))
   }
 })

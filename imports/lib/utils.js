@@ -39,11 +39,10 @@ export function hideModal (template) {
 }
 
 // Manage error on Modals
-export function setModalError (message) {
-  // The message to show in the alert
-  Session.set('modalErrorMessage', message)
-  // The class show open the alert
-  Session.set('classAlertModal', 'show')
+export function modalAlert (message, style) {
+  Session.set('modalAlertMessage', message)
+  Session.set('modalAlertType', 'modal')
+  Session.set('classAlertModal', style)
 }
 
 export function setModalState (message) {
@@ -51,11 +50,10 @@ export function setModalState (message) {
 }
 
 // Manage global errors
-export function setGlobalError (message) {
-  // The message to show in the alert
-  Session.set('globalErrorMessage', message)
-  // The class show open the alert
-  Session.set('classAlertGlobal', 'show')
+export function globalAlert (message, style) {
+  Session.set('globalAlertMessage', message)
+  Session.set('globalAlertType', 'global')
+  Session.set('classAlertGlobal', style)
 }
 
 export function changePasswordType () {

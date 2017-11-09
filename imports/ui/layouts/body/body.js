@@ -94,10 +94,13 @@ Template.App_body.helpers({
     return route
   },
   setAlertMessage () {
-    return Session.get('globalErrorMessage')
+    return Session.get('globalAlertMessage')
   },
   setAlertClass () {
     return Session.get('classAlertGlobal')
+  },
+  setAlertType () {
+    return Session.get('globalAlertType')
   }
 })
 

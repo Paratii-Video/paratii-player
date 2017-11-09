@@ -3,7 +3,7 @@ import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
 import { web3 } from '/imports/lib/ethereum/connection.js'
 import { getContract } from '/imports/lib/ethereum/contracts.js'
 import { checkPassword, getUserPTIAddress } from '/imports/api/users.js'
-import { changePasswordType, setModalError, setModalState } from '/imports/lib/utils.js'
+import { changePasswordType, modalAlert, setModalState } from '/imports/lib/utils.js'
 import '/imports/lib/validate.js'
 import './unlockVideo.html'
 // import { modalHelpers } from './mainModal.js'
@@ -62,12 +62,12 @@ Template.unlockVideo.events({
       // TODO: if the price is 0, this is an error in the data, not a user error:
       msg = `You don't have enough PTI: your balance is ${web3.fromWei(balance)}`
       check.wallet_amount = 'This value is not allowed'
-      setModalError(msg)
+      modalAlert(msg, 'error')
       return
     } else if (parseFloat(price) > parseFloat(balance)) {
       msg = `You don't have enough PTI: your balance is ${web3.fromWei(balance)}`
       check.wallet_amount = msg
-      setModalError(msg)
+      modalAlert(msg, 'error')
       return
     } else {
       check.wallet_amount = null
@@ -79,7 +79,7 @@ Template.unlockVideo.events({
       // TODO: check that the user has enough ether for a minimal transaction
       msg = `You need some Ether for sending a transaction - but you have none`
       check.wallet_amount = msg
-      setModalError(msg)
+      modalAlert(msg, 'error')
       return
     }
 
@@ -89,7 +89,7 @@ Template.unlockVideo.events({
     } else {
       msg = 'Wrong password'
       check.user_password = msg
-      setModalError(msg)
+      modalAlert(msg, 'error')
       return
     }
     const errors = _.find(check, function (value) {
@@ -124,7 +124,7 @@ Template.unlockVideo.events({
       sendTransaction(password, 'VideoStore', 'buyVideo', [videoId], 0, function (error, result) {
         if (error) {
           setModalState('')
-          setModalError('An error occurred: ' + error)
+          modalAlert('An error occurred: ' + error, 'error')
         } else {
           Modal.hide('unlockVideo')
         }

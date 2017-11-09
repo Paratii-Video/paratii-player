@@ -1,42 +1,41 @@
 <template name="search">
-  <div class="internal playlists">
+  <div class="internal">
     <header class="internal-header">
-
-      <h2 class="internal-header-title">
-        Search
-      </h2>
+      <h2 class="internal-header-title">Search</h2>
     </header>
-    <input type="text" id="search" name="search" value="{{lastsearch}}" placeholder="Type here to Search">
+    <input id="search" class="main-form-input" type="text" name="search" value="{{lastsearch}}" placeholder="Type here to Search">
+    {{#unless videos}}
+      <p>{{noResults}}</p>
+    {{/unless}}
+    <br>
+    {{#if videos}}
+      <ul class="videos-list">
+          {{#each videos}}
+          <li class="videos-item">
+            <a class="videos-item-link" href="{{videoPath this}}">
+              <h4 class="videos-item-title">{{ title }}</h4>
+              <button class="videos-item-button">
+                <svg class="videos-item-button-svg">
+                  <use class="videos-item-button-svg-use" xlink:href="#icon-reticence"></use>
+                </svg>
+              </button>
+              <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
 
-    <ul class="videos-list">
-        {{#each videos}}
-        <li class="videos-item">
-          <a class="videos-item-link" href="{{videoPath this}}">
-            <h4 class="videos-item-title">{{ title }}</h4>
-            <button class="videos-item-button">
-              <svg class="videos-item-button-svg">
-                <use class="videos-item-button-svg-use" xlink:href="#icon-reticence"></use>
-              </svg>
-            </button>
-            <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
-
-            {{#if isLocked this}}
-              <div class="videos-item-price">{{ price }} PTI</div>
-            {{else if hasPrice this}}
-              <div class="videos-item-price">✓</div>
-            {{/if}}
-            <div class="videos-item-time">{{ duration }}</div>
-            {{#if thumb}}
-              <img class="videos-item-image" src="{{ thumb }}"/>
-            {{else}}
-              <img class="videos-item-image" src="/img/cover/default-thumb.png"/>
-            {{/if}}
-          </a>
-        </li>
-      {{else}}
-
-        <p> {{noResults}} </p>
-      {{/each}}
-    </ul>
+              {{#if isLocked this}}
+                <div class="videos-item-price">{{ price }} PTI</div>
+              {{else if hasPrice this}}
+                <div class="videos-item-price">✓</div>
+              {{/if}}
+              <div class="videos-item-time">{{ duration }}</div>
+              {{#if thumb}}
+                <img class="videos-item-image" src="{{ thumb }}"/>
+              {{else}}
+                <img class="videos-item-image" src="/img/cover/default-thumb.png"/>
+              {{/if}}
+            </a>
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
   </div>
 </template>
