@@ -1,5 +1,7 @@
 import { Template } from 'meteor/templating'
 import { Blaze } from 'meteor/blaze'
+import playerjs from 'player.js'
+// import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
 import { web3 } from '/imports/lib/ethereum/connection.js'
 import { formatNumber, showModal, globalAlert } from '/imports/lib/utils.js'
@@ -35,6 +37,15 @@ function renderVideoElement (instance) {
   videoTag.className = 'player-video'
   videoTag.id = 'video-player'
   playerContainer.insertBefore(videoTag, playerContainer.firstChild)
+
+  // get video tag element and bind it to player js adapter for HTML5 video
+  const video = document.getElementById('video-player')
+  video.load()
+  console.log('this is playerjs', playerjs)
+  const adapter = playerjs.HTML5Adapter(video)
+
+  // Start accepting events
+  adapter.ready()
 
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo)
