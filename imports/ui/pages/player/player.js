@@ -327,10 +327,11 @@ const setLoadedProgress = (instance) => {
 
 Template.player.events({
   'click #unlock-video' (event) {
+    event.stopPropagation()
     const price = web3.toWei(event.target.dataset.price)
     const balance = Session.get('pti_balance')
     console.log(price, balance)
-    event.stopPropagation()
+    console.log(event.target)
     if (Meteor.user()) {
       // The user balnce is lower than the video price
       if (parseFloat(price) > parseFloat(balance)) {

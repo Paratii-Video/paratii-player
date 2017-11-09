@@ -5,12 +5,12 @@ Template.alert.onRendered(() => {
   const fistNode = $(Template.instance().firstNode)
   Meteor.setTimeout(() => {
     fistNode.addClass('show')
-  }, 1)
+  }, 100)
 })
 
 Template.alert.events({
   'click button.main-alert-button-close, click a[data-closealert]' (event, instance) {
-    let type = instance.data.type
+    const type = instance.data.type
 
     $(Template.instance().firstNode).removeClass('show')
 
