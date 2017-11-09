@@ -6,7 +6,6 @@ import { checkPassword, getUserPTIAddress } from '/imports/api/users.js'
 import { changePasswordType, modalAlert, setModalState } from '/imports/lib/utils.js'
 import '/imports/lib/validate.js'
 import './unlockVideo.html'
-// import { modalHelpers } from './mainModal.js'
 
 var promisify = require('promisify-node')
 
