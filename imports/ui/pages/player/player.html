@@ -1,5 +1,5 @@
 <template name="player">
-  <div id="player-container" class="player-container {{ descriptionClass }}">
+  <div id="player-container" class="player-container {{ descriptionClass }}" itemscope itemtype="http://schema.org/Movie">
     {{currentVideo}}
 
     {{#with video}}
@@ -7,11 +7,11 @@
         <div class="player-uploader player-infos-uploader">{{ uploader.name }} <img class="player-infos-uploader-image" src="{{ uploader.avatar }}"/></div>
 
         <div class="player-info player-infos-wrapper">
-          <h2 class="player-title player-infos-title">{{ title }}</h2>
+          <h2 class="player-title player-infos-title" itemprop="name">{{ title }}</h2>
 
           <div class="player-infos-content">
             <div class="player-description player-infos-description">
-              <p class="player-infos-description-text">{{ description }}</p>
+              <p class="player-infos-description-text" itemprop="description">{{ description }}</p>
               <button class="button-text button-text--white button-text--nocase player-infos-button-description" type="button">Hide description</button>
             </div>
 
