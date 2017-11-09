@@ -6,5 +6,8 @@
     "first_block": 0,
     "isTestEnv": true,
     "isProduction": false
+  },
+  "env" : {
+    "mail_server": "smtp://MAIL_USER:MAIL_PASSWORD@MAIL_HOST:MAIL_PORT"
   }
 }

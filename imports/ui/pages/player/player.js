@@ -129,6 +129,8 @@ Template.player.onCreated(function () {
   Meteor.subscribe('relatedVideos', videoId, userPTIAddress)
 
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id'), getUserPTIAddress(), function (err, results) {
+    console.log('0000')
+    console.log(results)
     if (err) {
       throw err
     } else {
@@ -153,7 +155,6 @@ Template.player.helpers({
     const videoId = FlowRouter.getParam('_id')
 
     Template.instance().currentVideo.set(Videos.findOne({ _id: videoId }))
-    renderVideoElement(Template.instance())
   },
   isLocked () {
     return Template.instance().playerState.get('locked')
@@ -514,12 +515,14 @@ Template.player.events({
   },
   'click #button-like' () {
     const videoId = Template.instance().currentVideo.get()._id
+    const userAddress = getUserPTIAddress()
     // const videoId = this._id // works as well
-    Meteor.call('videos.like', videoId)
+    Meteor.call('videos.like', userAddress, videoId)
   },
   'click #button-dislike' () {
     const videoId = Template.instance().currentVideo.get()._id
-    Meteor.call('videos.dislike', videoId)
+    const userAddress = getUserPTIAddress()
+    Meteor.call('videos.dislike', userAddress, videoId)
   },
   'click #embed' (event, instance) {
     const videoId = Template.instance().currentVideo.get()._id

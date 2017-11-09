@@ -38,6 +38,7 @@ function createKeystore (password, seedPhrase, key, cb) {
       if (key) {
         // if there is a logged user, save the keystore under the given key
         saveKeystore(seedPhrase, keystore.serialize(), address, key)
+        Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
       } else {
         // else, save in a temporary session variable
         // Session.set('tempSeed', seedPhrase)
@@ -62,7 +63,6 @@ function saveKeystore (seedPhrase, keystore, address, key) {
   RLocalStorage.setItem(`keystore-${key}`, keystore)
   Session.set(`keystore-${key}`, keystore)
   Session.set('userPTIAddress', add0x(address))
-  Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
 }
 
 function createAnonymousKeystoreIfNotExists () {

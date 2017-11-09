@@ -22,13 +22,13 @@ describe('Video Store:', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     createUserAndLogin(browser)
-    browser.pause(2000)
+    // browser.pause(2000)
     // browser.url('http://localhost:3000/profile')
   })
 
   afterEach(function () {
-    browser.execute(nukeLocalStorage)
-    server.execute(resetDb)
+    // browser.execute(nukeLocalStorage)
+    // server.execute(resetDb)
   })
 
   it('should be possible to buy (and unlock) a video', function () {
@@ -38,9 +38,9 @@ describe('Video Store:', function () {
     sendSomePTI(userAccount, 300)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    browser.waitForEnabled('[name="user_password"]')
+    browser.waitForClickable('[name="user_password"]')
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#send_trans_btn')
@@ -67,7 +67,7 @@ describe('Video Store:', function () {
     browser.execute(nukeLocalStorage)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
     browser.getText('h3', 'Sign in')
   })
@@ -80,9 +80,9 @@ describe('Video Store:', function () {
     assert.equal(ptiBalance, 0)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    browser.waitForEnabled('[name="user_password"]')
+    browser.waitForClickable('[name="user_password"]')
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#send_trans_btn')
@@ -101,13 +101,14 @@ describe('Video Store:', function () {
     // assert.equal(userBalance, 0)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    browser.waitForEnabled('[name="user_password"]')
+    browser.waitForClickable('[name="user_password"]')
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
+    browser.waitForClickable('#send_trans_btn')
     browser.click('#send_trans_btn')
-    browser.pause(1000)
+    browser.pause(2000)
     let expectedErrorMessage = 'You need some Ether for sending a transaction - but you have none'
     assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
   })
