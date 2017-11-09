@@ -9,9 +9,6 @@ Template.foundKeystore.events({
   },
   'click #btn-foundKeystore-cancel' (event, instance) {
     hideModal()
+    globalAlert(`You are now anonymous, of course you can <strong><a data-closealert data-showmodal="login">login</a></strong> at any moment`)
   }
-})
-
-Template.foundKeystore.onDestroyed(function () {
-  globalAlert(`You are now anonymous, of course you can <strong><a data-closealert data-showmodal="login">login</a></strong> at any moment`)
 })
