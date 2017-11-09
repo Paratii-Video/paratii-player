@@ -377,7 +377,7 @@ describe('Profile and accounts workflow:', function () {
     assert.equal(url.value, 'http://localhost:3000/')
   })
 
-  it('arriving in the application without being logged in, but with an existing user keystore, should ask for confirmation @watch', function () {
+  it('arriving in the application without being logged in, but with an existing user keystore, should ask for confirmation', function () {
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future

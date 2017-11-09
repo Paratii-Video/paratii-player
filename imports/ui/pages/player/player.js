@@ -328,23 +328,30 @@ const setLoadedProgress = (instance) => {
 Template.player.events({
   'click #unlock-video' (event) {
     event.stopPropagation()
-    const price = web3.toWei(event.target.dataset.price)
+    const button = event.currentTarget
+    const price = web3.toWei(button.dataset.price)
     const balance = Session.get('pti_balance')
-    console.log(price, balance)
+    const ethBalance = Session.get('eth_balance')
+    console.log(price, balance, ethBalance)
     console.log(event.target)
     if (Meteor.user()) {
-      // The user balnce is lower than the video price
-      if (parseFloat(price) > parseFloat(balance)) {
-        globalAlert(`You don't have enough PTI: your balance is ${web3.fromWei(balance)}`, 'error')
+      if (ethBalance === 0) {
+        // check that the user has enough ether for a minimal transaction
+        globalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
+        console.log('no eth')
+      } else if (parseFloat(price) > parseFloat(balance)) {
+        // The user balance is lower than the video price
+        globalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
+        console.log('no pti')
       } else {
         showModal('unlockVideo',
           {
             type: 'PTI',
             label: 'Unlock this video',
             action: 'unlock_video',
-            price: event.target.dataset.price, // Video Price
-            address: event.target.dataset.address, // Creator PTI address
-            videotitle: event.target.dataset.title, // Video title
+            price: button.dataset.price, // Video Price
+            address: button.dataset.address, // Creator PTI address
+            videotitle: button.dataset.title, // Video title
             videoid: Template.instance().currentVideo.get()._id // Video title
           }
         )
