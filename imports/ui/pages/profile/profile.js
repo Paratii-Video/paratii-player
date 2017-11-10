@@ -5,7 +5,7 @@ import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Events } from '/imports/api/events.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
-import { showModal } from '/imports/lib/utils.js'
+import { showModal, formatCoinBalance } from '/imports/lib/utils.js'
 import '/imports/ui/components/modals/mainModal.js'
 import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
@@ -49,7 +49,7 @@ Template.profile.helpers({
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
-        return `<span class="amount">${amount}</span> <span class="unit"> ETH</span>`
+        return `<span class="amount">${formatCoinBalance(amount)}</span> <span class="unit"> ETH</span>`
       } else {
         return 'You don\'t own Ether'
       }
@@ -65,7 +65,7 @@ Template.profile.helpers({
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
-        return `<span class="amount">${amount}</span> <span class="unit"> PTI</span>`
+        return `<span class="amount">${formatCoinBalance(amount)}</span> <span class="unit"> PTI</span>`
       } else {
         return 'You don\'t own Paratii'
       }
