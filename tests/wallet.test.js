@@ -14,25 +14,23 @@ describe('wallet @watch:', function () {
   })
 
   it('should show ETH balance', async function (done) {
-    // browser.execute(getSomeETH, 3.1)
     sendSomeETH(userAccount, 3.1)
-    browser.waitForClickable('#eth_amount')
-    const amount = await browser.getHTML('#eth_amount', false)
-    assert.equal(amount, 3.1)
+    browser.waitForClickable('.wallet-contents li:last-child .amount')
+    const amount = await browser.getText('.wallet-contents li:last-child .balance', false)
+    assert.equal(amount, '3.10 ETH')
     done()
   })
 
   it('should show PTI balance', async function (done) {
-    sendSomeETH(userAccount, 1)
-    browser.execute(getSomePTI, 321)
-    browser.click('a[href="#pti"]')
-    browser.waitForClickable('#pti_amount')
-    const amount = await browser.getHTML('#pti_amount', false)
-    assert.equal(amount, 321)
+    sendSomeETH(userAccount, 3.1)
+    browser.execute(getSomePTI, 1412.9599)
+    browser.waitForClickable('.wallet-contents li:first-child .amount')
+    const amount = await browser.getText('.wallet-contents li:first-child .balance', false)
+    assert.equal(amount, '1,412.96 PTI')
     done()
   })
 
-  it('should be able to send some PTI, update the balance and transaction history', function (done) {
+  it.skip('should be able to send some PTI, update the balance and transaction history', function (done) {
     sendSomeETH(userAccount, 1)
     let description = 'Here is some PTI for you'
     let toAddress = web3.eth.accounts[2]
@@ -71,7 +69,7 @@ describe('wallet @watch:', function () {
     done()
   })
 
-  it('should be able to send some ETH, update the balance and transaction history', function (done) {
+  it.skip('should be able to send some ETH, update the balance and transaction history', function (done) {
     let description = 'Here is some ETH for you'
     browser.waitForExist('#public_address')
     browser.execute(getSomeETH, 3)
