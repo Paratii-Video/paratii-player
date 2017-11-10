@@ -1,8 +1,8 @@
-import { Template } from 'meteor/templating'
-import { Blaze } from 'meteor/blaze'
+import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
-import { formatNumber, showModal } from '/imports/lib/utils.js'
+import { web3 } from '/imports/lib/ethereum/connection.js'
+import { formatNumber, showModal, globalAlert } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos, RelatedVideos } from '../../../api/videos.js'
@@ -12,6 +12,7 @@ import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
+import '/imports/ui/components/buttons/fullScreenButton.js'
 // import '/imports/ui/components/modals/regenerateKeystore.js'
 
 import './player.html'
@@ -19,22 +20,6 @@ import './player.html'
 let controlsHandler
 let volumeHandler
 let previousVolume = 100
-// let _video = new ReactiveVar()
-
-const fullscreen = () => {
-  return document.fullscreenElement ||
-    document.mozFullScreenElement ||
-    document.webkitFullscreenElement ||
-    document.msFullscreenElement
-}
-
-// function getVideo () {
-//   const videoId = FlowRouter.getParam('_id')
-//   if (!_video || _video.id !== videoId) {
-//     _video = Videos.findOne({ _id: videoId })
-//   }
-//   return _video
-// }
 
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
@@ -46,6 +31,11 @@ function renderVideoElement (instance) {
   videoTag.className = 'player-video'
   videoTag.id = 'video-player'
   playerContainer.insertBefore(videoTag, playerContainer.firstChild)
+
+  // get video tag element and bind it to player js adapter for HTML5 video
+
+  console.log('this is the video', videoTag)
+  console.log('this is playerjs', playerjs)
 
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo)
@@ -151,6 +141,9 @@ Template.player.onDestroyed(function () {
 })
 
 Template.player.helpers({
+  videoPlayer () {
+    return Template.instance().find('#player-container')
+  },
   currentVideo () {
     const videoId = FlowRouter.getParam('_id')
 
@@ -247,39 +240,9 @@ Template.player.helpers({
   }
 })
 
-const requestFullscreen = (element) => {
-  if (element.requestFullscreen) {
-    element.requestFullscreen()
-  } else if (element.mozRequestFullScreen) {
-    element.mozRequestFullScreen()
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen()
-  } else {
-    // console.log('Unsuported fullscreen.');
-  }
-}
-
-const requestCancelFullscreen = (element) => {
-  if (element.exitFullscreen) {
-    element.exitFullscreen()
-  } else if (element.mozCancelFullScreen) {
-    element.mozCancelFullScreen()
-  } else if (element.webkitExitFullscreen) {
-    element.webkitExitFullscreen()
-  } else {
-    // console.log('Unsuported fullscreen.');
-  }
-}
-
 const pauseVideo = (instance) => {
-  instance.playerState.set('playing', false)
-  instance.navState.set('minimized')
-  instance.find('#video-player').pause()
-  Meteor.clearTimeout(controlsHandler)
-  instance.playerState.set('hideControls', false)
-  $('#app-container').removeClass('playing')
-  $('#app-container').removeClass('related')
-  $('div.main-app').removeClass('hide-nav')
+  const video = document.getElementById('video-player')
+  video.pause()
 }
 
 const endedVideo = (instance) => {
@@ -291,25 +254,13 @@ const endedVideo = (instance) => {
   $('#app-container').removeClass('playing')
 }
 const playVideo = (instance) => {
-  const dict = instance.playerState
-  const navState = instance.navState
-  const videoPlayer = instance.find('#video-player')
-  dict.set('playing', true)
-  navState.set('closed')
-  videoPlayer.play()
-  $('#app-container').addClass('playing')
-  $('#app-container').removeClass('related')
-  $('div.main-app').addClass('hide-nav')
-  controlsHandler = Meteor.setTimeout(() => {
-    if (!videoPlayer.paused) {
-      dict.set('hideControls', true)
-    }
-  }, 3000)
+  const video = document.getElementById('video-player')
+  video.play()
 }
 
 // Set a value (0 ~ 1) to the player volume and volume UX
 const setVolume = (instance, value) => {
-  const videoPlayer = instance.find('#video-player')
+  const videoPlayer = document.getElementById('video-player')
   videoPlayer.volume = value
   instance.playerState.set('volumeValue', value * 100)
   instance.playerState.set('volScrubberTranslate', value * 100)
@@ -321,7 +272,7 @@ const setVolume = (instance, value) => {
 }
 
 const setLoadedProgress = (instance) => {
-  const videoPlayer = instance.find('#video-player')
+  const videoPlayer = document.getElementById('video-player')
   const torrent = instance.playerState.get('torrent')
   if (videoPlayer.buffered.length > 0 && !torrent) {
     const played = instance.playerState.get('playedProgress')
@@ -339,22 +290,71 @@ const setLoadedProgress = (instance) => {
 Template.player.events({
   'click #unlock-video' (event) {
     event.stopPropagation()
+    const button = event.currentTarget
+    const price = web3.toWei(button.dataset.price)
+    const balance = Session.get('pti_balance')
+    const ethBalance = Session.get('eth_balance')
+    console.log(price, balance, ethBalance)
+    console.log(event.target)
     if (Meteor.user()) {
-      console.log(event.target)
-      showModal('unlockVideo',
-        {
-          type: 'PTI',
-          label: 'Unlock this video',
-          action: 'unlock_video',
-          price: event.target.dataset.price, // Video Price
-          address: event.target.dataset.address, // Creator PTI address
-          videotitle: event.target.dataset.title, // Video title
-          videoid: Template.instance().currentVideo.get()._id // Video title
-        }
-      )
+      if (ethBalance === 0) {
+        // check that the user has enough ether for a minimal transaction
+        globalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
+        console.log('no eth')
+      } else if (parseFloat(price) > parseFloat(balance)) {
+        // The user balance is lower than the video price
+        globalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
+        console.log('no pti')
+      } else {
+        showModal('unlockVideo',
+          {
+            type: 'PTI',
+            label: 'Unlock this video',
+            action: 'unlock_video',
+            price: button.dataset.price, // Video Price
+            address: button.dataset.address, // Creator PTI address
+            videotitle: button.dataset.title, // Video title
+            videoid: Template.instance().currentVideo.get()._id // Video title
+          }
+        )
+      }
     } else {
       showModal('login')
     }
+  },
+  'play #video-player' (event, instance) {
+    console.log('video is playing')
+    const dict = instance.playerState
+    const navState = instance.navState
+    const videoPlayer = document.getElementById('video-player')
+    dict.set('playing', true)
+    navState.set('closed')
+    $('#app-container').addClass('playing')
+    $('#app-container').removeClass('related')
+    $('div.main-app').addClass('hide-nav')
+    controlsHandler = Meteor.setTimeout(() => {
+      if (!videoPlayer.paused) {
+        dict.set('hideControls', true)
+      }
+    }, 3000)
+  },
+  'loadedmetadata #video-player' (event, instance) {
+    const videoPlayer = document.getElementById('video-player')
+    const adapter = playerjs.HTML5Adapter(videoPlayer)
+
+    console.log('this is the adapter', adapter)
+    // Start accepting events
+    adapter.ready()
+  },
+  'pause #video-player' (event, instance) {
+    console.log('video is paused')
+    instance.playerState.set('playing', false)
+    instance.navState.set('minimized')
+    Meteor.clearTimeout(controlsHandler)
+    instance.playerState.set('hideControls', false)
+    $('#app-container').removeClass('playing')
+    $('#app-container').removeClass('related')
+    $('div.main-app').removeClass('hide-nav')
   },
   'ended #video-player' (event, instance) {
     const navState = instance.navState
@@ -408,15 +408,6 @@ Template.player.events({
       FlowRouter.go(pathDef, params, queryParams)
     }
   },
-  'click #fullscreen-button' (event, instance) {
-    const bodyView = Blaze.getView('Template.App_body')
-    const videoPlayer = bodyView.templateInstance().find('#player-fullscreen-container')
-    if (fullscreen()) {
-      requestCancelFullscreen(document)
-    } else {
-      requestFullscreen(videoPlayer)
-    }
-  },
   'timeupdate' (event, instance) {
     const videoPlayer = instance.find('#video-player')
     const time = videoPlayer.currentTime
@@ -448,7 +439,7 @@ Template.player.events({
     })
   },
   'click #video-progress' (event, instance) {
-    const videoPlayer = instance.find('#video-player')
+    const videoPlayer = document.getElementById('video-player')
     const barWidth = instance.find('#video-progress').offsetWidth
     const offset = event.clientX - event.currentTarget.getBoundingClientRect().left
     videoPlayer.currentTime = (offset / barWidth) * videoPlayer.duration
@@ -470,7 +461,7 @@ Template.player.events({
     })
   },
   'loadedmetadata' (event, instance) {
-    const videoPlayer = instance.find('#video-player')
+    const videoPlayer = document.getElementById('video-player')
     const duration = Math.floor(videoPlayer.duration)
     instance.playerState.set('totalTime', duration)
     // reset player state frontend
@@ -483,7 +474,7 @@ Template.player.events({
   },
   'mousemove' (event, instance) {
     const dict = instance.playerState
-    const videoPlayer = instance.find('#video-player')
+    const videoPlayer = document.getElementById('video-player')
     dict.set('hideControls', false)
     Meteor.clearTimeout(controlsHandler)
     controlsHandler = Meteor.setTimeout(() => {
@@ -505,7 +496,7 @@ Template.player.events({
     }, 1000)
   },
   'click #volume-button' (event, instance) {
-    const videoPlayer = instance.find('#video-player')
+    const videoPlayer = document.getElementById('video-player')
     if (videoPlayer.volume > 0) {
       previousVolume = videoPlayer.volume
       setVolume(instance, 0)

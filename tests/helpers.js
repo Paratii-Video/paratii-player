@@ -64,6 +64,21 @@ export function createUserAndLogin (browser) {
   return userId
 }
 
+export function createUserKeystore (browser) {
+  let userId = server.execute(createUser)
+  browser.execute(createKeystore, null, userId)
+  browser.waitUntil(function () {
+    return browser.execute(function (userId) {
+      return localStorage.getItem(`keystore-${userId}`)
+    }, userId).value
+  })
+  let address = getUserPTIAddressFromBrowser()
+  server.execute(function (userId, address) {
+    Meteor.users.update(userId, {$set: { 'profile.ptiAddress': address }})
+  }, userId, address)
+  return userId
+}
+
 export function assertUserIsLoggedIn (browser) {
   // assert that the user is logged in
   let userId = browser.execute(function () {
@@ -128,6 +143,13 @@ export function getAnonymousAddress () {
     const wallet = require('./imports/lib/ethereum/wallet.js')
     const keystore = wallet.getKeystore('anonymous')
     return keystore.getAddresses()[0]
+  }).value
+}
+
+export function createAnonymousAddress () {
+  return browser.execute(function () {
+    const wallet = require('./imports/lib/ethereum/wallet.js')
+    wallet.createAnonymousKeystoreIfNotExists()
   }).value
 }
 

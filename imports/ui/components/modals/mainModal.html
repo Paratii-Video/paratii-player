@@ -1,6 +1,9 @@
 <template name="mainModal">
   <div class="modal main-modal fade">
-    <div class="main-modal-wrapper {{ wrapperClass }}">
+    <div class="main-modal-wrapper {{ wrapperClass }} {{ modalState }}">
+      {{#if modalError }}
+        {{> alert message=modalError class=setAlertClass type=setAlertType}}
+      {{/if}}
       <button id="closeModal" class="main-modal-button-close" data-dismiss="modal">
         <svg class="main-modal-button-close-svg">
           <use class="main-modal-button-close-svg-use" xlink:href="#icon-close"></use>

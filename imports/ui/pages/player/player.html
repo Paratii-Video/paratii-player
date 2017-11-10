@@ -60,11 +60,9 @@
       </div>
     </div>
 
-    <button id="fullscreen-button" class="player-button player-button-fullscreen {{hideControls}}" title="{{fullscreen}}">
-      <svg class="player-button-svg">
-        <use class="player-button-svg-use" xlink:href="#icon-fullscreen"></use>
-      </svg>
-    </button>
+    <div class="player-button player-button-fullscreen">
+      {{> fullScreenButton className=hideControls target=videoPlayer }}
+    </div>
     {{/unless }}
 
 
