@@ -4,7 +4,7 @@ import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
 import { web3 } from '/imports/lib/ethereum/connection.js'
-import { formatNumber, showModal, globalAlert } from '/imports/lib/utils.js'
+import { formatNumber, showModal, globalAlert, log } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos, RelatedVideos } from '../../../api/videos.js'
@@ -36,8 +36,8 @@ function renderVideoElement (instance) {
 
   // get video tag element and bind it to player js adapter for HTML5 video
 
-  console.log('this is the video', videoTag)
-  console.log('this is playerjs', playerjs)
+  log('this is the video', videoTag)
+  log('this is playerjs', playerjs)
 
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo)
@@ -97,14 +97,14 @@ Template.player.onCreated(function () {
   // Description
   this.playerState.set('showDescription', false)
 
-  console.log('navState:', this.navState.get())
+  log('navState:', this.navState.get())
 
   /* DETERMINED IF PLAYER IS EMBEDED */
   if (window.top !== window.self) {
-    console.log('embedded')
+    log('embedded')
     this.playerState.set('fullscreen', fullscreen === 1)
   } else {
-    console.log('not embedded')
+    log('not embedded')
     this.playerState.set('fullscreen', true)
   }
 
@@ -319,7 +319,7 @@ Template.player.events({
     }
   },
   'play #video-player' (event, instance) {
-    console.log('video is playing')
+    log('video is playing')
     const dict = instance.playerState
     const navState = instance.navState
     const videoPlayer = document.getElementById('video-player')
@@ -338,12 +338,12 @@ Template.player.events({
     const videoPlayer = document.getElementById('video-player')
     const adapter = playerjs.HTML5Adapter(videoPlayer)
 
-    console.log('this is the adapter', adapter)
+    log('this is the adapter', adapter)
     // Start accepting events
     adapter.ready()
   },
   'pause #video-player' (event, instance) {
-    console.log('video is paused')
+    log('video is paused')
     instance.playerState.set('playing', false)
     instance.navState.set('minimized')
     Meteor.clearTimeout(controlsHandler)

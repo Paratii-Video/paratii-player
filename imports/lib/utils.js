@@ -1,3 +1,9 @@
+export function log (message) {
+  if (Meteor.settings.public.isTestEnv) {
+    console.log(message)
+  }
+}
+
 export function formatNumber (number) {
   if (!number) {
     return false
