@@ -1,4 +1,5 @@
 import './mainModal.html'
+import '/imports/ui/components/alert/alert.js'
 
 Template.mainModal.onCreated(function () {
   // Set template
@@ -14,10 +15,16 @@ Template.mainModal.onCreated(function () {
 
 export let modalHelpers = {
   modalError () {
-    return Session.get('modalErrorMessage')
+    return Session.get('modalAlertMessage')
   },
   modalState () {
     return Session.get('modalStateMessage')
+  },
+  setAlertClass () {
+    return Session.get('classAlertModal')
+  },
+  setAlertType () {
+    return Session.get('modalAlertType')
   }
 }
 

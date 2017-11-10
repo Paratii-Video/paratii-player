@@ -15,10 +15,12 @@ describe('Search video :', function () {
     assert.equal(results.value.length, 0)
 
     browser.setValue('[name="search"]', 'ke')
+    browser.pause(2000)
     results = browser.elements('.videos-listli')
     assert.equal(results.value.length, 0)
 
     browser.setValue('[name="search"]', 'key')
+    browser.pause(2000)
     results = browser.elements('.videos-list li')
     assert.equal(results.value.length, 1)
     done()

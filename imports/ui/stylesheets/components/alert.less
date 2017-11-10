@@ -19,8 +19,8 @@
     margin: 0 auto;
     padding: 15px;
     position: relative;
-    transition: transform .4s @ease-smooth;
     transform: translateY(-100%);
+    transition: transform .45s @ease-smooth;
     width: @size-main-alert-wrapper-width;
 
     .main-modal & {
@@ -28,13 +28,21 @@
       width: 100%;
     }
 
-    .red & {
+    .error & {
       background-color: @color-red;
+    }
+
+    .success & {
+      background-color: @color-green;
+    }
+
+    .warning & {
+      background-color: @color-yellow;
     }
 
     .show & {
       transform: translateY(0);
-      transition: transform .6s @ease-smooth;
+      transition: transform .65s @ease-smooth;
     }
   }
 
@@ -44,7 +52,7 @@
 
     p {
       &:extend(.font-text-small all);
-      
+
       color: @color-white-dark;
     }
 
@@ -59,10 +67,11 @@
   &-button {
     &-close {
       &:extend(.hover-opacity all);
-      &:extend(.pos-a-vm all);
 
       height: 10px;
+      position: absolute;
       right: 15px;
+      top: 18px;
       width: 10px;
 
       &-svg {
