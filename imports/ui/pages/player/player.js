@@ -14,18 +14,14 @@ import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
+import '/imports/ui/components/buttons/fullScreenButton.js'
+// import '/imports/ui/components/modals/regenerateKeystore.js'
+
 import './player.html'
 
 let controlsHandler
 let volumeHandler
 let previousVolume = 100
-
-const fullscreen = () => {
-  return document.fullscreenElement ||
-    document.mozFullScreenElement ||
-    document.webkitFullscreenElement ||
-    document.msFullscreenElement
-}
 
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
@@ -145,6 +141,9 @@ Template.player.onDestroyed(function () {
 })
 
 Template.player.helpers({
+  videoPlayer () {
+    return Template.instance().find('#player-container')
+  },
   currentVideo () {
     const videoId = FlowRouter.getParam('_id')
 
@@ -240,30 +239,6 @@ Template.player.helpers({
     return path
   }
 })
-
-const requestFullscreen = (element) => {
-  if (element.requestFullscreen) {
-    element.requestFullscreen()
-  } else if (element.mozRequestFullScreen) {
-    element.mozRequestFullScreen()
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen()
-  } else {
-    // console.log('Unsuported fullscreen.');
-  }
-}
-
-const requestCancelFullscreen = (element) => {
-  if (element.exitFullscreen) {
-    element.exitFullscreen()
-  } else if (element.mozCancelFullScreen) {
-    element.mozCancelFullScreen()
-  } else if (element.webkitExitFullscreen) {
-    element.webkitExitFullscreen()
-  } else {
-    // console.log('Unsuported fullscreen.');
-  }
-}
 
 const pauseVideo = (instance) => {
   const video = document.getElementById('video-player')
@@ -427,15 +402,6 @@ Template.player.events({
       const params = { _id: previousId }
       const queryParams = { playlist: playlistId }
       FlowRouter.go(pathDef, params, queryParams)
-    }
-  },
-  'click #fullscreen-button' (event, instance) {
-    const bodyView = Blaze.getView('Template.App_body')
-    const videoPlayer = bodyView.templateInstance().find('#player-fullscreen-container')
-    if (fullscreen()) {
-      requestCancelFullscreen(document)
-    } else {
-      requestFullscreen(videoPlayer)
     }
   },
   'timeupdate' (event, instance) {

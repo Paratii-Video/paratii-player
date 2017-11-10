@@ -5,7 +5,7 @@ import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Events } from '/imports/api/events.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
-import { showModal } from '/imports/lib/utils.js'
+import { showModal, formatCoinBalance } from '/imports/lib/utils.js'
 import '/imports/ui/components/modals/mainModal.js'
 import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
@@ -13,9 +13,15 @@ import '/imports/ui/components/modals/regenerateKeystore.js'
 import '/imports/ui/components/modals/restoreKeystore.js'
 import '/imports/ui/components/modals/createNewWallet.js'
 import '/imports/ui/components/modals/showSeed.js'
-import '/imports/ui/components/pageheader/pageheader.js'
+import '/imports/ui/components/modals/modals.js'
+import '/imports/ui/components/buttons/fullScreenButton.js'
+import '../../components/pageheader/pageheader.js'
+import './editProfileButton.js'
 
 Template.profile.helpers({
+  editProfileButton () {
+    return 'editProfileButton'
+  },
   events () {
     // Perform a reactive database query against minimongo
     return Events.find()
@@ -43,7 +49,7 @@ Template.profile.helpers({
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
-        return 'You own <b id="eth_amount">' + amount + '</b> Ether'
+        return `<span class="amount">${formatCoinBalance(amount)}</span> <span class="unit"> ETH</span>`
       } else {
         return 'You don\'t own Ether'
       }
@@ -59,7 +65,7 @@ Template.profile.helpers({
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
-        return 'You own <b id="pti_amount">' + amount + '</b> PTI'
+        return `<span class="amount">${formatCoinBalance(amount)}</span> <span class="unit"> PTI</span>`
       } else {
         return 'You don\'t own Paratii'
       }
@@ -89,7 +95,7 @@ Template.profile.events({
     showModal('showSeed')
   },
   'click #edit-profile' () {
-    showModal('editProfile', { wrapperClass: 'wide' })
+    Modal.show('editProfile')
   }
 })
 
