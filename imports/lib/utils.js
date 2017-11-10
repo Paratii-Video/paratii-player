@@ -7,6 +7,16 @@ export function formatNumber (number) {
   return parts.join('.')
 }
 
+export function formatCoinBalance (balance = 0) {
+  return parseFloat(balance).toLocaleString(
+    undefined,
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }
+  )
+}
+
 export function strip0x (input) {
   if (typeof (input) !== 'string') {
     return input

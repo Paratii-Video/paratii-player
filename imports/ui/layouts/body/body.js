@@ -1,5 +1,7 @@
-
 import './body.html'
+import '/imports/ui/icons/fullscreen.html'
+import '/imports/ui/icons/gear.html'
+import '/imports/ui/components/buttons/backButton.js'
 import '/imports/ui/components/svgs/svgs.js'
 import { add0x, showModal, hideModal } from '/imports/lib/utils.js'
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, getKeystore, mergeOrCreateNewWallet } from '/imports/lib/ethereum/wallet.js'

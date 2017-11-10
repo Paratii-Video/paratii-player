@@ -4,6 +4,7 @@
 
 @size-modal-wrapper-height: 280px;
 @size-modal-wrapper-width: 310px;
+@modal-footer-height: 20px;
 @size-modal-wrapper-width-wide: 530px;
 
 // Main
@@ -196,6 +197,7 @@
     color: @color-grey-light;
     font-size: 14px;
     font-weight: 300;
+    margin-bottom: @modal-footer-height;
 
     &--alert {
       color: @color-red;
@@ -312,6 +314,12 @@
     }
   }
 
+  &-error {
+    color: @color-red;
+    flex: 0 0 100%;
+    height: 20px;
+  }
+
 
   // Footer (buttons)
 
@@ -322,6 +330,7 @@
     justify-content: flex-end;
     position: absolute;
     width: 100%;
+    height: @modal-footer-height;
 
     &-loading {
       display: none;

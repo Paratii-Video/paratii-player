@@ -5,6 +5,13 @@
 .main-form {
   // Label
 
+  &-data-display {
+    cursor: default;
+    font-size: 20px;
+    font-weight: 300;
+    margin-top: -15px;
+  }
+
   &-label {
     display: block;
     font-size: 14px;
@@ -12,6 +19,18 @@
     margin: 0 0 20px;
     position: relative;
     width: 100%;
+
+    &.dynamic {
+      cursor: text;
+      position: absolute;
+      top: 7px;
+      transition: top 150ms ease-in-out;
+    }
+
+    input:focus + &.dynamic,
+    input:valid + &.dynamic {
+      top: -10px;
+    }
 
     &-checkbox {
       color: @color-grey-light;
