@@ -218,7 +218,7 @@ describe('Profile and accounts workflow:', function () {
     // browser.pause(5000)
   })
 
-  it('shows the seed', function () {
+  it.skip('shows the seed', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
@@ -234,7 +234,7 @@ describe('Profile and accounts workflow:', function () {
     // browser.click('#closeModal')
   })
 
-  it('send ether dialog is visible', function () {
+  it.skip('send ether dialog is visible', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
 
@@ -246,7 +246,7 @@ describe('Profile and accounts workflow:', function () {
     browser.pause(1000)
   })
 
-  it('do not show the seed if wrong password', function () {
+  it.skip('do not show the seed if wrong password', function () {
     createUserAndLogin(browser)
     browser.pause(3000)
     browser.url('http://localhost:3000/profile')
@@ -267,7 +267,7 @@ describe('Profile and accounts workflow:', function () {
     // assert.equal(browser.getText('.control-label'), 'Wrong password', 'should show "Wrong password" text')
   })
 
-  it('restore the keystore', function () {
+  it.skip('restore the keystore', function () {
     createUserAndLogin(browser)
     browser.pause(4000)
     browser.url('http://localhost:3000/profile')
@@ -303,7 +303,7 @@ describe('Profile and accounts workflow:', function () {
     assert.equal(publicAddress, newPublicAddress)
   })
 
-  it('do not restore keystore if wrong password', function () {
+  it.skip('do not restore keystore if wrong password', function () {
     createUserAndLogin(browser)
     browser.url('http://localhost:3000/profile')
     browser.waitForClickable('#show-seed')
