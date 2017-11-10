@@ -12,28 +12,26 @@
   left: 0px;
   padding: 0 20px 0 90px;
   position: absolute;
-  transition: padding .65s @ease-smooth;
+  transition: padding .65s @ease-smooth, transform .8s @ease-smooth;
   width: 100%;
   z-index: @zindex-player-controls;
-
-  /* player gradient for increment intelligibility on brighther video */
-
-  background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.83) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.83) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#d4000000',GradientType=0 );
 
   .query-mini({
     padding: 0 20px 0 90px;
   });
 
   .hide-nav & {
-    transition: padding .8s @ease-smooth;
+    transition: padding .8s @ease-smooth, transform .65s @ease-smooth;
     padding: 0 17px 0;
 
     .query-mini({
       padding: 0 17px;
     });
+  }
+
+  .hide-controls & {
+    transform: translate3d(0, 100%, 0);
+    transition: padding .65s @ease-smooth, transform .65s @ease-smooth;
   }
 
   //
@@ -196,7 +194,7 @@
   transition: width .75s @ease-smooth;
   width: 107px;
 
-  &.closed {
+  .hide-volume & {
     transition: width .55s @ease-smooth;
     width: 15px;
   }
@@ -214,10 +212,6 @@
     right: 25px;
     transition: transform .8s @ease-smooth;
     width: 50px;
-
-    .closed & {
-      // transform: translate3d(-150%, 0, 0);
-    }
   }
 
   &-bar {
