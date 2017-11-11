@@ -454,7 +454,7 @@ describe('Profile and accounts workflow:', function () {
       browser.pause(500)
       browser.waitForClickable('#current-password')
       browser.setValue('#current-password', 'myshinynewpassword')
-      browser.pause(500)
+      browser.pause(1000)
       browser.click('#save-password')
       browser.pause(500)
 
