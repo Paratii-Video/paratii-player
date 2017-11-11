@@ -32,10 +32,10 @@ export function getProvider () {
   return Meteor.settings.public.http_provider
 }
 
-export function login (browser) {
-  browser.execute(function () {
-    Meteor.loginWithPassword('guildenstern@rosencrantz.com', 'password')
-  })
+export function login (browser, password = 'password') {
+  browser.execute(function (loginPassword) {
+    Meteor.loginWithPassword('guildenstern@rosencrantz.com', loginPassword)
+  }, password)
 }
 
 export function logout (browser) {

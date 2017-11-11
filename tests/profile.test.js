@@ -1,5 +1,21 @@
 /* global localStorage */
-import { SEED, USERADDRESS, createUserKeystore, getAnonymousAddress, createUser, resetDb, createUserAndLogin, assertUserIsLoggedIn, waitForUserIsLoggedIn, assertUserIsNotLoggedIn, nukeLocalStorage, clearUserKeystoreFromLocalStorage, getUserPTIAddressFromBrowser, waitForKeystore } from './helpers.js'
+import {
+  SEED,
+  USERADDRESS,
+  createUserKeystore,
+  getAnonymousAddress,
+  createUser,
+  resetDb,
+  createUserAndLogin,
+  login,
+  assertUserIsLoggedIn,
+  waitForUserIsLoggedIn,
+  assertUserIsNotLoggedIn,
+  nukeLocalStorage,
+  clearUserKeystoreFromLocalStorage,
+  getUserPTIAddressFromBrowser,
+  waitForKeystore
+} from './helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
@@ -384,5 +400,113 @@ describe('Profile and accounts workflow:', function () {
     createUserKeystore(browser)
     browser.url('http://localhost:3000')
     browser.waitForVisible('#foundKeystore #btn-foundKeystore-login')
+  })
+
+  describe('password reset', () => {
+    it('should not allow the user to change their password if they enter the incorrect current password', function () {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.pause(500)
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-password')
+      browser.click('.edit-password')
+      browser.pause(500)
+      browser.waitForClickable('#current-password')
+      browser.setValue('#current-password', 'foobar')
+      browser.waitForClickable('#new-password')
+      browser.setValue('#new-password', 'myshinynewpassword')
+      browser.waitForClickable('#save-password')
+      browser.click('#save-password')
+      browser.pause(500)
+
+      assert.equal(browser.isVisible('.edit-password-modal'), true)
+      assert.equal(browser.getText('.main-modal-error'), 'Current password is incorrect')
+    })
+
+    it('should not allow the user to attempt to change their password if they do not enter their current password', function () {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.pause(500)
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-password')
+      browser.click('.edit-password')
+      browser.pause(500)
+      browser.waitForClickable('#new-password')
+      browser.setValue('#new-password', 'myshinynewpassword')
+      browser.pause(500)
+      browser.click('#save-password')
+      browser.pause(500)
+
+      assert.equal(browser.isVisible('.edit-password-modal'), true)
+      assert.equal(browser.getAttribute('#save-password', 'disabled'), 'true')
+    })
+
+    it('should not allow the user to attempt to change their password if they do not enter a new password', function () {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.pause(500)
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-password')
+      browser.click('.edit-password')
+      browser.pause(500)
+      browser.waitForClickable('#current-password')
+      browser.setValue('#current-password', 'myshinynewpassword')
+      browser.pause(500)
+      browser.click('#save-password')
+      browser.pause(500)
+
+      assert.equal(browser.isVisible('.edit-password-modal'), true)
+      assert.equal(browser.getAttribute('#save-password', 'disabled'), 'true')
+    })
+
+    it('should not allow the user to attempt to change their password if they do not enter their current password or a new password', function () {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.pause(500)
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-password')
+      browser.click('.edit-password')
+      browser.waitForClickable('#current-password')
+      browser.click('#save-password')
+      browser.pause(500)
+
+      assert.equal(browser.isVisible('.edit-password-modal'), true)
+      assert.equal(browser.getAttribute('#save-password', 'disabled'), 'true')
+    })
+
+    it('should allow the user to attempt to change their password if they enter the correct current password and a new password', function () {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-password')
+      browser.click('.edit-password')
+      browser.waitForClickable('#current-password')
+      browser.setValue('#current-password', 'password')
+      browser.waitForClickable('#new-password')
+      browser.setValue('#new-password', 'foobar')
+      browser.waitForClickable('#save-password')
+      browser.click('#save-password')
+      browser.pause(1000)
+
+      assert.equal(browser.isVisible('.edit-password-modal'), false)
+
+      browser.waitForClickable('#logout')
+      browser.click('#logout')
+      browser.pause(1000)
+      browser.waitForVisible('#logoutBtn')
+      browser.click('#logoutBtn')
+      browser.waitForClickable('#nav-profile')
+      assertUserIsNotLoggedIn(browser)
+
+      login(browser, 'foobar')
+
+      waitForUserIsLoggedIn(browser)
+      assertUserIsLoggedIn(browser)
+    })
   })
 })
