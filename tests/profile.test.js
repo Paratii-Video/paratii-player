@@ -509,4 +509,99 @@ describe('Profile and accounts workflow:', function () {
       assertUserIsLoggedIn(browser)
     })
   })
+
+  describe('edit profile', () => {
+    it('should render the current profile\'s information correctly', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.click('.edit-profile-info')
+
+      browser.waitForVisible('#edit-profile-info-form')
+
+      assert.equal(browser.getAttribute('#new-username', 'placeholder'), 'foobar baz')
+      assert.equal(browser.getAttribute('#new-email', 'placeholder'), 'guildenstern@rosencrantz.com')
+      assert.equal(browser.getAttribute('.current-avatar', 'src'), 'https://google.com/images/stock.jpg')
+    })
+
+    it('should not allow the user to save profile information if no new information is entered', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.click('.edit-profile-info')
+
+      browser.waitForVisible('#edit-profile-info-form')
+
+      assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
+    })
+
+    it('should not allow the user to save profile information if only whitespace is entered into the name or email fields', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.click('.edit-profile-info')
+
+      browser.waitForVisible('#edit-profile-info-form')
+      browser.waitForClickable('#new-username')
+      browser.setValue('#new-username', '        \n ')
+
+      assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
+
+      browser.waitForVisible('#edit-profile-info-form')
+      browser.waitForClickable('#new-email')
+      browser.setValue('#new-email', '       ')
+
+      assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
+    })
+
+    it('should allow the user to update their name', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+
+      assert.equal(browser.getText('.header-title'), 'foobar baz')
+
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.click('.edit-profile-info')
+
+      browser.waitForVisible('#edit-profile-info-form')
+      browser.waitForClickable('#new-username')
+      browser.setValue('#new-username', 'my shiny new name')
+
+      browser.waitForClickable('#save-profile-info')
+      browser.click('#save-profile-info')
+      browser.pause(1000)
+
+      assert.equal(browser.getText('.header-title'), 'my shiny new name')
+    })
+
+    it('should allow the user to update their email', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+
+      assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
+
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.click('.edit-profile-info')
+
+      browser.waitForVisible('#edit-profile-info-form')
+      browser.waitForClickable('#new-email')
+      browser.setValue('#new-email', 'myGreatEmail@aol.com')
+
+      browser.waitForClickable('#save-profile-info')
+      browser.click('#save-profile-info')
+      browser.pause(1000)
+
+      assert.equal(browser.getText('.profile-info-email'), 'myGreatEmail@aol.com')
+    })
+  })
 })

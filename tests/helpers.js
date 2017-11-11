@@ -161,8 +161,7 @@ export function getRegistryAddressFromBrowser () {
 }
 
 export function resetDb () {
-  Meteor.users.remove({ 'profile.name': 'Guildenstern' })
-  Meteor.users.remove({ 'emails.address': 'guildenstern@rosencrantz.com' })
+  Meteor.users.remove({})
   const { Videos } = require('/imports/api/videos')
   Videos.remove({'_id': '12345'})
   Videos.remove({'_id': '12346'})
@@ -194,7 +193,11 @@ export async function getOrDeployParatiiContracts (server, browser) {
 export function createUser () {
   return Accounts.createUser({
     email: 'guildenstern@rosencrantz.com',
-    password: 'password'
+    password: 'password',
+    profile: {
+      name: 'foobar baz',
+      image: 'https://google.com/images/stock.jpg'
+    }
   })
 }
 
