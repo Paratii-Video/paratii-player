@@ -4,14 +4,14 @@
   padding: 10px 35px;
 
   &:first-child {
-    padding-top: 35px;
+    padding-top: 0;
   }
+}
 
-  .profile-info-email {
-    margin-top: 10px;
-    font-size: 20px;
-    font-weight: 300;
-  }
+.profile-info-email {
+  font-size: 20px;
+  font-weight: 300;
+  margin-bottom: 10px;
 }
 
 .wallet-contents {
@@ -24,11 +24,11 @@
 
     li {
 
-      @button-dimension: 200px;
+      @button-dimension: 160px;
 
       flex: 0 0 @button-dimension;
       max-width: @button-dimension;
-      height: 185px;
+      height: @button-dimension;
 
       &:not(:last-child) {
         margin-right: 15px;
