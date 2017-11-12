@@ -511,7 +511,7 @@ describe('Profile and accounts workflow:', function () {
   })
 
   describe('edit profile', () => {
-    it('should render the current profile\'s information correctly @watch', () => {
+    it('should render the current profile\'s information correctly', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('#edit-profile')
