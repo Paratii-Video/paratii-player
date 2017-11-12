@@ -546,7 +546,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-      browser.pause(1000)
+      browser.pause(2000)
       browser.waitForVisible('#edit-profile-info-form')
       browser.waitForClickable('#new-username')
       browser.setValue('#new-username', '        \n ')
