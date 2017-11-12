@@ -51,7 +51,6 @@ function renderVideoElement (instance) {
     hlsPlayer.on('status', (text) => {
       instance.playerState.set('status', text)
     })
-
   } else {
     const videoElement = $('#video-player')
     const sourceElement = document.createElement('source')
