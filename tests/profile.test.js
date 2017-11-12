@@ -511,14 +511,14 @@ describe('Profile and accounts workflow:', function () {
   })
 
   describe('edit profile', () => {
-    it('should render the current profile\'s information correctly', () => {
+    it('should render the current profile\'s information correctly @watch', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('#edit-profile')
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-      browser.waitForVisible('#edit-profile-info-form')
+      browser.waitForVisible('.edit-profile-info-modal')
 
       assert.equal(browser.getAttribute('#new-username', 'placeholder'), 'foobar baz')
       assert.equal(browser.getAttribute('#new-email', 'placeholder'), 'guildenstern@rosencrantz.com')
@@ -532,7 +532,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-      browser.waitForVisible('#edit-profile-info-form')
+      browser.waitForVisible('.edit-profile-info-modal')
 
       assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
     })
@@ -544,13 +544,13 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-      browser.waitForVisible('#edit-profile-info-form')
+      browser.waitForVisible('.edit-profile-info-modal')
       browser.waitForClickable('#new-username')
       browser.setValue('#new-username', '        \n ')
 
       assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
 
-      browser.waitForVisible('#edit-profile-info-form')
+      browser.waitForVisible('.edit-profile-info-modal')
       browser.waitForClickable('#new-email')
       browser.setValue('#new-email', '       ')
 
@@ -567,7 +567,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-      browser.waitForVisible('#edit-profile-info-form')
+      browser.waitForVisible('.edit-profile-info-modal')
       browser.waitForClickable('#new-username')
       browser.setValue('#new-username', 'my shiny new name')
 
@@ -588,7 +588,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-      browser.waitForVisible('#edit-profile-info-form')
+      browser.waitForVisible('.edit-profile-info-modal')
       browser.waitForClickable('#new-email')
       browser.setValue('#new-email', 'myGreatEmail@aol.com')
 
