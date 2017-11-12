@@ -518,7 +518,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-
+      browser.pause(1000)
       browser.waitForVisible('#edit-profile-info-form')
 
       assert.equal(browser.getAttribute('#new-username', 'placeholder'), 'foobar baz')
@@ -533,7 +533,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-
+      browser.pause(1000)
       browser.waitForVisible('#edit-profile-info-form')
 
       assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
@@ -546,7 +546,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-
+      browser.pause(1000)
       browser.waitForVisible('#edit-profile-info-form')
       browser.waitForClickable('#new-username')
       browser.setValue('#new-username', '        \n ')
@@ -570,7 +570,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-
+      browser.pause(1000)
       browser.waitForVisible('#edit-profile-info-form')
       browser.waitForClickable('#new-username')
       browser.setValue('#new-username', 'my shiny new name')
@@ -592,7 +592,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-
+      browser.pause(1000)
       browser.waitForVisible('#edit-profile-info-form')
       browser.waitForClickable('#new-email')
       browser.setValue('#new-email', 'myGreatEmail@aol.com')
