@@ -2,7 +2,7 @@ import { assertUserIsLoggedIn, web3, createUserAndLogin, getSomeETH, getSomePTI,
 import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('wallet: @watch', function () {
+describe('wallet:', function () {
   let userAccount
 
   beforeEach(function () {
@@ -13,7 +13,7 @@ describe('wallet: @watch', function () {
     assertUserIsLoggedIn(browser)
   })
 
-  it('should show ETH balance @watch', async function (done) {
+  it('should show ETH balance', async function (done) {
     sendSomeETH(userAccount, 3.1)
     browser.waitForClickable('.wallet-contents li:last-child .amount')
     const amount = await browser.getText('.wallet-contents li:last-child .balance', false)
