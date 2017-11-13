@@ -4,7 +4,7 @@ import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
 import { web3 } from '/imports/lib/ethereum/connection.js'
-import { formatNumber, showModal, globalAlert, log } from '/imports/lib/utils.js'
+import { formatNumber, showModal, showGlobalAlert, log } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos, RelatedVideos } from '../../../api/videos.js'
@@ -297,10 +297,10 @@ Template.player.events({
     if (Meteor.user()) {
       if (ethBalance === 0) {
         // check that the user has enough ether for a minimal transaction
-        globalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
+        showGlobalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
       } else if (parseFloat(price) > parseFloat(balance)) {
         // The user balance is lower than the video price
-        globalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
+        showGlobalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
       } else {
         showModal('unlockVideo',
           {

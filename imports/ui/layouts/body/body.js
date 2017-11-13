@@ -5,7 +5,7 @@ import '/imports/ui/components/buttons/backButton.js'
 import '/imports/ui/components/svgs/svgs.js'
 import { add0x, showModal, hideModal, log } from '/imports/lib/utils.js'
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, getKeystore, mergeOrCreateNewWallet } from '/imports/lib/ethereum/wallet.js'
-import '/imports/ui/components/alert/alert.js'
+import '/imports/ui/components/alert/globalAlert.js'
 import '/imports/ui/components/modals/foundKeystore.js'
 
 // TODO: reconsider the location of the next code - perhaps move it to start.js ?
@@ -95,15 +95,6 @@ Template.App_body.helpers({
     var current = FlowRouter.current()
     var route = current.route.name
     return route
-  },
-  setAlertMessage () {
-    return Session.get('globalAlertMessage')
-  },
-  setAlertClass () {
-    return Session.get('classAlertGlobal')
-  },
-  setAlertType () {
-    return Session.get('globalAlertType')
   }
 })
 

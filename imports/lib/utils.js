@@ -54,23 +54,40 @@ export function hideModal (template) {
   Session.set('contentTemplate', null)
 }
 
-// Manage error on Modals
-export function modalAlert (message, style) {
-  Session.set('modalAlertMessage', message)
-  Session.set('modalAlertType', 'modal')
-  Session.set('classAlertModal', style)
-}
-
-export function setModalState (message) {
-  Session.set('modalStateMessage', message)
-}
-
-// Manage global errors
-export function globalAlert (message, style) {
+// Manage errors on Alerts
+export function showGlobalAlert (message, style) {
+  Session.set('globalAlertClass', style)
   Session.set('globalAlertMessage', message)
-  Session.set('globalAlertType', 'global')
-  Session.set('classAlertGlobal', style)
+  Meteor.setTimeout(() => {
+    Session.set('globalAlertShow', 'show')
+  }, 100)
 }
+
+export function hideGlobalAlert () {
+  Session.set('globalAlertShow', '')
+  Meteor.setTimeout(() => {
+    Session.set('globalAlertMessage', null)
+  }, 600)
+}
+
+export function showModalAlert (message, style) {
+  Session.set('modalAlertClass', style)
+  Session.set('modalAlertMessage', message)
+  Meteor.setTimeout(() => {
+    Session.set('modalAlertShow', 'show')
+  }, 100)
+}
+
+export function hideModalAlert () {
+  Session.set('modalAlertShow', '')
+  Meteor.setTimeout(() => {
+    Session.set('modalAlertMessage', null)
+  }, 600)
+}
+
+// export function setModalState (message) {
+//   Session.set('modalStateMessage', message)
+// }
 
 // change password type
 export function changePasswordType () {
