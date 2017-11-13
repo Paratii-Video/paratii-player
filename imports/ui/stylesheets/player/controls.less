@@ -142,7 +142,7 @@
   }
 
   &-fullscreen {
-    bottom: 30px;
+    bottom: 33px;
     height: @size-player-controls-button-height;
     position: absolute;
     right: 20px;
@@ -192,11 +192,11 @@
   overflow: hidden;
   position: relative;
   transition: width .75s @ease-smooth;
-  width: 107px;
+  width: 80px;
 
   .hide-volume & {
     transition: width .55s @ease-smooth;
-    width: 15px;
+    width: 0;
   }
 
   .query-mini({
@@ -209,9 +209,9 @@
     background: rgba(255, 255, 255, .3);
     border-radius: 10px;
     height: 5px;
-    right: 25px;
+    right: 11px;
     transition: transform .8s @ease-smooth;
-    width: 50px;
+    width: 60px;
   }
 
   &-bar {
@@ -227,10 +227,11 @@
 
 .player-progress {
   background: rgba(255, 255, 255, .3);
+  border-radius: 10px;
+  flex: 2;
   height: 5px;
   margin: 0 10px;
   position: relative;
-  width: 100%;
 
   .query-mini({
     margin: 0 20px;
