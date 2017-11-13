@@ -10,7 +10,8 @@ Template.mainModal.onCreated(function () {
   // Set options in a reactive var
   this.options = new ReactiveVar()
   this.options.set(this.data)
-  console.log(this.data)
+
+  Meteor.setTimeout(() => $('div.main-modal').addClass('show-content'), 850)
 })
 
 export let modalHelpers = {
