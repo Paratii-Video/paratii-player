@@ -143,9 +143,9 @@
 
   &-fullscreen {
     bottom: 33px;
-    height: @size-player-controls-button-height;
     position: absolute;
     right: 20px;
+    transition: transform .8s @ease-smooth;
     width: @size-player-controls-button-height;
     z-index: @zindex-player-button-fullscreen;
 
@@ -156,6 +156,11 @@
       top: 40px;
       width: 20px;
     });
+
+    .hide-controls & {
+      transform: translate3d(0, 50px, 0);
+      transition: transform .65s @ease-smooth;
+    }
   }
 }
 
@@ -230,7 +235,7 @@
   border-radius: 10px;
   flex: 2;
   height: 5px;
-  margin: 0 10px;
+  margin: 0 25px 0 20px;
   position: relative;
 
   .query-mini({
