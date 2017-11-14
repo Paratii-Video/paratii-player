@@ -126,10 +126,10 @@ class HLSPlayer extends EventEmitter {
       this.emit('ready')
       setInterval(() => {
         console.info('[HLS] levels: ', hls.levels, ' | currentLevel: ', hls.levels[hls.currentLevel])
-          // if (hls.currentLevel <= 1) {
-          //   hls.nextLevel = hls.currentLevel + 1
-          //   console.log('[HLS] level up ', hls.levels[hls.currentLevel])
-          // }
+        if (hls.currentLevel <= 2) {
+          hls.nextLevel = hls.currentLevel + 1
+          console.log('[HLS] level up ', hls.levels[hls.currentLevel])
+        }
       }, 5000)
     })
     var self = this
@@ -142,20 +142,20 @@ class HLSPlayer extends EventEmitter {
         clearInterval(pollStats)
         return
       }
-      window.ipfs.swarm.peers((err, peers) => {
-        if (err) throw err
-        console.log('-----------------------Peers---------------------------')
-        let msg = paratiiIPFS.protocol.createCommand('test')
-        peers.map((peer) => {
-          paratiiIPFS.protocol.network.sendMessage(peer.peer.id, msg, (err) => {
-            if (err) console.warn('[Paratii-protocol] Error ', err)
-          })
-
-          if (peer.addr) {
-            console.log(peer)
-          }
-        })
-      })
+      // window.ipfs.swarm.peers((err, peers) => {
+      //   if (err) throw err
+      //   console.log('-----------------------Peers---------------------------')
+      //   let msg = paratiiIPFS.protocol.createCommand('test')
+      //   peers.map((peer) => {
+      //     paratiiIPFS.protocol.network.sendMessage(peer.peer.id, msg, (err) => {
+      //       if (err) console.warn('[Paratii-protocol] Error ', err)
+      //     })
+      //
+      //     if (peer.addr) {
+      //       console.log(peer)
+      //     }
+      //   })
+      // })
       latestStat = window.ipfs.bitswap.stat()
       metrics.dupRatio = (latestStat.dupDataReceived / metrics.received) * 100
       console.log('bitswap stat: ', window.ipfs.bitswap.stat())
