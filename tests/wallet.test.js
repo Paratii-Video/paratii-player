@@ -17,7 +17,7 @@ describe('wallet: @watch', function () {
     sendSomeETH(userAccount, 3.1)
     browser.waitForClickable('.wallet-contents li:last-child .amount')
     const amount = await browser.getText('.wallet-contents li:last-child .balance', false)
-    assert.equal(amount, '3,10 ETH')
+    assert.isOk(['3.10 ETH', '3,10 ETH'].indexOf(amount) > -1)
     done()
   })
 
@@ -25,7 +25,7 @@ describe('wallet: @watch', function () {
     sendSomePTI(userAccount, 1412.9599)
     browser.waitForClickable('.wallet-contents li:first-child .amount')
     const amount = await browser.getText('.wallet-contents li:first-child .balance', false)
-    assert.equal(amount, '1.412,96 PTI')
+    assert.isOk(['1.412,96 PTI', '1,412.96 PTI'].indexOf(amount) > -1)
     done()
   })
 
