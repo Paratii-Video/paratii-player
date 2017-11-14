@@ -1,8 +1,8 @@
 import { assertUserIsLoggedIn, web3, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
-import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
+import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('wallet:', function () {
+describe('wallet: @watch', function () {
   let userAccount
 
   beforeEach(function () {
@@ -22,8 +22,7 @@ describe('wallet:', function () {
   })
 
   it('should show PTI balance', async function (done) {
-    sendSomeETH(userAccount, 3.1)
-    browser.execute(getSomePTI, 1412.9599)
+    sendSomePTI(userAccount, 1412.9599)
     browser.waitForClickable('.wallet-contents li:first-child .amount')
     const amount = await browser.getText('.wallet-contents li:first-child .balance', false)
     assert.equal(amount, '1.412,96 PTI')
