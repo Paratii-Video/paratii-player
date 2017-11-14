@@ -35,17 +35,23 @@
     }
 
     &-button {
-      height: 3px;
+      height: 30px;
       position: absolute;
       right: 10px;
-      top: 10px;
+      top: 0;
       width: 15px;
       z-index: 4;
 
       &-svg {
         &:extend(.full-block all);
 
+        height: 3px;
         fill: @color-white;
+        transition: fill .3s;
+
+        .videos-item-button:hover & {
+          fill: @color-purple;
+        }
       }
     }
 
