@@ -42,6 +42,7 @@ var publicRoute = FlowRouter.group({
 })
 
 function setBodyClass () {
+  document.body.className = ''
   document.body.className += sniffer.getClasses()
 }
 
