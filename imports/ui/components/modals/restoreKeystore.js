@@ -1,34 +1,28 @@
 import { Template } from 'meteor/templating'
 import { restoreWallet } from '/imports/lib/ethereum/wallet.js'
-import { hideModal, changePasswordType, showModalAlert } from '/imports/lib/utils.js'
+import { hideModal, showModalAlert } from '/imports/lib/utils.js'
 import '/imports/api/users.js'
+import '/imports/ui/components/form/mainFormInput.js'
 import './restoreKeystore.html'
 
 Template.restoreKeystore.onCreated(function () {
   this.errors = new ReactiveDict()
-  this.errors.set('password', null)
   this.errors.set('seed', null)
-
-  Session.set('passwordType', 'password')
-})
-
-Template.doTransaction.onDestroyed(function () {
-  Session.set('passwordType', null)
 })
 
 Template.restoreKeystore.helpers({
   getError (name) {
     return Template.instance().errors.get(name)
   },
-  passwordType () {
-    return Session.get('passwordType')
+  getSeedError () {
+    return Template.instance().errors.get('seed')
+  },
+  getPasswordError () {
+    return Template.instance().errors.get('password')
   }
 })
 
 Template.restoreKeystore.events({
-  'click button.password' () {
-    changePasswordType()
-  },
   'submit #form-restore-keystore' (event, instance) {
     // Prevent default browser form submit
     event.preventDefault()

@@ -3,19 +3,12 @@ import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
 import { web3 } from '/imports/lib/ethereum/connection.js'
 import { getContract } from '/imports/lib/ethereum/contracts.js'
 import { checkPassword, getUserPTIAddress } from '/imports/api/users.js'
-import { changePasswordType, showModalAlert } from '/imports/lib/utils.js'
+import { showModalAlert } from '/imports/lib/utils.js'
 import '/imports/lib/validate.js'
+import '/imports/ui/components/form/mainFormInput.js'
 import './unlockVideo.html'
 
 var promisify = require('promisify-node')
-
-Template.unlockVideo.onCreated(() => {
-  Session.set('passwordType', 'password')
-})
-
-Template.unlockVideo.onDestroyed(function () {
-  Session.set('passwordType', null)
-})
 
 Template.unlockVideo.onRendered(function () {
   Meteor.setTimeout(() => $('div.main-modal-unlock').addClass('show-content'), 1000)
@@ -29,20 +22,18 @@ Template.unlockVideo.helpers({
   userEmail () {
     return Meteor.user().emails[0].address
   },
+  getPasswordError () {
+    const check = Session.get('checkTransaction')
+    return check['password']
+  },
   getErrors (name) {
     const check = Session.get('checkTransaction')
     // user_password, wallet_amount, wallet_amount
     return check[name]
-  },
-  passwordType () {
-    return Session.get('passwordType')
   }
 })
 
 Template.unlockVideo.events({
-  'click button.password' () {
-    changePasswordType()
-  },
   async 'submit #form-unlockVideo' (event) {
     event.preventDefault()
 

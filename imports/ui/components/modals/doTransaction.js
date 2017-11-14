@@ -3,18 +3,13 @@ import { Template } from 'meteor/templating'
 import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
 import { checkPassword } from '/imports/api/users.js'
-import { changePasswordType } from '/imports/lib/utils.js'
 
 import '/imports/lib/validate.js'
+import '/imports/ui/components/form/mainFormInput.js'
 import './doTransaction.html'
 
 Template.doTransaction.onCreated(function () {
   console.log(web3)
-  Session.set('passwordType', 'password')
-})
-
-Template.doTransaction.onDestroyed(function () {
-  Session.set('passwordType', null)
 })
 
 Template.doTransaction.helpers({
@@ -24,20 +19,17 @@ Template.doTransaction.helpers({
   userEmail () {
     return Meteor.user().emails[0].address
   },
+  getPasswordError (name) {
+    const check = Session.get('checkTransaction')
+    return check['user_password']
+  },
   getErrors (name) {
     const check = Session.get('checkTransaction')
     return check[name]
-  },
-  passwordType () {
-    const type = Session.get('passwordType')
-    return type
   }
 })
 
 Template.doTransaction.events({
-  'click button.password' () {
-    changePasswordType()
-  },
   async 'submit #form-doTransaction' (event) {
     event.preventDefault()
     const extraInfo = {}

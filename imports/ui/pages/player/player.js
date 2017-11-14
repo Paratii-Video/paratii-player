@@ -1,5 +1,3 @@
-import { Template } from 'meteor/templating'
-import { Blaze } from 'meteor/blaze'
 import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
@@ -169,7 +167,7 @@ Template.player.helpers({
     return Template.instance().playerState.get('totalTime')
   },
   hideControls () {
-    return Template.instance().playerState.get('hideControls') ? 'toggleFade' : ''
+    return Template.instance().playerState.get('hideControls') ? 'hide-controls' : ''
   },
   formatNumber (number) {
     return formatNumber(number)
@@ -195,7 +193,7 @@ Template.player.helpers({
     return Template.instance().currentVideo.get()
   },
   volumeClass () {
-    return Template.instance().playerState.get('showVolume') ? '' : 'closed'
+    return Template.instance().playerState.get('showVolume') ? '' : 'hide-volume'
   },
   volumeValue () {
     return Template.instance().playerState.get('volumeValue')
