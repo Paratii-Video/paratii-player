@@ -8,11 +8,12 @@ Template.alert.onRendered(() => {
   }, 100)
 })
 
-Template.alert.events({
-  'click button.main-alert-button-close, click a[data-closealert]' (event, instance) {
-    const type = instance.data.type
+Template.alert.helpers({
+  close () {
+    let instance = Template.instance()
+    let type = instance.data.type
 
-    $(Template.instance().firstNode).removeClass('show')
+    $(instance.firstNode).removeClass('show')
 
     Meteor.setTimeout(() => {
       if (type === 'modal') {
@@ -21,6 +22,12 @@ Template.alert.events({
         Session.set('globalAlertMessage', null)
       }
     }, 600)
+  }
+})
+
+Template.alert.events({
+  'click button.main-alert-button-close, click a[data-closealert]' (event, instance) {
+    Template.alert.__helpers.get('close').call()
   },
   'click a[data-showmodal]' (event, instance) {
     event.preventDefault()

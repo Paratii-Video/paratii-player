@@ -14,44 +14,75 @@ import '/imports/ui/pages/not-found/not-found.js'
 import '/imports/ui/pages/transactions/transactions.js'
 import '/imports/ui/pages/upload/upload.js'
 import '/imports/ui/pages/search/search.js'
+import {Sniffer} from '/imports/lib/sniffing/index.js'
+
+var sniffer = new Sniffer({debug: true, test: false})
+
+sniffer.getClasses()          // 'Sony'
+sniffer.mobile()          // 'Sony'
+sniffer.isMobile()          // 'Sony'
+sniffer.phone()          // 'Sony'
+sniffer.isPhone()          // 'Sony'
+sniffer.tablet()          // null
+sniffer.isTablet()          // null
+sniffer.userAgent()       // 'Safari'
+sniffer.os()              // 'AndroidOS'
+sniffer.is('iPhone')      // false
+sniffer.is('bot')         // false
+sniffer.version('Webkit')         // 534.3
+sniffer.versionStr('Build')       // '4.1.A.0.562'
+sniffer.match('playstation|xbox') // false
+
+// define a new router group specific for public routing
+var publicRoute = FlowRouter.group({
+  name: 'public',
+  triggersEnter: [
+    setBodyClass
+  ]
+})
+
+function setBodyClass () {
+  document.body.className = ''
+  document.body.className += sniffer.getClasses()
+}
 
 // Set up all routes in the app
-FlowRouter.route('/', {
+publicRoute.route('/', {
   name: 'App.home',
   action () {
     BlazeLayout.render('App_body', { main: 'playlists' })
   }
 })
 
-FlowRouter.route('/about', {
+publicRoute.route('/about', {
   name: 'about',
   action () {
     BlazeLayout.render('App_body', { main: 'about' })
   }
 })
 
-FlowRouter.route('/myvideos', {
+publicRoute.route('/myvideos', {
   name: 'myvideos',
   action () {
     BlazeLayout.render('App_body', { main: 'myvideos' })
   }
 })
 
-FlowRouter.route('/playlists', {
+publicRoute.route('/playlists', {
   name: 'playlists',
   action () {
     BlazeLayout.render('App_body', { main: 'playlists' })
   }
 })
 
-FlowRouter.route('/playlists/:_id', {
+publicRoute.route('/playlists/:_id', {
   name: 'playlists',
   action () {
     BlazeLayout.render('App_body', { main: 'playlists' })
   }
 })
 
-FlowRouter.route('/profile', {
+publicRoute.route('/profile', {
   name: 'profile',
   action () {
     if (Meteor.userId()) {
@@ -62,28 +93,28 @@ FlowRouter.route('/profile', {
   }
 })
 
-FlowRouter.route('/transactions', {
+publicRoute.route('/transactions', {
   name: 'transactions',
   action () {
     BlazeLayout.render('App_body', { main: 'transactions' })
   }
 })
 
-FlowRouter.route('/upload', {
+publicRoute.route('/upload', {
   name: 'upload',
   action () {
     BlazeLayout.render('App_body', { main: 'upload' })
   }
 })
 
-FlowRouter.route('/search', {
+publicRoute.route('/search', {
   name: 'search',
   action () {
     BlazeLayout.render('App_body', { main: 'search' })
   }
 })
 
-FlowRouter.route('/play/:_id', {
+publicRoute.route('/play/:_id', {
   name: 'player',
   action () {
     // previous/next buttons: need a reset to refresh the video tag
@@ -92,21 +123,21 @@ FlowRouter.route('/play/:_id', {
   }
 })
 
-FlowRouter.route('/embed/:_id', {
+publicRoute.route('/embed/:_id', {
   name: 'embed',
   action () {
     BlazeLayout.render('App_body', { main: 'player' })
   }
 })
 
-FlowRouter.route('/debug', {
+publicRoute.route('/debug', {
   name: 'debug',
   action () {
     BlazeLayout.render('App_body', { main: 'debug' })
   }
 })
 
-FlowRouter.notFound = {
+publicRoute.notFound = {
   action () {
     BlazeLayout.render('App_body', { main: 'App_notFound' })
   }

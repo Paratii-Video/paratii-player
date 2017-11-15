@@ -1,3 +1,5 @@
+import { Template } from 'meteor/templating'
+import { Blaze } from 'meteor/blaze'
 import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
@@ -7,7 +9,7 @@ import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos, RelatedVideos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
-import * as HLSPlayer from './ipfs_hls.js'
+import HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
@@ -44,8 +46,11 @@ function renderVideoElement (instance) {
     createIPFSPlayer(instance, currentVideo)
     instance.playerState.set('ipfs', true)
   } else if (currentVideo.src.startsWith('/ipfs')) {
-    HLSPlayer.createIPFSPlayer(instance, currentVideo)
+    let hlsPlayer = new HLSPlayer({video: currentVideo})
     instance.playerState.set('ipfs', true)
+    hlsPlayer.on('status', (text) => {
+      instance.playerState.set('status', text)
+    })
   } else {
     const videoElement = $('#video-player')
     const sourceElement = document.createElement('source')

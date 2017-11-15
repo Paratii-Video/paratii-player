@@ -66,6 +66,7 @@ export function globalAlert (message, style) {
   Session.set('classAlertGlobal', style)
 }
 
+// change password type
 export function changePasswordType () {
   let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
   Session.set('passwordType', inputType)
