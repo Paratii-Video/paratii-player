@@ -40,6 +40,7 @@ Template.showSeed.events({
     button.button('loading')
     Meteor.call('checkPassword', password, (error, result) => {
       if (error) {
+        modalAlert(error, 'error')
         throw error
       }
       if (result) {
@@ -48,7 +49,7 @@ Template.showSeed.events({
         })
       } else {
         instance.errorMessage.set('Wrong password')
-        modalAlert('Wrong password', 'error')
+        modalAlert(instance.errorMessage.get(), 'error')
         button.button('reset')
       }
     })
