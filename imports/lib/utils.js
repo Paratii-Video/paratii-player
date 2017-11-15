@@ -46,7 +46,7 @@ export function showModal (templateName, options = null) {
   const template = { contentTemplate: templateName }
   const modalOptions = Object.assign(template, options)
   Session.set('contentTemplate', templateName)
-  Modal.show('mainModal', modalOptions)
+  Modal.show('mainModal', modalOptions, {backdrop: 'static'})
 }
 
 export function hideModal (template) {
