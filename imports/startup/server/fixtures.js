@@ -3,32 +3,11 @@
 */
 
 import { Meteor } from 'meteor/meteor'
-import { Videos } from '../../api/videos.js'
-import { Playlists } from '../../api/playlists.js'
 import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { watchEvents } from '/imports/api/transactions.js'
 import { getParatiiContracts, setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
+import { populateMongoDb } from '/imports/fixtures/fixtures.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
-
-function populateMongoDb (fixture) {
-  // Playlists
-  Playlists.remove({})
-  console.log('populating playlists collection')
-
-  _.each(fixture.playlists, (playlist) => {
-    Playlists.insert(playlist)
-  })
-  console.log('done populating playlist collection')
-  // Videos
-
-  console.log('populating video collection')
-  Videos.remove({})
-  console.log('removed existing videos')
-  _.each(fixture.videos, (video) => {
-    Videos.insert(video)
-  })
-  console.log('done populating video collection')
-}
 
 export async function installFixture (fixture) {
   await populateMongoDb(fixture)
@@ -72,29 +51,7 @@ if (Meteor.settings.public.isTestEnv) {
     )
   })
 
-  // Videos
-  const populateVideos = () => {
-    Videos.remove({})
-    console.log('|'); console.log('|')
-    console.log('--> populate video collection')
-    _.each(fixture.videos, (video) => {
-      Videos.insert(video)
-    })
-  }
-  // Playlists
-  const populatePlaylist = () => {
-    // if (Playlists.find().count() === 0) {
-    Playlists.remove({})
-    console.log('--> populate playlists collection')
-
-    _.each(fixture.playlists, (playlist) => {
-      Playlists.insert(playlist)
-    })
-    console.log('--> done.')
-  }
-
   Meteor.startup(function () {
-    populateVideos()
-    populatePlaylist()
+    populateMongoDb(fixture)
   })
 }
