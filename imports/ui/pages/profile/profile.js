@@ -95,6 +95,7 @@ Template.profile.events({
     showModal('showSeed')
   },
   'click #edit-profile' () {
+    // TODO remove this Modal.show
     Modal.show('editProfile')
   }
 })

@@ -66,29 +66,5 @@ Template.editPassword.events({
         showModalAlert('Wrong password', 'error')
       }
     })
-
-    // Accounts.changePassword(
-    //   password,
-    //   newPassword,
-    //   function (e) {
-    //     if (e) {
-    //       templateInstance.errorMessage.set('Current password is incorrect')
-    //       showModalAlert('Wrong password', 'error')
-    //     } else {
-    //       getSeed(password, function (err, seedPhrase) {
-    //         if (err) {
-    //           // TODO we need to handlde this error
-    //           templateInstance.errorMessage.set('Some errors on restore keystore')
-    //           showModalAlert('Some errors on restore keystore', 'error')
-    //         } else {
-    //           restoreWallet(password, seedPhrase)
-    //           templateInstance.errorMessage.set('')
-    //           hideModalAlert()
-    //           hideModal()
-    //         }
-    //       })
-    //     }
-    //   }
-    // )
   }
 })
