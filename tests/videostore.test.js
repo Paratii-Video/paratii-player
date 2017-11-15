@@ -116,7 +116,7 @@ describe('Video Store:', function () {
     // assert.equal(userBalance, 0)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.pause(1000)
+    browser.pause(2000)
     browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
     const expectedErrorMessage = 'You need some Ether for sending a transaction - but you have none'
