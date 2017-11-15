@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating'
 import Clipboard from 'clipboard'
+import '/imports/ui/components/form/mainFormInput.js'
 import './embedCustomizer.html'
 
 let clipboard
@@ -22,6 +23,8 @@ const embedSizes = [
 
 Template.modal_share_video.onCreated(function () {
   this.modalState = new ReactiveDict()
+  console.log(this)
+  console.log(Template.instance())
   this.modalState.set('type', this.data.type)
 })
 
@@ -42,7 +45,7 @@ Template.modal_share_links.onRendered(() => {
     timeIn += 850
   }
 
-  Meteor.setTimeout(() => $('div.main-modal-share').addClass('show-content'), timeIn)
+  Meteor.setTimeout(() => $('div.main-modal').addClass('show-content'), timeIn)
 })
 
 Template.modal_share_links.onCreated(function () {
@@ -79,13 +82,13 @@ Template.modal_share_links.events({
   'click button.gotoembed' (event, instance) {
     let templateView = instance.view.parentView.parentView
 
-    $('div.main-modal-share').removeClass('show-content')
+    $('div.main-modal').removeClass('show-content')
     Meteor.setTimeout(() => templateView.templateInstance().modalState.set('type', 'modal_share_embed'), 300)
   },
   'click a.gotoemailsharing' (event, instance) {
     event.preventDefault()
     let templateView = instance.view.parentView.parentView
-    $('div.main-modal-share').removeClass('show-content')
+    $('div.main-modal').removeClass('show-content')
     Meteor.setTimeout(() => templateView.templateInstance().modalState.set('type', 'modal_share_via_email'), 300)
   }
 })
@@ -110,7 +113,7 @@ Template.modal_share_via_email.events({
           if (result === 'sent') {
             let templateView = instance.view.parentView.parentView
 
-            $('div.main-modal-share').removeClass('show-content')
+            $('div.main-modal').removeClass('show-content')
             Meteor.setTimeout(() => templateView.templateInstance().modalState.set('type', 'modal_share_links'), 300)
           }
         }
@@ -120,7 +123,7 @@ Template.modal_share_via_email.events({
   'click button.gotolinks' (event, instance) {
     let templateView = instance.view.parentView.parentView
 
-    $('div.main-modal-share').removeClass('show-content')
+    $('div.main-modal').removeClass('show-content')
     Meteor.setTimeout(() => templateView.templateInstance().modalState.set('type', 'modal_share_links'), 300)
   }
 })
@@ -147,7 +150,7 @@ Template.modal_share_embed.onRendered(() => {
     timeIn += 850
   }
 
-  Meteor.setTimeout(() => $('div.main-modal-share').addClass('show-content'), timeIn)
+  Meteor.setTimeout(() => $('div.main-modal').addClass('show-content'), timeIn)
 })
 
 Template.modal_share_via_email.onRendered(() => {
@@ -158,7 +161,7 @@ Template.modal_share_via_email.onRendered(() => {
     timeIn += 850
   }
 
-  Meteor.setTimeout(() => $('div.main-modal-share').addClass('show-content'), timeIn)
+  Meteor.setTimeout(() => $('div.main-modal').addClass('show-content'), timeIn)
 })
 
 Template.modal_share_embed.helpers({
@@ -224,7 +227,7 @@ Template.modal_share_embed.events({
   'click button.gotolinks' (event, instance) {
     let templateView = instance.view.parentView.parentView
 
-    $('div.main-modal-share').removeClass('show-content')
+    $('div.main-modal').removeClass('show-content')
     Meteor.setTimeout(() => templateView.templateInstance().modalState.set('type', 'modal_share_links'), 300)
   }
 })

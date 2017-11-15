@@ -1,8 +1,8 @@
 import { assertUserIsLoggedIn, web3, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
-import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
+import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('wallet:', function () {
+describe('wallet: ', function () {
   let userAccount
 
   beforeEach(function () {
@@ -17,16 +17,15 @@ describe('wallet:', function () {
     sendSomeETH(userAccount, 3.1)
     browser.waitForClickable('.wallet-contents li:last-child .amount')
     const amount = await browser.getText('.wallet-contents li:last-child .balance', false)
-    assert.equal(amount, '3.10 ETH')
+    assert.isOk(['3.10 ETH', '3,10 ETH'].indexOf(amount) > -1)
     done()
   })
 
   it('should show PTI balance', async function (done) {
-    sendSomeETH(userAccount, 3.1)
-    browser.execute(getSomePTI, 1412.9599)
+    sendSomePTI(userAccount, 1412.9599)
     browser.waitForClickable('.wallet-contents li:first-child .amount')
     const amount = await browser.getText('.wallet-contents li:first-child .balance', false)
-    assert.equal(amount, '1,412.96 PTI')
+    assert.isOk(['1.412,96 PTI', '1,412.96 PTI'].indexOf(amount) > -1)
     done()
   })
 

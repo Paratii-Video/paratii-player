@@ -1,5 +1,6 @@
 /* global localStorage */
 import { SEED, USERADDRESS, createUserKeystore, getAnonymousAddress, createUser, resetDb, createUserAndLogin, assertUserIsLoggedIn, waitForUserIsLoggedIn, assertUserIsNotLoggedIn, nukeLocalStorage, clearUserKeystoreFromLocalStorage, getUserPTIAddressFromBrowser, waitForKeystore } from './helpers.js'
+import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
@@ -95,6 +96,31 @@ describe('Profile and accounts workflow:', function () {
     // the address of the new keystore should be the same as the old 'anonymous' address
     const publicAddress = getUserPTIAddressFromBrowser()
     assert.equal(publicAddress, add0x(anonymousAddress))
+  })
+
+  it('change password @watch', async function (done) {
+    browser.execute(clearUserKeystoreFromLocalStorage)
+    createUserAndLogin(browser)
+    waitForUserIsLoggedIn(browser)
+    const userAccount = getUserPTIAddressFromBrowser()
+    sendSomeETH(userAccount, 3.1)
+    browser.url('http://localhost:3000/profile')
+    browser.waitForClickable('#edit-profile')
+    browser.click('#edit-profile')
+    browser.waitForClickable('.edit-password')
+    browser.click('.edit-password')
+    // TODO remove this pause, problem with modals
+    browser.pause(2000)
+    browser.waitForClickable('[name="current-password"]', 5000)
+    browser.setValue('[name="current-password"]', 'password')
+    browser.setValue('[name="new-password"]', 'new-password')
+    browser.waitForClickable('#save-password')
+    browser.click('#save-password')
+    browser.pause(2000)
+    browser.waitForClickable('.wallet-contents li:last-child .amount')
+    const amount = await browser.getText('.wallet-contents li:last-child .balance', false)
+    assert.isOk(['3.10 ETH', '3,10 ETH'].indexOf(amount) > -1)
+    done()
   })
 
   it('show an error message if provided wrong password ', function () {
@@ -218,10 +244,9 @@ describe('Profile and accounts workflow:', function () {
     // browser.pause(5000)
   })
 
-  it.skip('shows the seed', function () {
+  it.skip('shows the seed ', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
-    waitForUserIsLoggedIn(browser)
     browser.url('http://localhost:3000/profile')
     browser.waitForClickable('#show-seed')
     browser.click('#show-seed')
@@ -231,7 +256,6 @@ describe('Profile and accounts workflow:', function () {
     browser.pause(1000)
     browser.click('#btn-show-seed')
     browser.waitForClickable('#closeModal')
-    // browser.click('#closeModal')
   })
 
   it.skip('send ether dialog is visible', function () {

@@ -1,10 +1,8 @@
-import { Template } from 'meteor/templating'
-import { Blaze } from 'meteor/blaze'
 import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
 import { web3 } from '/imports/lib/ethereum/connection.js'
-import { formatNumber, showModal, globalAlert } from '/imports/lib/utils.js'
+import { formatNumber, showModal, showGlobalAlert, log } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos, RelatedVideos } from '../../../api/videos.js'
@@ -36,8 +34,8 @@ function renderVideoElement (instance) {
 
   // get video tag element and bind it to player js adapter for HTML5 video
 
-  console.log('this is the video', videoTag)
-  console.log('this is playerjs', playerjs)
+  log('this is the video', videoTag)
+  log('this is playerjs', playerjs)
 
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo)
@@ -100,14 +98,14 @@ Template.player.onCreated(function () {
   // Description
   this.playerState.set('showDescription', false)
 
-  console.log('navState:', this.navState.get())
+  log('navState:', this.navState.get())
 
   /* DETERMINED IF PLAYER IS EMBEDED */
   if (window.top !== window.self) {
-    console.log('embedded')
+    log('embedded')
     this.playerState.set('fullscreen', fullscreen === 1)
   } else {
-    console.log('not embedded')
+    log('not embedded')
     this.playerState.set('fullscreen', true)
   }
 
@@ -124,8 +122,6 @@ Template.player.onCreated(function () {
   Meteor.subscribe('relatedVideos', videoId, userPTIAddress)
 
   Meteor.call('videos.isLocked', FlowRouter.getParam('_id'), getUserPTIAddress(), function (err, results) {
-    console.log('0000')
-    console.log(results)
     if (err) {
       throw err
     } else {
@@ -171,7 +167,7 @@ Template.player.helpers({
     return Template.instance().playerState.get('totalTime')
   },
   hideControls () {
-    return Template.instance().playerState.get('hideControls') ? 'toggleFade' : ''
+    return Template.instance().playerState.get('hideControls') ? 'hide-controls' : ''
   },
   formatNumber (number) {
     return formatNumber(number)
@@ -197,7 +193,7 @@ Template.player.helpers({
     return Template.instance().currentVideo.get()
   },
   volumeClass () {
-    return Template.instance().playerState.get('showVolume') ? '' : 'closed'
+    return Template.instance().playerState.get('showVolume') ? '' : 'hide-volume'
   },
   volumeValue () {
     return Template.instance().playerState.get('volumeValue')
@@ -299,17 +295,13 @@ Template.player.events({
     const price = web3.toWei(button.dataset.price)
     const balance = Session.get('pti_balance')
     const ethBalance = Session.get('eth_balance')
-    console.log(price, balance, ethBalance)
-    console.log(event.target)
     if (Meteor.user()) {
       if (ethBalance === 0) {
         // check that the user has enough ether for a minimal transaction
-        globalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
-        console.log('no eth')
+        showGlobalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
       } else if (parseFloat(price) > parseFloat(balance)) {
         // The user balance is lower than the video price
-        globalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
-        console.log('no pti')
+        showGlobalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
       } else {
         showModal('unlockVideo',
           {
@@ -328,7 +320,7 @@ Template.player.events({
     }
   },
   'play #video-player' (event, instance) {
-    console.log('video is playing')
+    log('video is playing')
     const dict = instance.playerState
     const navState = instance.navState
     const videoPlayer = document.getElementById('video-player')
@@ -347,12 +339,12 @@ Template.player.events({
     const videoPlayer = document.getElementById('video-player')
     const adapter = playerjs.HTML5Adapter(videoPlayer)
 
-    console.log('this is the adapter', adapter)
+    log('this is the adapter', adapter)
     // Start accepting events
     adapter.ready()
   },
   'pause #video-player' (event, instance) {
-    console.log('video is paused')
+    log('video is paused')
     instance.playerState.set('playing', false)
     instance.navState.set('minimized')
     Meteor.clearTimeout(controlsHandler)

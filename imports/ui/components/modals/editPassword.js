@@ -1,6 +1,8 @@
 import { Template } from 'meteor/templating'
 import { Accounts } from 'meteor/accounts-base'
-import { hideModal } from '/imports/lib/utils.js'
+import { hideModal, showModalAlert, hideModalAlert } from '/imports/lib/utils.js'
+import { getSeed, restoreWallet } from '/imports/lib/ethereum/wallet.js'
+
 import './editPassword.html'
 
 Template.editPassword.onCreated(function () {
@@ -36,17 +38,33 @@ Template.editPassword.events({
     // Prevent default browser form submit
     event.preventDefault()
     const target = event.target
-    Accounts.changePassword(
-      target['current-password'].value,
-      target['new-password'].value,
-      function (e) {
-        if (e) {
-          templateInstance.errorMessage.set('Current password is incorrect')
-        } else {
-          templateInstance.errorMessage.set('')
-          hideModal()
-        }
+    const password = target['current-password'].value
+    const newPassword = target['new-password'].value
+
+    Meteor.call('checkPassword', password, (error, result) => {
+      if (error) { throw error }
+      if (result) {
+        getSeed(password, function (err, seedPhrase) {
+          if (err) {
+            // TODO we need to handlde this error
+            templateInstance.errorMessage.set('Some errors on restore keystore')
+            showModalAlert('Some errors on restore keystore', 'error')
+          } else {
+            // Create a wallet with old seed and new password
+            restoreWallet(newPassword, seedPhrase, function (err, seedPhrase) {
+              if (err) { throw err }
+              templateInstance.errorMessage.set('')
+              hideModalAlert()
+              hideModal()
+              // Change Meteor user password
+              Accounts.changePassword(password, newPassword)
+            })
+          }
+        })
+      } else {
+        // Password is not valid - inform the user
+        showModalAlert('Wrong password', 'error')
       }
-    )
+    })
   }
 })
