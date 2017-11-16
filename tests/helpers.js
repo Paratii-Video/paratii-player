@@ -17,6 +17,40 @@ before(async function (done) {
     this.waitForEnabled(selector, timeout)
   })
 
+  browser.addCommand('waitAndSetValue', function (selector, value, timeout) {
+    this.waitForVisible(selector, timeout)
+    this.waitForEnabled(selector, timeout)
+    browser.waitUntil(function () {
+      try {
+        browser.setValue(selector, value)
+        return true
+      } catch (err) {
+        if (err.seleniumStack.type === 'InvalidElementState') {
+          // ignore and try again
+          return false
+        } else {
+          throw err
+        }
+      }
+    })
+  })
+  browser.addCommand('waitAndClick', function (selector, timeout) {
+    this.waitForVisible(selector, timeout)
+    this.waitForEnabled(selector, timeout)
+    browser.waitUntil(function () {
+      try {
+        browser.click(selector)
+        return true
+      } catch (err) {
+        if (err.seleniumStack.type === 'InvalidElementState') {
+          // ignore and try again
+          return false
+        } else {
+          throw err
+        }
+      }
+    })
+  })
   browser.url('http://localhost:3000')
   await getOrDeployParatiiContracts(server, browser)
   done()
