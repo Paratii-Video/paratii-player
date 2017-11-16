@@ -428,11 +428,8 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
-      browser.waitForClickable('#current-password')
-      browser.pause(1000) // TODO: avoid browser.pause() :-(
-      browser.setValue('#current-password', 'foobar')
-      browser.waitForClickable('#new-password')
-      browser.setValue('#new-password', 'myshinynewpassword')
+      browser.waitAndSetValue('#current-password', 'foobar')
+      browser.waitAndSetValue('#new-password', 'myshinynewpassword')
       browser.click('#save-password')
 
       assert.equal(browser.isVisible('.edit-password-modal'), true)
@@ -450,8 +447,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
-      browser.waitForClickable('#new-password')
-      browser.setValue('#new-password', 'myshinynewpassword')
+      browser.waitAndSetValue('#current-password', 'myshinynewpassword')
       browser.click('#save-password')
 
       assert.equal(browser.isVisible('.edit-password-modal'), true)
@@ -461,12 +457,9 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to attempt to change their password if they do not enter a new password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
-      browser.waitForClickable('.edit-password')
-      browser.click('.edit-password')
-      browser.waitForClickable('#current-password')
-      browser.setValue('#current-password', 'myshinynewpassword')
+      browser.waitAndClick('#edit-profile')
+      browser.waitAndClick('.edit-password')
+      browser.waitAndSetValue('#current-password', 'myshinynewpassword')
       browser.click('#save-password')
 
       assert.equal(browser.isVisible('.edit-password-modal'), true)
@@ -491,10 +484,8 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
-      browser.waitForClickable('#current-password')
-      browser.setValue('#current-password', 'password')
-      browser.waitForClickable('#new-password')
-      browser.setValue('#new-password', 'foobar')
+      browser.waitAndSetValue('#current-password', 'password')
+      browser.waitAndSetValue('#new-password', 'foobar')
       browser.waitForClickable('#save-password')
       browser.click('#save-password')
 
@@ -553,14 +544,12 @@ describe('Profile and accounts workflow:', function () {
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
-      browser.waitForClickable('#new-username')
-      browser.setValue('#new-username', '        \n ')
+      browser.waitAndSetValue('#new-username', '        \n ')
 
       assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
 
       browser.waitForVisible('.edit-profile-info-modal')
-      browser.waitForClickable('#new-email')
-      browser.setValue('#new-email', '       ')
+      browser.waitAndSetValue('#new-email', '       ')
 
       assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
     })
@@ -576,8 +565,7 @@ describe('Profile and accounts workflow:', function () {
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
-      browser.waitForClickable('#new-username')
-      browser.setValue('#new-username', 'my shiny new name')
+      browser.waitAndSetValue('#new-username', 'my shiny new name')
 
       browser.waitForClickable('#save-profile-info')
       browser.click('#save-profile-info')
@@ -596,10 +584,10 @@ describe('Profile and accounts workflow:', function () {
 
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-profile-info')
-      browser.click('.edit-profile-info')
+      browser.waitAndClick('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
-      browser.waitForClickable('#new-email')
-      browser.setValue('#new-email', 'myGreatEmail@aol.com')
+
+      browser.waitAndSetValue('#new-email', 'myGreatEmail@aol.com')
 
       browser.waitForClickable('#save-profile-info')
       browser.click('#save-profile-info')
