@@ -60,7 +60,7 @@ describe('Video Store:', function () {
     browser.waitForExist('.player-controls')
   })
 
-  it('should show the signin form if the user is not logged in', function () {
+  it.only('should show the signin form if the user is not logged in', function () {
     logout(browser)
     browser.execute(nukeLocalStorage)
 
