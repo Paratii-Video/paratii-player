@@ -73,7 +73,7 @@
         <div class="player-infos-content">
           <div class="player-description player-infos-description">
             <p class="player-infos-description-text">{{ description }}</p>
-            <button class="button-text nocase white player-infos-button-description" type="button">Hide description</button>
+            <button class="button-text nocase white player-infos-button-description" type="button">{{_ "Hide description" }}</button>
           </div>
 
           <div class="player-infos-holder">
@@ -82,7 +82,7 @@
                 <span class="player-infos-related-tag">{{ tag }}</span>
               {{/each}}
             </p>
-            <p class="player-uploader-name player-infos-uploader-name">By <strong>{{ uploader.name }}</strong></p>
+            <p class="player-uploader-name player-infos-uploader-name">{{_ "By" }} <strong>{{ uploader.name }}</strong></p>
             <div class="player-stats">
               <p class="player-stats-item">
                 <svg class="player-stats-icon player-stats-icon-views">
@@ -103,9 +103,9 @@
                 {{formatNumber stats.dislikes}}
               </button>
             </div>
-            <button class="button-text nocase white player-infos-button-description" type="button">Show description</button>
+            <button class="button-text nocase white player-infos-button-description" type="button">{{_ "Show description" }}</button>
             {{ #if status }}
-              <p id="status" class="player-infos-description-text">STATUS: {{ status }}</p>
+              <p id="status" class="player-infos-description-text">{{_ "STATUS:" }} {{ status }}</p>
             {{/if}}
           </div>
           {{#if isShowDescription}}
@@ -152,7 +152,7 @@
           {{/if}}
           {{#if isLocked }}
             <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">
-              <span class="player-infos-price-label">Watch</span>
+              <span class="player-infos-price-label">{{_ "Watch for" }}</span>
               <span class="player-infos-price-space"></span>
               <span class="player-infos-price-label">{{formatNumber price}}PTI</span>
             </button>
