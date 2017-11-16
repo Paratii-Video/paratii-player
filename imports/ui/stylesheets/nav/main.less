@@ -48,14 +48,14 @@
     height: @screen-tiny-height;
   });
 
-  &.maximized {
-    transition: transform .5s @ease-smooth, width .9s @ease-smooth;
-    width: @size-main-nav-maximized-width;
+  // &.maximized {
+  //   transition: transform .5s @ease-smooth, width .9s @ease-smooth;
+  //   width: @size-main-nav-maximized-width;
 
-    .query-mini({
-      width: @size-main-nav-minimized-width;
-    });
-  }
+  //   .query-mini({
+  //     width: @size-main-nav-minimized-width;
+  //   });
+  // }
 
   .hide-nav & {
     transform: translate3d(-100%, 0, 0);

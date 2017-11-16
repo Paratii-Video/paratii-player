@@ -240,6 +240,13 @@ Template.player.helpers({
     const params = { _id: video._id }
     const path = FlowRouter.path(pathDef, params)
     return path
+  },
+  getThumbTitle (title) {
+    let videoTitle = title
+    if (videoTitle.length > 30) {
+      videoTitle = videoTitle.substring(0, 30)
+    }
+    return videoTitle
   }
 })
 
@@ -531,5 +538,8 @@ Template.player.events({
   },
   'click .player-infos-button-description' (event, instance) {
     instance.playerState.set('showDescription', !instance.playerState.get('showDescription'))
+  },
+  'click button.thumbs-list-settings' (event, instance) {
+    $(event.currentTarget).parent().toggleClass('active')
   }
 })

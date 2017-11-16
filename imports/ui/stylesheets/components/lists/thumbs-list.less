@@ -1,0 +1,187 @@
+// Thumbs lists(playlists/videos list)
+
+.thumbs-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.thumbs-list-item {
+  color: @color-white;
+  flex: 0 0 31.2%;
+  height: 100px;
+  margin: 0 0 15px;
+  overflow: hidden;
+  position: relative;
+
+  &:nth-child(3n-1) {
+    margin: 0 3.2% 7px;
+  }
+}
+
+.thumbs-list-link {
+  &:extend(.full-block all);
+
+  backface-visibility: hidden;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  transition: color .35s;
+
+  &::before {
+    &:extend(.pos-a-full all);
+
+    background-color: black;
+    content: ''; 
+    opacity: .75;
+    transition: opacity .35s;
+    z-index: 2;
+  }
+
+  &:hover {
+    color: @color-white;
+
+    &::before {
+      opacity: .5;
+    }
+  }
+}
+
+.thumbs-list-title {
+  display: block;
+  font-size: 14px;
+  padding: 10px 10px 0;
+  position: relative;
+  transition: color .5s;
+  z-index: 2;
+}
+
+
+.thumbs-list-count {
+  align-items: flex-end;
+  bottom: 5px;
+  display: flex;
+  position: absolute;
+  right: 5px;
+  z-index: 3;
+
+  &-value {
+    font-size: 16px;
+  }
+
+  &-icon {
+    fill: @color-white;
+    height: 18px;
+    margin: 0 0 0 3px;
+    width: 20px;
+  }
+}
+
+.thumbs-list-play {
+  &:extend(.hover-opacity all);
+
+  bottom: 10px;
+  height: 13px;
+  left: 10px;
+  position: absolute;
+  width: 18px;
+  z-index: 4;
+
+  &.right {
+    left: auto;
+    right: 10px;
+    transform: scale(0);
+    transition: transform .5s @ease-smooth;
+
+    .thumbs-list-link:hover & {
+      transform: scale(1);
+      transition: transform .5s @ease-smooth .1s;
+    }
+  }
+
+  &-svg {
+    &:extend(.full-block all);
+
+    fill: @color-white;
+  }
+}
+
+.thumbs-list-settings {
+  bottom: 0;
+  height: 30px;
+  left: 10px;
+  position: absolute;
+  width: 15px;
+  z-index: 5;
+
+  &-svg {
+    &:extend(.full-block all);
+
+    height: 3px;
+    fill: @color-white;
+    transition: fill .3s;
+
+    .active &,
+    .thumbs-list-settings:hover & {
+      fill: @color-purple;
+    }
+  }
+}
+
+.thumbs-list-time {
+  bottom: 7px;
+  font-size: 12px;
+  position: absolute;
+  right: 10px;
+  transition: opacity .35s linear .3s;
+  z-index: 2;
+
+  .thumbs-list-link:hover & {
+    opacity: 0;
+    transition: opacity .3s;
+  }
+}
+
+.thumbs-list-price {
+  background-color: @color-purple;
+  bottom: 9px;
+  color: @color-white;
+  font-size: 10px;
+  opacity: 0;
+  padding: 3px 6px 1px;
+  position: absolute;
+  transition: opacity .25s;
+  right: 10px;
+  z-index: 2;
+
+  .thumbs-list-link:hover & {
+    opacity: 1;
+    transition: opacity .3s linear .3s;
+  }
+}
+
+.thumbs-list-image {
+  &:extend(.pos-a-full all);
+
+  transition: transform .35s ease-out;
+  z-index: 1;
+}
+
+.thumb-list-modal {
+  &:extend(.pos-a-full all);
+
+  backface-visibility: hidden;
+  background-color: #f1f1f1;
+  padding: 10px 12px;
+  transform: translate3d(0, -100%, 0);
+  transition: transform .4s @ease-smooth;
+  z-index: 4;
+
+  .active & {
+    transform: translate3d(0, 0, 0);
+    transition: transform .6s @ease-smooth;
+  }
+
+  .button-text {
+    display: block;
+  }
+}

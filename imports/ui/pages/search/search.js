@@ -42,8 +42,10 @@ Template.search.events({
   'change #sorting' (event) {
     const sorting = event.target.value
     Template.instance().sorting.set(sorting)
+  },
+  'click button.thumbs-list-settings' (event, instance) {
+    $(event.currentTarget).parent().toggleClass('active')
   }
-
 })
 
 Template.search.helpers({
@@ -82,6 +84,12 @@ Template.search.helpers({
   },
   hasPrice (video) {
     return video && video.price && video.price > 0
+  },
+  getThumbTitle (title) {
+    let videoTitle = title
+    if (videoTitle.length > 30) {
+      videoTitle = videoTitle.substring(0, 30)
+    }
+    return videoTitle
   }
-
 })
