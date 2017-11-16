@@ -30,18 +30,16 @@
       right: 0;
 
       button {
-        animation: fromFade .3s linear forwards;
+        animation: scaleDown .5s @ease-smooth forwards .5s;
         margin: 0 0 0 15px;
+        opacity: 0;
       }
     }
   }
 
   &-content {
-    max-width: 570px;
-  }
-
-  .thumbs-list {
     animation: fromFade .5s linear .5s forwards;
+    max-width: 570px;
     opacity: 0;
   }
 }

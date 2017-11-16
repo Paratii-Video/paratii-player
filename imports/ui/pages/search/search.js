@@ -1,6 +1,7 @@
 import { VideosResults } from '../../../../imports/api/videos.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 
+import '/imports/ui/components/internals/internalsHeader.js'
 import './search.html'
 
 Template.search.onCreated(function () {
@@ -45,6 +46,9 @@ Template.search.events({
   },
   'click button.thumbs-list-settings' (event, instance) {
     $(event.currentTarget).parent().toggleClass('active')
+  },
+  'click button.thumbs-list-settings' (event, instance) {
+    $(event.currentTarget).closest('.thumbs-list-item').toggleClass('active')
   }
 })
 

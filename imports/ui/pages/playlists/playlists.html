@@ -5,9 +5,9 @@
     {{else}}
       {{ >internalsHeader title=getTitle backButton=getBackButton }}
     {{/if}}
-    <div class="internal-content">
-      {{#unless videos}}
-        <h3 class="playlists-wrapper-title visually-hidden">My playlist</h3>
+    {{#unless videos}}
+      <div class="internal-content">
+        <h3 class="playlists-wrapper-title visually-hidden">My playlists</h3>
         <ul class="thumbs-list">
           {{#each playlists}}
             <li class="thumbs-list-item">
@@ -33,12 +33,14 @@
             </li>
           {{/each}}
         </ul>
-        {{/unless}}
-        {{#if videos}}
-          <h3 class="playlists-wrapper-title visually-hidden">My playlist</h3>
-          <ul class="thumbs-list">
-            {{#each videos}}
-              <li class="thumbs-list-item">
+      </div>
+    {{/unless}}
+    {{#if videos}}
+      <div class="internal-content">
+        <ul class="thumbs-list">
+          {{#each videos}}
+            <li class="thumbs-list-item flip">
+              <div class="flip-face flip-face-front">
                 <a class="thumbs-list-link" href="{{videoPath this}}">
                   <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
                   <p class="thumbs-list-time">{{ duration }}</p>
@@ -65,14 +67,22 @@
                     <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
                   </svg>
                 </button>
+              </div>
+              <div class="flip-face flip-face-back">
                 <div class="thumb-list-modal">
                   <button class="button-text nocase grey" type="button">Watch later</button>
                   <button class="button-text nocase grey" type="button">Add to playlist</button>
+                  <button class="thumbs-list-settings">
+                    <svg class="thumbs-list-settings-svg">
+                      <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
+                    </svg>
+                  </button>
                 </div>
-              </li>
-            {{/each}}
-          </ul>
-        {{/if}}
-    </div>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    {{/if}}
   </div>
 </template>

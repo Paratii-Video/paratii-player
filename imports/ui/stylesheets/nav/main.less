@@ -3,6 +3,8 @@
 // Overlay
 
 .nav-overlay {
+  display: none;
+
   background-color: black;
   height: 100%;
   opacity: .7;
@@ -101,7 +103,11 @@
     &:extend(.full-block all);
     
     fill: @color-grey-light;
-    transition: fill .3s;
+    transition: fill .3s, opacity .3s;
+
+    .main-nav-link:hover & {
+      opacity: .5;
+    }
     
     .avatar & {
       border-radius: 50px;

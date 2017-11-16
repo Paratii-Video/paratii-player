@@ -169,17 +169,10 @@
 .thumb-list-modal {
   &:extend(.pos-a-full all);
 
-  backface-visibility: hidden;
   background-color: #f1f1f1;
+  border-radius: 4px;
   padding: 10px 12px;
-  transform: translate3d(0, -100%, 0);
-  transition: transform .4s @ease-smooth;
   z-index: 4;
-
-  .active & {
-    transform: translate3d(0, 0, 0);
-    transition: transform .6s @ease-smooth;
-  }
 
   .button-text {
     display: block;

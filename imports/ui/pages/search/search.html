@@ -1,50 +1,59 @@
 <template name="search">
   <div class="internal">
-    <header class="internal-header">
-      <h2 class="internal-header-title">Search</h2>
-    </header>
+    {{ >internalsHeader title="Search" backButton=getBackButton }}
     <input id="search" class="main-form-input" type="text" name="search" value="{{lastsearch}}" placeholder="Type here to Search">
     {{#unless videos}}
       <p>{{noResults}}</p>
     {{/unless}}
     <br>
     {{#if videos}}
-      <ul class="thumbs-list">
-        {{#each videos}}
-          <li class="thumbs-list-item">
-            <a class="thumbs-list-link" href="{{videoPath this}}">
-              <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
-              <p class="thumbs-list-time">{{ duration }}</p>
-             <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
-              {{#if isLocked this}}
-                <div class="thumbs-list-price">{{ price }} PTI</div>
-              {{else if hasPrice this}}
-                <div class="thumbs-list-price">✓</div>
-              {{else}}
-                <div class="thumbs-list-play right">
-                  <svg class="thumbs-list-play-svg">
-                    <use class="thumbs-list-play-use" xlink:href="#icon-play"></use>
+      <div class="internal-content">
+        <ul class="thumbs-list">
+          {{#each videos}}
+            <li class="thumbs-list-item flip">
+              <div class="flip-face flip-face-front">
+                <a class="thumbs-list-link" href="{{videoPath this}}">
+                  <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
+                  <p class="thumbs-list-time">{{ duration }}</p>
+                 <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
+                  {{#if isLocked this}}
+                    <div class="thumbs-list-price">{{ price }} PTI</div>
+                  {{else if hasPrice this}}
+                    <div class="thumbs-list-price">✓</div>
+                  {{else}}
+                    <div class="thumbs-list-play right">
+                      <svg class="thumbs-list-play-svg">
+                        <use class="thumbs-list-play-use" xlink:href="#icon-play"></use>
+                      </svg>
+                    </div>
+                  {{/if}}
+                  {{#if thumb}}
+                    <img class="thumbs-list-image" src="{{ thumb }}"/>
+                  {{else}}
+                    <img class="thumbs-list-image" src="/img/cover/default-thumb.png"/>
+                  {{/if}}
+                </a>
+                <button class="thumbs-list-settings">
+                  <svg class="thumbs-list-settings-svg">
+                    <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
                   </svg>
+                </button>
+              </div>
+              <div class="flip-face flip-face-back">
+                <div class="thumb-list-modal">
+                  <button class="button-text nocase grey" type="button">Watch later</button>
+                  <button class="button-text nocase grey" type="button">Add to playlist</button>
+                  <button class="thumbs-list-settings">
+                    <svg class="thumbs-list-settings-svg">
+                      <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
+                    </svg>
+                  </button>
                 </div>
-              {{/if}}
-              {{#if thumb}}
-                <img class="thumbs-list-image" src="{{ thumb }}"/>
-              {{else}}
-                <img class="thumbs-list-image" src="/img/cover/default-thumb.png"/>
-              {{/if}}
-            </a>
-            <button class="thumbs-list-settings">
-              <svg class="thumbs-list-settings-svg">
-                <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
-              </svg>
-            </button>
-            <div class="thumb-list-modal">
-              <button class="button-text nocase grey" type="button">Watch later</button>
-              <button class="button-text nocase grey" type="button">Add to playlist</button>
-            </div>
-          </li>
-        {{/each}}
-      </ul>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
     {{/if}}
   </div>
 </template>

@@ -115,6 +115,6 @@
       })
     },
     'click button.thumbs-list-settings' (event, instance) {
-      $(event.currentTarget).parent().toggleClass('active')
+      $(event.currentTarget).closest('.thumbs-list-item').toggleClass('active')
     }
   })

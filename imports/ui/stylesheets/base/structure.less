@@ -29,3 +29,37 @@
     }
   }
 }
+
+
+// Flip 
+
+.flip {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+
+  &-face {
+    &:extend(.pos-a-full all);
+
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+
+    &-front {
+      transition: transform .75s @ease-smooth;
+
+      .active & {
+        transform: rotateX(180deg);
+        transition: transform .9s @ease-smooth;
+      }
+    }
+    &-back {
+      transform: rotateX(180deg);
+      transition: transform .75s @ease-smooth;
+      
+      .active & {
+        transform: rotateX(0);
+        transition: transform .9s @ease-smooth;
+      }
+    }
+  }
+
+}
