@@ -558,7 +558,9 @@ describe('Profile and accounts workflow:', function () {
       browser.waitForClickable('#save-profile-info')
       browser.click('#save-profile-info')
 
-      assert.equal(browser.getText('.header-title'), 'my shiny new name')
+      browser.waitUntil(() => {
+        return browser.getText('.header-title') === 'my shiny new name'
+      })
     })
 
     it('should allow the user to update their email', () => {
@@ -578,7 +580,9 @@ describe('Profile and accounts workflow:', function () {
       browser.waitForClickable('#save-profile-info')
       browser.click('#save-profile-info')
 
-      assert.equal(browser.getText('.profile-info-email'), 'myGreatEmail@aol.com')
+      browser.waitUntil(() => {
+        return browser.getText('.profile-info-email') === 'myGreatEmail@aol.com'
+      })
     })
   })
 })

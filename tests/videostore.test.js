@@ -23,14 +23,8 @@ describe('Video Store:', function () {
   beforeEach(function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
+    browser.url('http://localhost:3000')
     createUserAndLogin(browser)
-    // browser.pause(2000)
-    // browser.url('http://localhost:3000/profile')
-  })
-
-  afterEach(function () {
-    // browser.execute(nukeLocalStorage)
-    // server.execute(resetDb)
   })
 
   it('should be possible to buy (and unlock) a video', function () {
@@ -57,7 +51,9 @@ describe('Video Store:', function () {
     let description = 'Bought video QmNZS5J3LS1tMEVEP3tz3jyd2LXUEjkYJHyWSuwUvHDaRJ'
     browser.waitForExist('.transaction-description')
     let msg = `Expected to find ${description} in the first from ${browser.getText('.transaction-description')}`
-    assert.isOk(browser.getText('.transaction-description')[0].indexOf(description) > -1, msg)
+    browser.waitUntil(() => {
+      return browser.getText('.transaction-description')[0].indexOf(description) > -1
+    }, 1000, msg)
 
     // the video should be unlocked now
     browser.url(`http://localhost:3000/play/${videoId}`)
@@ -71,7 +67,9 @@ describe('Video Store:', function () {
     browser.url(`http://localhost:3000/play/${videoId}`)
     browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    browser.getText('h3', 'Sign in')
+    browser.waitUntil(() => {
+      return browser.getText('.main-modal-sign-in h3') === 'Sign In'
+    })
   })
 
   it('should show an error if the user does not have enough PTI', function () {
@@ -93,7 +91,9 @@ describe('Video Store:', function () {
     // browser.pause(2000)
     let expectedErrorMessage = 'You don\'t have enough PTI: your balance is 0'
     browser.waitForClickable('.main-alert-content')
-    assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
+    browser.waitUntil(() => {
+      return browser.getText('.main-alert-content') === expectedErrorMessage
+    })
   })
 
   it('should show an error if the user does not have enough ETH', function () {
@@ -115,7 +115,9 @@ describe('Video Store:', function () {
     // browser.pause(2000)
     let expectedErrorMessage = 'You need some Ether for sending a transaction - but you have none'
     browser.waitForClickable('.main-alert-content')
-    assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
+    browser.waitUntil(() => {
+      return browser.getText('.main-alert-content') === expectedErrorMessage
+    })
   })
 
   it('test individual steps', function () {
