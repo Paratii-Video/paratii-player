@@ -27,7 +27,7 @@ describe('Profile and accounts workflow:', function () {
     server.execute(resetDb)
   })
 
-  it('register a new user ', function () {
+  it('register a new user @watch', function () {
     browser.execute(nukeLocalStorage)
     browser.url('http://localhost:3000')
 
@@ -59,10 +59,15 @@ describe('Profile and accounts workflow:', function () {
     waitForKeystore(browser)
     // now a modal should be opened with the seed
     browser.waitForClickable('#seed')
+    // browser.pause(500)
+    const seed = browser.getText('#seed strong', false)
+    browser.waitForClickable('#btn-check-seed')
+    browser.click('#btn-check-seed')
+    browser.waitForClickable('[name="check_seed"]')
+    browser.setValue('[name="check_seed"]', seed)
+    browser.waitForClickable('#btn-check-seed-finish')
+    browser.click('#btn-check-seed-finish')
     browser.pause(1000)
-    browser.waitForClickable('#closeModal')
-    browser.click('#closeModal')
-
     // the user is now logged in
     assertUserIsLoggedIn(browser)
   })
@@ -111,7 +116,7 @@ describe('Profile and accounts workflow:', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('change password @watch', async function (done) {
+  it('change password', async function (done) {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)

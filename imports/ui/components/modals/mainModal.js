@@ -16,10 +16,11 @@ Template.mainModal.helpers({
   contentTemplate: () => Session.get('contentTemplate'),
   wrapperClass: () => Session.get('wrapperClass'),
   options: function () {
-    console.log(Template.instance().options.get())
     return Template.instance().options.get()
   },
   blocking: function () {
-    return Template.instance().options.get().blocking
+    const blocking = Template.instance().options.get().blocking
+    console.log(Template.instance().options.get())
+    return blocking
   }
 })
