@@ -49,9 +49,6 @@ describe('price tag status', function () {
   it('when the video was bought [TODO]', () => {
     createUserAndLogin(browser)
     browser.pause(5000)
-    // browser.url('http:localhost:3000/profile')
-    // browser.waitForVisible('#public_address')
-    // const address = browser.getText('#public_address')
     const address = getUserPTIAddressFromBrowser()
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)

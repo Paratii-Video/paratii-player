@@ -13,7 +13,7 @@
 
 <template name="modal_share_links">
   <div class="main-modal-content main-modal-share">
-    <h3 class="main-modal-title main-modal-anim-1">Share this video</h3>
+    <h3 class="main-modal-title main-modal-anim-1">{{_ "Share this video" }}</h3>
     <input class="input-copy-code main-form-input main-modal-anim-2" onclick="this.focus();this.select()" readonly="readonly" value="{{ embedBaseUrl }}" />
     <ul class="main-modal-share-list main-modal-anim-3">
       <li class="main-modal-share-item">
@@ -54,8 +54,8 @@
     </ul>
     <div class="main-modal-footer main-modal-anim-4">
       <pre id="to_clip" class="visually-hidden">{{ embedBaseUrl }}</pre>
-      <button class="button-text grey-light gotoembed">Embed video</button>
-      <button id="copy_url"  class="button-text" data-clipboard-target="#to_clip">Copy link</button>
+      <button class="button-text grey-light gotoembed">{{_ "Embed video" }}</button>
+      <button id="copy_url"  class="button-text" data-clipboard-target="#to_clip">{{_ "Copy link" }}</button>
     </div>
   </div>
 </template>
