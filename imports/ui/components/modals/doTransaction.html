@@ -24,10 +24,13 @@
           <input class="main-form-input" name="tx_description" type="text" placeholder="Thanks for last night pizza!" aria-describedby="sizing-addon1">
         {{/if}}
       </div>
-      <div class="main-form-label main-modal-anim-5 password">
-        <input class="main-form-input main-form-input-password {{#if getErrors 'user_password'}}error{{/if}}" name="user_password" type="{{ passwordType }}" placeholder="Enter your password" aria-describedby="sizing-addon1">
-        <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
-      </div>
+      {{> mainFormInput
+          class="main-modal-anim-5"
+          name="user_password"
+          type="password"
+          placeholder="Enter your password"
+          error=getPasswordError
+      }}
       <div class="main-modal-footer main-modal-anim-5">
         <button id="send_trans_btn" class="button-text main-modal-button signup" type="submit">Send {{ type }}</button>
       </div>

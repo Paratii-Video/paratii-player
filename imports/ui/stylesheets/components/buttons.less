@@ -4,8 +4,8 @@
 
   &-text {
     &:extend(.hover-opacity all);
+    &:extend(.color-purple all);
 
-    color: @color-purple;
     font-size: 14px;
     font-weight: 500;
     text-transform: uppercase;
@@ -13,28 +13,28 @@
 
     // Colors
 
-    &--grey {
-      color: @color-grey;
+    &.grey {
+      &:extend(.color-grey);
     }
 
-    &--grey-light {
-      color: @color-grey-light;
+    &.grey-light {
+      &:extend(.color-grey-light);
     }
 
-    &--grey-dark {
-      color: @color-grey-dark;
+    &.grey-dark {
+      &:extend(.color-grey-dark);
     }
 
-    &--white {
-      color: @color-white;
+    &.white {
+      &:extend(.color-white);
     }
 
-    &--nocase {
-      text-transform: none;
+    &.nocase {
+      &:extend(.text-nocase);
     }
 
-    &--lowercase {
-      text-transform: lowercase;
+    &.lowercase {
+      &:extend(.text-lowercase);
     }
 
     // Icon

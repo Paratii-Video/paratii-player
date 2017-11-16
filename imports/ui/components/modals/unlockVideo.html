@@ -54,11 +54,14 @@
         <!-- TODO: this field does not seem to be actually used -->
         <input name="wallet_amount" type="text" value="{{price}}" class="visually-hidden" aria-describedby="sizing-addon1" readonly>
       {{/if}}
-      <div class="main-form-label main-modal-unlock-label password } main-modal-anim-3">
-        <input class="main-form-input main-form-input-password password {{#if getErrors 'user_password'}}error{{/if}}" name="user_password" type="{{ passwordType }}" placeholder="Enter your password" aria-describedby="sizing-addon1" />
-        <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
-      </div>
-      <a class="button-text button-text--grey-light button-text--lowercase main-form-button-forgot main-modal-unlock-anchor } main-modal-anim-3" href="#" target="_blank">Forgot password?</a>
+      {{> mainFormInput
+          class="main-modal-unlock-label main-modal-anim-3"
+          name="user_password"
+          type="password"
+          placeholder="Enter your password"
+          error=getPasswordError
+      }}
+      <a class="button-text lowercase main-form-button-forgot main-modal-unlock-anchor } main-modal-anim-3" href="#" target="_blank">Forgot password?</a>
       <div class="main-modal-footer main-modal-anim-4">
         <!-- {{#if modalError }}
         <span class="main-modal-footer-waiting error">{{ modalError }}</span>

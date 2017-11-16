@@ -81,13 +81,25 @@
   }
 }
 
-.main-modal-wrapper.edit-profile-modal {
+.edit-profile-menu {
   width: 190px;
-  padding: 15px;
   position: absolute;
   top: 70px;
   right: 65px;
+  max-height: 0;
   height: auto;
+  border: 1px solid @color-grey-light;
+  border-radius: 5px;
+  box-shadow: 0px 2px 19px @color-grey-light;
+  transition: all 250ms linear;
+  overflow: hidden;
+  opacity: 0;
+
+  &.show {
+    max-height: 200px;
+    padding: 15px;
+    opacity: 1;
+  }
 
   .edit-profile-content {
     font-size: 18px;

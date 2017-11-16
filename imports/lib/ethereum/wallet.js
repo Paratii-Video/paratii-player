@@ -44,6 +44,7 @@ function createKeystore (password, seedPhrase, key, cb) {
         // Session.set('tempSeed', seedPhrase)
         Session.set('tempKeystore', keystore.serialize())
         Session.set('tempAddress', add0x(address))
+        Session.set('seed', null)
       }
       Session.set('generating-keystore', false)
       if (cb) {

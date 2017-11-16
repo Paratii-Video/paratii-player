@@ -33,7 +33,7 @@ describe('Video Store:', function () {
     // server.execute(resetDb)
   })
 
-  it('should be possible to buy (and unlock) a video', function () {
+  it('should be possible to buy (and unlock) a video ', function () {
     // make sure we have enough funds
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
@@ -64,6 +64,24 @@ describe('Video Store:', function () {
     browser.waitForExist('.player-controls')
   })
 
+  it('should show an error if the password is wrong ', function () {
+    // make sure we have enough funds
+    let userAccount = getUserPTIAddressFromBrowser()
+    sendSomeETH(userAccount, 2.1)
+    sendSomePTI(userAccount, 300)
+
+    browser.url(`http://localhost:3000/play/${videoId}`)
+    browser.waitForClickable('#unlock-video')
+    browser.click('#unlock-video')
+    browser.waitForClickable('[name="user_password"]')
+    browser.pause(1000)
+    browser.setValue('[name="user_password"]', 'wrong_password')
+    browser.click('#send_trans_btn')
+    const expectedErrorMessage = 'Wrong password'
+    browser.waitForClickable('.main-alert-content')
+    assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
+  })
+
   it('should show the signin form if the user is not logged in', function () {
     logout(browser)
     browser.execute(nukeLocalStorage)
@@ -74,7 +92,7 @@ describe('Video Store:', function () {
     browser.getText('h3', 'Sign in')
   })
 
-  it('should show an error if the user does not have enough PTI @watch', function () {
+  it('should show an error if the user does not have enough PTI ', function () {
     // make sure we have enough funds
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
@@ -85,18 +103,12 @@ describe('Video Store:', function () {
     browser.pause(1000)
     browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    // browser.waitForClickable('[name="user_password"]')
-    // browser.pause(1000)
-    // browser.setValue('[name="user_password"]', 'password')
-    // browser.waitForClickable('#send_trans_btn')
-    // browser.click('#send_trans_btn')
-    // browser.pause(2000)
-    let expectedErrorMessage = 'You don\'t have enough PTI: your balance is 0'
+    const expectedErrorMessage = 'You don\'t have enough PTI: your balance is 0'
     browser.waitForClickable('.main-alert-content')
     assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
   })
 
-  it('should show an error if the user does not have enough ETH @watch', function () {
+  it('should show an error if the user does not have enough ETH ', function () {
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomePTI(userAccount, 300)
     // ... need to await the getBalance, but async messes up the rest of the test
@@ -107,13 +119,7 @@ describe('Video Store:', function () {
     browser.pause(2000)
     browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    // browser.waitForClickable('[name="user_password"]')
-    // browser.pause(1000)
-    // browser.setValue('[name="user_password"]', 'password')
-    // browser.waitForClickable('#send_trans_btn')
-    // browser.click('#send_trans_btn')
-    // browser.pause(2000)
-    let expectedErrorMessage = 'You need some Ether for sending a transaction - but you have none'
+    const expectedErrorMessage = 'You need some Ether for sending a transaction - but you have none'
     browser.waitForClickable('.main-alert-content')
     assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
   })

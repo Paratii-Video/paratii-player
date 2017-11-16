@@ -1,14 +1,28 @@
 /* global localStorage */
-import { SEED, USERADDRESS, createUserKeystore, getAnonymousAddress, createUser, resetDb, createUserAndLogin, assertUserIsLoggedIn, waitForUserIsLoggedIn, assertUserIsNotLoggedIn, nukeLocalStorage, clearUserKeystoreFromLocalStorage, getUserPTIAddressFromBrowser, waitForKeystore } from './helpers.js'
+import {
+  SEED,
+  USERADDRESS,
+  createUserKeystore,
+  getAnonymousAddress,
+  createUser,
+  resetDb,
+  createUserAndLogin,
+  login,
+  assertUserIsLoggedIn,
+  waitForUserIsLoggedIn,
+  assertUserIsNotLoggedIn,
+  nukeLocalStorage,
+  clearUserKeystoreFromLocalStorage,
+  getUserPTIAddressFromBrowser,
+  waitForKeystore
+} from './helpers.js'
+import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
 describe('Profile and accounts workflow:', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
-  })
-
-  afterEach(function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
   })
@@ -95,6 +109,31 @@ describe('Profile and accounts workflow:', function () {
     // the address of the new keystore should be the same as the old 'anonymous' address
     const publicAddress = getUserPTIAddressFromBrowser()
     assert.equal(publicAddress, add0x(anonymousAddress))
+  })
+
+  it('change password @watch', async function (done) {
+    browser.execute(clearUserKeystoreFromLocalStorage)
+    createUserAndLogin(browser)
+    waitForUserIsLoggedIn(browser)
+    const userAccount = getUserPTIAddressFromBrowser()
+    sendSomeETH(userAccount, 3.1)
+    browser.url('http://localhost:3000/profile')
+    browser.waitForClickable('#edit-profile')
+    browser.click('#edit-profile')
+    browser.waitForClickable('.edit-password')
+    browser.click('.edit-password')
+    // TODO remove this pause, problem with modals
+    browser.pause(2000)
+    browser.waitForClickable('[name="current-password"]', 5000)
+    browser.setValue('[name="current-password"]', 'password')
+    browser.setValue('[name="new-password"]', 'new-password')
+    browser.waitForClickable('#save-password')
+    browser.click('#save-password')
+    browser.pause(2000)
+    browser.waitForClickable('.wallet-contents li:last-child .amount')
+    const amount = await browser.getText('.wallet-contents li:last-child .balance', false)
+    assert.isOk(['3.10 ETH', '3,10 ETH'].indexOf(amount) > -1)
+    done()
   })
 
   it('show an error message if provided wrong password ', function () {
@@ -218,10 +257,9 @@ describe('Profile and accounts workflow:', function () {
     // browser.pause(5000)
   })
 
-  it.skip('shows the seed', function () {
+  it.skip('shows the seed ', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
-    waitForUserIsLoggedIn(browser)
     browser.url('http://localhost:3000/profile')
     browser.waitForClickable('#show-seed')
     browser.click('#show-seed')
@@ -231,7 +269,6 @@ describe('Profile and accounts workflow:', function () {
     browser.pause(1000)
     browser.click('#btn-show-seed')
     browser.waitForClickable('#closeModal')
-    // browser.click('#closeModal')
   })
 
   it.skip('send ether dialog is visible', function () {
@@ -381,5 +418,192 @@ describe('Profile and accounts workflow:', function () {
     createUserKeystore(browser)
     browser.url('http://localhost:3000')
     browser.waitForVisible('#foundKeystore #btn-foundKeystore-login')
+  })
+
+  describe('password reset', () => {
+    it('should not allow the user to change their password if they enter the incorrect current password', function () {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-password')
+      browser.click('.edit-password')
+      browser.waitForClickable('#current-password')
+      browser.setValue('#current-password', 'foobar')
+      browser.waitForClickable('#new-password')
+      browser.setValue('#new-password', 'myshinynewpassword')
+      browser.click('#save-password')
+
+      assert.equal(browser.isVisible('.edit-password-modal'), true)
+      browser.waitUntil(() => {
+        return browser.getText('.main-modal-error') === 'Current password is incorrect'
+      })
+    })
+
+    it('should not allow the user to attempt to change their password if they do not enter their current password', function () {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-password')
+      browser.click('.edit-password')
+      browser.waitForClickable('#new-password')
+      browser.setValue('#new-password', 'myshinynewpassword')
+      browser.click('#save-password')
+
+      assert.equal(browser.isVisible('.edit-password-modal'), true)
+      assert.equal(browser.getAttribute('#save-password', 'disabled'), 'true')
+    })
+
+    it('should not allow the user to attempt to change their password if they do not enter a new password', function () {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-password')
+      browser.click('.edit-password')
+      browser.waitForClickable('#current-password')
+      browser.setValue('#current-password', 'myshinynewpassword')
+      browser.click('#save-password')
+
+      assert.equal(browser.isVisible('.edit-password-modal'), true)
+      assert.equal(browser.getAttribute('#save-password', 'disabled'), 'true')
+    })
+
+    it('should not allow the user to attempt to change their password if they do not enter their current password or a new password', function () {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-password')
+      browser.click('.edit-password')
+      browser.waitForClickable('#current-password')
+      assert.equal(browser.getAttribute('#save-password', 'disabled'), 'true')
+    })
+
+    it('should allow the user to attempt to change their password if they enter the correct current password and a new password', function () {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-password')
+      browser.click('.edit-password')
+      browser.waitForClickable('#current-password')
+      browser.setValue('#current-password', 'password')
+      browser.waitForClickable('#new-password')
+      browser.setValue('#new-password', 'foobar')
+      browser.waitForClickable('#save-password')
+      browser.click('#save-password')
+
+      browser.waitUntil(() => {
+        return !browser.isVisible('.edit-password-modal')
+      })
+      browser.pause(500)
+      browser.waitForClickable('#logout a')
+      browser.click('#logout a')
+      browser.waitForVisible('#confirmLogout')
+      browser.pause(500)
+      browser.waitForClickable('#logoutBtn')
+      browser.click('#logoutBtn')
+      browser.waitForClickable('#nav-profile')
+      assertUserIsNotLoggedIn(browser)
+
+      login(browser, 'foobar')
+
+      waitForUserIsLoggedIn(browser)
+      assertUserIsLoggedIn(browser)
+    })
+  })
+
+  describe('edit profile', () => {
+    it('should render the current profile\'s information correctly', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.click('.edit-profile-info')
+      browser.waitForVisible('.edit-profile-info-modal')
+
+      assert.equal(browser.getAttribute('#new-username', 'placeholder'), 'foobar baz')
+      assert.equal(browser.getAttribute('#new-email', 'placeholder'), 'guildenstern@rosencrantz.com')
+      assert.equal(browser.getAttribute('.current-avatar', 'src'), 'https://google.com/images/stock.jpg')
+    })
+
+    it('should not allow the user to save profile information if no new information is entered', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.click('.edit-profile-info')
+      browser.waitForVisible('.edit-profile-info-modal')
+
+      assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
+    })
+
+    it('should not allow the user to save profile information if only whitespace is entered into the name or email fields', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.click('.edit-profile-info')
+      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForClickable('#new-username')
+      browser.setValue('#new-username', '        \n ')
+
+      assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
+
+      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForClickable('#new-email')
+      browser.setValue('#new-email', '       ')
+
+      assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
+    })
+
+    it('should allow the user to update their name', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+
+      assert.equal(browser.getText('.header-title'), 'foobar baz')
+
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.click('.edit-profile-info')
+      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForClickable('#new-username')
+      browser.setValue('#new-username', 'my shiny new name')
+
+      browser.waitForClickable('#save-profile-info')
+      browser.click('#save-profile-info')
+
+      browser.waitUntil(() => {
+        return browser.getText('.header-title') === 'my shiny new name'
+      })
+    })
+
+    it('should allow the user to update their email', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+
+      assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
+
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.click('.edit-profile-info')
+      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForClickable('#new-email')
+      browser.setValue('#new-email', 'myGreatEmail@aol.com')
+
+      browser.waitForClickable('#save-profile-info')
+      browser.click('#save-profile-info')
+
+      browser.waitUntil(() => {
+        return browser.getText('.profile-info-email') === 'myGreatEmail@aol.com'
+      })
+    })
   })
 })

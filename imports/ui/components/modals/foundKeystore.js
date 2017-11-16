@@ -1,7 +1,7 @@
 import './foundKeystore.html'
-import { showModal, hideModal, globalAlert } from '/imports/lib/utils.js'
+import { showModal, hideModal, showGlobalAlert } from '/imports/lib/utils.js'
 import '/imports/ui/components/modals/login.js'
-import '/imports/ui/components/alert/alert.js'
+import '/imports/ui/components/alert/modalAlert.js'
 
 Template.foundKeystore.events({
   'click #btn-foundKeystore-login' (event, instance) {
@@ -9,6 +9,6 @@ Template.foundKeystore.events({
   },
   'click #btn-foundKeystore-cancel' (event, instance) {
     hideModal()
-    globalAlert(`You are now anonymous, of course you can <strong><a data-closealert data-showmodal="login">log in</a></strong> at any moment`)
+    showGlobalAlert(`You are now anonymous, of course you can <strong><a data-closealert data-showmodal="login">log in</a></strong> at any moment`)
   }
 })

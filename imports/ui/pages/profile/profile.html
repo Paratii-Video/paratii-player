@@ -2,8 +2,11 @@
   <div class="app-content scrollable-y">
     {{#if currentUser }} {{#isAuthorized}}
 
+    {{ >pageheader title=currentUser.profile.name addlButtons=editProfileButton }}
+    {{#if editProfileMenuOpen }}
+      {{ >editProfile }}
+    {{/if}}
     <div class="walletContainer">
-      {{ >pageheader title=currentUser.profile.name addlButtons=editProfileButton }}
       <div class="profile-info profile-info-email"> {{userEmail}}</div>
     </div>
     {{#if userPTIAddress }}
@@ -32,8 +35,8 @@
             <!-- <button id="#earn-eth" class="earn-button">Earn more ETH</button> -->
             <!-- <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button> -->
           </div>
-          <!-- <a href="/transactions" class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</a>
-          <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button> -->
+          <!-- <a href="/transactions" class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</a> -->
+          <!-- <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button> -->
         </div>
       </div>
     </div>
