@@ -1,11 +1,12 @@
 import { assertUserIsLoggedIn, web3, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
-import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
+import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
 describe('wallet:', function () {
   let userAccount
 
   beforeEach(function () {
+    browser.url('http://localhost:3000/')
     createUserAndLogin(browser)
     browser.url('http://localhost:3000/profile')
     userAccount = getUserPTIAddressFromBrowser()
@@ -21,7 +22,7 @@ describe('wallet:', function () {
   })
 
   it('should show PTI balance', function () {
-    browser.execute(getSomePTI, 1412.9599)
+    sendSomePTI(userAccount, 1412.9599)
     browser.waitForVisible('.wallet-contents li:first-child .balance')
     browser.waitUntil(() => {
       return browser.getText('.wallet-contents li:first-child .balance') === '1,412.96 PTI'
