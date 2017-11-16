@@ -1,4 +1,4 @@
-import { resetDb, createVideo, clearUserKeystoreFromLocalStorage, createUserAndLogin } from './helpers.js'
+import { createVideo, createUserAndLogin, getUserPTIAddressFromBrowser } from './helpers.js'
 import { assert } from 'chai'
 
 function createPlaylist () {
@@ -25,15 +25,6 @@ function fakeVideoUnlock (address) {
 }
 
 describe('price tag status', function () {
-  beforeEach(function () {
-    browser.url('http://localhost:3000/')
-    server.execute(resetDb)
-  })
-
-  afterEach(function () {
-    browser.execute(clearUserKeystoreFromLocalStorage)
-  })
-
   it('when the video has no price', () => {
     createUserAndLogin(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
@@ -55,12 +46,10 @@ describe('price tag status', function () {
     assert.equal(browser.getText('.videos-item-price'), '10 PTI')
   })
 
-  it('when the video was bought [TODO]', () => {
+  it('when the video was bought [TODO] @watch', () => {
     createUserAndLogin(browser)
     browser.pause(5000)
-    browser.url('http:localhost:3000/profile')
-    browser.waitForVisible('#public_address')
-    const address = browser.getText('#public_address')
+    const address = getUserPTIAddressFromBrowser()
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     server.execute(fakeVideoUnlock, address)

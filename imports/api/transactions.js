@@ -53,7 +53,7 @@ if (Meteor.isServer) {
       }
       }
     ],
-      {clientCollection: 'userTransactions'}
+    {clientCollection: 'userTransactions'}
     )
   })
 } // this bracket closes Meteor.isServer()
@@ -190,12 +190,15 @@ async function watchVideoStoreBuyVideoEvents () {
       // find our user
       let user = Meteor.users.findOne({'profile.ptiAddress': log.args.buyer})
       if (!user) {
-        console.log(`No user found with account ${log.args.buyer}!`)
+        let msg = `No user found with account ${log.args.buyer}!`
+        console.log(msg)
         // so we create a new user object to at least have some trace of the sale
+        throw Error(msg)
       } else {
         let videos = user.profile.videos || {}
         videos[log.args.videoId] = { acquired: log.transactionHash }
         Meteor.users.update(user._id, {$set: {'profile.videos': videos}})
+        console.log(`User ${user._id} has bought videos ${videos}`)
       }
 
       /* add the transaction to the transaction history */

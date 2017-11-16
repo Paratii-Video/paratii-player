@@ -32,10 +32,29 @@
       padding: 0 20px;
     }
 
+    .player-related-videos{
+      display: none
+    }
+
     .playing & {
       opacity: 0;
       transition: opacity .25s, padding .8s @ease-smooth;
       pointer-events: none;
+
+
+    }
+
+    .related & {
+      opacity: 1;
+      transition: opacity .25s, padding .8s @ease-smooth;
+      .player-related-videos{
+        display: block
+      }
+
+      .player-infos-holder{
+        opacity: 0;
+        display: none;
+      }
     }
   }
 
@@ -48,7 +67,7 @@
     font-weight: 300;
     margin: 0 0 9px;
     max-width: 860px;
-    padding-right: 80px;
+    padding-right: 40px;
 
     .query-mini({
       font-size: 5.3vw;
@@ -78,6 +97,8 @@
   // Uploader
 
   &-uploader {
+    display: none;
+
     font-weight: 300;
     position:absolute;
     font-size: 14px;
@@ -188,10 +209,22 @@
       background: linear-gradient(to right, @color-purple 0%,@color-purple 50%,#7068e2 51%,@color-purple 100%);
       height: 40px;
       width: 50px;
+      pointer-events: none;
     }
   }
 }
 
+
+// Locked items(buy button, skip buttons)
+
+.player-locked {
+  align-items: center;
+  display: flex;
+
+  .player-button-prev {
+    margin: 0 20px 0 30px;
+  }
+}
 
 
 // Stats (views, likes, shares)

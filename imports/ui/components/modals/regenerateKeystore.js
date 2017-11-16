@@ -5,11 +5,10 @@ import { showModal } from '/imports/lib/utils.js'
 Template.regenerateKeystore.events({
   'click #restore-keystore' () {
     console.log('open restorekystore')
-    // TODO: make this work
-    showModal('restoreKeystore', {backdrop: 'static'})
+    showModal('restoreKeystore')
   },
   'click #create-wallet' () {
     console.log('TODO: merge the anonymous wallet to the new user')
-    showModal('createNewWallet', {backdrop: 'static'})
+    showModal('createNewWallet')
   }
 })

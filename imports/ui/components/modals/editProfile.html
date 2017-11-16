@@ -1,75 +1,10 @@
 <template name="editProfile">
-  <form id="form-update-profile">
-    <!-- <div class="modal fade">
-      <div class="modal-dialog">
-        <div class="modal-content" id="show-seed">
-          <div class="modal-header">
-            <h4 class="modal-title">Confirmation</h4>
-          </div> -->
-          <div class="modal-body">
-            {{#if currentUser }}
-              <div>
-                <div class="flex-container-row">
-                  <div class="flex-grow">
-                    <div class="input-group">
-                      <span class="input-group-addon">Name:</span>
-                      <input type="text" name="field-name" class="form-control textbox" placeholder="Your name" value="{{currentUser.profile.name}}" >
-                    </div>
-                    <br />
-                    <div class="input-group">
-                      <span class="input-group-addon">E-mail:</span>
-                      <input type="text" name="field-email" class="form-control textbox" placeholder="Your email" value="{{userEmail}}" >
-                    </div>
-                  </div>
-                  <div class="profile-image-container">
-                    <table class="profile-image-table">
-                      {{#if currentUser.profile.image }}
-                        <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url( {{ currentUser.profile.image }} )"></span>
-                        <button class="btn btn-default" id="button-remove-image">Remove Image</button>
-                      {{else}}
-                        <tr>
-                          <td rowspan="2">
-                            {{#if ima}}
-                              <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url({{ima}})"></span>
-                            {{else}}
-                              <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url('/img/avatar_img.svg')"></span>
-                            {{/if}}
-                          </td>
-                          <td>
-                            <!-- TODO: plese move this style rule to css  -->
-                            <style>
-                            [hidden] {
-                              display: none !important;
-                            }
-                            </style>
-                            <label class="btn btn-default white-button">
-                                Upload Picture <input type="file" name="field-avatar-image" hidden>
-                            </label>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><button class="btn btn-default white-button" id="use-identicon">Use Identicon</button></td>
-                        </tr>
-                      {{/if}}
-                    </table>
-                  </div>
-                </div>
-                <div class="update-account-confirm">
-                  <!-- <button class="btn btn-default red-button" id="button-change-password">Change password</button>
-                  <input type="submit" class="btn btn-default blue-button" value="Save changes"/> -->
-                </div>
-              </div>
-            {{else}}
-              <div class="container">
-                {{> atForm }}
-              </div>
-            {{/if}}
-          </div>
-          <div class="modal-footer">
-            <input type="submit" id="btn-editprofile-save" class="btn btn-default blue-button" value="Save changes"/>
-          </div>
-        <!-- </div>
-      </div>
-    </div> -->
-  </form>
+  <div class="edit-profile-menu">
+    <div class="edit-profile-content">
+      <ul>
+        <li><button class="edit-profile-info">Edit profile</button></li>
+        <li><button class="edit-password">Change password</button></li>
+      </ul>
+    </div>
+  </div>
 </template>

@@ -1,7 +1,7 @@
 // import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 // import { showSeed } from '/imports/ui/components/modals/showSeed.js'
 import { AccountsTemplates } from 'meteor/useraccounts:core'
-import { showModal, hideModal } from '/imports/lib/utils.js'
+import { showModal } from '/imports/lib/utils.js'
 
 const mySubmitFunc = function (error, state) {
   if (error) {
@@ -13,7 +13,7 @@ const mySubmitFunc = function (error, state) {
     // we should have an anonymous keystore - we want to re-encode thsi with the password of the new user
     console.log('SIGNUP')
     // TODO:there is a modal still open at this point, but this is not expected. Which one?
-    hideModal()
+    // hideModal()
     showModal('showSeed')
   }
 }
@@ -31,7 +31,7 @@ AccountsTemplates.avoidRedirect = true
 AccountsTemplates.configure({
   // Behavior
   confirmPassword: false,
-  enablePasswordChange: true,
+  enablePasswordChange: false,
   forbidClientAccountCreation: false,
   overrideLoginErrors: true,
   sendVerificationEmail: false,
@@ -40,7 +40,7 @@ AccountsTemplates.configure({
 
   // Appearance
   showAddRemoveServices: false,
-  showForgotPasswordLink: true,
+  showForgotPasswordLink: false,
   showLabels: true,
   showPlaceholders: true,
   showResendVerificationEmailLink: false,

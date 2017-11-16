@@ -1,17 +1,17 @@
 <template name="createNewWallet">
-  new wallet
-  <div id="createNewWallet">
-    <form id="form-create-wallet">
-      <div class="{{#if errorMessage}}has-error{{/if}}">
-        {{#if errorMessage}}
-        <label class="control-label">{{errorMessage}}</label>
-        {{/if}}
-        <div class="input-group">
-          <span class="input-group-addon" id="sizing-addon3">Password</span>
-          <input name="user_password" type="password" class="form-control" placeholder="Enter your password" aria-describedby="sizing-addon1">
-        </div>
-        <button type="submit" id="btn-create-wallet" class="btn btn-default blue-button"
-          data-loading-text="Creating...">Create</button>
+  <div id="createNewWallet" class="main-modal-content">
+    <h3 class="main-modal-title main-modal-anim-1">New wallet</h3>
+    <form id="form-create-wallet" class="main-modal-form" action="">
+      {{> mainFormInput
+          class="main-modal-anim-2"
+          name="user_password"
+          type="password"
+          placeholder="Enter your password"
+          error=errorMessage
+      }}
+      <div class="main-modal-footer main-modal-anim-3">
+        <button id="btn-create-wallet" class="button-text main-modal-button signup" type="submit"
+          data-loading-text="Creating...">Restore</button>
       </div>
     </form>
   </div>

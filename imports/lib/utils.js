@@ -1,4 +1,10 @@
-function formatNumber (number) {
+export function log (message) {
+  if (Meteor.settings.public.isTestEnv) {
+    console.log(message)
+  }
+}
+
+export function formatNumber (number) {
   if (!number) {
     return false
   }
@@ -7,36 +13,84 @@ function formatNumber (number) {
   return parts.join('.')
 }
 
-function strip0x (input) {
+export function formatCoinBalance (balance = 0) {
+  return parseFloat(balance).toLocaleString(
+    undefined,
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }
+  )
+}
+
+export function strip0x (input) {
   if (typeof (input) !== 'string') {
     return input
   } else if (input.length >= 2 && input.slice(0, 2) === '0x') {
     return input.slice(2)
   }
-
   return input
 }
 
-function add0x (input) {
+export function add0x (input) {
   if (typeof (input) !== 'string') {
     return input
   } else if (input.length < 2 || input.slice(0, 2) !== '0x') {
     return `0x${input}`
   }
-
   return input
 }
 
-function showModal (templateName, options = null) {
+// Show & hide Modal
+export function showModal (templateName, options = null) {
   const template = { contentTemplate: templateName }
   const modalOptions = Object.assign(template, options)
   Session.set('contentTemplate', templateName)
-  Modal.show('mainModal', modalOptions)
+  Modal.show('mainModal', modalOptions, {backdrop: 'static'})
 }
 
-function hideModal (template) {
+export function hideModal (template) {
   Modal.hide()
   Session.set('contentTemplate', null)
 }
 
-export { formatNumber, add0x, strip0x, showModal, hideModal }
+// Manage errors on Alerts
+export function showGlobalAlert (message, style) {
+  Session.set('globalAlertClass', style)
+  Session.set('globalAlertMessage', message)
+  Meteor.setTimeout(() => {
+    Session.set('globalAlertShow', 'show')
+  }, 100)
+}
+
+export function hideGlobalAlert () {
+  Session.set('globalAlertShow', '')
+  Meteor.setTimeout(() => {
+    Session.set('globalAlertMessage', null)
+  }, 600)
+}
+
+export function showModalAlert (message, style) {
+  Session.set('modalAlertClass', style)
+  Session.set('modalAlertMessage', message)
+  Meteor.setTimeout(() => {
+    Session.set('modalAlertShow', 'show')
+  }, 100)
+}
+
+export function hideModalAlert () {
+  Session.set('modalAlertShow', '')
+  Meteor.setTimeout(() => {
+    Session.set('modalAlertMessage', null)
+  }, 600)
+}
+
+// export function setModalState (message) {
+//   Session.set('modalStateMessage', message)
+// }
+
+// change password type
+export function changePasswordType () {
+  let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
+  Session.set('passwordType', inputType)
+}

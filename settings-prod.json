@@ -1,5 +1,5 @@
 {
-  "doc": "These settings are used for the staging instance",
+  "doc": "These settings are used for the production instance",
   "public" : {
     "isProduction": true,
     "http_provider": "https://chain.paratii.video",

@@ -1,17 +1,16 @@
 import * as RLocalStorage from 'meteor/simply:reactive-local-storage'
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js'
 import { Accounts } from 'meteor/accounts-base'
-import { add0x } from '/imports/lib/utils.js'
+import { add0x, showModal } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { web3 } from './web3.js'
 import { GAS_PRICE, GAS_LIMIT } from './connection.js'
 import { getContract } from './contracts.js'
 
-// createKeystore will create a new keystore
-// save it in the session object and in local storage
-// generate an address, and save that in the sesssion too
-function createKeystore (password, seedPhrase, cb) {
-  // create a new seedPhrase if we have none
+// createKeystore will create a new keystore, and save it in the session object and in local storage
+// it generates an address, and save that in the session too
+function createKeystore (password, seedPhrase, key, cb) {
+  // create a new seedPhrase if we have none, and save in in localstorage under 'keystore-{key}'
   Session.set('generating-keystore', true)
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed()
@@ -36,15 +35,16 @@ function createKeystore (password, seedPhrase, cb) {
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 1)
       const address = keystore.getAddresses()[0]
-
-      if (Accounts.userId() !== null) {
-        // if there is a logged user, save as always
-        saveKeystore(seedPhrase, keystore.serialize(), address)
+      if (key) {
+        // if there is a logged user, save the keystore under the given key
+        saveKeystore(seedPhrase, keystore.serialize(), address, key)
+        Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
       } else {
         // else, save in a temporary session variable
         // Session.set('tempSeed', seedPhrase)
         Session.set('tempKeystore', keystore.serialize())
         Session.set('tempAddress', add0x(address))
+        Session.set('seed', null)
       }
       Session.set('generating-keystore', false)
       if (cb) {
@@ -55,13 +55,15 @@ function createKeystore (password, seedPhrase, cb) {
 }
 
 // save the seed, keystore and address in the session
-function saveKeystore (seedPhrase, keystore, address) {
-  const userId = Accounts.userId()
+function saveKeystore (seedPhrase, keystore, address, key) {
+  if (!key) {
+    throw Error('No key given1')
+  }
+  // save the keystiore undeer `keystore-${key}`
   Session.set('seed', seedPhrase)
-  RLocalStorage.setItem(`keystore-${userId}`, keystore)
-  Session.set(`keystore-${userId}`, keystore)
+  RLocalStorage.setItem(`keystore-${key}`, keystore)
+  Session.set(`keystore-${key}`, keystore)
   Session.set('userPTIAddress', add0x(address))
-  Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
 }
 
 function createAnonymousKeystoreIfNotExists () {
@@ -70,7 +72,7 @@ function createAnonymousKeystoreIfNotExists () {
   if (keystores.anonymous === 0) {
     console.log('creating anonymous keystore')
     Session.set('wallet-state', 'generating')
-    createKeystore('password', undefined, function (err, seedPhrase, keystore) {
+    createKeystore('password', undefined, 'anonymous', function (err, seedPhrase, keystore) {
       if (err) {
         throw err
       }
@@ -86,6 +88,45 @@ function createAnonymousKeystoreIfNotExists () {
         console.log('Anonymous keystore created')
       }
     })
+  }
+}
+
+function mergeOrCreateNewWallet (password) {
+  const anonymousKeystore = getKeystore('anonymous')
+  const key = Meteor.userId()
+  if (password !== undefined) {
+    if (anonymousKeystore !== null) {
+      // we have an anonmous keystore - we need to regenarate a new keystore
+      // with the same seed but the new password
+      getSeedFromKeystore('password', anonymousKeystore, function (err, seedPhrase) {
+        if (err) {
+          throw err
+        }
+        createKeystore(password, seedPhrase, key, function (error, result) {
+          if (error) {
+            throw error
+          }
+          // hideModal()
+          console.log('show seed')
+          showModal('showSeed')
+          deleteKeystore('anonymous')
+          Session.set('user-password', null)
+        })
+      })
+    } else {
+      // There is no anonymous keystore, i create a keystore
+      console.log('no anonymous keystore found')
+      createKeystore(password, null, key, function (error, result) {
+        if (error) {
+          throw error
+        }
+        // hideModal()
+        showModal('showSeed')
+      })
+    }
+  } else {
+    console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
+    showModal('regenerateKeystore')
   }
 }
 
@@ -163,7 +204,8 @@ export function getSeedFromKeystore (password, keystore, callback) {
 }
 
 function restoreWallet (password, seedPhrase, cb) {
-  return createKeystore(password, seedPhrase, cb)
+  const userId = Meteor.userId()
+  return createKeystore(password, seedPhrase, userId, cb)
 }
 
 function sendTransaction (password, contractName, functionName, args, value, callback) {
@@ -211,4 +253,4 @@ function sendTransaction (password, contractName, functionName, args, value, cal
   })
 }
 
-export { deleteKeystore, createKeystore, restoreWallet, sendTransaction, saveKeystore, createAnonymousKeystoreIfNotExists }
+export { mergeOrCreateNewWallet, deleteKeystore, createKeystore, restoreWallet, sendTransaction, saveKeystore, createAnonymousKeystoreIfNotExists }
