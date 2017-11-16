@@ -3,6 +3,9 @@
     {{#if currentUser }} {{#isAuthorized}}
 
     {{ >pageheader title=currentUser.profile.name addlButtons=editProfileButton }}
+    {{#if editProfileMenuOpen }}
+      {{ >editProfile }}
+    {{/if}}
     <div class="walletContainer">
       <div class="profile-info profile-info-email"> {{userEmail}}</div>
     </div>

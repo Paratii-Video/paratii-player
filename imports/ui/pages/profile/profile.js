@@ -18,9 +18,16 @@ import '/imports/ui/components/buttons/fullScreenButton.js'
 import '../../components/pageheader/pageheader.js'
 import './editProfileButton.js'
 
+Template.profile.onCreated(function () {
+  Session.set('editProfileMenuOpen', false)
+})
+
 Template.profile.helpers({
   editProfileButton () {
     return 'editProfileButton'
+  },
+  editProfileMenuOpen  () {
+    return Session.get('editProfileMenuOpen')
   },
   events () {
     // Perform a reactive database query against minimongo
@@ -95,7 +102,18 @@ Template.profile.events({
     showModal('showSeed')
   },
   'click #edit-profile' () {
-    Modal.show('editProfile')
+    Session.set('editProfileMenuOpen', true)
+  },
+  'click' (e) {
+    if (Session.get('editProfileMenuOpen')) {
+      const menu = document.querySelectorAll('.edit-profile-menu')
+      if (!menu.length || !menu[0].contains(e.target)) {
+        $(menu[0]).removeClass('show')
+        Meteor.setTimeout(() => {
+          Session.set('editProfileMenuOpen', false)
+        }, 250)
+      }
+    }
   }
 })
 
