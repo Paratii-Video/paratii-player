@@ -46,12 +46,9 @@ describe('price tag status', function () {
     assert.equal(browser.getText('.videos-item-price'), '10 PTI')
   })
 
-  it('when the video was bought [TODO]', () => {
+  it('when the video was bought [TODO] @watch', () => {
     createUserAndLogin(browser)
     browser.pause(5000)
-    // browser.url('http:localhost:3000/profile')
-    // browser.waitForVisible('#public_address')
-    // const address = browser.getText('#public_address')
     const address = getUserPTIAddressFromBrowser()
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)

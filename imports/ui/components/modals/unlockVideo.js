@@ -3,7 +3,7 @@ import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
 import { web3 } from '/imports/lib/ethereum/connection.js'
 import { getContract } from '/imports/lib/ethereum/contracts.js'
 import { checkPassword, getUserPTIAddress } from '/imports/api/users.js'
-import { modalAlert, setModalState } from '/imports/lib/utils.js'
+import { showModalAlert } from '/imports/lib/utils.js'
 import '/imports/lib/validate.js'
 import '/imports/ui/components/form/mainFormInput.js'
 import './unlockVideo.html'
@@ -37,7 +37,6 @@ Template.unlockVideo.events({
   async 'submit #form-unlockVideo' (event) {
     event.preventDefault()
 
-    setModalState('')
     // TODO: GET THE ACTUAL PRICE of the video
     let price = web3.toWei(this.price)
     let videoId = this.videoid // Video id whne you unlock a video
@@ -52,12 +51,12 @@ Template.unlockVideo.events({
       // TODO: if the price is 0, this is an error in the data, not a user error:
       msg = `You don't have enough PTI: your balance is ${web3.fromWei(balance)}`
       check.wallet_amount = 'This value is not allowed'
-      modalAlert(msg, 'error')
+      showModalAlert(msg, 'error')
       return
     } else if (parseFloat(price) > parseFloat(balance)) {
       msg = `You don't have enough PTI: your balance is ${web3.fromWei(balance)}`
       check.wallet_amount = msg
-      modalAlert(msg, 'error')
+      showModalAlert(msg, 'error')
       return
     } else {
       check.wallet_amount = null
@@ -69,7 +68,7 @@ Template.unlockVideo.events({
       // TODO: check that the user has enough ether for a minimal transaction
       msg = `You need some Ether for sending a transaction - but you have none`
       check.wallet_amount = msg
-      modalAlert(msg, 'error')
+      showModalAlert(msg, 'error')
       return
     }
 
@@ -79,7 +78,7 @@ Template.unlockVideo.events({
     } else {
       msg = 'Wrong password'
       check.user_password = msg
-      modalAlert(msg, 'error')
+      showModalAlert(msg, 'error')
       return
     }
     const errors = _.find(check, function (value) {
@@ -87,7 +86,7 @@ Template.unlockVideo.events({
     })
     Session.set('checkTransaction', check)
     if (errors === undefined) {
-      setModalState('Processing transaction..')
+      showModalAlert('Processing transaction..')
       // TODO: refactor: create a 'buyVideo' function that does not depend on Meteor and can be unittested separately
 
       // the transaction has two steps - we first approve that the paratiiavatar can move `price`, and then instruct the videoStore to buy the video
@@ -113,8 +112,7 @@ Template.unlockVideo.events({
       console.log(`now calling buyVideo ${videoId}`)
       sendTransaction(password, 'VideoStore', 'buyVideo', [videoId], 0, function (error, result) {
         if (error) {
-          setModalState('')
-          modalAlert('An error occurred: ' + error, 'error')
+          showModalAlert('An error occurred: ' + error, 'error')
         } else {
           Modal.hide('unlockVideo')
         }

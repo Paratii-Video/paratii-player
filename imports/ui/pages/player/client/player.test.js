@@ -164,7 +164,7 @@ describe('player helpers', function () {
   })
 
   it('volumeClass returns the expected initial value', function () {
-    assert.equal(Template.player.__helpers[' volumeClass'](), 'closed')
+    assert.equal(Template.player.__helpers[' volumeClass'](), 'hide-volume')
   })
 
   it('playedProgress returns the expected initial value', function () {

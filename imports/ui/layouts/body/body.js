@@ -3,16 +3,16 @@ import '/imports/ui/icons/fullscreen.html'
 import '/imports/ui/icons/gear.html'
 import '/imports/ui/components/buttons/backButton.js'
 import '/imports/ui/components/svgs/svgs.js'
-import { add0x, showModal, hideModal } from '/imports/lib/utils.js'
+import { add0x, showModal, hideModal, log } from '/imports/lib/utils.js'
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, getKeystore, mergeOrCreateNewWallet } from '/imports/lib/ethereum/wallet.js'
-import '/imports/ui/components/alert/alert.js'
+import '/imports/ui/components/alert/globalAlert.js'
 import '/imports/ui/components/modals/foundKeystore.js'
 
 // TODO: reconsider the location of the next code - perhaps move it to start.js ?
 if (Meteor.isClient) {
   Accounts.onLogin(function (user) {
     // User is logged in
-    console.log('onLogin')
+    log('onLogin')
     // if any modal is still open, we can safely close it now to make it possible to open new ones
     // get the user's keystore
     const keystore = getKeystore()
@@ -25,7 +25,7 @@ if (Meteor.isClient) {
       if (keystore === null) {
         // this is an existing user (we are not in the singup process) , but the user has no keystore
         // mergeOrCreateNewWallet passing empty password, a modal will ask user the passw
-        console.log('Getting anonymous keystore')
+        log('Getting anonymous keystore')
         mergeOrCreateNewWallet()
       } else {
         // The normal login, the user has already a wallet on this browser
@@ -37,7 +37,7 @@ if (Meteor.isClient) {
 
   Accounts.onLogout(function (user) {
     // User Logged Out
-    console.log('logged out')
+    log('logged out')
     // Reset all session values
     Session.set('userPTIAddress', null)
     Session.set('tempSeed', null)
@@ -95,15 +95,6 @@ Template.App_body.helpers({
     var current = FlowRouter.current()
     var route = current.route.name
     return route
-  },
-  setAlertMessage () {
-    return Session.get('globalAlertMessage')
-  },
-  setAlertClass () {
-    return Session.get('classAlertGlobal')
-  },
-  setAlertType () {
-    return Session.get('globalAlertType')
   }
 })
 

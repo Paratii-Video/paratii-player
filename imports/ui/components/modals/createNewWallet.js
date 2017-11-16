@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating'
 import { mergeOrCreateNewWallet } from '/imports/lib/ethereum/wallet.js'
-import { modalAlert } from '/imports/lib/utils.js'
+import { showModalAlert } from '/imports/lib/utils.js'
 import '/imports/api/users.js'
 import '/imports/ui/components/form/mainFormInput.js'
 import './createNewWallet.html'
@@ -30,7 +30,7 @@ Template.createNewWallet.events({
       } else {
         // TODO: password is not valid - inform the user
         instance.errorMessage.set('Wrong password')
-        modalAlert('Wrong password', 'error')
+        showModalAlert('Wrong password', 'error')
       }
     })
   }
