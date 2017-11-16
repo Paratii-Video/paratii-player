@@ -1,6 +1,4 @@
 // // Import server startup through a single index entry point
-
-/* eslint no-console: "off" */
 import { Meteor } from 'meteor/meteor'
 
 export const paratiiStartupWelcome = () => {
@@ -28,3 +26,8 @@ export const paratiiStartupWelcome = () => {
 Meteor.startup(function () {
   paratiiStartupWelcome()
 })
+
+// these next horrible hacky lines is what meteor is reducing is to:
+// https://github.com/meteor/meteor/issues/7629
+if (false) require('/imports/fixtures/octobersprintfixture.js') // eslint-disable-line
+if (false) require('/imports/fixtures/resetD.js') // eslint-disable-line
