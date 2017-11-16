@@ -111,7 +111,7 @@ describe('Profile and accounts workflow:', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('change password @watch', async function (done) {
+  it('change password', async function (done) {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
@@ -372,9 +372,6 @@ describe('Profile and accounts workflow:', function () {
   })
 
   it('do not create a new wallet if the password is wrong', function () {
-    server.execute(resetDb)
-    browser.pause(2000)
-
     // create a meteor user
     server.execute(createUser)
     assertUserIsNotLoggedIn(browser)
