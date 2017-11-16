@@ -1,12 +1,16 @@
 {
    "current password": "current password",
    "Change password": "Change password",
+   "Copy link": "Copy link",
+   "Create new wallet":"Create new wallet",
    "Do you really want to leave the application?": "Do you really want to leave the application?",
    "Edit profile": "Edit profile",
+   "Embed video": "Embed video",
    "Log out":"Log out",
    "New password": "New password",
    "new password": "new password" ,
    "Playlists": "Playlists",
    "PTI address": "PTI address",
-   "Save Changes": "Save Changes"
+   "Save Changes": "Save Changes",
+   "Share this video": "Share this video"
 }
