@@ -4,8 +4,11 @@
 
 @size-modal-wrapper-height: 280px;
 @size-modal-wrapper-width: 310px;
-@modal-footer-height: 20px;
 @size-modal-wrapper-width-wide: 530px;
+@size-modal-footer-height: 20px;
+
+@zindex-modal-bg: 1;
+@zindex-modal-wrapper: 2;
 
 // Main
 
@@ -15,9 +18,7 @@
   align-items: center;
   display: flex;
   justify-content: center;
-  opacity: 1 !important;
   pointer-events: none;
-  transition: .8s @ease-smooth;
   z-index: @zindex-modal;
 
   // Bg
@@ -29,7 +30,7 @@
     content: '';
     opacity: 0;
     transition: opacity .25s linear;
-    z-index: 1;
+    z-index: @zindex-modal-bg;
   }
 
   &.fade {
@@ -44,7 +45,7 @@
   }
 }
 
-// Containers
+//
 
 .main-modal-wrapper {
   background-color: white;
@@ -56,7 +57,7 @@
   transform: scaleY(0);
   transition: transform .3s @ease-smooth;
   width: @size-modal-wrapper-width;
-  z-index: 2;
+  z-index: @zindex-modal-wrapper;
 
   .fade.in & {
     transform: scaleY(1);
@@ -68,7 +69,7 @@
   }
 }
 
-// Content
+//
 
 .main-modal-content {
   &:extend(.full-wh all);
@@ -77,15 +78,12 @@
   pointer-events: none;
   position: relative;
 
-  &.show-content {
-    pointer-events: initial;
-  }
   .show-content & {
     pointer-events: initial;
   }
 }
 
-// Steps
+// Steps (remove bacause of {{> templates}})
 
 .main-modal-step {
   &-1,
@@ -113,54 +111,47 @@
   }
 }
 
-// Animation
+// Animation(in/out elements)
 
-.main-modal-anim-1 {
-  &:extend(.anim-element-out all);
-
-  .show-content & {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    transition: opacity .3s linear .1s, transform .75s @ease-smooth;
-  }
-}
-
-.main-modal-anim-2 {
-  &:extend(.anim-element-out all);
-
-  .show-content & {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    transition: opacity .3s linear .2s, transform .75s @ease-smooth .1s;
-  }
-}
-
-.main-modal-anim-3 {
-  &:extend(.anim-element-out all);
-
-  .show-content & {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    transition: opacity .3s linear .3s, transform .75s @ease-smooth .2s;
-  }
-}
-
-.main-modal-anim-4 {
-  &:extend(.anim-element-out all);
-
-  .show-content & {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    transition: opacity .3s linear .4s, transform .75s @ease-smooth .3s;
-  }
-}
-
+.main-modal-anim-1,
+.main-modal-anim-2,
+.main-modal-anim-3,
+.main-modal-anim-4,
 .main-modal-anim-5 {
   &:extend(.anim-element-out all);
 
   .show-content & {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+  }
+}
+
+.main-modal-anim-1 {
+  .show-content & {
+    transition: opacity .3s linear .1s, transform .75s @ease-smooth;
+  }
+}
+
+.main-modal-anim-2 {
+  .show-content & {
+    transition: opacity .3s linear .2s, transform .75s @ease-smooth .1s;
+  }
+}
+
+.main-modal-anim-3 {
+  .show-content & {
+    transition: opacity .3s linear .3s, transform .75s @ease-smooth .2s;
+  }
+}
+
+.main-modal-anim-4 {
+  .show-content & {
+    transition: opacity .3s linear .4s, transform .75s @ease-smooth .3s;
+  }
+}
+
+.main-modal-anim-5 {
+  .show-content & {
     transition: opacity .3s linear .5s, transform .75s @ease-smooth .4s;
   }
 }
@@ -197,30 +188,29 @@
     color: @color-grey-light;
     font-size: 14px;
     font-weight: 300;
-    margin-bottom: @modal-footer-height;
 
-    &--alert {
+    &.alert {
       color: @color-red;
       text-transform: uppercase;
     }
 
-    &--dark {
+    &.dark {
       color: @color-grey;
     }
 
-    &--green {
+    &.green {
       color: @color-green;
     }
 
-    &--red {
+    &.red {
       color: @color-red;
     }
 
-    &--small {
+    &.small {
       font-size: 12px;
     }
 
-    &--big {
+    &.big {
       font-size: 16px;
     }
   }
@@ -330,7 +320,7 @@
     justify-content: flex-end;
     position: absolute;
     width: 100%;
-    height: @modal-footer-height;
+    height: @size-modal-footer-height;
 
     &-loading {
       display: none;

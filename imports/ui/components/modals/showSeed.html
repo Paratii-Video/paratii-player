@@ -1,25 +1,28 @@
 <template name="showSeed">
-  <div id="show-seed" class="main-modal-content show-content">
+  <div id="show-seed" class="main-modal-content">
     <h3 class="main-modal-title main-modal-anim-1">Show the seed phrase</h3>
     {{#if errorMessage}}
     <p class="control-label visually-hidden">{{errorMessage}}</p>
     {{/if}}
     {{#if seed}}
-        <p class="main-modal-text"><strong class="main-modal-text--red">Please write down the following 12 words</strong>
+        <p class="main-modal-text"><strong class="color-red">Please write down the following 12 words</strong>
         This phrase is <strong>the only way</strong> to recover your account</p>
         <br>
-        <p id="seed" class="main-modal-text"><strong class="main-modal-text--dark">{{seed}}</strong></p>
+        <p id="seed" class="main-modal-text"><strong class="color-grey-dark">{{seed}}</strong></p>
     {{else}}
       <form id="form-show-seed" class="main-modal-form" action="">
-        <div class="main-form-label main-modal-anim-2 password">
-          <input class="main-form-input main-form-input-password {{#if errorMessage}}error{{/if}}" name="user_password" type="{{ passwordType }}" placeholder="Enter your password" aria-describedby="sizing-addon1">
-          <button class="button-text button-text--grey-light main-form-button-password password" type="button">Show</button>
-        </div>
-        <div class="main-modal-anim-2">
-          <button id="button-forgot" class="button-text button-text--grey-light button-text--nocase main-form-button-forgot" type="button">Forgot password?</button>
+        {{> mainFormInput
+            class="main-modal-anim-2"
+            name="user_password"
+            type="password"
+            placeholder="Enter your password"
+            error=errorMessage
+        }}
+        <div class="main-modal-anim-3">
+          <button id="button-forgot" class="button-text nocase main-form-button-forgot" type="button">Forgot password?</button>
         </div>
         {{#unless seed}}
-        <div class="main-modal-footer main-modal-anim-3">
+        <div class="main-modal-footer main-modal-anim-4">
           <button id="btn-show-seed" class="button-text main-modal-button signin" type="submit" data-loading-text="Getting seed...">Get seed</button>
         </div>
         {{/unless}}

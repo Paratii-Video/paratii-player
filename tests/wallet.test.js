@@ -2,7 +2,7 @@ import { assertUserIsLoggedIn, web3, createUserAndLogin, getSomeETH, getSomePTI,
 import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
-describe('wallet:', function () {
+describe('wallet: ', function () {
   let userAccount
 
   beforeEach(function () {

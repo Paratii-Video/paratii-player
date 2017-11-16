@@ -2,6 +2,7 @@
 
 import '/imports/startup/client'
 import '/imports/startup/both'
+import { log } from '/imports/lib/utils.js'
 
 global.Buffer = global.Buffer || require('buffer').Buffer
 Meteor.startup(function () {
@@ -10,7 +11,7 @@ Meteor.startup(function () {
       if (error) {
         throw error
       }
-      console.log('setting Meteor.settings.public.ParatiiRegistry on testenv to', result)
+      log('setting Meteor.settings.public.ParatiiRegistry on testenv to', result)
       Meteor.settings.public.ParatiiRegistry = result
     })
   }

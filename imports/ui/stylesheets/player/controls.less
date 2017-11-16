@@ -12,28 +12,26 @@
   left: 0px;
   padding: 0 20px 0 90px;
   position: absolute;
-  transition: padding .65s @ease-smooth;
+  transition: padding .65s @ease-smooth, transform .8s @ease-smooth;
   width: 100%;
   z-index: @zindex-player-controls;
-
-  /* player gradient for increment intelligibility on brighther video */
-
-  background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.83) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.83) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#d4000000',GradientType=0 );
 
   .query-mini({
     padding: 0 20px 0 90px;
   });
 
   .hide-nav & {
-    transition: padding .8s @ease-smooth;
+    transition: padding .8s @ease-smooth, transform .65s @ease-smooth;
     padding: 0 17px 0;
 
     .query-mini({
       padding: 0 17px;
     });
+  }
+
+  .hide-controls & {
+    transform: translate3d(0, 100%, 0);
+    transition: padding .65s @ease-smooth, transform .65s @ease-smooth;
   }
 
   //
@@ -144,10 +142,10 @@
   }
 
   &-fullscreen {
-    bottom: 30px;
-    height: @size-player-controls-button-height;
+    bottom: 33px;
     position: absolute;
     right: 20px;
+    transition: transform .8s @ease-smooth;
     width: @size-player-controls-button-height;
     z-index: @zindex-player-button-fullscreen;
 
@@ -158,6 +156,11 @@
       top: 40px;
       width: 20px;
     });
+
+    .hide-controls & {
+      transform: translate3d(0, 50px, 0);
+      transition: transform .65s @ease-smooth;
+    }
   }
 }
 
@@ -194,11 +197,11 @@
   overflow: hidden;
   position: relative;
   transition: width .75s @ease-smooth;
-  width: 107px;
+  width: 80px;
 
-  &.closed {
+  .hide-volume & {
     transition: width .55s @ease-smooth;
-    width: 15px;
+    width: 0;
   }
 
   .query-mini({
@@ -211,13 +214,9 @@
     background: rgba(255, 255, 255, .3);
     border-radius: 10px;
     height: 5px;
-    right: 25px;
+    right: 11px;
     transition: transform .8s @ease-smooth;
-    width: 50px;
-
-    .closed & {
-      // transform: translate3d(-150%, 0, 0);
-    }
+    width: 60px;
   }
 
   &-bar {
@@ -233,10 +232,11 @@
 
 .player-progress {
   background: rgba(255, 255, 255, .3);
+  border-radius: 10px;
+  flex: 2;
   height: 5px;
-  margin: 0 10px;
+  margin: 0 25px 0 20px;
   position: relative;
-  width: 100%;
 
   .query-mini({
     margin: 0 20px;
