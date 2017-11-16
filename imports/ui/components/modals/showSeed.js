@@ -8,7 +8,7 @@ import './showSeed.html'
 
 Template.showSeed.onCreated(function () {
   // this.errorMessage = new ReactiveVar(null)
-
+  hideModalAlert()
 })
 
 Template.showSeed.helpers({

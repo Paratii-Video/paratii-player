@@ -428,7 +428,7 @@ describe('Profile and accounts workflow:', function () {
     browser.waitForVisible('#foundKeystore #btn-foundKeystore-login')
   })
 
-  describe('password reset', () => {
+  describe('password reset @watch', () => {
     it('should not allow the user to change their password if they enter the incorrect current password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')

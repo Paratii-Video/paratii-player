@@ -1,12 +1,13 @@
 import { Template } from 'meteor/templating'
 import { mergeOrCreateNewWallet } from '/imports/lib/ethereum/wallet.js'
-import { showModalAlert } from '/imports/lib/utils.js'
+import { showModalAlert, hideModalAlert } from '/imports/lib/utils.js'
 import '/imports/api/users.js'
 import '/imports/ui/components/form/mainFormInput.js'
 import './createNewWallet.html'
 
 Template.createNewWallet.onCreated(function () {
   this.errorMessage = new ReactiveVar(null)
+  hideModalAlert()
 })
 
 Template.createNewWallet.helpers({
