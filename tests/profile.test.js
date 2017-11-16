@@ -16,6 +16,7 @@ import {
   getUserPTIAddressFromBrowser,
   waitForKeystore
 } from './helpers.js'
+import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
