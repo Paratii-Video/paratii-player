@@ -2,8 +2,11 @@
   <div class="app-content scrollable-y">
     {{#if currentUser }} {{#isAuthorized}}
 
+    {{ >pageheader title=currentUser.profile.name addlButtons=editProfileButton }}
+    {{#if editProfileMenuOpen }}
+      {{ >editProfile }}
+    {{/if}}
     <div class="walletContainer">
-      {{ >pageheader title=currentUser.profile.name addlButtons=editProfileButton }}
       <div class="profile-info profile-info-email"> {{userEmail}}</div>
     </div>
     {{#if userPTIAddress }}
