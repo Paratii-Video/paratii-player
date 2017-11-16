@@ -53,7 +53,7 @@ describe('Video Store:', function () {
     let msg = `Expected to find ${description} in the first from ${browser.getText('.transaction-description')}`
     browser.waitUntil(() => {
       return browser.getText('.transaction-description')[0].indexOf(description) > -1
-    }, 1000, msg)
+    }, 10000, msg)
 
     // the video should be unlocked now
     browser.url(`http://localhost:3000/play/${videoId}`)
