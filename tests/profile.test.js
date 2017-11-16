@@ -111,7 +111,7 @@ describe('Profile and accounts workflow:', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('change password @watch', async function (done) {
+  it('change password', async function (done) {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
@@ -420,7 +420,7 @@ describe('Profile and accounts workflow:', function () {
     browser.waitForVisible('#foundKeystore #btn-foundKeystore-login')
   })
 
-  describe('password reset', () => {
+  describe('Password reset:', () => {
     it('should not allow the user to change their password if they enter the incorrect current password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
@@ -429,14 +429,17 @@ describe('Profile and accounts workflow:', function () {
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
       browser.waitForClickable('#current-password')
+      browser.pause(1000) // TODO: avoid browser.pause() :-(
       browser.setValue('#current-password', 'foobar')
       browser.waitForClickable('#new-password')
       browser.setValue('#new-password', 'myshinynewpassword')
       browser.click('#save-password')
 
       assert.equal(browser.isVisible('.edit-password-modal'), true)
+      browser.waitForVisible('.main-alert-content')
       browser.waitUntil(() => {
-        return browser.getText('.main-modal-error') === 'Current password is incorrect'
+        console.log(browser.getText('.main-alert-content'))
+        return browser.getText('.main-alert-content') === 'Wrong password'
       })
     })
 
