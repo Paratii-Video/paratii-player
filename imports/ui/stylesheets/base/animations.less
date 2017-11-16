@@ -1,0 +1,140 @@
+// Animations
+
+//
+
+.anim-element-out {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+  transition: opacity .3s, transform .6s @ease-smooth;
+}
+
+// Keyframes
+
+@keyframes fromFade {
+  from {
+    display: none;
+    opacity: 0;
+  }
+
+  to {
+    display: block;
+    opacity: 1;
+  }
+}
+
+// Scales
+
+@keyframes scaleUpTwist {
+  from{
+    transform: scale(2) rotate(50deg);
+    opacity: 0;
+  }
+  to{
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+//
+
+@keyframes showFullDown {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes hideFullUp {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes showUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes showFromLeft {
+  from {
+    transform: translatex(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translatex(0);
+    opacity: 1;
+  }
+}
+
+@keyframes hideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+
+@keyframes shakeAnim {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    transform: translate3d(1px, 0, 0);
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    opacity: .75;
+  }
+
+  20%, 40%, 60%, 80% {
+    opacity: 1;
+  }
+}
+
+@keyframes dots {
+  0%, 100% {
+    content: ''
+  }
+
+  10%, 90% {
+    content: '.';
+  }
+
+  30%, 70% {
+    content: '..';
+  }
+
+  50% {
+    content: '...';
+  }
+}
