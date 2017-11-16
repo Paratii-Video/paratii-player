@@ -15,7 +15,6 @@ before(async function (done) {
   browser.addCommand('waitForClickable', function (selector, timeout) {
     this.waitForVisible(selector, timeout)
     this.waitForEnabled(selector, timeout)
-    this.pause(500) // using .pause() is evil! - but so are heisenbugs in tests
   })
 
   browser.url('http://localhost:3000')
