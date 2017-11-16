@@ -9,9 +9,7 @@ import '../playlists.js'
 
 describe('playlists page', function () {
   it('renders correctly with simple data', function () {
-    const data = {
-      _: function (x) { return x }
-    } // add i18 function to namespace
+    const data = { }
     withRenderedTemplate('playlists', data, el => {
       assert.isAtLeast($(el).find('.internal-header-title').length, 1)
     })
