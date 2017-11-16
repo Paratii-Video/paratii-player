@@ -46,14 +46,14 @@ describe('Video Store:', function () {
       let balance = contracts.ParatiiToken.balanceOf(userAccount)
       // the price was 14 PTI, so the users balance should be equal to 300 - 14
       return Number(balance) === Number(web3.toWei(300 - 14))
-    }, 10000)
+    }, 20000)
     browser.url('http://localhost:3000/transactions')
     let description = 'Bought video QmNZS5J3LS1tMEVEP3tz3jyd2LXUEjkYJHyWSuwUvHDaRJ'
     browser.waitForExist('.transaction-description')
     let msg = `Expected to find ${description} in the first from ${browser.getText('.transaction-description')}`
     browser.waitUntil(() => {
       return browser.getText('.transaction-description')[0].indexOf(description) > -1
-    }, 10000, msg)
+    }, 20000, msg)
 
     // the video should be unlocked now
     browser.url(`http://localhost:3000/play/${videoId}`)
