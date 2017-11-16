@@ -22,9 +22,6 @@ import { assert } from 'chai'
 describe('Profile and accounts workflow:', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
-  })
-
-  afterEach(function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
   })
@@ -407,37 +404,31 @@ describe('Profile and accounts workflow:', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('#edit-profile')
-      browser.pause(500)
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
-      browser.pause(500)
       browser.waitForClickable('#current-password')
       browser.setValue('#current-password', 'foobar')
       browser.waitForClickable('#new-password')
       browser.setValue('#new-password', 'myshinynewpassword')
-      browser.waitForClickable('#save-password')
       browser.click('#save-password')
-      browser.pause(500)
 
       assert.equal(browser.isVisible('.edit-password-modal'), true)
-      assert.equal(browser.getText('.main-modal-error'), 'Current password is incorrect')
+      browser.waitUntil(() => {
+        return browser.getText('.main-modal-error') === 'Current password is incorrect'
+      })
     })
 
     it('should not allow the user to attempt to change their password if they do not enter their current password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('#edit-profile')
-      browser.pause(500)
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
-      browser.pause(500)
       browser.waitForClickable('#new-password')
       browser.setValue('#new-password', 'myshinynewpassword')
-      browser.pause(500)
       browser.click('#save-password')
-      browser.pause(500)
 
       assert.equal(browser.isVisible('.edit-password-modal'), true)
       assert.equal(browser.getAttribute('#save-password', 'disabled'), 'true')
@@ -447,16 +438,12 @@ describe('Profile and accounts workflow:', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('#edit-profile')
-      browser.pause(500)
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
-      browser.pause(500)
       browser.waitForClickable('#current-password')
       browser.setValue('#current-password', 'myshinynewpassword')
-      browser.pause(1000)
       browser.click('#save-password')
-      browser.pause(500)
 
       assert.equal(browser.isVisible('.edit-password-modal'), true)
       assert.equal(browser.getAttribute('#save-password', 'disabled'), 'true')
@@ -466,15 +453,10 @@ describe('Profile and accounts workflow:', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('#edit-profile')
-      browser.pause(500)
       browser.click('#edit-profile')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
       browser.waitForClickable('#current-password')
-      browser.click('#save-password')
-      browser.pause(500)
-
-      assert.equal(browser.isVisible('.edit-password-modal'), true)
       assert.equal(browser.getAttribute('#save-password', 'disabled'), 'true')
     })
 
@@ -491,14 +473,16 @@ describe('Profile and accounts workflow:', function () {
       browser.setValue('#new-password', 'foobar')
       browser.waitForClickable('#save-password')
       browser.click('#save-password')
-      browser.pause(1000)
 
-      assert.equal(browser.isVisible('.edit-password-modal'), false)
-
-      browser.waitForClickable('#logout')
-      browser.click('#logout')
-      browser.pause(1000)
-      browser.waitForVisible('#logoutBtn')
+      browser.waitUntil(() => {
+        return !browser.isVisible('.edit-password-modal')
+      })
+      browser.pause(500)
+      browser.waitForClickable('#logout a')
+      browser.click('#logout a')
+      browser.waitForVisible('#confirmLogout')
+      browser.pause(500)
+      browser.waitForClickable('#logoutBtn')
       browser.click('#logoutBtn')
       browser.waitForClickable('#nav-profile')
       assertUserIsNotLoggedIn(browser)
@@ -573,7 +557,6 @@ describe('Profile and accounts workflow:', function () {
 
       browser.waitForClickable('#save-profile-info')
       browser.click('#save-profile-info')
-      browser.pause(1000)
 
       assert.equal(browser.getText('.header-title'), 'my shiny new name')
     })
@@ -594,7 +577,6 @@ describe('Profile and accounts workflow:', function () {
 
       browser.waitForClickable('#save-profile-info')
       browser.click('#save-profile-info')
-      browser.pause(1000)
 
       assert.equal(browser.getText('.profile-info-email'), 'myGreatEmail@aol.com')
     })
