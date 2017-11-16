@@ -45,7 +45,12 @@ before(async function (done) {
         if (err.seleniumStack.type === 'InvalidElementState') {
           // ignore and try again
           return false
+        } else if (err.seleniumStack.type === 'UnknownError') {
+          // 'another element would receive the click' is reported as an 'unknown error'
+          // ignore and try again
+          return false
         } else {
+          console.log(err)
           throw err
         }
       }

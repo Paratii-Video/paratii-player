@@ -278,7 +278,7 @@ describe('Profile and accounts workflow:', function () {
     // browser.waitForClickable('#closeModal')
   })
 
-  it('send ether dialog works @watch', function () {
+  it('send ether dialog works', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     browser.execute(function () {
@@ -421,13 +421,42 @@ describe('Profile and accounts workflow:', function () {
     assert.equal(url.value, 'http://localhost:3000/')
   })
 
-  it('arriving in the application without being logged in, but with an existing user keystore, should ask for confirmation', function () {
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then continue anonymously @watch', function () {
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
     createUserKeystore(browser)
     browser.url('http://localhost:3000')
-    browser.waitForVisible('#foundKeystore #btn-foundKeystore-login')
+
+    assertUserIsNotLoggedIn(browser)
+
+    browser.waitForVisible('#foundKeystore')
+    // the user can now choose between contiuing anonimously, or to log in
+    // we choose anonimity
+    browser.waitAndClick('#btn-foundKeystore-cancel')
+    // we now see the main-alert-content
+    browser.waitForEnabled('.main-alert-content')
+    // and dismiss it
+    browser.waitAndClick('.main-alert-button-close')
+    // we remain not logged in
+    assertUserIsNotLoggedIn(browser)
+  })
+
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in @watch', function () {
+    // We show a modal with a short explation :
+    // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
+    // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
+    createUserKeystore(browser)
+    browser.url('http://localhost:3000')
+    assertUserIsNotLoggedIn(browser)
+
+    browser.waitForVisible('#foundKeystore')
+    // the user can now choose between contiuing anonimously, or to log in
+    // we choose anonimity
+    browser.waitAndClick('#btn-foundKeystore-login')
+
+    // we should now see the login modal
+    browser.waitForVisible('#loginModal')
   })
 
   describe('Password reset:', () => {

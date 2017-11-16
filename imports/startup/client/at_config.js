@@ -70,7 +70,7 @@ AccountsTemplates.configure({
   // Texts
   texts: {
     button: {
-      signUp: 'Sign up'
+      signUp: _('Register')
     },
     // socialSignUp: "Register...",
     socialIcons: {
