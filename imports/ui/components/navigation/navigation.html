@@ -21,7 +21,7 @@
           {{#if currentUser}}
             <span class="main-nav-text">{{ currentUser.profile.name }}</span>
           {{else}}
-            <span class="main-nav-text">Sign up or login</span>
+            <span class="main-nav-text">{{_ "Register or log in" }}</span>
           {{/if}}
         </a>
       </li>
@@ -32,7 +32,7 @@
               <use class="main-nav-svg-use" xlink:href="#icon-playlist"></use>
             </svg>
           </div>
-          <span class="main-nav-text">Playlists</span>
+          <span class="main-nav-text">{{_ "Playlists" }}</span>
         </a>
       </li>
       <li id="search" class="main-nav-item {{isActivePath '/search'}} locked">
@@ -42,7 +42,7 @@
               <use class="main-nav-svg-use" xlink:href="#icon-search"></use>
             </svg>
           </div>
-          <span class="main-nav-text">Search</span>
+          <span class="main-nav-text">{{_ "Search" }}</span>
         </a>
       </li>
       <!-- hidden until it will be implemented
@@ -68,7 +68,7 @@
               <use class="main-nav-svg-use" xlink:href="#icon-logout"></use>
             </svg>
           </div>
-          <span class="main-nav-text">Logout</span>
+          <span class="main-nav-text">{{_ "Log out" }}</span>
         </a>
       </li>
       {{/if}}
