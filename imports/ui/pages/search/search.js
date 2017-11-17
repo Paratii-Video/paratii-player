@@ -45,9 +45,6 @@ Template.search.events({
     Template.instance().sorting.set(sorting)
   },
   'click button.thumbs-list-settings' (event, instance) {
-    $(event.currentTarget).parent().toggleClass('active')
-  },
-  'click button.thumbs-list-settings' (event, instance) {
     $(event.currentTarget).closest('.thumbs-list-item').toggleClass('active')
   }
 })
