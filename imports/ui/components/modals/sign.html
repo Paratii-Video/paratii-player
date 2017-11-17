@@ -31,8 +31,8 @@
         <button id="button-forgot" class="button-text  nocase main-form-button-forgot" type="button">Forgot password?</button>
       </div>
       <div class="main-modal-footer main-modal-anim-4">
-        <button class="button-text  main-modal-button gotosignup" type="button">Sign up</button>
-        <button class="button-text main-modal-button signin" type="submit">Sign in</button>
+        <button class="button-text  main-modal-button gotosignup" type="button">{{_ "Register" }}</button>
+        <button class="button-text main-modal-button signin" type="submit">{{_ "Log in" }}</button>
       </div>
     </form>
   </div>
@@ -40,7 +40,7 @@
 
 <template name="modal_sign_up">
   <div class="main-modal-content main-modal-sign-up">
-    <h3 class="main-modal-title main-modal-anim-1">Sign up</h3>
+    <h3 class="main-modal-title main-modal-anim-1">{{_ "Register" }}</h3>
     <form class="main-modal-form" action="">
       <div class="main-form-label main-modal-anim-2 username">
         <input class="main-form-input username" type="text" name="username" placeholder="username" />
@@ -53,8 +53,8 @@
         <button class="button-text  main-form-button-password password" type="button">Show</button>
       </div>
       <div class="main-modal-footer main-modal-anim-5">
-        <button class="button-text  main-modal-button gotosignin" type="button">Sign in</button>
-        <button class="button-text main-modal-button signup" type="submit">Sign up</button>
+        <button class="button-text  main-modal-button gotosignin" type="button">{{_ "Log in"}}</button>
+        <button class="button-text main-modal-button signup" type="submit">{{_ "Register" }}</button>
       </div>
     </form>
   </div>
@@ -81,7 +81,7 @@
   <div class="main-modal-content main-modal-forgot-2">
     <h3 class="main-modal-title main-modal-anim-1">Check your email</h3>
     <p class="main-modal-text main-modal-anim-2">We've sent an email to {{ userEmail }}. Click the link in the email to reset your password.<br> If you still don’t see it, please check your spam folder before getting in touch.</p>
-    <br> 
+    <br>
     <p class="main-modal-text main-modal-anim-3">Don't you receive the email? <button class="button-text  nocase ">Send email again</button></p>
   </div>
 </template>

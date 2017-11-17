@@ -78,7 +78,7 @@ AccountsTemplates.configure({
     },
     title: {
       forgotPwd: 'Forgot password',
-      signUp: 'Sign Up'
+      signUp: 'Register'
     }
   }
 })
