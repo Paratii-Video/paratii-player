@@ -32,7 +32,7 @@
 
     background-color: black;
     content: ''; 
-    opacity: .75;
+    opacity: .4;
     transition: opacity .35s;
     z-index: 2;
   }
@@ -41,7 +41,7 @@
     color: @color-white;
 
     &::before {
-      opacity: .5;
+      opacity: .1;
     }
   }
 }
@@ -162,8 +162,12 @@
 .thumbs-list-image {
   &:extend(.pos-a-full all);
 
-  transition: transform .35s ease-out;
+  transition: transform 2.5s @ease-out-expo;
   z-index: 1;
+
+  .thumbs-list-link:hover & {
+    transform: scale(1.03);
+  }
 }
 
 .thumb-list-modal {
