@@ -606,5 +606,30 @@ describe('Profile and accounts workflow:', function () {
         return browser.getText('.profile-info-email') === 'myGreatEmail@aol.com'
       })
     })
+
+    it('should not allow the user to update their email if they enter an invalid email', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+
+      assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
+
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.waitAndClick('.edit-profile-info')
+      browser.waitForVisible('.edit-profile-info-modal')
+
+      browser.waitAndSetValue('#new-email', 'fajwefnnnfnann')
+
+      browser.waitForClickable('#save-profile-info')
+      browser.click('#save-profile-info')
+
+      browser.waitUntil(() => {
+        return browser.getAttribute('#new-email', 'class').indexOf('error') >= 0
+      })
+
+      assert.equal(browser.isVisible('.edit-profile-info-modal'), true)
+      assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
+    })
   })
 })
