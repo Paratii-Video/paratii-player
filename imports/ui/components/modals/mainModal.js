@@ -14,7 +14,7 @@ Template.mainModal.onCreated(function () {
 
 Template.mainModal.helpers({
   contentTemplate: () => Session.get('contentTemplate'),
-  wrapperClass: () => Session.get('wrapperClass'),
   options: () => Session.get('modalOptions'),
+  wrapperClass: () => Session.get('modalOptions').wrapperClass,
   blocking: () => Session.get('modalOptions').blocking
 })

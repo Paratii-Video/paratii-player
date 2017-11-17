@@ -27,7 +27,7 @@ describe('Profile and accounts workflow:', function () {
     server.execute(resetDb)
   })
 
-  it('register a new user @watch', function () {
+  it('register a new user', function () {
     browser.execute(nukeLocalStorage)
     browser.url('http://localhost:3000')
 
@@ -72,7 +72,7 @@ describe('Profile and accounts workflow:', function () {
     assertUserIsLoggedIn(browser)
   })
 
-  it('login as an existing user on a device with no keystore - use existing anonymous keystore ', function () {
+  it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
 
@@ -283,7 +283,7 @@ describe('Profile and accounts workflow:', function () {
     // browser.waitForClickable('#closeModal')
   })
 
-  it('send ether dialog works @watch', function () {
+  it('send ether dialog works', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     browser.execute(function () {
