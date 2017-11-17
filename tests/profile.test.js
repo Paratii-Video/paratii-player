@@ -278,7 +278,7 @@ describe('Profile and accounts workflow:', function () {
     // browser.waitForClickable('#closeModal')
   })
 
-  it('send ether dialog works @watch', function () {
+  it('send ether dialog works', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     browser.execute(function () {
