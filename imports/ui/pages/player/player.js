@@ -296,10 +296,15 @@ Template.player.events({
     const balance = Session.get('pti_balance')
     const ethBalance = Session.get('eth_balance')
     if (Meteor.user()) {
-      if (ethBalance === 0) {
+      console.log('-0-------------------------')
+      console.log(`price: ${price}`)
+      console.log(`balance: ${balance}`)
+      console.log(`eth_balance: ${ethBalance}`)
+      console.log('-0-------------------------')
+      if (ethBalance === undefined || ethBalance === 0) {
         // check that the user has enough ether for a minimal transaction
         showGlobalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
-      } else if (parseFloat(price) > parseFloat(balance)) {
+      } else if (balance === undefined || balance === 0 || parseFloat(price) > parseFloat(balance)) {
         // The user balance is lower than the video price
         showGlobalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
       } else {
