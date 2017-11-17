@@ -426,13 +426,42 @@ describe('Profile and accounts workflow:', function () {
     assert.equal(url.value, 'http://localhost:3000/')
   })
 
-  it('arriving in the application without being logged in, but with an existing user keystore, should ask for confirmation', function () {
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then continue anonymously @watch', function () {
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
     createUserKeystore(browser)
     browser.url('http://localhost:3000')
-    browser.waitForVisible('#foundKeystore #btn-foundKeystore-login')
+
+    assertUserIsNotLoggedIn(browser)
+
+    browser.waitForVisible('#foundKeystore')
+    // the user can now choose between contiuing anonimously, or to log in
+    // we choose anonimity
+    browser.waitAndClick('#btn-foundKeystore-cancel')
+    // we now see the main-alert-content
+    browser.waitForEnabled('.main-alert-content')
+    // and dismiss it
+    browser.waitAndClick('.main-alert-button-close')
+    // we remain not logged in
+    assertUserIsNotLoggedIn(browser)
+  })
+
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in @watch', function () {
+    // We show a modal with a short explation :
+    // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
+    // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
+    createUserKeystore(browser)
+    browser.url('http://localhost:3000')
+    assertUserIsNotLoggedIn(browser)
+
+    browser.waitForVisible('#foundKeystore')
+    // the user can now choose between contiuing anonimously, or to log in
+    // we choose anonimity
+    browser.waitAndClick('#btn-foundKeystore-login')
+
+    // we should now see the login modal
+    browser.waitForVisible('#loginModal')
   })
 
   describe('Password reset:', () => {
@@ -610,6 +639,31 @@ describe('Profile and accounts workflow:', function () {
       browser.waitUntil(() => {
         return browser.getText('.profile-info-email') === 'myGreatEmail@aol.com'
       })
+    })
+
+    it('should not allow the user to update their email if they enter an invalid email', () => {
+      createUserAndLogin(browser)
+      browser.url('http://localhost:3000/profile')
+      browser.waitForClickable('#edit-profile')
+
+      assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
+
+      browser.click('#edit-profile')
+      browser.waitForClickable('.edit-profile-info')
+      browser.waitAndClick('.edit-profile-info')
+      browser.waitForVisible('.edit-profile-info-modal')
+
+      browser.waitAndSetValue('#new-email', 'fajwefnnnfnann')
+
+      browser.waitForClickable('#save-profile-info')
+      browser.click('#save-profile-info')
+
+      browser.waitUntil(() => {
+        return browser.getAttribute('#new-email', 'class').indexOf('error') >= 0
+      })
+
+      assert.equal(browser.isVisible('.edit-profile-info-modal'), true)
+      assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
     })
   })
 })

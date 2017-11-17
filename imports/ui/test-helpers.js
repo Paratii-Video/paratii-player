@@ -16,6 +16,9 @@ const withDiv = function withDiv (callback) {
 export const withRenderedTemplate = function withRenderedTemplate (template, data, callback) {
   withDiv((el) => {
     const ourTemplate = _.isString(template) ? Template[template] : template
+    if (!data._) {
+      data._ = function (x) { return x }
+    }
     Blaze.renderWithData(ourTemplate, data, el)
     Tracker.flush()
     callback(el)

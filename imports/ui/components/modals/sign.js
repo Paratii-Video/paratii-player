@@ -71,7 +71,7 @@ Template.modal_sign_in.events({
   }
 })
 
-// Sign up
+// Register
 
 Template.modal_sign_up.onCreated(() => {
   Session.set('passwordType', 'password')
@@ -145,7 +145,7 @@ Template.modal_sign_up.events({
   }
 })
 
-// Wait Confirm after sign up
+// Wait Confirm after registering
 
 Template.modal_wait_confirm.onRendered(() => {
   let timeIn = 10
