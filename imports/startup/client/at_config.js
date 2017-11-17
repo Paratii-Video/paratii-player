@@ -70,7 +70,7 @@ AccountsTemplates.configure({
   // Texts
   texts: {
     button: {
-      signUp: 'Sign up'
+      signUp: 'Register'
     },
     // socialSignUp: "Register...",
     socialIcons: {
@@ -78,7 +78,7 @@ AccountsTemplates.configure({
     },
     title: {
       forgotPwd: 'Forgot password',
-      signUp: 'Sign Up'
+      signUp: 'Register'
     }
   }
 })
