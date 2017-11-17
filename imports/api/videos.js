@@ -1,24 +1,85 @@
+/* globals ReactiveAggregate */
+
 import { check } from 'meteor/check'
 // import { Transactions } from '/imports/api/transactions.js'
 import { Playlists } from '/imports/api/playlists.js'
 
 export const Videos = new Mongo.Collection('videos')
-export function userLikesVideo (userId, videoId) {
+export const VideosResults = new Mongo.Collection('SearchResults')
+export const RelatedVideos = new Mongo.Collection('RelatedVideos')
+
+export function userLikesVideo (userAddress, videoId) {
   return Boolean(
-    Meteor.users.findOne({ _id: userId, 'stats.likes': { $in: [videoId] } })
+    Videos.findOne({ _id: videoId, 'stats.likers': { $in: [userAddress] } })
   )
 }
 
-export function userDislikesVideo (userId, videoId) {
+export function userDislikesVideo (userAddress, videoId) {
   return Boolean(
-    Meteor.users.findOne({ _id: userId, 'stats.dislikes': { $in: [videoId] } })
+    Videos.findOne({ _id: videoId, 'stats.dislikers': { $in: [userAddress] } })
   )
 }
 
 if (Meteor.isServer) {
+  // define video indexes
+  Videos._ensureIndex({
+    'title': 'text',
+    'description': 'text',
+    'uploader.name': 'text',
+    'tags': 'text'
+  })
   // Publish all videos
+
   Meteor.publish('videos', function () {
     return Videos.find()
+  })
+
+  // Publish searched videos
+  Meteor.publish('searchedVideos', function (keyword) {
+    const queryKeywords = new RegExp(keyword, '')
+    console.log('from server search', queryKeywords)
+
+    const query = {
+      $text: {
+        $search: keyword
+      }
+      // $or: [
+      //   { title: queryKeywords },
+      //   { description: queryKeywords },
+      //   { 'uploader.name': queryKeywords },
+      //   { tags: queryKeywords }
+      // ]
+    }
+
+    const relevanceSettings = {
+      fields: {
+        score: {
+          $meta: 'textScore'
+        }
+      },
+      sort: {
+        score: {
+          $meta: 'textScore'
+        }
+      }
+    }
+
+    // i've changed the cursor in order to clean query
+    Mongo.Collection._publishCursor(Videos.find(query, relevanceSettings), this, 'SearchResults')
+    this.ready()
+    // return Videos.find(query, relevanceSettings)
+  })
+
+  // Publish one video by id
+  Meteor.publish('relatedVideos', function (_id, userID) {
+    console.log('Videos related to', _id)
+    console.log('for the user', userID)
+    ReactiveAggregate(this, Videos, [
+      { $sample: { size: 6 } }
+    ]
+      ,
+    {clientCollection: 'RelatedVideos'}
+    )
   })
 
   // Publish one video by id
@@ -53,48 +114,42 @@ if (Meteor.isServer) {
   })
 }
 Meteor.methods({
-  'videos.like' (videoId) {
+  'videos.like' (address, videoId) {
     check(videoId, String)
-    const currentUserId = Meteor.userId()
-    if (!currentUserId) {
-      return false
-    }
+    const currentUserAddress = address
 
     // if the user has already likes this video, we don't do anything
-    if (userLikesVideo(currentUserId, videoId)) {
+    if (userLikesVideo(currentUserAddress, videoId)) {
       return false
     }
     // if the user has disliked this video, we remove the dislike
-    if (userDislikesVideo(currentUserId, videoId)) {
+    if (userDislikesVideo(currentUserAddress, videoId)) {
       Videos.update(videoId, { $inc: { 'stats.dislikes': -1 } })
-      Meteor.users.update(this.userId, { $pull: { 'stats.dislikes': videoId } })
+      Videos.update(videoId, { $pull: { 'stats.dislikers': currentUserAddress } })
     }
 
-    Meteor.users.update(currentUserId, { $addToSet: { 'stats.likes': videoId } })
+    Videos.update(videoId, { $addToSet: { 'stats.likers': currentUserAddress } })
     Videos.update(videoId, { $inc: { 'stats.likes': 1 } })
     return true
   },
-  'videos.dislike' (videoId) {
+  'videos.dislike' (address, videoId) {
     check(videoId, String)
-
-    const currentUserId = Meteor.userId()
-
-    if (!currentUserId) {
-      return false
-    }
+    const currentUserAddress = address
 
     // if the user has already likes this video, we don't do anything
-    if (userDislikesVideo(currentUserId, videoId)) {
+    if (userDislikesVideo(currentUserAddress, videoId)) {
       return false
     }
     // if the user has disliked this video, we remove the dislike
-    if (userLikesVideo(currentUserId, videoId)) {
+    if (userLikesVideo(currentUserAddress, videoId)) {
       Videos.update(videoId, { $inc: { 'stats.likes': -1 } })
-      Meteor.users.update(this.userId, { $pull: { 'stats.likes': videoId } })
+      Videos.update(videoId, { $pull: { 'stats.likers': currentUserAddress } })
+      // Meteor.users.update(this.userId, { $pull: { 'stats.likes': videoId } })
     }
 
-    Meteor.users.update(currentUserId, { $addToSet: { 'stats.dislikes': videoId } })
+    // Meteor.users.update(currentUserId, { $addToSet: { 'stats.dislikes': videoId } })
     Videos.update(videoId, { $inc: { 'stats.dislikes': 1 } })
+    Videos.update(videoId, { $addToSet: { 'stats.dislikers': currentUserAddress } })
     return true
   },
   'videos.create' (video) {
@@ -107,7 +162,9 @@ Meteor.methods({
       mimetype: String,
       stats: {
         likes: Number,
-        dislikes: Number
+        dislikes: Number,
+        likers: Array,
+        dislikers: Array
       },
       uploader: {
         name: String

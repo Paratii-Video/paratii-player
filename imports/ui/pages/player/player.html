@@ -1,12 +1,12 @@
 <template name="player">
-  <div id="player-container" class="player-container {{ descriptionClass }}">
+  <div id="player-container" class="player-container {{ hideControls }} {{ descriptionClass }} {{ mutedClass }} {{ volumeClass }} {{ playPause }}">
 
     {{currentVideo}}
 
     <video id="video-player" class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
     </video>
     {{#unless isLocked }}
-    <div class="player-controls {{playPause}} {{hideControls}} {{ mutedClass }}">
+    <div class="player-controls">
       <div class="player-controls-wrapper">
         <div class="player-controls-buttons">
           {{#if hasPlaylistId}}
@@ -41,7 +41,7 @@
           </button>
         </div>
 
-        <div class="player-controls-volume {{ volumeClass }}">
+        <div class="player-controls-volume">
           <div id="vol-control" class="player-controls-volume-slider">
             <div id="volume-value" class="player-controls-volume-bar" style="width: {{ volumeValue }}%"></div>
             <div id="vol-scrubber" class="player-scrubber" style="left: {{volScrubberTranslate}}%"></div>
@@ -60,15 +60,11 @@
       </div>
     </div>
 
-    <button id="fullscreen-button" class="player-button player-button-fullscreen {{hideControls}}" title="{{fullscreen}}">
-      <svg class="player-button-svg">
-        <use class="player-button-svg-use" xlink:href="#icon-fullscreen"></use>
-      </svg>
-    </button>
+    {{> fullScreenButton className="player-button player-button-fullscreen" target=videoPlayer }}
     {{/unless }}
 
     {{#with video}}
-    <div class="player-overlay player-infos {{playPause}}">
+    <div class="player-overlay player-infos">
       <div class="player-uploader player-infos-uploader">{{ uploader.name }} <img class="player-infos-uploader-image" src="{{ uploader.avatar }}"/></div>
 
       <div class="player-info player-infos-wrapper">
@@ -77,15 +73,16 @@
         <div class="player-infos-content">
           <div class="player-description player-infos-description">
             <p class="player-infos-description-text">{{ description }}</p>
-            <button class="button-text button-text--white button-text--nocase player-infos-button-description" type="button">Hide description</button>
+            <button class="button-text nocase white player-infos-button-description" type="button">{{_ "Hide description" }}</button>
           </div>
+
           <div class="player-infos-holder">
             <p class="player-related player-infos-related">
               {{#each tag in tags }}
                 <span class="player-infos-related-tag">{{ tag }}</span>
               {{/each}}
             </p>
-            <p class="player-uploader-name player-infos-uploader-name">By <strong>{{ uploader.name }}</strong></p>
+            <p class="player-uploader-name player-infos-uploader-name">{{_ "By" }} <strong>{{ uploader.name }}</strong></p>
             <div class="player-stats">
               <p class="player-stats-item">
                 <svg class="player-stats-icon player-stats-icon-views">
@@ -106,16 +103,43 @@
                 {{formatNumber stats.dislikes}}
               </button>
             </div>
-            <button class="button-text button-text--white button-text--nocase player-infos-button-description" type="button">Show description</button>
+            <button class="button-text nocase white player-infos-button-description" type="button">{{_ "Show description" }}</button>
             {{ #if status }}
-              <p id="status" class="player-infos-description-text">STATUS: {{ status }}</p>
+              <p id="status" class="player-infos-description-text">{{_ "STATUS:" }} {{ status }}</p>
             {{/if}}
           </div>
           {{#if isShowDescription}}
           {{/if}}
+          {{#if relatedIsShowable }}
+          <div class="player-related-videos">
+            <ul class="videos-list">
+              {{#each relatedVideos}}
+                <li class="videos-item">
+                  <a class="videos-item-link" href="{{videoPath this}}">
+                    <h4 class="videos-item-title">{{ title }}</h4>
+                    <button class="videos-item-button">
+                      <svg class="videos-item-button-svg">
+                        <use class="videos-item-button-svg-use" xlink:href="#icon-reticence"></use>
+                      </svg>
+                    </button>
+                    <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
+
+
+                    <div class="videos-item-time">{{ duration }}</div>
+                    {{#if thumb}}
+                      <img class="videos-item-image" src="{{ thumb }}"/>
+                    {{else}}
+                      <img class="videos-item-image" src="/img/cover/default-thumb.png"/>
+                    {{/if}}
+                  </a>
+                </li>
+              {{/each}}
+            </ul>
+          </div>
+          {{/if}}
           {{#if isLocked }}
             <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">
-              <span class="player-infos-price-label">Watch</span>
+              <span class="player-infos-price-label">{{_ "Watch for" }}</span>
               <span class="player-infos-price-space"></span>
               <span class="player-infos-price-label">{{formatNumber price}}PTI</span>
             </button>

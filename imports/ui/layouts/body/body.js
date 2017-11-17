@@ -1,56 +1,34 @@
-
 import './body.html'
+import '/imports/ui/icons/fullscreen.html'
+import '/imports/ui/icons/gear.html'
+import '/imports/ui/components/buttons/backButton.js'
 import '/imports/ui/components/svgs/svgs.js'
-import { add0x, showModal, hideModal } from '/imports/lib/utils.js'
-import { keystoresCheck, createAnonymousKeystoreIfNotExists, createKeystore, deleteKeystore, getKeystore, getSeedFromKeystore } from '/imports/lib/ethereum/wallet.js'
+import { add0x, showModal, hideModal, log } from '/imports/lib/utils.js'
+import { keystoresCheck, createAnonymousKeystoreIfNotExists, getKeystore, mergeOrCreateNewWallet } from '/imports/lib/ethereum/wallet.js'
+import '/imports/ui/components/alert/globalAlert.js'
+import '/imports/ui/components/modals/foundKeystore.js'
 
 // TODO: reconsider the location of the next code - perhaps move it to start.js ?
 if (Meteor.isClient) {
   Accounts.onLogin(function (user) {
     // User is logged in
-    console.log('onLogin')
+    log('onLogin')
     // if any modal is still open, we can safely close it now to make it possible to open new ones
     // get the user's keystore
     const keystore = getKeystore()
-
     if (Session.get('signup')) {
+      Session.set('signup', false)
+      const password = Session.get('user-password')
       // user just signed up, we have to fix his keystore
-      const anonymousKeystore = getKeystore('anonymous')
-      if (anonymousKeystore !== null) {
-        // we have an anonmous keystore - we need to regenarate a new keystore
-        // with the same seed but the new password
-        getSeedFromKeystore('password', anonymousKeystore, function (err, seedPhrase) {
-          if (err) {
-            throw err
-          }
-          let password = Session.get('user-password')
-          createKeystore(password, seedPhrase, function (error, result) {
-            if (error) {
-              throw error
-            }
-            deleteKeystore('anonymous')
-            showModal('showSeed')
-            Session.get('user-password', null)
-          })
-        })
-      } else {
-        // TODO: do something here...
-        console.log('no anonymous keystore found')
-      }
+      mergeOrCreateNewWallet(password)
     } else {
       if (keystore === null) {
         // this is an existing user (we are not in the singup process) , but the user has no keystore
-        console.log('Getting anonymous keystore')
-
-        const anonymousKeystore = getKeystore('anonymous')
-        console.log(anonymousKeystore)
-        if (anonymousKeystore !== null) {
-          console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
-          showModal('regenerateKeystore')
-        } else {
-          // TODO: we don't have an anonymous keystore. This could be a timing problem (the keystore is still beging generated)
-        }
+        // mergeOrCreateNewWallet passing empty password, a modal will ask user the passw
+        log('Getting anonymous keystore')
+        mergeOrCreateNewWallet()
       } else {
+        // The normal login, the user has already a wallet on this browser
         Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))
         hideModal()
       }
@@ -59,10 +37,10 @@ if (Meteor.isClient) {
 
   Accounts.onLogout(function (user) {
     // User Logged Out
-    console.log('logged out')
+    log('logged out')
     // Reset all session values
     Session.set('userPTIAddress', null)
-    // Session.set('tempSeed', null)
+    Session.set('tempSeed', null)
     Session.set('tempKeystore', null)
     Session.set('tempAddress', null)
     Session.set('wallet-state', null)
@@ -86,11 +64,13 @@ Template.App_body.onCreated(function () {
     if (keystores.users > 0) {
       // There is at least one User keystore
       // Propose to login if not create anonymous keystore
-      showModal('login')
+      showModal('foundKeystore')
     } else {
       // If there is no User keystore
     }
   }
+
+  Session.set({'globalErrorMessage': undefined, 'classAlertGlobal': undefined})
 })
 
 Template.App_body.onRendered(function () {

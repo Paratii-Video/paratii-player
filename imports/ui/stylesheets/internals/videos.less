@@ -4,48 +4,14 @@
 
 .videos {
   &-list {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 0 10px;
-    max-width: 500px;
+    &:extend(.thumb-list all);
   }
 
   &-item {
-    flex: 0 0 30%;
-    height: 100px;
-    margin: 0 0 10px;
-
-    &:nth-child(3n-1) {
-      margin: 0 15px 10px; 
-    }
+    &:extend(.thumb-list-item all);
 
     &-link {
-      &:extend(.full-block all);
-
-      backface-visibility: hidden;
-      border-radius: 4px;
-      color: @color-white;
-      overflow: hidden;
-      position: relative;
-      transition: color .35s;
-
-      &::before {
-        &:extend(.pos-a-full all);
-
-        background-color: black;
-        content: ''; 
-        opacity: .7;
-        transition: opacity .35s;
-        z-index: 2;
-      }
-
-      &:hover {
-        color: @color-white;
-
-        &::before {
-          opacity: .5;
-        }
-      }
+      &:extend(.thumb-list-link all);
     }
 
     &-title {
@@ -69,17 +35,23 @@
     }
 
     &-button {
-      height: 3px;
+      height: 30px;
       position: absolute;
       right: 10px;
-      top: 10px;
+      top: 0;
       width: 15px;
       z-index: 4;
 
       &-svg {
         &:extend(.full-block all);
 
+        height: 3px;
         fill: @color-white;
+        transition: fill .3s;
+
+        .videos-item-button:hover & {
+          fill: @color-purple;
+        }
       }
     }
 

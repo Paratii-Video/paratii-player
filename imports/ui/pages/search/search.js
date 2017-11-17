@@ -1,10 +1,10 @@
-import { Videos } from '../../../../imports/api/videos.js'
+import { VideosResults } from '../../../../imports/api/videos.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 
 import './search.html'
 
 Template.search.onCreated(function () {
-  Meteor.subscribe('videos')
+  // Meteor.subscribe('searchedVideos', '')
   this.keywords = new ReactiveVar()
   this.sorting = new ReactiveVar()
   this.sorting.set('price_asc')
@@ -13,6 +13,12 @@ Template.search.onCreated(function () {
   this.autorun(() => {
     // subscribe to videos of the current playlist
     // for each video of the playlist checks if the user bought it
+
+    var self = this
+    self.autorun(function () {
+      self.subscribe('searchedVideos', Session.get('lastsearch'))
+    })
+
     if (Template.instance().results.get() !== undefined) {
       Template.instance().results.get().forEach((video) => {
         Meteor.call('videos.isLocked', video._id, getUserPTIAddress(), (err, result) => {
@@ -40,45 +46,14 @@ Template.search.events({
 
 })
 
-function buildQuery (queryKeywords) {
-  const query = {
-    $or: [
-      { title: queryKeywords },
-      { description: queryKeywords },
-      { 'uploader.name': queryKeywords },
-      { tags: queryKeywords }
-    ]
-  }
-
-  return query
-}
-
-function buildSorting (sorting) {
-  let sort = {}
-  if (sorting !== undefined) {
-    switch (sorting) {
-      case 'price_desc':
-        sort = {
-          sort: {price: -1}
-        }
-        return sort
-      case 'price_asc':
-        sort = {
-          sort: {price: 1}
-        }
-        return sort
-    }
-  }
-}
-
 Template.search.helpers({
   videos () {
     const keyword = Template.instance().keywords.get()
-    const sorting = Template.instance().sorting.get()
     if (keyword !== undefined) {
       if (keyword.length > 2) {
-        const queryKeywords = new RegExp(keyword, 'i')
-        const videos = Videos.find(buildQuery(queryKeywords), buildSorting(sorting))
+        // Meteor.subscribe('searchedVideos', keyword)
+        const videos = VideosResults.find({}, { sort: [['score', 'desc']] })
+        console.log(videos)
         Template.instance().results.set(videos)
         return videos
       }
@@ -91,6 +66,13 @@ Template.search.helpers({
   },
   isLocked (video) {
     return Template.instance().lockeds.get(video._id)
+  },
+  noResults () {
+    if (Template.instance().keywords.get().length > 2) {
+      return 'No results for: ' + Template.instance().keywords.get()
+    } else {
+      return 'Please enter almost 3 characters'
+    }
   },
   videoPath (video) {
     const pathDef = 'player'

@@ -1,13 +1,15 @@
-import { web3, resetDb, createUserAndLogin, getOrDeployParatiiContracts, getUserPTIAddressFromBrowser } from './helpers.js'
+import { web3, logout, createUserAndLogin, getOrDeployParatiiContracts, getUserPTIAddressFromBrowser, nukeLocalStorage, resetDb } from './helpers.js'
 import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
 
 describe('Video Store:', function () {
   let contracts
-  let videoId = '5' // this is  a known videoId defined in fixtures.js
+  let videoId = 'QmNZS5J3LS1tMEVEP3tz3jyd2LXUEjkYJHyWSuwUvHDaRJ' // this is  a known videoId defined in fixtures.js
 
   before(async function (done) {
-    browser.url('http://127.0.0.1:3000')
+    browser.execute(nukeLocalStorage)
+    server.execute(resetDb)
+    browser.url('http://localhost:3000')
 
     contracts = await getOrDeployParatiiContracts(server, browser)
 
@@ -19,59 +21,110 @@ describe('Video Store:', function () {
   })
 
   beforeEach(function () {
+    browser.execute(nukeLocalStorage)
     server.execute(resetDb)
     createUserAndLogin(browser)
-    browser.pause(2000)
-    browser.url('http://127.0.0.1:3000/profile')
+    // browser.pause(2000)
+    // browser.url('http://localhost:3000/profile')
+  })
+
+  afterEach(function () {
+    // browser.execute(nukeLocalStorage)
+    // server.execute(resetDb)
+  })
+
+  it('should be possible to buy (and unlock) a video ', function () {
+    // make sure we have enough funds
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
     sendSomePTI(userAccount, 300)
-    // browser.execute(getSomeETH, 2.1)
-    // browser.waitForExist('#eth_amount')
-    // browser.execute(getSomePTI, 300)
-    // browser.click('a[href="#pti"]')
-    // browser.waitForExist('#pti_amount')
-    // const amount = browser.getHTML('#pti_amount', false)
-    // assert.equal(amount, 300)
-  })
 
-  it('should be possible to buy (and unlock) a video [TODO]', function (done) {
-    // check sanity
-    // set up the test..
-    browser.url(`http://127.0.0.1:3000/play/${videoId}`)
-    browser.waitForEnabled('#unlock-video')
+    browser.url(`http://localhost:3000/play/${videoId}`)
+    browser.waitForClickable('#unlock-video')
     browser.click('#unlock-video')
-    browser.waitForEnabled('[name="user_password"]')
+    browser.waitForClickable('[name="user_password"]')
     browser.pause(1000)
     browser.setValue('[name="user_password"]', 'password')
     browser.click('#send_trans_btn')
     // TODO: check if the video has actually been acquired!
     // (for now, we just check if the balance has been lowered..)
-    let userAccount = getUserPTIAddressFromBrowser()
     browser.waitUntil(function () {
       let balance = contracts.ParatiiToken.balanceOf(userAccount)
       // the price was 14 PTI, so the users balance should be equal to 300 - 14
       return Number(balance) === Number(web3.toWei(300 - 14))
     }, 10000)
-    browser.url('http://127.0.0.1:3000/transactions')
-    let description = 'Bought video 5'
+    browser.url('http://localhost:3000/transactions')
+    let description = 'Bought video QmNZS5J3LS1tMEVEP3tz3jyd2LXUEjkYJHyWSuwUvHDaRJ'
     browser.waitForExist('.transaction-description')
     let msg = `Expected to find ${description} in the first from ${browser.getText('.transaction-description')}`
     assert.isOk(browser.getText('.transaction-description')[0].indexOf(description) > -1, msg)
 
     // the video should be unlocked now
-    browser.url(`http://127.0.0.1:3000/play/${videoId}`)
+    browser.url(`http://localhost:3000/play/${videoId}`)
     browser.waitForExist('.player-controls')
-
-    done()
   })
 
-  // TODO:  test for error handling:
-  // 1. if not enough ETH to send transation
-  // 2. if not engouh PTI to send transaction
-  //
+  it('should show an error if the password is wrong ', function () {
+    // make sure we have enough funds
+    let userAccount = getUserPTIAddressFromBrowser()
+    sendSomeETH(userAccount, 2.1)
+    sendSomePTI(userAccount, 300)
 
-  it('test individual steps', function (done) {
+    browser.url(`http://localhost:3000/play/${videoId}`)
+    browser.waitForClickable('#unlock-video')
+    browser.click('#unlock-video')
+    browser.waitForClickable('[name="user_password"]')
+    browser.pause(1000)
+    browser.setValue('[name="user_password"]', 'wrong_password')
+    browser.click('#send_trans_btn')
+    const expectedErrorMessage = 'Wrong password'
+    browser.waitForClickable('.main-alert-content')
+    assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
+  })
+
+  it('should show the signin form if the user is not logged in', function () {
+    logout(browser)
+    browser.execute(nukeLocalStorage)
+
+    browser.url(`http://localhost:3000/play/${videoId}`)
+    browser.waitForClickable('#unlock-video')
+    browser.click('#unlock-video')
+    browser.getText('h3', 'Sign in')
+  })
+
+  it('should show an error if the user does not have enough PTI ', function () {
+    // make sure we have enough funds
+    let userAccount = getUserPTIAddressFromBrowser()
+    sendSomeETH(userAccount, 2.1)
+    let ptiBalance = contracts.ParatiiToken.balanceOf(userAccount)
+    assert.equal(ptiBalance, 0)
+
+    browser.url(`http://localhost:3000/play/${videoId}`)
+    browser.pause(1000)
+    browser.waitForClickable('#unlock-video')
+    browser.click('#unlock-video')
+    const expectedErrorMessage = 'You don\'t have enough PTI: your balance is 0'
+    browser.waitForClickable('.main-alert-content')
+    assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
+  })
+
+  it('should show an error if the user does not have enough ETH ', function () {
+    let userAccount = getUserPTIAddressFromBrowser()
+    sendSomePTI(userAccount, 300)
+    // ... need to await the getBalance, but async messes up the rest of the test
+    // let userBalance = getBalance(userAccount)
+    // assert.equal(userBalance, 0)
+
+    browser.url(`http://localhost:3000/play/${videoId}`)
+    browser.pause(2000)
+    browser.waitForClickable('#unlock-video')
+    browser.click('#unlock-video')
+    const expectedErrorMessage = 'You need some Ether for sending a transaction - but you have none'
+    browser.waitForClickable('.main-alert-content')
+    assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
+  })
+
+  it('test individual steps', function () {
     let buyer = web3.eth.accounts[1]
     let tx
     // console.log(`transfer some PTI to ${buyer}`)
@@ -158,6 +211,5 @@ describe('Video Store:', function () {
     // console.log('TO TRANSFER        :', Number(price))
     // console.log('PTIbalance of buyer:', Number(contracts.ParatiiToken.balanceOf(buyer)))
     // console.log('ETHbalance of buyer:', web3.eth.getBalance(buyer))
-    done()
   })
 })

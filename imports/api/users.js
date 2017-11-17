@@ -47,11 +47,16 @@ if (Meteor.isServer) {
         // delete data.email;
 
         // save oldEmail address
-        const oldEmail = Meteor.users.findOne(this.userId).emails[0].address
-        // remove old email address
-        Accounts.removeEmail(this.userId, oldEmail)
+        const user = Meteor.users.findOne(this.userId)
+        const oldEmail = user.emails && user.emails[0] && user.emails[0].address
+
         // add new email address
         Accounts.addEmail(this.userId, data.email, false)
+
+        if (oldEmail) {
+          // remove old email address
+          Accounts.removeEmail(this.userId, oldEmail)
+        }
       }
       // check if name is defined, if it is -> update.
       // TODO compare with old name, if it's different then update
@@ -110,11 +115,6 @@ export function getUserPTIAddress () {
     }
   }
   return address
-  // if (keystore !== undefined) {
-  //   address = add0x(keystore.ksData[keystore.defaultHdPathString].addresses[0]);
-  //   return address;
-  // }
-  // return undefined;
 }
 
 export function checkPassword (password) {

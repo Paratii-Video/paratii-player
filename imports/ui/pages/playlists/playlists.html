@@ -12,7 +12,7 @@
         {{#if videos}}
           {{ currentPlaylistName }}
         {{else}}
-          Playlists
+          {{_ "Playlists"}}
         {{/if}}</h2>
     </header>
     <div class="internal-content">
@@ -39,11 +39,14 @@
                   </a>
                 </li>
               {{/each}}
+              <!--  hide link to create playlist until functionality is implemented -->
+              <!--
                 <li class="playlists-item">
                   <button id="button-create-playlist" class="playlists-item-link playlists-button" type="button">
                     <span class="playlists-item-title playlists-button-label">Create playlist</span>
                   </button>
                 </li>
+              -->
             </ul>
           {{/unless}}
           {{#if videos}}

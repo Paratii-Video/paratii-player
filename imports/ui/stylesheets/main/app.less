@@ -14,8 +14,13 @@ body,
   &:extend(.pos-a-full all);
 
   .query-mini({
+    height: @screen-mini-height;
     overflow-x: hidden;
     overflow-y: initial;
+  });
+
+  .query-tiny({
+    height: @screen-tiny-height;
   });
 }
 

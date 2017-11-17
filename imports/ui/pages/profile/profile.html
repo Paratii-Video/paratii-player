@@ -2,52 +2,44 @@
   <div class="app-content scrollable-y">
     {{#if currentUser }} {{#isAuthorized}}
 
-    {{> pageheader title="Profile" }}
-
+    {{ >pageheader title=currentUser.profile.name addlButtons=editProfileButton }}
+    {{#if editProfileMenuOpen }}
+      {{ >editProfile }}
+    {{/if}}
     <div class="walletContainer">
-      <div class="centerIcon">
-        <!-- {{> dapp_identicon identity='{{ currentUser.profile.ptiAddress }}' class="dapp-large"}} -->
-        {{#if currentUser.profile.image }}
-          <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url( {{ currentUser.profile.image }} )"></span>
-        {{else}}
-          <span id="avatar" class="dapp-identicon dapp-large" style="background-image: url('/img/avatar_img.svg')"></span>
-        {{/if}}
-      </div>
-      <div class="profile-label"> Name:</div>
-      <div class="profile-info">{{currentUser.profile.name}} </div>
-      <div class="profile-label"> Email:</div>
-      <div class="profile-info"> {{userEmail}}</div>
-      <!-- Action Buttons -->
-      <button class="btn btn-default blue-button btn-block" id="edit-profile">Edit Profile</button>
+      <div class="profile-info profile-info-email"> {{userEmail}}</div>
     </div>
     {{#if userPTIAddress }}
-
-      <div class="walletContainer">
-        <div class="descriptionContainer">
-          <div>
-            <ul class="nav nav-tabs nav-justified">
-              <li class="active">
-                <a href="#eth" data-toggle="tab">ETH</a>
-              </li>
-              <li>
-                <a href="#pti" data-toggle="tab">PTI</a>
-              </li>
-            </ul>
+    <div class="walletContainer">
+      <div class="wallet-contents">
+        <ul class="nav nav-tabs nav-justified">
+          <li class="active">
+            <a>
+              <div class="unit-name">Paratii</div>
+              <div class="balance-wrapper"><span class="balance">{{{ pti_balance }}}</span></div>
+            </a>
+          </li>
+          <li>
+            <a>
+              <div class="unit-name">Ether</div>
+              <div class="balance-wrapper"><span class="balance">{{{ eth_balance }}}</span></div>
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content wallet-tab-content">
+          <div class="tab-pane active" id="pti">
+            <!-- <button id="#earn-pti" class="earn-button">Earn more PTI</button> -->
+            <!-- <button class="btn btn-default blue-button btn-block" id="send-eth">Send Ether</button> -->
           </div>
-          <div class="tab-content wallet-tab-content">
-            <div class="tab-pane active" id="eth">
-              <h3>{{{ eth_balance }}}</h3>
-              <button class="btn btn-default blue-button btn-block" id="send-eth">Send Ether</button>
-            </div>
-            <div class="tab-pane" id="pti">
-              <h3>{{{ pti_balance }}}</h3>
-              <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button>
-            </div>
-            <a href="/transactions" class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</a>
-            <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button>
+          <div class="tab-pane" id="eth">
+            <!-- <button id="#earn-eth" class="earn-button">Earn more ETH</button> -->
+            <!-- <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button> -->
           </div>
+          <!-- <a href="/transactions" class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</a> -->
+          <!-- <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button> -->
         </div>
       </div>
+    </div>
 
     {{else}}
       <div class="walletContainer">

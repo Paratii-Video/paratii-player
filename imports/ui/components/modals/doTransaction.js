@@ -5,6 +5,7 @@ import { web3 } from '/imports/lib/ethereum/web3.js'
 import { checkPassword } from '/imports/api/users.js'
 
 import '/imports/lib/validate.js'
+import '/imports/ui/components/form/mainFormInput.js'
 import './doTransaction.html'
 
 Template.doTransaction.onCreated(function () {
@@ -17,6 +18,10 @@ Template.doTransaction.helpers({
   },
   userEmail () {
     return Meteor.user().emails[0].address
+  },
+  getPasswordError (name) {
+    const check = Session.get('checkTransaction')
+    return check['user_password']
   },
   getErrors (name) {
     const check = Session.get('checkTransaction')

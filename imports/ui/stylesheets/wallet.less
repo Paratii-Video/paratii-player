@@ -1,12 +1,102 @@
 
 .walletContainer {
-  border-radius: 7px;
-  border: 1px solid #ddd;
-  /*display: inline-block;*/
-  width: 400px;
-  float: left;
-  margin: 20px;
-  padding: 20px;
+  width: 100%;
+  padding: 10px 35px;
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.profile-info-email {
+  font-size: 20px;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
+.wallet-contents {
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+
+  .nav.nav-tabs {
+    display: flex;
+
+    li {
+
+      @button-dimension: 160px;
+
+      flex: 0 0 @button-dimension;
+      max-width: @button-dimension;
+      height: @button-dimension;
+
+      &:not(:last-child) {
+        margin-right: 15px;
+      }
+
+      a {
+        &:extend(.btn, .btn-default);
+        border-radius: 6px;
+        font-weight: 300;
+        font-size: 16px;
+        text-transform: none;
+        flex: 0 0 40%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background-color: @color-white;
+        border-color: @color-grey-light;
+
+        &:hover {
+          background-clip: @color-white;
+        }
+
+        .unit-name {
+          width: 100%;
+          text-align: left;
+          flex: 0 0 10px;
+          font-size: 16px;
+        }
+
+        .balance-wrapper {
+          flex: 1 1 0;
+          display: flex;
+          align-items: center;
+          width: 100%;
+
+          .balance {
+            text-align: right;
+            align-items: baseline;
+            width: 100%;
+            font-size: 20px;
+            font-weight: 300;
+            word-wrap: break-word;
+
+            .amount {
+              display: inline-block;
+            }
+
+            .unit {
+              font-size: 12px;
+              font-weight: 600;
+            }
+
+            .unit-empty {
+              display: inline-block;
+              width: 100%;
+              text-align: left;
+              font-size: 12px;
+            }
+          }
+        }
+      }
+    }
+
+    li.active a {
+      background-color: @color-purple;
+      color: @color-white;
+    }
+  }
 }
 
 .centerIcon {
@@ -21,14 +111,6 @@
   font-weight: 400;
   color: dimgrey;
   margin-top: 10px;
-}
-
-.profile-info {
-  font-size: 20px;
-  font-family:'Roboto';
-  font-weight: 200;
-  color: dimgrey;
-  margin-bottom: 10px;
 }
 
 .wallet-textfield {
@@ -59,12 +141,11 @@
 }
 
 .wallet-tab-content {
-  padding: 10px;
-  border-radius: 0px 0px 4px 4px;
-  border-bottom: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-top: 1px solid transparent;
+  margin-top: 20px;
+  margin-left: 10px;
+  .earn-button {
+    color: @color-purple;
+  }
 }
 
 .send .amountTrans{
