@@ -43,7 +43,6 @@ describe('price tag status', function () {
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.thumbs-list-item')
-    console.log(browser.waitForExist('.thumbs-list-item'))
     assert.equal(browser.getText('.thumbs-list-price'), '10 PTI')
   })
 

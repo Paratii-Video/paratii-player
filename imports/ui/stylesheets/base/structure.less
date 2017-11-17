@@ -43,20 +43,20 @@
     backface-visibility: hidden;
 
     &-front {
-      transition: transform .75s @ease-smooth;
+      transition: transform 1s @ease-smooth;
 
       .active & {
         transform: rotateY(180deg);
-        transition: transform .9s @ease-smooth;
+        transition: transform 1.2s @ease-smooth;
       }
     }
     &-back {
       transform: rotateY(180deg);
-      transition: transform .75s @ease-smooth;
+      transition: transform 1s @ease-smooth;
       
       .active & {
         transform: rotateY(0);
-        transition: transform .9s @ease-smooth;
+        transition: transform 1.2s @ease-smooth;
       }
     }
   }

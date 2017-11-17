@@ -48,14 +48,7 @@
                   {{#if isLocked this}}
                     <div class="thumbs-list-price">{{ price }} PTI</div>
                   {{else if hasPrice this}}
-                    <!-- <div class="thumbs-list-price">✓</div> -->
-                    <div class="thumbs-list-price">{{ price }} PTI</div>
-                  {{else}}
-                    <div class="thumbs-list-play right">
-                      <svg class="thumbs-list-play-svg">
-                        <use class="thumbs-list-play-use" xlink:href="#icon-play"></use>
-                      </svg>
-                    </div>
+                    <div class="thumbs-list-price">✓</div>
                   {{/if}}
                   {{#if thumb}}
                     <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ thumb }}"/></div>
