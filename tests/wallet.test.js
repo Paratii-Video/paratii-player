@@ -1,5 +1,6 @@
 import { assertUserIsLoggedIn, web3, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
 import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
+// import { formatCoinBalance } from '/imports/lib/utils.js'
 import { assert } from 'chai'
 
 describe('wallet: ', function () {
@@ -17,7 +18,8 @@ describe('wallet: ', function () {
     sendSomeETH(userAccount, 3.1)
     browser.waitForVisible('.wallet-contents li:last-child .balance')
     browser.waitUntil(() => {
-      return browser.getText('.wallet-contents li:last-child .balance') === '3.10 ETH'
+      const amount = browser.getText('.wallet-contents li:last-child .balance')
+      return ['3.10 ETH', '3,10 ETH'].indexOf(amount) > -1
     })
   })
 
@@ -25,7 +27,8 @@ describe('wallet: ', function () {
     sendSomePTI(userAccount, 1412.9599)
     browser.waitForVisible('.wallet-contents li:first-child .balance')
     browser.waitUntil(() => {
-      return browser.getText('.wallet-contents li:first-child .balance') === '1,412.96 PTI'
+      const amount = browser.getText('.wallet-contents li:first-child .balance')
+      return ['1,412.96 PTI', '1.412,96 PTI'].indexOf(amount) > -1
     })
   })
 

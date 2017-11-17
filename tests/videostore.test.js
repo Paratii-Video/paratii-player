@@ -108,7 +108,7 @@ describe('Video Store:', function () {
     assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
   })
 
-  it('should show an error if the user does not have enough ETH ', function () {
+  it('should show an error if the user does not have enough ETH @watch', function () {
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomePTI(userAccount, 300)
     // ... need to await the getBalance, but async messes up the rest of the test

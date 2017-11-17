@@ -43,10 +43,11 @@ export function add0x (input) {
 
 // Show & hide Modal
 export function showModal (templateName, options = null) {
-  const template = { contentTemplate: templateName }
-  const modalOptions = Object.assign(template, options)
+  // const template = { contentTemplate: templateName }
+  // const modalOptions = Object.assign(template, options)
   Session.set('contentTemplate', templateName)
-  Modal.show('mainModal', modalOptions, {backdrop: 'static'})
+  Session.set('modalOptions', options)
+  Modal.show('mainModal', options, {backdrop: 'static'})
 }
 
 export function hideModal (template) {
@@ -94,3 +95,5 @@ export function changePasswordType () {
   let inputType = (Session.get('passwordType') === 'password') ? 'text' : 'password'
   Session.set('passwordType', inputType)
 }
+
+export const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

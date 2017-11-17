@@ -3,6 +3,7 @@ import MobileDetect from 'mobile-detect'
 function Sniffer (...opts) {
   this.classes = ''
   this.debug = (opts[0].debug)
+  this.embedded = false
   this._mobileSniffer = new MobileDetect(window.navigator.userAgent)
 }
 
@@ -12,12 +13,17 @@ Sniffer.prototype.log = function (...args) {
   }
 }
 
+Sniffer.prototype.isEmbedded = function () {
+  return window.top !== window.self
+}
+
 Sniffer.prototype.getClasses = function () {
   this.classes = ''
 
   this.classes += (this.isMobile()) ? 'mobile ' : ''
   this.classes += (this.isPhone()) ? 'phone ' : ''
   this.classes += (this.isTablet()) ? 'tablet ' : ''
+  this.classes += (this.isEmbedded()) ? 'embedded ' : ''
   this.log('classes', this.classes)
 
   return this.classes

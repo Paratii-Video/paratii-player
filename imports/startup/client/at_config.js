@@ -12,9 +12,7 @@ const mySubmitFunc = function (error, state) {
     // we have succesfully signed up
     // we should have an anonymous keystore - we want to re-encode thsi with the password of the new user
     console.log('SIGNUP')
-    // TODO:there is a modal still open at this point, but this is not expected. Which one?
-    // hideModal()
-    showModal('showSeed')
+    showModal('showSeed', {blocking: true})
   }
 }
 
@@ -70,7 +68,7 @@ AccountsTemplates.configure({
   // Texts
   texts: {
     button: {
-      signUp: 'Sign up'
+      signUp: 'Register'
     },
     // socialSignUp: "Register...",
     socialIcons: {
@@ -78,7 +76,7 @@ AccountsTemplates.configure({
     },
     title: {
       forgotPwd: 'Forgot password',
-      signUp: 'Sign Up'
+      signUp: 'Register'
     }
   }
 })
