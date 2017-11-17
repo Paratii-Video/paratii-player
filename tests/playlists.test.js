@@ -30,10 +30,10 @@ describe('price tag status', function () {
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videos-item')
+    browser.waitForExist('.thumbs-list-item')
 
     // .videoCardPrice should not exists
-    const priceTag = browser.waitForExist('.videos-item-price', null, true)
+    const priceTag = browser.waitForExist('.thumbs-list-price', null, true)
     assert.isTrue(priceTag)
   })
 
@@ -42,8 +42,9 @@ describe('price tag status', function () {
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videos-item')
-    assert.equal(browser.getText('.videos-item-price'), '10 PTI')
+    browser.waitForExist('.thumbs-list-item')
+    console.log(browser.waitForExist('.thumbs-list-item'))
+    assert.equal(browser.getText('.thumbs-list-price'), '10 PTI')
   })
 
   it('when the video was bought [TODO]', () => {
@@ -55,6 +56,6 @@ describe('price tag status', function () {
     server.execute(fakeVideoUnlock, address)
     browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.videos-item')
-    // assert.equal(browser.getText('.videos-item-price'), '✓')
+    // assert.equal(browser.getText('.thumbs-list-price'), '✓')
   })
 })

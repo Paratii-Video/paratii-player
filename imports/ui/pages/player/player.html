@@ -114,37 +114,24 @@
           <div class="player-related-videos">
             <ul class="thumbs-list">
               {{#each relatedVideos}}
-                <li class="thumbs-list-item">
-                  <a class="thumbs-list-link" href="{{videoPath this}}">
-                    <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
-                    <p class="thumbs-list-time">{{ duration }}</p>
-                   <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
-                    {{#if isLocked this}}
-                      <div class="thumbs-list-price">{{ price }} PTI</div>
-                    {{else if hasPrice this}}
-                      <div class="thumbs-list-price">✓</div>
-                    {{else}}
-                      <div class="thumbs-list-play right">
-                        <svg class="thumbs-list-play-svg">
-                          <use class="thumbs-list-play-use" xlink:href="#icon-play"></use>
-                        </svg>
-                      </div>
-                    {{/if}}
+                <li class="thumbs-list-item flip">
+                  <a class="videos-item-link" href="{{videoPath this}}">
+                    <h4 class="videos-item-title">{{ title }}</h4>
+                    <button class="videos-item-button">
+                      <svg class="videos-item-button-svg">
+                        <use class="videos-item-button-svg-use" xlink:href="#icon-reticence"></use>
+                      </svg>
+                    </button>
+                    <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
+
+
+                    <div class="videos-item-time">{{ duration }}</div>
                     {{#if thumb}}
-                      <img class="thumbs-list-image" src="{{ thumb }}"/>
+                      <img class="videos-item-image" src="{{ thumb }}"/>
                     {{else}}
-                      <img class="thumbs-list-image" src="/img/cover/default-thumb.png"/>
+                      <img class="videos-item-image" src="/img/cover/default-thumb.png"/>
                     {{/if}}
                   </a>
-                  <button class="thumbs-list-settings">
-                    <svg class="thumbs-list-settings-svg">
-                      <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
-                    </svg>
-                  </button>
-                  <div class="thumb-list-modal">
-                    <button class="button-text nocase grey" type="button">Watch later</button>
-                    <button class="button-text nocase grey" type="button">Add to playlist</button>
-                  </div>
                 </li>
               {{/each}}
             </ul>

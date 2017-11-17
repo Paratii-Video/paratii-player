@@ -98,8 +98,8 @@
     },
     getThumbTitle (title) {
       let videoTitle = title
-      if (videoTitle.length > 30) {
-        videoTitle = videoTitle.substring(0, 30)
+      if (videoTitle.length > 25) {
+        videoTitle = videoTitle.substring(0, 25)
       }
       return videoTitle
     }

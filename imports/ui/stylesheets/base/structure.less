@@ -41,26 +41,21 @@
     &:extend(.pos-a-full all);
 
     backface-visibility: hidden;
-    transform-style: preserve-3d;
 
     &-front {
       transition: transform .75s @ease-smooth;
 
       .active & {
-        transform: rotateX(180deg);
+        transform: rotateY(180deg);
         transition: transform .9s @ease-smooth;
-      }
-
-      video {
-        visibility: hidden;
       }
     }
     &-back {
-      transform: rotateX(180deg);
+      transform: rotateY(180deg);
       transition: transform .75s @ease-smooth;
       
       .active & {
-        transform: rotateX(0);
+        transform: rotateY(0);
         transition: transform .9s @ease-smooth;
       }
     }

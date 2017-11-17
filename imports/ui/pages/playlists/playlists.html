@@ -20,9 +20,9 @@
                   </svg>
                 </div>
                 {{#if thumb}}
-                  <img class="thumbs-list-image" src="{{ thumb }}"/>
+                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ thumb }}"/></div>
                 {{else}}
-                  <img class="thumbs-list-image" src="/img/cover/default-thumb.png"/>
+                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="/img/cover/default-thumb.png"/></div>
                 {{/if}}
               </a>
               <a class="thumbs-list-play" href="{{pathFor route='playlists' _id=this._id}}">
@@ -48,7 +48,8 @@
                   {{#if isLocked this}}
                     <div class="thumbs-list-price">{{ price }} PTI</div>
                   {{else if hasPrice this}}
-                    <div class="thumbs-list-price">✓</div>
+                    <!-- <div class="thumbs-list-price">✓</div> -->
+                    <div class="thumbs-list-price">{{ price }} PTI</div>
                   {{else}}
                     <div class="thumbs-list-play right">
                       <svg class="thumbs-list-play-svg">
@@ -57,9 +58,9 @@
                     </div>
                   {{/if}}
                   {{#if thumb}}
-                    <img class="thumbs-list-image" src="{{ thumb }}"/>
+                    <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ thumb }}"/></div>
                   {{else}}
-                    <img class="thumbs-list-image" src="/img/cover/default-thumb.png"/>
+                    <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="/img/cover/default-thumb.png"/></div>
                   {{/if}}
                 </a>
                 <button class="thumbs-list-settings">
@@ -68,16 +69,14 @@
                   </svg>
                 </button>
               </div>
-              <div class="flip-face flip-face-back">
-                <div class="thumb-list-modal">
-                  <button class="button-text nocase grey" type="button">Watch later</button>
-                  <button class="button-text nocase grey" type="button">Add to playlist</button>
-                  <button class="thumbs-list-settings">
-                    <svg class="thumbs-list-settings-svg">
-                      <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
-                    </svg>
-                  </button>
-                </div>
+              <div class="flip-face flip-face-back thumb-list-modal">
+                <button class="button-text nocase grey" type="button">Watch later</button>
+                <button class="button-text nocase grey" type="button">Add to playlist</button>
+                <button class="thumbs-list-settings">
+                  <svg class="thumbs-list-settings-svg">
+                    <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
+                  </svg>
+                </button>
               </div>
             </li>
           {{/each}}
