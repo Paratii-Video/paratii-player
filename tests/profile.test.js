@@ -257,30 +257,40 @@ describe('Profile and accounts workflow:', function () {
     // browser.pause(5000)
   })
 
-  it.skip('shows the seed ', function () {
+  it('shows the seed', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
-    browser.url('http://localhost:3000/profile')
-    browser.waitForClickable('#show-seed')
-    browser.click('#show-seed')
-    browser.waitForVisible('[name="user_password"]')
-    browser.setValue('[name="user_password"]', 'password')
-    browser.waitForEnabled('#btn-show-seed')
-    browser.pause(1000)
-    browser.click('#btn-show-seed')
-    browser.waitForClickable('#closeModal')
+    // browser.url('http://localhost:3000/profile')
+    browser.execute(function () {
+      utils = require('/imports/lib/utils.js') // eslint-disable-line no-undef
+      utils.showModal('showSeed') // eslint-disable-line no-undef
+    })
+
+    // the showSeed modal should now be visible
+    browser.waitForVisible('#show-seed')
+
+    // TODO: why do we not ask for a password anymore here?
+    // browser.waitForVisible('[name="user_password"]')
+    // browser.setValue('[name="user_password"]', 'password')
+    // browser.waitForEnabled('#btn-show-seed')
+    // browser.pause(1000)
+    // browser.click('#btn-show-seed')
+    // browser.waitForClickable('#closeModal')
   })
 
-  it.skip('send ether dialog is visible', function () {
+  it('send ether dialog works @watch', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
+    browser.execute(function () {
+      utils = require('/imports/lib/utils.js') // eslint-disable-line no-undef
+      utils.showModal('doTransaction', { type: 'Eth', label: 'Send Ether' }) // eslint-disable-line no-undef
+    })
 
-    browser.url('http://localhost:3000/profile')
-    browser.waitForEnabled('#send-eth')
-    browser.pause(1000)
-    browser.click('#send-eth')
+    // browser.url('http://localhost:3000/profile')
+    // browser.waitForEnabled('#send-eth')
+    // browser.pause(1000)
     browser.waitForExist('#form-doTransaction')
-    browser.pause(1000)
+    // browser.pause(1000)
   })
 
   it.skip('do not show the seed if wrong password', function () {
