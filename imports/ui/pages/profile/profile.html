@@ -1,8 +1,8 @@
 <template name="profile">
-  <div class="app-content scrollable-y">
+  <div class="internal profile">
     {{#if currentUser }} {{#isAuthorized}}
 
-    {{ >pageheader title=currentUser.profile.name addlButtons=editProfileButton }}
+    {{ >internalsHeader title=currentUser.profile.name addlButtons=editProfileButton}}
     {{#if editProfileMenuOpen }}
       {{ >editProfile }}
     {{/if}}
