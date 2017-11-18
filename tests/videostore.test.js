@@ -72,7 +72,7 @@ describe('Video Store:', function () {
     browser.waitForExist('.player-controls')
   })
 
-  it('should show an error if the password is wrong @watch', function () {
+  it('should show an error if the password is wrong', function () {
     // make sure we have enough funds
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
