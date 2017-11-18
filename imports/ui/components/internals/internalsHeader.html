@@ -1,7 +1,7 @@
 <template name="internalsHeader">
   <header class="internal-header">
     {{#if backButton}}
-      {{> backButton }}
+      {{> backButton prevPage=prevPage }}
     {{/if}}
     {{#if title}}
       <h2 class="internal-header-title">{{ title }}</h2>

@@ -38,6 +38,11 @@ var publicRoute = FlowRouter.group({
   name: 'public',
   triggersEnter: [
     setBodyClass
+  ],
+  triggersExit: [
+    (context) => {
+      Session.set('prevPage', context.path)
+    }
   ]
 })
 
