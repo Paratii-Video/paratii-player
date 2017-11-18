@@ -1,4 +1,4 @@
-import { createVideo, createUserAndLogin, getUserPTIAddressFromBrowser } from './helpers.js'
+import { assertUserIsLoggedIn, createVideo, createUserAndLogin, getUserPTIAddressFromBrowser } from './helpers.js'
 import { assert } from 'chai'
 
 function createPlaylist () {
@@ -25,25 +25,29 @@ function fakeVideoUnlock (address) {
 }
 
 describe('price tag status', function () {
-  it('when the video has no price', () => {
+  it('when the video has no price ', () => {
     createUserAndLogin(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videos-item')
+    browser.waitForExist('.thumbs-list-item')
 
     // .videoCardPrice should not exists
-    const priceTag = browser.waitForExist('.videos-item-price', null, true)
+    const priceTag = browser.waitForExist('.thumbs-list-price', null, true)
     assert.isTrue(priceTag)
   })
 
-  it('when the video has a price  and wasn\'t bought', () => {
+  it('when the video has a price  and wasn\'t bought ', () => {
     createUserAndLogin(browser)
+    assertUserIsLoggedIn(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videos-item')
-    assert.equal(browser.getText('.videos-item-price'), '10 PTI')
+    browser.waitForExist('.thumbs-list-item')
+    browser.moveToObject('.thumbs-list-item')
+    browser.waitUntil(function () {
+      return browser.getText('.thumbs-list-price') === '10 PTI'
+    })
   })
 
   it('when the video was bought [TODO]', () => {
@@ -54,7 +58,7 @@ describe('price tag status', function () {
     server.execute(createPlaylist)
     server.execute(fakeVideoUnlock, address)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videos-item')
-    // assert.equal(browser.getText('.videos-item-price'), '✓')
+    browser.waitForExist('.thumbs-list-item')
+    // assert.equal(browser.getText('.thumbs-list-price'), '✓')
   })
 })

@@ -112,8 +112,9 @@
           {{/if}}
           {{#if relatedIsShowable }}
           <div class="player-related-videos">
-            <ul class="videos-list">
+            <ul class="thumbs-list">
               {{#each relatedVideos}}
+<<<<<<< HEAD
                 <li class="videos-item">
                   <a class="videos-item-link" href="{{videoPath this}}">
                     <h4 class="videos-item-title">{{ title }}</h4>
@@ -125,6 +126,26 @@
                     <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
 
                     <div class="videos-item-time">{{ duration }}</div>
+=======
+                <li class="thumbs-list-item">
+                  <a class="thumbs-list-link" href="{{videoPath this}}">
+                    <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
+                    <p class="thumbs-list-time">{{ duration }}</p>
+                   <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
+                    {{#if isLocked this}}
+                      <div class="thumbs-list-price">{{ price }} PTI</div>
+                    <!---
+                    {{else if hasPrice this}}
+                      <div class="thumbs-list-price">✓</div>
+                    -->
+                    {{else}}
+                      <div class="thumbs-list-play right">
+                        <svg class="thumbs-list-play-svg">
+                          <use class="thumbs-list-play-use" xlink:href="#icon-play"></use>
+                        </svg>
+                      </div>
+                    {{/if}}
+>>>>>>> frontend
                     {{#if thumb}}
                       <img class="videos-item-image" src="{{ thumb }}"/>
                     {{else}}

@@ -31,7 +31,7 @@ describe('Video Store:', function () {
     // server.execute(resetDb)
   })
 
-  it('should be possible to buy (and unlock) a video  @watch', function () {
+  it('should be possible to buy (and unlock) a video  ', function () {
     // make sure we have enough funds
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
@@ -79,12 +79,9 @@ describe('Video Store:', function () {
     sendSomePTI(userAccount, 300)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForClickable('#unlock-video')
-    browser.click('#unlock-video')
-    browser.waitForClickable('[name="user_password"]')
-    browser.pause(1000)
-    browser.setValue('[name="user_password"]', 'wrong_password')
-    browser.click('#send_trans_btn')
+    browser.waitAndClick('#unlock-video')
+    browser.waitAndSetValue('[name="user_password"]', 'wrong_password')
+    browser.waitAndClick('#send_trans_btn')
     const expectedErrorMessage = 'Wrong password'
     browser.waitForClickable('.main-alert-content')
     assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
@@ -95,12 +92,11 @@ describe('Video Store:', function () {
     browser.execute(nukeLocalStorage)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
-    browser.waitForClickable('#unlock-video')
-    browser.click('#unlock-video')
+    browser.waitAndClick('#unlock-video')
     browser.getText('h3', 'Sign in')
   })
 
-  it('should show an error if the user does not have enough PTI @watch', function () {
+  it('should show an error if the user does not have enough PTI ', function () {
     // make sure we have enough funds
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
@@ -122,7 +118,7 @@ describe('Video Store:', function () {
     assert.equal(browser.getText('.main-alert-content'), expectedErrorMessage)
   })
 
-  it('should show an error if the user does not have enough ETH @watch', function () {
+  it('should show an error if the user does not have enough ETH ', function () {
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomePTI(userAccount, 300)
 

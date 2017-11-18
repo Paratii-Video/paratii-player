@@ -1,87 +1,82 @@
 <template name="playlists">
   <div class="internal playlists">
-    <header class="internal-header">
-      {{#if videos}}
-      <a class="internal-header-link" href="/playlists">
-        <svg class="internal-header-icon">
-          <use class="internal-header-icon-use" xlink:href="#icon-return"></use>
-        </svg>
-      </a>
-      {{/if}}
-      <h2 class="internal-header-title">
-        {{#if videos}}
-          {{ currentPlaylistName }}
-        {{else}}
-          {{_ "Playlists"}}
-        {{/if}}</h2>
-    </header>
-    <div class="internal-content">
-        <div class="playlists-wrapper">
-          {{#unless videos}}
-            <h3 class="playlists-wrapper-title visually-hidden">My playlist</h3>
-            <ul class="playlists-list">
-              {{#each playlists}}
-                <li class="playlists-item">
-                  <a class="playlists-item-link" href="{{pathFor route='playlists' _id=this._id}}">
-                    <h4 class="playlists-item-title">{{ title }}</h4>
-                    <a href="{{pathFor route='playlists' _id=this._id}}" class="playlists-item-button">
-                      <svg class="playlists-item-button-svg">
-                        <use class="playlists-item-button-svg-use" xlink:href="#icon-play"></use>
-                      </svg>
-                    </a>
-                    <div class="playlists-item-length">
-                      <p class="playlists-item-length-value"> {{playlistCounter this }} <span class="visually-hidden">videos on playlist</span></p>
-                      <svg class="playlists-item-icon">
-                        <use class="playlists-item-icon-use" xlink:href="#icon-playlists"></use>
-                      </svg>
-                    </div>
-                    <img class="playlists-item-image" src="/img/cover/default-thumb.png"/>
-                  </a>
-                </li>
-              {{/each}}
-              <!--  hide link to create playlist until functionality is implemented -->
-              <!--
-                <li class="playlists-item">
-                  <button id="button-create-playlist" class="playlists-item-link playlists-button" type="button">
-                    <span class="playlists-item-title playlists-button-label">Create playlist</span>
-                  </button>
-                </li>
-              -->
-            </ul>
-          {{/unless}}
-          {{#if videos}}
-            <h3 class="playlists-wrapper-title visually-hidden">{{ currentPlaylistDesc }}</h3>
-            <a href="{{getprevpage}}" class="pageprev"> prev </a>
-            <a href="{{getnextpage}}" class="pagenext"> next </a>
-            <ul class="videos-list">
-              {{#each videos}}
-                <li class="videos-item">
-                  <a class="videos-item-link" href="{{videoPath this}}">
-                    <h4 class="videos-item-title">{{ title }}</h4>
-                    <button class="videos-item-button">
-                      <svg class="videos-item-button-svg">
-                        <use class="videos-item-button-svg-use" xlink:href="#icon-reticence"></use>
-                      </svg>
-                    </button>
-                    <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
-
-                    {{#if isLocked this}}
-                      <div class="videos-item-price">{{ price }} PTI</div>
-                    {{else if hasPrice this}}
-                      <div class="videos-item-price">✓</div>
-                    {{/if}}
-                    <div class="videos-item-time">{{ duration }}</div>
-                    {{#if thumb}}
-                      <img class="videos-item-image" src="{{ thumb }}"/>
-                    {{else}}
-                      <img class="videos-item-image" src="/img/cover/default-thumb.png"/>
-                    {{/if}}
-                  </a>
-                </li>
-              {{/each}}
-            </ul>
-          {{/if}}
-        </div>
-    </div>
+    {{#if videos}}
+      {{ >internalsHeader title=getTitle backButton=getBackButton addButtons=addSettingsButton }}
+    {{else}}
+      {{ >internalsHeader title=getTitle backButton=getBackButton }}
+    {{/if}}
+    {{#unless videos}}
+      <div class="internal-content">
+        <h3 class="playlists-wrapper-title visually-hidden">My playlists</h3>
+        <ul class="thumbs-list">
+          {{#each playlists}}
+            <li class="thumbs-list-item">
+              <a class="thumbs-list-link" href="{{pathFor route='playlists' _id=this._id}}">
+                <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
+                <div class="thumbs-list-count">
+                  <p class="thumbs-list-count-value"> {{playlistCounter this }} <span class="visually-hidden">videos on playlist</span></p>
+                  <svg class="thumbs-list-count-icon">
+                    <use class="thumbs-list-count-icon-use" xlink:href="#icon-playlists"></use>
+                  </svg>
+                </div>
+                {{#if thumb}}
+                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ thumb }}"/></div>
+                {{else}}
+                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="/img/cover/default-thumb.png"/></div>
+                {{/if}}
+              </a>
+              <a class="thumbs-list-play" href="{{pathFor route='playlists' _id=this._id}}">
+                <svg class="thumbs-list-play-svg">
+                  <use class="thumbs-list-play-use" xlink:href="#icon-play"></use>
+                </svg>
+              </a>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    {{/unless}}
+    {{#if videos}}
+      <div class="internal-content">
+        <ul class="thumbs-list">
+          {{#each videos}}
+            <li class="thumbs-list-item flip">
+              <div class="flip-face flip-face-front">
+                <a class="thumbs-list-link" href="{{videoPath this}}">
+                  <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
+                  <a href="{{getprevpage}}" class="pageprev"> prev </a>
+                  <a href="{{getnextpage}}" class="pagenext"> next </a>
+                  <p class="thumbs-list-time">{{ duration }}</p>
+                 <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
+                  {{#if isLocked this}}
+                    <div class="thumbs-list-price">{{ price }} PTI</div>
+                  {{else if hasPrice this}}
+                    <div class="thumbs-list-price">✓</div>
+                  {{/if}}
+                  {{#if thumb}}
+                    <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ thumb }}"/></div>
+                  {{else}}
+                    <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="/img/cover/default-thumb.png"/></div>
+                  {{/if}}
+                </a>
+                <button class="thumbs-list-settings">
+                  <svg class="thumbs-list-settings-svg">
+                    <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
+                  </svg>
+                </button>
+              </div>
+              <div class="flip-face flip-face-back thumb-list-modal">
+                <button class="button-text nocase grey" type="button">Watch later</button>
+                <button class="button-text nocase grey" type="button">Add to playlist</button>
+                <button class="thumbs-list-settings">
+                  <svg class="thumbs-list-settings-svg">
+                    <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
+                  </svg>
+                </button>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    {{/if}}
   </div>
 </template>
