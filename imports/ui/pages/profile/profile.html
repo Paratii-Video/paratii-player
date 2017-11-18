@@ -2,7 +2,7 @@
   <div class="internal profile">
     {{#if currentUser }} {{#isAuthorized}}
 
-    {{ >internalsHeader title=currentUser.profile.name addlButtons=editProfileButton}}
+    {{ >internalsHeader title=currentUser.profile.name addButtons='settingsButton'}}
     {{#if editProfileMenuOpen }}
       {{ >editProfile }}
     {{/if}}

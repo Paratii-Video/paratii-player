@@ -16,6 +16,7 @@ import '/imports/ui/components/modals/showSeed.js'
 import '/imports/ui/components/modals/modals.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
 import '/imports/ui/components/internals/internalsHeader.js'
+import '/imports/ui/components/buttons/settingsButton.js'
 import './editProfileButton.js'
 
 Template.profile.onCreated(function () {
@@ -101,7 +102,7 @@ Template.profile.events({
   'click #show-seed' () {
     showModal('showSeed')
   },
-  'click #edit-profile' () {
+  'click .button-settings' () {
     Session.set('editProfileMenuOpen', true)
   },
   'click' (e) {
