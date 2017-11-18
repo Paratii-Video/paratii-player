@@ -1,0 +1,14 @@
+<template name="internalsHeader">
+  <header class="internal-header">
+    {{#if backButton}}
+      {{> backButton }}
+    {{/if}}
+    {{#if title}}
+      <h2 class="internal-header-title">{{ title }}</h2>
+    {{/if}}
+    <div class="internal-header-actions">
+      {{> UI.dynamic template=addButtons }}
+      {{> fullScreenButton }}
+    </div>
+  </header>
+</template>

@@ -3,6 +3,8 @@
 // Overlay
 
 .nav-overlay {
+  display: none;
+
   background-color: black;
   height: 100%;
   opacity: .7;
@@ -48,14 +50,14 @@
     height: @screen-tiny-height;
   });
 
-  &.maximized {
-    transition: transform .5s @ease-smooth, width .9s @ease-smooth;
-    width: @size-main-nav-maximized-width;
+  // &.maximized {
+  //   transition: transform .5s @ease-smooth, width .9s @ease-smooth;
+  //   width: @size-main-nav-maximized-width;
 
-    .query-mini({
-      width: @size-main-nav-minimized-width;
-    });
-  }
+  //   .query-mini({
+  //     width: @size-main-nav-minimized-width;
+  //   });
+  // }
 
   .hide-nav & {
     transform: translate3d(-100%, 0, 0);
@@ -101,7 +103,11 @@
     &:extend(.full-block all);
     
     fill: @color-grey-light;
-    transition: fill .3s;
+    transition: fill .3s, opacity .3s;
+
+    .main-nav-link:hover & {
+      opacity: .5;
+    }
     
     .avatar & {
       border-radius: 50px;

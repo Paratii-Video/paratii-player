@@ -1,40 +1,44 @@
 // Internals
 
 .internal {
-  max-width: 570px;
   padding: 0 30px 0 @size-main-nav-minimized-width + 30;
 
   &-header {
     align-items: center;
     background: white;
     display: flex;
-    margin: 0 0 20px;
-    padding: 20px 0 0;
+    padding: 35px 0;
     position: relative;
     width: 100%;
     z-index: 5;
 
-    &-link {
-      &:extend(.hover-opacity all);
-
-      height: 20px;
+    .button-back {
+      animation: showFromLeft .75s @ease-smooth .2s forwards;
       margin-right: 7px;
-      width: 12px;
-    }
-
-    &-icon {
-      &:extend(.full-block all);
-
-      fill: @color-grey-light;
+      opacity: 0;
     }
 
     &-title {
+      animation: showFromLeft .75s @ease-smooth forwards;
       color: @color-grey;
       font-size: 20px;
+    }
+
+    &-actions {
+      &:extend(.pos-a-vm all);
+
+      right: 0;
+
+      button {
+        animation: scaleDown .5s @ease-smooth forwards .5s;
+        margin: 0 0 0 15px;
+        opacity: 0;
+      }
     }
   }
 
   &-content {
-    padding: 10px 0 0;
+    animation: fromFade .5s linear .5s forwards;
+    opacity: 0;
   }
 }
