@@ -3,19 +3,21 @@ import { formatNumber, showModal } from '/imports/lib/utils.js'
 import { Videos } from '../../../../imports/api/videos.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
+import '/imports/ui/components/internals/internalsHeader.js'
 import '/imports/ui/components/modals/playlist.js'
+import '/imports/ui/components/buttons/settingsButton.js'
 import './playlists.html'
 
 Template.playlists.onCreated(function () {
   this.lockeds = new ReactiveDict()
   Meteor.subscribe('playlists')
-  // autorun this when the playlist changes
+// autorun this when the playlist changes
   this.autorun(() => {
-    // subscribe to videos of the current playlist
+  // subscribe to videos of the current playlist
     Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'), () => {
       const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
       const videosId = playlist.videos
-      // for each video of the playlist checks if the user bought it
+    // for each video of the playlist checks if the user bought it
       videosId.forEach((id) => {
         Meteor.call('videos.isLocked', id, getUserPTIAddress(), (err, result) => {
           if (err) {
@@ -56,7 +58,7 @@ Template.playlists.helpers({
     }
   },
   isLocked (video) {
-    // console.log('locked' + video._id, Template.instance().lockeds.get(video._id))
+  // console.log('locked' + video._id, Template.instance().lockeds.get(video._id))
     return Template.instance().lockeds.get(video._id)
   },
   hasPrice (video) {
@@ -64,12 +66,6 @@ Template.playlists.helpers({
   },
   formatNumber (number) {
     return formatNumber(number)
-  },
-  currentPlaylistName () {
-    if (Playlists.find().fetch().length > 0) {
-      const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
-      return playlist.title
-    }
   },
   currentPlaylistDesc () {
     if (Playlists.find().fetch().length > 0) {
@@ -83,6 +79,29 @@ Template.playlists.helpers({
     const queryParams = { playlist: getCurrentPlaylistId() }
     const path = FlowRouter.path(pathDef, params, queryParams)
     return path
+  },
+  getTitle () {
+    if (FlowRouter.getParam('_id')) {
+      if (Playlists.find().fetch().length > 0) {
+        const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
+        return playlist.title
+      }
+    } else {
+      return 'Playlists'
+    }
+  },
+  getBackButton () {
+    return (FlowRouter.getParam('_id'))
+  },
+  addSettingsButton () {
+    return 'settingsButton'
+  },
+  getThumbTitle (title) {
+    let videoTitle = title
+    if (videoTitle.length > 25) {
+      videoTitle = videoTitle.substring(0, 25)
+    }
+    return videoTitle
   }
 })
 
@@ -94,5 +113,8 @@ Template.playlists.events({
     showModal('modal_playlist', {
       type: 'create'
     })
+  },
+  'click button.thumbs-list-settings' (event, instance) {
+    $(event.currentTarget).closest('.thumbs-list-item').toggleClass('active')
   }
 })

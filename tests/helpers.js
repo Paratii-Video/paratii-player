@@ -32,7 +32,7 @@ before(async function (done) {
           throw err
         }
       }
-    })
+    }, timeout, `Could not set value on ${selector} (timeout: ${timeout}s)`)
   })
   browser.addCommand('waitAndClick', function (selector, timeout) {
     this.waitForVisible(selector, timeout)
@@ -54,7 +54,7 @@ before(async function (done) {
           throw err
         }
       }
-    })
+    }, timeout, `Could not click on ${selector} (timeout: ${timeout}s)`)
   })
   browser.url('http://localhost:3000')
   await getOrDeployParatiiContracts(server, browser)
