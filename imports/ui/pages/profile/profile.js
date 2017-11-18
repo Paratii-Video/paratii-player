@@ -17,16 +17,12 @@ import '/imports/ui/components/modals/modals.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
 import '/imports/ui/components/internals/internalsHeader.js'
 import '/imports/ui/components/buttons/settingsButton.js'
-import './editProfileButton.js'
 
 Template.profile.onCreated(function () {
   Session.set('editProfileMenuOpen', false)
 })
 
 Template.profile.helpers({
-  editProfileButton () {
-    return 'editProfileButton'
-  },
   editProfileMenuOpen  () {
     return Session.get('editProfileMenuOpen')
   },
