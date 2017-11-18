@@ -1,4 +1,4 @@
-import { createVideo, createUserAndLogin, getUserPTIAddressFromBrowser } from './helpers.js'
+import { assertUserIsLoggedIn, createVideo, createUserAndLogin, getUserPTIAddressFromBrowser } from './helpers.js'
 import { assert } from 'chai'
 
 function createPlaylist () {
@@ -25,7 +25,7 @@ function fakeVideoUnlock (address) {
 }
 
 describe('price tag status', function () {
-  it('when the video has no price', () => {
+  it('when the video has no price ', () => {
     createUserAndLogin(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     server.execute(createPlaylist)
@@ -37,13 +37,18 @@ describe('price tag status', function () {
     assert.isTrue(priceTag)
   })
 
-  it('when the video has a price  and wasn\'t bought', () => {
+  it('when the video has a price  and wasn\'t bought ', () => {
     createUserAndLogin(browser)
+    assertUserIsLoggedIn(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.thumbs-list-item')
-    assert.equal(browser.getText('.thumbs-list-price'), '10 PTI')
+    browser.moveToObject('.thumbs-list-item')
+    browser.waitUntil(function () {
+      console.log(browser.getText('.thumbs-list-price'))
+      return browser.getText('.thumbs-list-price') === '10 PTI'
+    })
   })
 
   it('when the video was bought [TODO]', () => {
