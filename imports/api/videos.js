@@ -7,6 +7,7 @@ import { Playlists } from '/imports/api/playlists.js'
 export const Videos = new Mongo.Collection('videos')
 export const VideosResults = new Mongo.Collection('SearchResults')
 export const RelatedVideos = new Mongo.Collection('RelatedVideos')
+export const CurrentVideos = new Mongo.Collection('CurrentVideos')
 
 export function userLikesVideo (userAddress, videoId) {
   return Boolean(
@@ -31,7 +32,9 @@ if (Meteor.isServer) {
   // Publish all videos
 
   Meteor.publish('videos', function () {
-    return Videos.find()
+    // i've changed the cursor in order to clean query
+    Mongo.Collection._publishCursor(Videos.find({}), this, 'CurrentVideos')
+    this.ready()
   })
 
   // Publish searched videos
@@ -90,14 +93,25 @@ if (Meteor.isServer) {
     return Videos.find(_id)
   })
 
-  // Publish videos by playlist
-  Meteor.publish('videosPlaylist', function (_id) {
+  // Publish videos by playlist, paged
+
+  Meteor.publish('videosPlaylist', function (_id, page) {
     if (_id === null) {
       return Videos.find()
     } else {
       const playlist = Playlists.findOne({_id})
       const videosIds = playlist.videos
-      return Videos.find({ _id: { '$in': videosIds } })
+      if (page === null) {
+        page = 0
+      }
+
+      let step
+      if (Meteor.settings.public.paginationStep === null) {
+        step = 6
+      } else {
+        step = Meteor.settings.public.paginationStep
+      }
+      return Videos.find({ _id: { '$in': videosIds } }, {limit: step, skip: (step * page)})
     }
   })
 

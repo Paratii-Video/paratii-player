@@ -51,6 +51,8 @@
           {{/unless}}
           {{#if videos}}
             <h3 class="playlists-wrapper-title visually-hidden">{{ currentPlaylistDesc }}</h3>
+            <a href="{{getprevpage}}" class="pageprev"> prev </a>
+            <a href="{{getnextpage}}" class="pagenext"> next </a>
             <ul class="videos-list">
               {{#each videos}}
                 <li class="videos-item">

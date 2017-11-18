@@ -5,7 +5,7 @@ import { web3 } from '/imports/lib/ethereum/connection.js'
 import { formatNumber, showModal, showGlobalAlert, log } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
-import { Videos, RelatedVideos } from '../../../api/videos.js'
+import { RelatedVideos, CurrentVideos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
@@ -114,7 +114,7 @@ Template.player.onCreated(function () {
   }
   const videoId = FlowRouter.getParam('_id')
   Meteor.subscribe('videos', function () {
-    self.currentVideo.set(Videos.findOne({ _id: videoId }))
+    self.currentVideo.set(CurrentVideos.findOne({ _id: videoId }))
     renderVideoElement(instance)
   })
 
@@ -148,7 +148,7 @@ Template.player.helpers({
   currentVideo () {
     const videoId = FlowRouter.getParam('_id')
 
-    Template.instance().currentVideo.set(Videos.findOne({ _id: videoId }))
+    Template.instance().currentVideo.set(CurrentVideo.findOne({ _id: videoId }))
   },
   isLocked () {
     return Template.instance().playerState.get('locked')

@@ -5,6 +5,7 @@
     "http_provider": "https://chain.paratii.video",
     "ipfs_gateway": "https://gateway.paratii.video/ipfs",
     "first_block": 0,
-    "ParatiiRegistry":  "0x5C454c91382dF9Ec1E9F49A06474537048574267"
+    "ParatiiRegistry":  "0x5C454c91382dF9Ec1E9F49A06474537048574267",
+    "paginationStep": 6
   }
 }
