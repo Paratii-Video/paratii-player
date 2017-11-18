@@ -46,12 +46,11 @@ describe('price tag status', function () {
     browser.waitForExist('.thumbs-list-item')
     browser.moveToObject('.thumbs-list-item')
     browser.waitUntil(function () {
-      console.log(browser.getText('.thumbs-list-price'))
       return browser.getText('.thumbs-list-price') === '10 PTI'
     })
   })
 
-  it('when the video was bought [TODO]', () => {
+  it('when the video was bought [TODO] @watch', () => {
     createUserAndLogin(browser)
     browser.pause(5000)
     const address = getUserPTIAddressFromBrowser()
@@ -59,7 +58,7 @@ describe('price tag status', function () {
     server.execute(createPlaylist)
     server.execute(fakeVideoUnlock, address)
     browser.url('http:localhost:3000/playlists/98765')
-    browser.waitForExist('.videos-item')
+    browser.waitForExist('.thumbs-list-item')
     // assert.equal(browser.getText('.thumbs-list-price'), '✓')
   })
 })
