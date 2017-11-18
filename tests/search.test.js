@@ -83,13 +83,13 @@ describe('Search video :', function () {
     done()
   })
 
-  it('search must return a video with a matching field and player should open in the right video', function (done) {
+  it('search must return a video with a matching field and player should open in the right video @watch', function (done) {
     server.execute(createVideo, '12345', 'fookeyword1foo', '', '', ['foo', 'matching-keyword-tag'], 0)
     browser.setValue('[name="search"]', 'keyword')
     browser.waitForClickable('.thumbs-list li')
     let results = browser.elements('.thumbs-list li')
     assert.equal(results.value.length, 1)
-    let title = browser.getText('.videos-item-title')
+    let title = browser.getText('.thumbs-list-title')
     browser.click('.thumbs-list li')
     browser.waitForClickable('.player-title')
     let videoTitle = browser.getText('.player-title')
