@@ -73,10 +73,12 @@ describe('Player:', function () {
     assert.equal(browser.getText('#button-dislike'), '')
 
     browser.click('#button-like')
+    browser.pause(500)
     assert.equal(browser.getText('#button-like'), '1')
     assert.equal(browser.getText('#button-dislike'), '')
 
     browser.click('#button-dislike')
+    browser.pause(500)
     assert.equal(browser.getText('#button-like'), '')
     assert.equal(browser.getText('#button-dislike'), '1')
   })
@@ -89,10 +91,12 @@ describe('Player:', function () {
     assert.equal(browser.getText('#button-dislike'), '')
 
     browser.click('#button-like')
+    browser.pause(500)
     assert.equal(browser.getText('#button-like'), '1')
     assert.equal(browser.getText('#button-dislike'), '')
 
     browser.click('#button-dislike')
+    browser.pause(500)
     assert.equal(browser.getText('#button-like'), '')
     assert.equal(browser.getText('#button-dislike'), '1')
   })

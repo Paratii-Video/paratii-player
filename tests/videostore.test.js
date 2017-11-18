@@ -72,13 +72,14 @@ describe('Video Store:', function () {
     browser.waitForExist('.player-controls')
   })
 
-  it('should show an error if the password is wrong ', function () {
+  it('should show an error if the password is wrong @watch', function () {
     // make sure we have enough funds
     let userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 2.1)
     sendSomePTI(userAccount, 300)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
+    browser.pause(2000)
     browser.waitAndClick('#unlock-video')
     browser.waitAndSetValue('[name="user_password"]', 'wrong_password')
     browser.waitAndClick('#send_trans_btn')
