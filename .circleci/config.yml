@@ -8,6 +8,14 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:8.6.0
+        environment:
+          # lang settings required for Meteor's Mongo
+          LANG: C.UTF-8
+          LANGUAGE: C.UTF-8
+          LC_ALL: C.UTF-8
+          LC_NUMERIC: en_US.UTF-8
+          METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
+          METEOR_BIN_TMP_FILE: meteor-bin-temp
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -48,8 +56,6 @@ jobs:
       - run: google-chrome --version
       - run: sleep 10
       - run: yarn lint
-      # next line apparently necessary for meteor to spawn mongo: https://github.com/meteor/meteor/issues/4019
-      - run: export LC_ALL=en_US.UTF-8
       - run: TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999
       - run:
           name: run testrpc in background
