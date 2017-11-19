@@ -50,7 +50,6 @@ jobs:
       - run: sleep 10
       - run: yarn lint
       - run: TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
-          timeout: 1020
       - run:
           name: run testrpc in background
           command: yarn testrpc
