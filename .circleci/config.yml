@@ -60,5 +60,4 @@ jobs:
           background: true
       - run: sleep 60
       - run: yarn chimp-test
-      - run:
-          - pkill -f meteor
+      - run: pkill -f meteor
