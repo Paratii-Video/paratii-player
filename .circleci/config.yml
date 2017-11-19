@@ -1,0 +1,65 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:8.6.0
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: curl https://install.meteor.com | /bin/sh
+      - run: yarn install
+      - run: meteor list
+
+      - save_cache:
+          paths:
+            - node_modules
+            - .meteor
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: google-chrome --version
+      - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      - run: for v in $(curl http://archive.ubuntu.com/ubuntu/pool/main/n/nss/ | grep "href=" | grep "libnss3.*deb\"" -o | grep -o "libnss3.*deb" | grep "3.28" | grep "14.04"); do curl -L -o $v http://archive.ubuntu.com/ubuntu/pool/main/n/nss/$v; done && rm libnss3-tools*_i386.deb libnss3-dev*_i386.deb
+      - run: sudo dpkg -i google-chrome.deb || true
+      - run: sudo dpkg -i libnss3*.deb || true
+      - run: sudo apt-get update
+      - run: sudo apt-get install -f || true
+      - run: sudo dpkg -i libnss3*.deb || true
+      - run: sudo apt-get install -f || true
+      - run: sudo apt-get install --only-upgrade lsb-base
+      - run: sudo dpkg -i google-chrome.deb
+      - run: google-chrome --version
+      - run: sleep 10
+      - run: yarn lint
+      - run: TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
+          timeout: 1020
+      - run:
+          name: run testrpc in background
+          command: yarn testrpc
+          background: true
+      - run:
+          name: run meteor server in background
+          command: yarn dev
+          background: true
+      - run: sleep 60
+      - run: yarn chimp-test
+      - run:
+          - pkill -f meteor
