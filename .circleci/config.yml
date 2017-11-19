@@ -48,6 +48,8 @@ jobs:
       - run: google-chrome --version
       - run: sleep 10
       - run: yarn lint
+      # next line apparently necessary for meteor to spawn mongo: https://github.com/meteor/meteor/issues/4019
+      - run: export LC_ALL=en_US.UTF-8
       - run: TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999
       - run:
           name: run testrpc in background
