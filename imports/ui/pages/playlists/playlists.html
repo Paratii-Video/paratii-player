@@ -1,9 +1,9 @@
 <template name="playlists">
   <div class="internal playlists">
     {{#if videos}}
-      {{ >internalsHeader title=getTitle backButton=getBackButton addButtons=addSettingsButton }}
+      {{ >internalsHeader title=getTitle addButtons=addSettingsButton prevPage=getPrevPage }}
     {{else}}
-      {{ >internalsHeader title=getTitle backButton=getBackButton }}
+      {{ >internalsHeader title=getTitle }}
     {{/if}}
     {{#unless videos}}
       <div class="internal-content">

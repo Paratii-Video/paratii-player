@@ -101,8 +101,8 @@ Template.playlists.helpers({
       return 'Playlists'
     }
   },
-  getBackButton () {
-    return (FlowRouter.getParam('_id'))
+  getPrevPage () {
+    return '/playlists'
   },
   addSettingsButton () {
     return 'settingsButton'
