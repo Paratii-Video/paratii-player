@@ -1,7 +1,6 @@
 <template name="search">
   <div class="internal">
-    {{ >internalsHeader title="Search" }}
-    <input id="search" class="main-form-input" type="text" name="search" value="{{lastsearch}}" placeholder="Type here to Search">
+    {{ >internalsHeader title="Search" search=true }}
     {{#unless videos}}
       <div class="internal-content">
         <p>{{noResults}}</p>
