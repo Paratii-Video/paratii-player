@@ -20,7 +20,7 @@
                   </svg>
                 </div>
                 {{#if thumb}}
-                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ thumb }}"/></div>
+                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{getThumbUrl thumb }}"/></div>
                 {{else}}
                   <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="/img/cover/default-thumb.png"/></div>
                 {{/if}}
@@ -39,7 +39,7 @@
       <div class="internal-content">
         <a href="{{getprevpage}}" class="pageprev"> prev </a>
         <a href="{{getnextpage}}" class="pagenext"> next </a>
-        
+
         <ul class="thumbs-list">
           {{#each videos}}
             <li class="thumbs-list-item flip">
