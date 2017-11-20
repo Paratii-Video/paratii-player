@@ -15,17 +15,14 @@ import '/imports/ui/components/modals/createNewWallet.js'
 import '/imports/ui/components/modals/showSeed.js'
 import '/imports/ui/components/modals/modals.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
-import '../../components/pageheader/pageheader.js'
-import './editProfileButton.js'
+import '/imports/ui/components/internals/internalsHeader.js'
+import '/imports/ui/components/buttons/settingsButton.js'
 
 Template.profile.onCreated(function () {
   Session.set('editProfileMenuOpen', false)
 })
 
 Template.profile.helpers({
-  editProfileButton () {
-    return 'editProfileButton'
-  },
   editProfileMenuOpen  () {
     return Session.get('editProfileMenuOpen')
   },
@@ -101,7 +98,7 @@ Template.profile.events({
   'click #show-seed' () {
     showModal('showSeed')
   },
-  'click #edit-profile' () {
+  'click .button-settings' () {
     Session.set('editProfileMenuOpen', true)
   },
   'click' (e) {

@@ -1,9 +1,9 @@
 <template name="playlists">
   <div class="internal playlists">
     {{#if videos}}
-      {{ >internalsHeader title=getTitle backButton=getBackButton addButtons=addSettingsButton }}
+      {{ >internalsHeader title=getTitle addButtons=addSettingsButton prevPage=getPrevPage }}
     {{else}}
-      {{ >internalsHeader title=getTitle backButton=getBackButton }}
+      {{ >internalsHeader title=getTitle }}
     {{/if}}
     {{#unless videos}}
       <div class="internal-content">
@@ -37,12 +37,16 @@
     {{/unless}}
     {{#if videos}}
       <div class="internal-content">
+        <a href="{{getprevpage}}" class="pageprev"> prev </a>
+        <a href="{{getnextpage}}" class="pagenext"> next </a>
+        
         <ul class="thumbs-list">
           {{#each videos}}
             <li class="thumbs-list-item flip">
               <div class="flip-face flip-face-front">
                 <a class="thumbs-list-link" href="{{videoPath this}}">
                   <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
+
                   <p class="thumbs-list-time">{{ duration }}</p>
                  <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
                   {{#if isLocked this}}

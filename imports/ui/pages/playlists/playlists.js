@@ -11,13 +11,23 @@ import './playlists.html'
 Template.playlists.onCreated(function () {
   this.lockeds = new ReactiveDict()
   Meteor.subscribe('playlists')
-// autorun this when the playlist changes
+
+  // paging init
+  this.page = new ReactiveVar()
+
+  // autorun this when the playlist changes
   this.autorun(() => {
-  // subscribe to videos of the current playlist
-    Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'), () => {
+    // subscribe to videos of the current playlist
+    let currentPage = (FlowRouter.getQueryParam('p')) ? FlowRouter.getQueryParam('p') : 0
+    this.page.set(parseInt(currentPage))
+    console.log('currentpage on autorun', currentPage)
+
+    Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'), this.page.get(), () => {
       const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
       const videosId = playlist.videos
-    // for each video of the playlist checks if the user bought it
+
+      console.log('playlistvideos', playlist.videos.length)
+      // for each video of the playlist checks if the user bought it
       videosId.forEach((id) => {
         Meteor.call('videos.isLocked', id, getUserPTIAddress(), (err, result) => {
           if (err) {
@@ -39,6 +49,7 @@ function getCurrentPlaylistId () {
 }
 
 Template.playlists.helpers({
+
   playlists () {
     const playlists = Playlists.find()
     return playlists
@@ -90,8 +101,8 @@ Template.playlists.helpers({
       return 'Playlists'
     }
   },
-  getBackButton () {
-    return (FlowRouter.getParam('_id'))
+  getPrevPage () {
+    return '/playlists'
   },
   addSettingsButton () {
     return 'settingsButton'
@@ -102,12 +113,27 @@ Template.playlists.helpers({
       videoTitle = videoTitle.substring(0, 25)
     }
     return videoTitle
+  },
+  getprevpage () {
+    return '/' + FlowRouter.getRouteName() + '/' + getCurrentPlaylistId() + '?p=' + (parseInt(Template.instance().page.get()))
+  },
+  getnextpage () {
+    return '/' + FlowRouter.getRouteName() + '/' + getCurrentPlaylistId() + '?p=' + (parseInt(Template.instance().page.get()))
   }
 })
 
 Template.playlists.events({
   'click .playlistSel' (event) {
     Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'))
+  },
+  'click .pagenext' () {
+    Template.instance().page.set((Template.instance().page.get() + 1))
+    FlowRouter.setQueryParams({p: Template.instance().page.get()})
+  },
+  'click .pageprev' () {
+    Template.instance().page.set((Template.instance().page.get() - 1))
+
+    FlowRouter.setQueryParams({p: Template.instance().page.get()})
   },
   'click #button-create-playlist' () {
     showModal('modal_playlist', {

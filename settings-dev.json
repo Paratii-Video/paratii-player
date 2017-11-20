@@ -5,7 +5,8 @@
     "ipfs_gateway": "https://gateway.paratii.video/ipfs",
     "first_block": 0,
     "isTestEnv": true,
-    "isProduction": false
+    "isProduction": false,
+    "paginationStep": 6
   },
   "env" : {
     "mail_server": "smtp://MAIL_USER:MAIL_PASSWORD@MAIL_HOST:MAIL_PORT"

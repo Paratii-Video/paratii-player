@@ -123,8 +123,8 @@ describe('Profile and accounts workflow:', function () {
     const userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 3.1)
     browser.url('http://localhost:3000/profile')
-    browser.waitForClickable('#edit-profile')
-    browser.click('#edit-profile')
+    browser.waitForClickable('.button-settings')
+    browser.click('.button-settings')
     browser.waitForClickable('.edit-password')
     browser.click('.edit-password')
     // TODO remove this pause, problem with modals
@@ -468,8 +468,8 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to change their password if they enter the incorrect current password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
       browser.waitAndSetValue('#current-password', 'foobar')
@@ -487,8 +487,8 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to attempt to change their password if they do not enter their current password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
       browser.waitAndSetValue('#current-password', 'myshinynewpassword')
@@ -501,7 +501,7 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to attempt to change their password if they do not enter a new password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitAndClick('#edit-profile')
+      browser.waitAndClick('.button-settings')
       browser.waitAndClick('.edit-password')
       browser.waitAndSetValue('#current-password', 'myshinynewpassword')
       browser.click('#save-password')
@@ -513,8 +513,8 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to attempt to change their password if they do not enter their current password or a new password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
       browser.waitForClickable('#current-password')
@@ -524,8 +524,8 @@ describe('Profile and accounts workflow:', function () {
     it('should allow the user to attempt to change their password if they enter the correct current password and a new password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
       browser.waitAndSetValue('#current-password', 'password')
@@ -557,8 +557,8 @@ describe('Profile and accounts workflow:', function () {
     it('should render the current profile\'s information correctly', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
@@ -571,8 +571,8 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to save profile information if no new information is entered', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
@@ -583,8 +583,8 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to save profile information if only whitespace is entered into the name or email fields', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
@@ -601,11 +601,11 @@ describe('Profile and accounts workflow:', function () {
     it('should allow the user to update their name', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
+      browser.waitForClickable('.button-settings')
 
-      assert.equal(browser.getText('.header-title'), 'foobar baz')
+      assert.equal(browser.getText('.internal-header-title'), 'foobar baz')
 
-      browser.click('#edit-profile')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
@@ -615,18 +615,18 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#save-profile-info')
 
       browser.waitUntil(() => {
-        return browser.getText('.header-title') === 'my shiny new name'
+        return browser.getText('.internal-header-title') === 'my shiny new name'
       })
     })
 
     it('should allow the user to update their email', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
+      browser.waitForClickable('.button-settings')
 
       assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
 
-      browser.click('#edit-profile')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.waitAndClick('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
@@ -644,11 +644,11 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to update their email if they enter an invalid email', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
+      browser.waitForClickable('.button-settings')
 
       assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
 
-      browser.click('#edit-profile')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.waitAndClick('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')

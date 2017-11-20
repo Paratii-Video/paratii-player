@@ -1,12 +1,12 @@
 <template name="profile">
-  <div class="app-content scrollable-y">
+  <div class="internal profile">
     {{#if currentUser }} {{#isAuthorized}}
 
-    {{ >pageheader title=currentUser.profile.name addlButtons=editProfileButton }}
+    {{ >internalsHeader title=currentUser.profile.name addButtons='settingsButton'}}
     {{#if editProfileMenuOpen }}
       {{ >editProfile }}
     {{/if}}
-    <div class="walletContainer">
+    <div class="walletContainer emailContainer">
       <div class="profile-info profile-info-email"> {{userEmail}}</div>
     </div>
     {{#if userPTIAddress }}
