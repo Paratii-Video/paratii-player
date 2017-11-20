@@ -13,6 +13,8 @@ if (Meteor.isClient) {
   Accounts.onLogin(function (user) {
     // User is logged in
     log('onLogin')
+    // This one is used to hide/show the foundKeystore modal
+    window.sessionStorage.setItem('navigation', 'logged')
     // if any modal is still open, we can safely close it now to make it possible to open new ones
     // get the user's keystore
     const keystore = getKeystore()
@@ -44,6 +46,8 @@ if (Meteor.isClient) {
     Session.set('tempKeystore', null)
     Session.set('tempAddress', null)
     Session.set('wallet-state', null)
+    // This one is used to hide/show the foundKeystore modal
+    window.sessionStorage.setItem('navigation', 'anonymous')
   })
 }
 
@@ -64,7 +68,9 @@ Template.App_body.onCreated(function () {
     if (keystores.users > 0) {
       // There is at least one User keystore
       // Propose to login if not create anonymous keystore
-      showModal('foundKeystore')
+      if (window.sessionStorage.getItem('navigation') !== 'anonymous') {
+        showModal('foundKeystore')
+      }
     } else {
       // If there is no User keystore
     }
