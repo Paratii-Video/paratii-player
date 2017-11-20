@@ -37,8 +37,18 @@
     {{/unless}}
     {{#if videos}}
       <div class="internal-content">
-        <a href="{{getprevpage}}" class="pageprev"> prev </a>
-        <a href="{{getnextpage}}" class="pagenext"> next </a>
+        <div class="internal-pagination">
+          <a class="internal-pagination-button prev pageprev disabled" href="{{getprevpage}}">
+            <svg class="internal-pagination-button-svg">
+              <use class="internal-pagination-button-svg-use" xlink:href="#icon-return"></use>
+            </svg>
+          </a>
+          <a class="internal-pagination-button next pagenext" href="{{getnextpage}}">
+            <svg class="internal-pagination-button-svg">
+              <use class="internal-pagination-button-svg-use" xlink:href="#icon-return"></use>
+            </svg>
+          </a>
+        </div>
         
         <ul class="thumbs-list">
           {{#each videos}}

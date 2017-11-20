@@ -3,7 +3,9 @@
     {{ >internalsHeader title="Search" }}
     <input id="search" class="main-form-input" type="text" name="search" value="{{lastsearch}}" placeholder="Type here to Search">
     {{#unless videos}}
-      <p>{{noResults}}</p>
+      <div class="internal-content">
+        <p>{{noResults}}</p>
+      </div>
     {{/unless}}
     <br>
     {{#if videos}}

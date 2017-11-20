@@ -1,13 +1,13 @@
 // Internals
 
 .internal {
-  padding: 0 30px 0 @size-main-nav-minimized-width + 30;
+  padding: 35px 30px 0 @size-main-nav-minimized-width + 30;
 
   &-header {
     align-items: center;
     background: white;
     display: flex;
-    padding: 35px 0;
+    margin: 0 0 25px;
     position: relative;
     width: 100%;
     z-index: 5;
@@ -25,9 +25,9 @@
     }
 
     &-actions {
-      &:extend(.pos-a-vm all);
-
+      position: absolute;
       right: 0;
+      top: 0;
 
       button {
         animation: scaleDown .5s @ease-smooth forwards .5s;
@@ -40,5 +40,35 @@
   &-content {
     animation: fromFade .5s linear .5s forwards;
     opacity: 0;
+  }
+
+  &-pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    max-width: @screen-mini-width;
+
+    &-button {
+      &:extend(.hover-opacity all);
+
+      display: inline-block;
+      height: 12px;
+      margin: 0 0 0 10px;
+      width: 8px;
+
+      &-svg {
+        &:extend(.full-block all);
+
+        fill: @color-purple;
+
+        .disabled & {
+          fill: @color-grey;
+        }
+
+        .next & {
+          transform: rotateY(180deg);
+        }
+      }
+    }
   }
 }
