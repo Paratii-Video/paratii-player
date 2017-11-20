@@ -89,7 +89,7 @@ describe('Search video :', function () {
     browser.waitForClickable('.thumbs-list li')
     let results = browser.elements('.thumbs-list li')
     assert.equal(results.value.length, 1)
-    let title = browser.getText('.videos-item-title')
+    let title = browser.getText('.thumbs-list-title')
     browser.click('.thumbs-list li')
     browser.waitForClickable('.player-title')
     let videoTitle = browser.getText('.player-title')
