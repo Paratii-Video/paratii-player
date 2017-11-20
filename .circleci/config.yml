@@ -68,3 +68,12 @@ jobs:
       - run: sleep 60
       - run: yarn chimp-test
       - run: pkill -f meteor
+
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ./deploy.sh production
+            fi
+            if [ "${CIRCLE_BRANCH}" == "dev" ]; then
+              ./deploy.sh staging
+            fi
