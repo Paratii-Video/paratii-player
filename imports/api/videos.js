@@ -38,7 +38,7 @@ if (Meteor.isServer) {
   })
 
   // Publish searched videos
-  Meteor.publish('searchedVideos', function (keyword) {
+  Meteor.publish('searchedVideos', function (keyword, page) {
     if (!keyword) {
       keyword = ''
     }
@@ -70,8 +70,17 @@ if (Meteor.isServer) {
       }
     }
 
+    let step
+    if (Meteor.settings.public.paginationStep === null) {
+      step = 6
+    } else {
+      step = Meteor.settings.public.paginationStep
+    }
+
+    const limit = {limit: step, skip: (step * page)}
+
     // i've changed the cursor in order to clean query
-    Mongo.Collection._publishCursor(Videos.find(query, relevanceSettings), this, 'SearchResults')
+    Mongo.Collection._publishCursor(Videos.find(query, limit, relevanceSettings), this, 'SearchResults')
     this.ready()
     // return Videos.find(query, relevanceSettings)
   })
