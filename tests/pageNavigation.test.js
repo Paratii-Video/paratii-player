@@ -10,29 +10,31 @@ describe('Page Navigation:', function () {
   })
 
   describe('search page', () => {
-    it('should not display a back button if the user first navigates to the page', () => {
+    it('should not display a back button if the user first navigates to the page ', () => {
       browser.url('http://localhost:3000/search')
 
       browser.waitUntil(() => {
-        return browser.getText('.internal-header-title') === 'Search'
+        return browser.isVisible('#search')
+        // return browser.getText('.internals-header-title') === 'Search'
       })
 
       assert.equal(browser.isVisible('#back-button'), false)
     })
 
-    it('should navigate to the previous page when the user clicks the back button after having nagivating from another page', () => {
+    it('should navigate to the previous page when the user clicks the back button after having nagivating from another page @watch', () => {
       browser.url('http://localhost:3000/playlists')
 
       browser.waitAndClick('#search')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Search'
+        return browser.isVisible('#search')
+        // return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Search'
       })
 
       browser.waitAndClick('#back-button')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Playlists'
+        return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Playlists'
       })
     })
   })
@@ -42,7 +44,7 @@ describe('Page Navigation:', function () {
       browser.url('http://localhost:3000/profile')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'foobar baz'
+        return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'foobar baz'
       })
 
       assert.equal(browser.isVisible('#back-button'), false)
@@ -54,13 +56,13 @@ describe('Page Navigation:', function () {
       browser.waitAndClick('#nav-profile')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'foobar baz'
+        return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'foobar baz'
       })
 
       browser.waitAndClick('#back-button')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Playlists'
+        return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Playlists'
       })
     })
   })
@@ -70,25 +72,26 @@ describe('Page Navigation:', function () {
       browser.url('http://localhost:3000/playlists')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Playlists'
+        return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Playlists'
       })
 
       assert.equal(browser.isVisible('#back-button'), false)
     })
 
-    it('should navigate to the previous page when the user clicks the back button after having nagivating from another page', () => {
+    it('should navigate to the previous page when the user clicks the back button after having nagivating from another page ', () => {
       browser.url('http://localhost:3000/search')
 
       browser.waitAndClick('#playlist')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Playlists'
+        return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Playlists'
       })
 
       browser.waitAndClick('#back-button')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Search'
+        return browser.isVisible('#search')
+        // return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Search'
       })
     })
 
@@ -102,46 +105,49 @@ describe('Page Navigation:', function () {
       browser.waitAndClick('.playlists .thumbs-list-item:first-child')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === playlistTitle
+        return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === playlistTitle
       })
 
       browser.waitAndClick('#back-button')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Playlists'
+        return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Playlists'
       })
     })
 
-    it('should navigate from an individual playlist to the playlists page even after the user has navigated directly to a playlist page', () => {
+    it('should navigate from an individual playlist to the playlists page even after the user has navigated directly to a playlist page ', () => {
       browser.url('http://localhost:3000/playlists/1')
 
       browser.waitAndClick('#back-button')
 
       browser.waitUntil(() => {
-        return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Playlists'
+        return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Playlists'
       })
     })
   })
 
-  it('should navigate back and forth between two pages when the back button is clicked', () => {
+  it('should navigate back and forth between two pages when the back button is clicked ', () => {
     browser.url('http://localhost:3000/playlists')
 
     browser.waitAndClick('#search')
 
     browser.waitUntil(() => {
-      return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Search'
+      return browser.isVisible('#search')
+      // return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Search'
     })
 
     browser.waitAndClick('#back-button')
 
     browser.waitUntil(() => {
-      return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Playlists'
+      return browser.isVisible('#search')
+      // return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Playlists'
     })
 
     browser.waitAndClick('#search')
 
     browser.waitUntil(() => {
-      return browser.isVisible('.internal-header-title') && browser.getText('.internal-header-title') === 'Search'
+      return browser.isVisible('#search')
+      // return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'Search'
     })
   })
 })
