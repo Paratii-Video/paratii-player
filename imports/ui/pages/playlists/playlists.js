@@ -119,6 +119,13 @@ Template.playlists.helpers({
   },
   getnextpage () {
     return '/' + FlowRouter.getRouteName() + '/' + getCurrentPlaylistId() + '?p=' + (parseInt(Template.instance().page.get()))
+  },
+  getThumbUrl (thumbSrc) {
+    if (thumbSrc.startsWith('/ipfs/')) {
+      return String('https://gateway.paratii.video' + thumbSrc)
+    } else {
+      return String(thumbSrc)
+    }
   }
 })
 
