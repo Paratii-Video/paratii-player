@@ -5,6 +5,7 @@ import '/imports/ui/components/buttons/backButton.js'
 import '/imports/ui/components/svgs/svgs.js'
 import { add0x, showModal, hideModal, log } from '/imports/lib/utils.js'
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, getKeystore, mergeOrCreateNewWallet } from '/imports/lib/ethereum/wallet.js'
+import '/imports/ui/components/loaders/mainLoader.js'
 import '/imports/ui/components/alert/globalAlert.js'
 import '/imports/ui/components/modals/foundKeystore.js'
 
@@ -95,6 +96,9 @@ Template.App_body.helpers({
     var current = FlowRouter.current()
     var route = current.route.name
     return route
+  },
+  showMainLoaderClass () {
+    return (Session.get('showMainLoader')) ? 'show-main-loader' : false;
   }
 })
 
