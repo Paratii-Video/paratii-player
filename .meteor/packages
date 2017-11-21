@@ -62,3 +62,4 @@ shell-server@0.2.4
 meteorhacks:picker
 useraccounts:unstyled
 email
+meteorhacks:fast-render

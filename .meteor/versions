@@ -24,6 +24,7 @@ caching-html-compiler@1.1.2
 callback-hook@1.0.10
 cfs:http-methods@0.0.32
 check@1.2.5
+chuangbo:cookie@1.1.0
 coffeescript@1.0.17
 cosmos:browserify@0.4.0
 dburles:factory@1.1.0
@@ -76,6 +77,9 @@ meteor-base@1.1.0
 meteor-tool@1.5.2
 meteorhacks:aggregate@1.3.0
 meteorhacks:collection-utils@1.2.0
+meteorhacks:fast-render@2.16.0
+meteorhacks:inject-data@2.0.0
+meteorhacks:meteorx@1.4.1
 meteorhacks:picker@1.0.3
 meteorspark:util@0.2.0
 minifier-css@1.2.16
