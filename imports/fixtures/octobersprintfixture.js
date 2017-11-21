@@ -1,5 +1,5 @@
 
-export const videos = module.exports = [
+export const videos = [
   {
     '_id': 'QmNPZWg2F946MjvLKFmyFkQ3kP1PbUazsKof1cmFUoTf98',
     'title': 'CESC2017 - Sinclair Davidson - What is a Token?',
