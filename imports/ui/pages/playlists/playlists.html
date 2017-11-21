@@ -1,12 +1,12 @@
 <template name="playlists">
-  <div class="internal playlists">
+  <div class="internals playlists">
     {{#if videos}}
       {{ >internalsHeader title=getTitle addButtons=addSettingsButton prevPage=getPrevPage }}
     {{else}}
       {{ >internalsHeader title=getTitle }}
     {{/if}}
     {{#unless videos}}
-      <div class="internal-content">
+      <div class="internals-content">
         <h3 class="playlists-wrapper-title visually-hidden">My playlists</h3>
         <ul class="thumbs-list">
           {{#each playlists}}
@@ -36,19 +36,8 @@
       </div>
     {{/unless}}
     {{#if videos}}
-      <div class="internal-content">
-        <div class="internal-pagination">
-          <a class="internal-pagination-button prev pageprev disabled" href="{{getprevpage}}">
-            <svg class="internal-pagination-button-svg">
-              <use class="internal-pagination-button-svg-use" xlink:href="#icon-return"></use>
-            </svg>
-          </a>
-          <a class="internal-pagination-button next pagenext" href="{{getnextpage}}">
-            <svg class="internal-pagination-button-svg">
-              <use class="internal-pagination-button-svg-use" xlink:href="#icon-return"></use>
-            </svg>
-          </a>
-        </div>
+      <div class="internals-content">
+        {{ >internalsPagination getPrevPage=getprevpage getNextPage=getnextpage }}
         
         <ul class="thumbs-list">
           {{#each videos}}

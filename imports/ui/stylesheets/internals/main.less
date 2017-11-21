@@ -1,6 +1,6 @@
 // Internals
 
-.internal {
+.internals {
   padding: 30px 30px 0 @size-main-nav-minimized-width + 30;
 
   &-header {
@@ -86,6 +86,11 @@
       height: 12px;
       margin: 0 0 0 16px;
       width: 8px;
+
+      &.disabled {
+        cursor: pointer;
+        pointer-events: none;
+      }
 
       &-svg {
         &:extend(.full-block all);
