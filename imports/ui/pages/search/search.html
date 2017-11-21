@@ -1,14 +1,14 @@
 <template name="search">
-  <div class="internal">
+  <div class="internals">
     {{ >internalsHeader title="Search" search=true }}
     {{#unless videos}}
-      <div class="internal-content">
+      <div class="internals-content">
         <p>{{noResults}}</p>
       </div>
     {{/unless}}
     <br>
     {{#if videos}}
-      <div class="internal-content">
+      <div class="internals-content">
         <ul class="thumbs-list">
           {{#each videos}}
             <li class="thumbs-list-item">
