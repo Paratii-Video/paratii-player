@@ -126,7 +126,7 @@ function mergeOrCreateNewWallet (password) {
     }
   } else {
     console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
-    showModal('regenerateKeystore')
+    showModal('regenerateKeystore', {blocking: true})
   }
 }
 
