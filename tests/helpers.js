@@ -65,6 +65,7 @@ before(async function (done) {
 beforeEach(function () {
   server.execute(resetDb)
   browser.execute(nukeLocalStorage)
+  browser.execute(nukeSessionStorage)
 })
 
 export function getProvider () {
@@ -104,7 +105,8 @@ export function createUserAndLogin (browser) {
 }
 
 export function createUserKeystore (browser) {
-  let userId = server.execute(createUser)
+  // let userId = server.execute(createUser)
+  let userId = USERADDRESS
   browser.execute(createKeystore, null, userId)
   browser.waitUntil(function () {
     return browser.execute(function (userId) {
@@ -255,6 +257,10 @@ export function clearUserKeystoreFromLocalStorage () {
 
 export function nukeLocalStorage () {
   localStorage.clear()
+}
+
+export function nukeSessionStorage () {
+  window.sessionStorage.clear()
 }
 
 // export function createVideo (id, title, price) {

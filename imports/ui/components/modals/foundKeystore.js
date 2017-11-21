@@ -5,6 +5,7 @@ import '/imports/ui/components/alert/modalAlert.js'
 
 Template.foundKeystore.events({
   'click #btn-foundKeystore-login' (event, instance) {
+    console.log('cliccato')
     showModal('login')
   },
   'click #btn-foundKeystore-cancel' (event, instance) {
