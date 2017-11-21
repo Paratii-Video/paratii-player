@@ -1,4 +1,5 @@
 import { Videos } from '/imports/api/videos.js'
+import { removeTrailingSlash } from '/imports/lib/utils.js'
 
 function setHead () {
   Picker.route('/play/:_id', (params, req, res, next) => {
@@ -24,7 +25,7 @@ function setHead () {
     }
 
     var parsedExternalUrl = parseUrl(params.query.url)
-    var parsedInternalUrl = parseUrl(Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, ''))
+    var parsedInternalUrl = parseUrl(removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl))
     console.log(parsedInternalUrl)
     console.log(parsedExternalUrl)
     res.setHeader('Content-Type', 'application/json')
@@ -42,8 +43,8 @@ function setHead () {
       console.log(video)
       // If video exist build response
       if (video) {
-        var baseUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
-        var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '') + '/'
+        var baseUrl = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl)
+        var ipfsGateway = removeTrailingSlash(Meteor.settings.public.ipfs_gateway)
         var thumbUrl = video.thumb
         var videoTitle = video.title
         var videoDescription = video.description
@@ -91,8 +92,8 @@ function setHead () {
 }
 
 function twitterCardHeadPlayer (params, req, res, next) {
-  var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
-  var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '')
+  var rootUrl = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl)
+  var ipfsGateway = removeTrailingSlash(Meteor.settings.public.ipfs_gateway.replace(/\/$/, ''))
   req.dynamicHead = (req.dynamicHead || '')
   console.log('video Id : ', params._id)
   var videoId = params._id
@@ -119,8 +120,8 @@ function twitterCardHeadPlayer (params, req, res, next) {
 }
 
 function facebookOGHeadPlayer (params, req, res, next) {
-  var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
-  var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '')
+  var rootUrl = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl)
+  var ipfsGateway = removeTrailingSlash(Meteor.settings.public.ipfs_gateway)
   req.dynamicHead = (req.dynamicHead || '')
   var videoId = params._id
   var video = Videos.findOne({_id: videoId})
