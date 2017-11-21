@@ -20,7 +20,7 @@ import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('Profile and accounts workflow: @watch', function () {
+describe('Profile and accounts workflow:', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     browser.execute(nukeLocalStorage)

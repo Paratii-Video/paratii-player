@@ -61,7 +61,7 @@ before(async function (done) {
   done()
 })
 
-// The beforeEac  function is run before each single est
+// The beforeEach function is run before each single test
 beforeEach(function () {
   server.execute(resetDb)
   browser.execute(nukeLocalStorage)
