@@ -21,7 +21,7 @@ describe('Page Navigation:', function () {
       assert.equal(browser.isVisible('#back-button'), false)
     })
 
-    it('should navigate to the previous page when the user clicks the back button after having nagivating from another page @watch', () => {
+    it('should navigate to the previous page when the user clicks the back button after having nagivating from another page ', () => {
       browser.url('http://localhost:3000/playlists')
 
       browser.waitAndClick('#search')
