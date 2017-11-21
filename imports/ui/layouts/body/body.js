@@ -98,7 +98,7 @@ Template.App_body.helpers({
     return route
   },
   showMainLoaderClass () {
-    return (Session.get('showMainLoader')) ? 'show-main-loader' : false;
+    return (Session.get('showMainLoader')) ? 'show-main-loader' : false
   }
 })
 
