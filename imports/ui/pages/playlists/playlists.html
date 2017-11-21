@@ -1,7 +1,7 @@
 <template name="playlists">
   <div class="internals playlists">
     {{#if videos}}
-      {{ >internalsHeader title=getTitle addButtons=addSettingsButton prevPage=getPrevPage }}
+      {{ >internalsHeader title=getTitle prevPage=getPrevPage }}
     {{else}}
       {{ >internalsHeader title=getTitle }}
     {{/if}}
@@ -38,7 +38,7 @@
     {{#if videos}}
       <div class="internals-content">
         {{ >internalsPagination getPrevPage=getprevpage getNextPage=getnextpage }}
-        
+
         <ul class="thumbs-list">
           {{#each videos}}
             <li class="thumbs-list-item">
@@ -60,10 +60,10 @@
               <div class="thumb-list-modal">
                 <div class="main-modal-anim-4">
                   <button class="button-text nocase grey" type="button">Watch later</button>
-                </div> 
+                </div>
                 <div class="main-modal-anim-5">
                   <button class="button-text nocase grey" type="button">Add to playlist</button>
-                </div> 
+                </div>
               </div>
               <button class="thumbs-list-settings">
                 <svg class="thumbs-list-settings-svg">
