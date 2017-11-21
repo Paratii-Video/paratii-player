@@ -73,9 +73,6 @@ describe('Profile and accounts workflow:', function () {
   })
 
   it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
-    browser.execute(nukeLocalStorage)
-    server.execute(resetDb)
-
     // create a meteor user
     server.execute(createUser)
 
@@ -90,23 +87,20 @@ describe('Profile and accounts workflow:', function () {
       }).value
     })
     const anonymousAddress = getAnonymousAddress()
-    browser.waitForClickable('#nav-profile')
-    browser.click('#nav-profile')
+    browser.waitAndClick('#nav-profile')
 
     browser.waitForClickable('[name="at-field-email"]')
-    browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-    browser.setValue('[name="at-field-password"]', 'password')
-    browser.click('#at-btn')
+    browser.waitAndSetValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+    browser.waitAndSetValue('[name="at-field-password"]', 'password')
+    browser.waitAndClick('#at-btn')
 
     // the user is now logged in
     waitForUserIsLoggedIn(browser)
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForClickable('#walletModal')
-    browser.waitForClickable('#create-wallet')
-    browser.click('#create-wallet')
-    browser.waitForClickable('[name="user_password"]')
-    browser.setValue('[name="user_password"]', 'password')
+    browser.waitAndClick('#create-wallet')
+    browser.waitAndSetValue('[name="user_password"]', 'password')
     browser.click('#btn-create-wallet')
 
     waitForKeystore(browser)
@@ -123,17 +117,11 @@ describe('Profile and accounts workflow:', function () {
     const userAccount = getUserPTIAddressFromBrowser()
     sendSomeETH(userAccount, 3.1)
     browser.url('http://localhost:3000/profile')
-    browser.waitForClickable('.button-settings')
-    browser.click('.button-settings')
-    browser.waitForClickable('.edit-password')
-    browser.click('.edit-password')
-    // TODO remove this pause, problem with modals
-    browser.pause(2000)
-    browser.waitForClickable('[name="current-password"]', 5000)
-    browser.setValue('[name="current-password"]', 'password')
-    browser.setValue('[name="new-password"]', 'new-password')
-    browser.waitForClickable('#save-password')
-    browser.click('#save-password')
+    browser.waitAndClick('.button-settings')
+    browser.waitAndClick('.edit-password')
+    browser.waitAndSetValue('[name="current-password"]', 'password')
+    browser.waitAndSetValue('[name="new-password"]', 'new-password')
+    browser.waitAndClick('#save-password')
     browser.pause(2000)
     browser.waitForClickable('.wallet-contents li:last-child .amount')
     const amount = await browser.getText('.wallet-contents li:last-child .balance', false)
@@ -153,14 +141,11 @@ describe('Profile and accounts workflow:', function () {
     assertUserIsNotLoggedIn(browser)
 
     browser.url('http://localhost:3000')
-    browser.waitForClickable('#nav-profile')
-    browser.click('#nav-profile')
+    browser.waitAndClick('#nav-profile')
 
-    browser.waitForClickable('[name="at-field-email"]')
-
-    browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-    browser.setValue('[name="at-field-password"]', 'wrong password')
-    browser.click('#at-btn')
+    browser.waitAndSetValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+    browser.waitAndSetValue('[name="at-field-password"]', 'wrong password')
+    browser.waitAndClick('#at-btn')
 
     // the user is now still not logged in
     assertUserIsNotLoggedIn(browser)
@@ -447,7 +432,7 @@ describe('Profile and accounts workflow:', function () {
     assertUserIsNotLoggedIn(browser)
   })
 
-  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in', function () {
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in @watch', function () {
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
@@ -457,7 +442,7 @@ describe('Profile and accounts workflow:', function () {
 
     browser.waitForVisible('#foundKeystore')
     // the user can now choose between contiuing anonimously, or to log in
-    // we choose anonimity
+    // we choose to log in
     browser.waitAndClick('#btn-foundKeystore-login')
 
     // we should now see the login modal
