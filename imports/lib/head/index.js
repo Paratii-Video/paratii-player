@@ -43,6 +43,7 @@ function setHead () {
       // If video exist build response
       if (video) {
         var baseUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
+        var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '') + '/'
         var thumbUrl = video.thumb
         var videoTitle = video.title
         var videoDescription = video.description
@@ -61,7 +62,7 @@ function setHead () {
         oembedresponse.html = '<iframe src="' + baseUrl + '/embed/' + videoId + '?type=mini" width="570" height="320" frameborder="0"></iframe>'
         oembedresponse.width = 570
         oembedresponse.height = 320
-        oembedresponse.thumbnail_url = baseUrl + thumbUrl
+        oembedresponse.thumbnail_url = ipfsGateway + thumbUrl
         oembedresponse.thumbnail_width = 570
         oembedresponse.thumbnail_height = 320
         oembedresponse.referrer = ''
@@ -91,7 +92,7 @@ function setHead () {
 
 function twitterCardHeadPlayer (params, req, res, next) {
   var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
-  var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '') + '/'
+  var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '')
   req.dynamicHead = (req.dynamicHead || '')
   console.log('video Id : ', params._id)
   var videoId = params._id
@@ -103,16 +104,15 @@ function twitterCardHeadPlayer (params, req, res, next) {
   console.log('video Record: ', video)
   var videoTitle = video.title
   var thumbUrl = video.thumb
-  var source = video.src
-  var ipfsSource = source.split('/')
-  ipfsSource = ipfsSource[ipfsSource.length - 1]
+  var ipfsSource = '/ipfs/' + video._id
+
   req.dynamicHead += '<meta property="twitter:card" content="player" />'
   req.dynamicHead += '<meta property="twitter:title" content="' + videoTitle + '" />'
   req.dynamicHead += '<meta property="twitter:site" content="' + rootUrl + '/play/' + videoId + '">'
   req.dynamicHead += '<meta property="twitter:player:width" content="570" />'
   req.dynamicHead += '<meta property="twitter:player:height" content="320" />'
   if (thumbUrl) {
-    req.dynamicHead += '<meta property="twitter:image" content="https://www.fillmurray.com/527/320" />'
+    req.dynamicHead += '<meta property="twitter:image" content="' + ipfsGateway + thumbUrl + '" />'
   }
   req.dynamicHead += '<meta property="twitter:player:stream" content="' + ipfsGateway + ipfsSource + '" />'
   req.dynamicHead += '<meta property="twitter:player" content="' + rootUrl + '/embed/' + videoId + '?type=mini" />'
@@ -120,7 +120,7 @@ function twitterCardHeadPlayer (params, req, res, next) {
 
 function facebookOGHeadPlayer (params, req, res, next) {
   var rootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '')
-  var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '') + '/'
+  var ipfsGateway = Meteor.settings.public.ipfs_gateway.replace(/\/$/, '')
   req.dynamicHead = (req.dynamicHead || '')
   var videoId = params._id
   var video = Videos.findOne({_id: videoId})
@@ -132,9 +132,7 @@ function facebookOGHeadPlayer (params, req, res, next) {
   var videoTitle = video.title
   var videoDescription = video.description
   var thumbUrl = video.thumb
-  var source = video.src
-  var ipfsSource = source.split('/')
-  ipfsSource = ipfsSource[ipfsSource.length - 1]
+  var ipfsSource = '/ipfs/' + video._id
 
   req.dynamicHead += '<meta property="og:video:url" content="' + ipfsGateway + ipfsSource + '" />'
   req.dynamicHead += '<meta property="og:video:secure_url" content="' + ipfsGateway + ipfsSource + '" />'
@@ -145,7 +143,7 @@ function facebookOGHeadPlayer (params, req, res, next) {
   req.dynamicHead += '<meta property="og:url" content="' + rootUrl + '/play/' + videoId + '" />'
   req.dynamicHead += '<meta property="og:title" content="' + videoTitle + 'y" />'
   if (thumbUrl) {
-    req.dynamicHead += '<meta property="og:image" content="https://www.fillmurray.com/527/320" />'
+    req.dynamicHead += '<meta property="og:image" content="' + ipfsGateway + thumbUrl + '" />'
   }
 
   if (videoDescription) {
