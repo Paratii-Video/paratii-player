@@ -93,8 +93,6 @@ if (Meteor.isServer) {
     return Videos.find(_id)
   })
 
-  // Publish videos by playlist, paged
-
   Meteor.publish('videosPlaylist', function (_id, page) {
     if (_id === null) {
       return Videos.find()
@@ -111,6 +109,7 @@ if (Meteor.isServer) {
       } else {
         step = Meteor.settings.public.paginationStep
       }
+
       return Videos.find({ _id: { '$in': videosIds } }, {limit: step, skip: (step * page)})
     }
   })

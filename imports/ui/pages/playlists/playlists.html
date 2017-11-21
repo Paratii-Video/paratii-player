@@ -37,7 +37,7 @@
     {{/unless}}
     {{#if videos}}
       <div class="internals-content">
-        {{ >internalsPagination getPrevPage=getprevpage getNextPage=getnextpage }}
+        {{ >internalsPagination hasNext=hasNext hasPrev=hasPrev getPrevPage=getprevpage getNextPage=getnextpage }}
 
         <ul class="thumbs-list">
           {{#each videos}}
