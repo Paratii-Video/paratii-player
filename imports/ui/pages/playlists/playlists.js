@@ -122,7 +122,7 @@ Template.playlists.helpers({
   },
   getThumbUrl (thumbSrc) {
     if (thumbSrc.startsWith('/ipfs/')) {
-      return 'https://gateway.paratii.video' + thumbSrc
+      return String('https://gateway.paratii.video' + thumbSrc)
     } else {
       return String(thumbSrc)
     }
