@@ -68,21 +68,24 @@ describe('Player:', function () {
   it('like and dislike a video as an anonymous user @watch', () => {
     assertUserIsNotLoggedIn(browser)
     browser.url('http://localhost:3000/play/12345?playlist=98765')
-    browser.pause(1000)
     browser.waitForClickable('#button-like')
     assert.equal(browser.getText('#button-like'), '')
     assert.equal(browser.getText('#button-dislike'), '')
 
     browser.click('#button-like')
-    browser.pause(1000)
+    browser.waitUntil(() => {
+      return browser.getText('#button-like') === '1'
+    })
     assert.equal(browser.getText('#button-like'), '1')
-    browser.pause(1000)
     assert.equal(browser.getText('#button-dislike'), '')
 
     browser.click('#button-dislike')
-    browser.pause(1000)
+
+    browser.waitUntil(() => {
+      return browser.getText('#button-like') === ''
+    })
+
     assert.equal(browser.getText('#button-like'), '')
-    browser.pause(1000)
     assert.equal(browser.getText('#button-dislike'), '1')
   })
   it('like and dislike a video as a logged-in user', () => {
@@ -94,12 +97,16 @@ describe('Player:', function () {
     assert.equal(browser.getText('#button-dislike'), '')
 
     browser.click('#button-like')
-    browser.pause(500)
+    browser.waitUntil(() => {
+      return browser.getText('#button-like') === '1'
+    })
     assert.equal(browser.getText('#button-like'), '1')
     assert.equal(browser.getText('#button-dislike'), '')
 
     browser.click('#button-dislike')
-    browser.pause(500)
+    browser.waitUntil(() => {
+      return browser.getText('#button-like') === ''
+    })
     assert.equal(browser.getText('#button-like'), '')
     assert.equal(browser.getText('#button-dislike'), '1')
   })
