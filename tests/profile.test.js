@@ -588,7 +588,7 @@ describe('Profile and accounts workflow:', function () {
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('.button-settings')
 
-      assert.equal(browser.getText('.internal-header-title'), 'foobar baz')
+      assert.equal(browser.getText('.internals-header-title'), 'foobar baz')
 
       browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
@@ -600,7 +600,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#save-profile-info')
 
       browser.waitUntil(() => {
-        return browser.getText('.internal-header-title') === 'my shiny new name'
+        return browser.getText('.internals-header-title') === 'my shiny new name'
       })
     })
 

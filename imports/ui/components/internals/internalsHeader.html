@@ -1,10 +1,18 @@
 <template name="internalsHeader">
-  <header class="internal-header">
+  <header class="internals-header">
     {{> backButton prevPage=prevPage }}
-    {{#if title}}
-      <h2 class="internal-header-title">{{ title }}</h2>
+    {{#if search}}
+      <label class="internals-header-label">
+        <svg class="internals-header-input-svg">
+          <use class="internals-header-input-use" xlink:href="#icon-search-page"></use>
+        </svg>
+        <input id="search" class="main-form-input internals-header-input" type="text" name="search" value="{{lastsearch}}" placeholder="{{ search }}">
+      </label>
     {{/if}}
-    <div class="internal-header-actions">
+    {{#if title}}
+      <h2 class="internals-header-title">{{ title }}</h2>
+    {{/if}}
+    <div class="internals-header-actions">
       {{> UI.dynamic template=addButtons }}
       {{> fullScreenButton }}
     </div>
