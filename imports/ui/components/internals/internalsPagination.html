@@ -1,11 +1,11 @@
 <template name="internalsPagination">
   <div class="internals-pagination">
-    <a class="internals-pagination-button prev pageprev {{#if disablePrev}}disabled{{/if}}" href="{{ getPrevPage }}">
+    <a class="internals-pagination-button prev pageprev {{#unless hasPrev}}disabled{{/unless}}" href="{{ getPrevPage }}">
       <svg class="internals-pagination-button-svg">
         <use class="internals-pagination-button-svg-use" xlink:href="#icon-return"></use>
       </svg>
     </a>
-    <a class="internals-pagination-button next pagenext {{#if disableNext}}disabled{{/if}}" href="{{ getNextPage }}">
+    <a class="internals-pagination-button next pagenext {{#unless hasNext}}disabled{{/unless}}" href="{{ getNextPage }}">
       <svg class="internals-pagination-button-svg">
         <use class="internals-pagination-button-svg-use" xlink:href="#icon-return"></use>
       </svg>
