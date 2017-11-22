@@ -37,7 +37,7 @@
     {{/unless}}
     {{#if videos}}
       <div class="internals-content">
-        {{ >internalsPagination getPrevPage=getprevpage getNextPage=getnextpage }}
+        {{ >internalsPagination hasNext=hasNext hasPrev=hasPrev getPrevPage=getprevpage getNextPage=getnextpage }}
 
         <ul class="thumbs-list">
           {{#each videos}}
@@ -52,7 +52,7 @@
                   <div class="thumbs-list-price">✓</div>
                 {{/if}}
                 {{#if thumb}}
-                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ thumb }}"/></div>
+                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ getThumbUrl thumb }}"/></div>
                 {{else}}
                   <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="/img/cover/default-thumb.png"/></div>
                 {{/if}}
