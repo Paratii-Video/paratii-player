@@ -20,9 +20,13 @@
                   </svg>
                 </div>
                 {{#if thumb}}
-                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ getThumbUrl thumb }}"/></div>
+                  <div class="thumbs-list-thumb">
+                    <img class="b-lazy thumbs-list-image" data-src="{{ getThumbUrl thumb }}"/>
+                  </div>
                 {{else}}
-                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="/img/cover/default-thumb.png"/></div>
+                  <div class="thumbs-list-thumb">
+                    <img class="b-lazy thumbs-list-image" data-src="/img/cover/default-thumb.png"/>
+                  </div>
                 {{/if}}
               </a>
               <a class="thumbs-list-play" href="{{pathFor route='playlists' _id=this._id}}">
@@ -52,9 +56,13 @@
                   <div class="thumbs-list-price">✓</div>
                 {{/if}}
                 {{#if thumb}}
-                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ getThumbUrl thumb }}"/></div>
+                  <div class="thumbs-list-thumb">
+                    <img class="b-lazy thumbs-list-image" data-src="{{ getThumbUrl thumb }}"/>
+                  </div>
                 {{else}}
-                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="/img/cover/default-thumb.png"/></div>
+                  <div class="thumbs-list-thumb">
+                    <img class="b-lazy thumbs-list-image" data-src="/img/cover/default-thumb.png"/>
+                  </div>
                 {{/if}}
               </a>
               <div class="thumb-list-modal">

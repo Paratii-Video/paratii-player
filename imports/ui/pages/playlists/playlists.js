@@ -8,6 +8,7 @@ import '/imports/ui/components/internals/internalsPagination.js'
 import '/imports/ui/components/modals/playlist.js'
 import '/imports/ui/components/buttons/settingsButton.js'
 import './playlists.html'
+import Blazy from 'blazy'
 
 Template.playlists.onCreated(function () {
   this.lockeds = new ReactiveDict()
@@ -16,6 +17,12 @@ Template.playlists.onCreated(function () {
   // paging init
   this.page = new ReactiveVar()
   this.totalVideos = new ReactiveVar()
+
+  this.bLazy = new Blazy({
+    loadInvisible: true
+  })
+
+  let _bLazy = this.bLazy
 
   // autorun this when the playlist changes
   this.autorun(() => {
@@ -39,6 +46,8 @@ Template.playlists.onCreated(function () {
           this.lockeds.set(id, result)
         })
       })
+
+      _bLazy.revalidate()
     })
   })
 })
