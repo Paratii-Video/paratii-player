@@ -86,6 +86,10 @@ export function hideModalAlert () {
   }, 600)
 }
 
+export function removeTrailingSlash (str) {
+  return str.replace(/\/$/, '')
+}
+
 // export function setModalState (message) {
 //   Session.set('modalStateMessage', message)
 // }
