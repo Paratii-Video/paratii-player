@@ -13,6 +13,7 @@ Template.search.onCreated(function () {
   this.lockeds = new ReactiveDict()
 
   // paging init
+  this.hasNext = new ReactiveVar()
   this.page = new ReactiveVar()
   this.totalVideos = new ReactiveVar()
 
@@ -78,10 +79,19 @@ Template.search.helpers({
         // Meteor.subscribe('searchedVideos', keyword)
         const videos = VideosResults.find({}, { sort: [['score', 'desc']] })
         console.log(videos)
-        Template.instance().results.set(videos)
-        return videos
+        console.log(videos.fetch())
+        if (videos.fetch().length > 0) {
+          Template.instance().hasNext.set(true)
+          return videos
+        } else {
+          Template.instance().hasNext.set(false)
+          return null
+        }
       }
     }
+  },
+  showPagination () {
+    return Template.instance().keywords.get() !== undefined
   },
   lastsearch () {
     const lastSearch = Session.get('lastsearch')
@@ -94,7 +104,13 @@ Template.search.helpers({
   noResults () {
     if (Template.instance().keywords.get() !== undefined) {
       if (Template.instance().keywords.get().length > 2) {
-        return 'No results for: ' + Template.instance().keywords.get()
+        const currentPage = Template.instance().page.get()
+        if (currentPage > 0) {
+          Template.instance().hasNext.set(false)
+          return 'No more results for: ' + Template.instance().keywords.get()
+        } else {
+          return 'No results for: ' + Template.instance().keywords.get()
+        }
       } else {
         return 'Please enter almost 3 characters'
       }
@@ -117,15 +133,7 @@ Template.search.helpers({
     return videoTitle
   },
   hasNext () {
-    console.log('has next', Template.instance().totalVideos.get())
-    const currentPage = Template.instance().page.get()
-    const totalItem = Template.instance().totalVideos.get()
-    const step = Meteor.settings.public.paginationStep
-    if (currentPage * step >= totalItem - step) {
-      return false
-    } else {
-      return true
-    }
+    return Template.instance().hasNext.get()
   },
   hasPrev () {
     console.log('has prev', Template.instance().totalVideos.get())
