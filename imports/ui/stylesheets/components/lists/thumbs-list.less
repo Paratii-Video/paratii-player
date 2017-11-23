@@ -228,19 +228,14 @@
   &:extend(.full-block all);
 
   height: auto;
-  opacity: 0;
   position: relative;
   transform: scale(1.05);
-  transition: opacity .7s, transform .75s @ease-smooth;
+  transition: transform .75s @ease-smooth;
   z-index: 2;
-
-  &.b-loaded {
-    opacity: 1;
-  }
 
   .thumbs-list-link:hover & {
     transform: scale(1.1);
-    transition: opacity .7s, transform .8s @ease-smooth;
+    transition: transform .8s @ease-smooth;
   }
 }
 
