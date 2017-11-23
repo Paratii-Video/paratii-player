@@ -1,16 +1,14 @@
 <template name="search">
   <div class="internals">
-    {{ >internalsHeader search="Type your search" }}
-    {{#unless videos}}
-      <div class="internals-content">
-        <p>{{noResults}}</p>
-      </div>
-    {{/unless}}
-    <br>
-    {{#if videos}}
-      <div class="internals-content">
+    {{ >internalsHeader search="Type your search" lastsearch=lastsearch }}
+    <div class="internals-content">
+      {{#if showPagination }}
         {{ >internalsPagination hasNext=hasNext hasPrev=hasPrev getPrevPage=getprevpage getNextPage=getnextpage }}
-
+      {{/if}}
+      {{#unless videos}}
+          <p>{{noResults}}</p>
+      {{/unless}}
+      {{#if videos}}
         <ul class="thumbs-list">
           {{#each videos}}
             <li class="thumbs-list-item">
@@ -45,7 +43,8 @@
             </li>
           {{/each}}
         </ul>
-      </div>
+
     {{/if}}
+    </div>
   </div>
 </template>
