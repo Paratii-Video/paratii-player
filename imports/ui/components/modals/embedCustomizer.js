@@ -1,5 +1,7 @@
 import { Template } from 'meteor/templating'
 import Clipboard from 'clipboard'
+import { removeTrailingSlash } from '/imports/lib/utils.js'
+
 import '/imports/ui/components/form/mainFormInput.js'
 import './embedCustomizer.html'
 
@@ -54,27 +56,35 @@ Template.modal_share_links.onCreated(function () {
 
 Template.modal_share_links.helpers({
   embedBaseUrl () {
-    return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    return removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
   },
   facebook () {
     var baseurl = 'https://www.facebook.com/sharer/sharer.php?u='
-    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    return baseurl + removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
   },
   twitter () {
-    var baseurl = 'https://twitter.com/intent/tweet?text='
-    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    var baseurl = 'https://twitter.com/intent/tweet'
+    var url = '?url=' + removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
+    var text = '&text=🎬 Worth a watch: ' + this.videoTitle
+    return baseurl + url + text
   },
   whatsapp () {
     var baseurl = 'whatsapp://send?text='
-    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    var url = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
+    var text = '🎬 Worth a watch: ' + this.videoTitle + ' '
+    return baseurl + text + url
+  },
+  whatsappDesktop () {
+    var baseurl = 'https://web.whatsapp.com/send?text='
+    var url = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
+    var text = '🎬 Worth a watch: ' + this.videoTitle + ' '
+    return baseurl + text + url
   },
   telegram () {
-    var baseurl = 'https://t.me/share/url?url='
-    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
-  },
-  email () {
-    var baseurl = 'mailto:?&subject=Paratii&body='
-    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    var baseurl = 'https://t.me/share/url'
+    var url = '?url=' + removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
+    var text = '&text=🎬 Worth a watch: ' + this.videoTitle
+    return baseurl + url + text
   }
 })
 
@@ -97,14 +107,24 @@ Template.modal_share_via_email.events({
   'submit #send_email' (event, instance) {
     event.preventDefault()
     const target = event.target
+    const baseurl = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl)
+    const videoUrl = baseurl + '/play/' + this.videoId
     console.log(target['email'].value)
     Meteor.call(
       'sendEmail',
-
       target['email'].value,
       'Paratii <sharing@player.paratii.video>',
-      'Check this out!',
-      Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId,
+      'You have to check this video I found (from Paratii with 💙)',
+      '<br>Ay! <br>This video reminded me of you.<br>' +
+      'Cool note: the system behind the thing has no owner or servers,' +
+      'so videos spread by hopping from computer to computer,' +
+      'pretty much like this one I\'m sending now.<br>' +
+      'Best part: it\'s not like Tubes where they control what goes up,' +
+      'what goes down and where the money flows to.' +
+      'Here you get paid for watching stuff while your computer works a bit in' +
+      'the background. Only thing you got to do is give your name and email.' +
+      'Anyway, just give it a <a href="' + videoUrl + '">play</a><br>' +
+      '<a href="' + baseurl + '">Join Paratii</a><br>',
       function (err, result) {
         if (err) {
           console.log(err)
@@ -167,7 +187,7 @@ Template.modal_share_via_email.onRendered(() => {
 Template.modal_share_embed.helpers({
   embedSizes,
   embedBaseUrl () {
-    return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + 'embed/' + this.videoId
+    return removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + 'embed/' + this.videoId
   },
   code () {
     const iframe = document.createElement('iframe')
@@ -190,7 +210,7 @@ Template.modal_share_embed.helpers({
       parameters.fullscreen = 1
     }
     parameters.type = Template.instance().iframe.get('size').type
-    const src = buildUrl(Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/embed/' + this.videoId, parameters)
+    const src = buildUrl(removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/embed/' + this.videoId, parameters)
     iframe.src = 'srcplaceholder'
 
     iframe.width = Template.instance().iframe.get('size').width

@@ -526,10 +526,14 @@ Template.player.events({
   },
   'click #embed' (event, instance) {
     const videoId = Template.instance().currentVideo.get()._id
+
+    const button = event.currentTarget
+    const title = button.dataset.title
     showModal('modal_share_video',
       {
         type: 'modal_share_links',
         videoId: videoId,
+        videoTitle: title,
         embed: window.top !== window.self,
         autoplay: !Template.instance().playerState.get('locked')
       }
