@@ -89,7 +89,7 @@ Template.player.onCreated(function () {
   this.playerState.set('volumeValue', 100)
   this.playerState.set('volScrubberTranslate', 100)
   this.playerState.set('muted', false)
-  this.playerState.set('locked', true)
+  this.playerState.set('locked', false)
   /* EMBED CONTROLS */
   this.playerState.set('autoplay', autoplay === 1)
   this.playerState.set('loop', loop === 1)
