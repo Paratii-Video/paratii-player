@@ -97,5 +97,8 @@ Template.debug.helpers({
       return web3.fromWei(balance, 'ether')
     }
     return ''
+  },
+  version () {
+    console.log(version)
   }
 })
