@@ -39,6 +39,7 @@ var result = {
 };
 console.log("path : "+ __dirname);
 
+
 getBranch()
     .then(function(_branch){
         result.branch = _branch;
