@@ -22,6 +22,7 @@ Template.debug.onCreated(function () {
     Session.set('VideoRegistry', result)
   })
 })
+
 Template.debug.events({
   'click #get-some-PTI' () {
     let beneficiary = getUserPTIAddress()
