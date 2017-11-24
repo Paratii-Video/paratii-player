@@ -100,6 +100,6 @@ Template.debug.helpers({
     return ''
   },
   version () {
-    console.log(version)
+    console.log(Assets.getText('version.json'))
   }
 })

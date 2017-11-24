@@ -51,7 +51,7 @@ getBranch()
     .then(function(){
         var fileContent = JSON.stringify(result,null,2);
 
-        var pathToFile = __dirname+"/../private/version.json";
+        var pathToFile = __dirname+"/../public/version.json";
         pathToFile = path.normalize(pathToFile);
         if (fs.existsSync(pathToFile)) {
             fs.writeFile(pathToFile, fileContent , function(err) {
