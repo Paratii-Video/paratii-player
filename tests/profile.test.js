@@ -58,7 +58,6 @@ describe('Profile and accounts workflow: @watch', function () {
     // wait for the keystore to be generated
     waitForKeystore(browser)
     // now a modal should be opened with the seed
-    browser.pause(2000)
     browser.waitForClickable('#seed')
     const seed = browser.getText('#seed strong', false)
     console.log(seed)
