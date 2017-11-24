@@ -14,7 +14,6 @@ import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
 // import '/imports/ui/components/modals/regenerateKeystore.js'
-
 import './player.html'
 
 let controlsHandler
