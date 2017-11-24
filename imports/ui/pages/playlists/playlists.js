@@ -131,7 +131,6 @@ Template.playlists.helpers({
     console.log('has prev', Template.instance().totalVideos.get())
     const currentPage = Template.instance().page.get()
     const step = Meteor.settings.public.paginationStep
-
     if (currentPage * step === 0) {
       return false
     } else {
