@@ -173,5 +173,8 @@ Template.playlists.events({
   },
   'click button.thumbs-list-settings' (event, instance) {
     $(event.currentTarget).closest('.thumbs-list-item').toggleClass('active')
+  },
+  'mouseleave li.thumbs-list-item' (event, instance) {
+    $(event.currentTarget).removeClass('active')
   }
 })
