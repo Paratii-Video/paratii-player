@@ -43,8 +43,6 @@ export function add0x (input) {
 
 // Show & hide Modal
 export function showModal (templateName, options = null) {
-  // const template = { contentTemplate: templateName }
-  // const modalOptions = Object.assign(template, options)
   Session.set('contentTemplate', templateName)
   Session.set('modalOptions', options)
   Modal.show('mainModal', options, {backdrop: 'static'})
