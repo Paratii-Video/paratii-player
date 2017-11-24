@@ -7,7 +7,6 @@ import Protocol from 'paratii-protocol'
 
 const REPO_PATH = 'paratii-ipfs-repo'
 function noop () {}
-
 const paratiiIPFS = {
   protocol: null,
   /**

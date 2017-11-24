@@ -17,10 +17,10 @@
     "paratii-version": "node hooks/post-commit-version"
   },
   "pre-commit": [
-    "lint-fix"
+    "lint-fix",
+    "paratii-version"
   ],
   "post-commit": [
-    "paratii-version"
   ],
   "dependencies": {
     "babel-runtime": "^6.20.0",
