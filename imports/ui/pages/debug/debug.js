@@ -30,7 +30,6 @@ Template.debug.events({
   },
   'click #get-some-ETH' () {
     let beneficiary = getUserPTIAddress()
-
     sendSomeETH(beneficiary, 10)
   },
   'click #update-Session' () {
