@@ -20,7 +20,7 @@ import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('Profile and accounts workflow:', function () {
+describe('Profile and accounts workflow: @watch', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     browser.execute(nukeLocalStorage)
@@ -58,9 +58,10 @@ describe('Profile and accounts workflow:', function () {
     // wait for the keystore to be generated
     waitForKeystore(browser)
     // now a modal should be opened with the seed
+    browser.pause(2000)
     browser.waitForClickable('#seed')
-    // browser.pause(500)
     const seed = browser.getText('#seed strong', false)
+    console.log(seed)
     browser.waitForClickable('#btn-check-seed')
     browser.click('#btn-check-seed')
     browser.waitForClickable('[name="check_seed"]')

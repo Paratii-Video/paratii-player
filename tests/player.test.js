@@ -65,7 +65,7 @@ describe('Player:', function () {
   it('if a player is not within a playlist and it ended related videos show up [TODO]', () => {
   })
 
-  it('like and dislike a video as an anonymous user @watch', () => {
+  it('like and dislike a video as an anonymous user', () => {
     assertUserIsNotLoggedIn(browser)
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitForClickable('#button-like')
