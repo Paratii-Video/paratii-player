@@ -144,6 +144,10 @@ Template.player.onCreated(function () {
   })
 })
 
+Template.player.onDestroyed(function () {
+  Meteor.clearTimeout(controlsHandler)
+})
+
 Template.player.onRendered(function () {
   const container = this.find('#player-container')
   if (container) {
