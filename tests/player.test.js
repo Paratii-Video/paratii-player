@@ -1,7 +1,24 @@
 import { assert } from 'chai'
 import { assertUserIsLoggedIn, assertUserIsNotLoggedIn, createUserAndLogin, createPlaylist, createVideo } from './helpers.js'
 
+const playerIsFullScreen = () => !!(
+  document.fullscreenElement ||
+  document.mozFullScreenElement ||
+  document.webkitFullscreenElement ||
+  document.msFullscreenElement
+)
+
 describe('Player:', function () {
+  before(function () {
+    browser.addCommand('waitUntilVideoIsPlaying', () => {
+      browser.waitUntil(() => (
+        parseInt(browser.getAttribute('#video-player', 'currentTime'), 10) !== 0 &&
+        browser.getAttribute('#video-player', 'paused') !== 'true' &&
+        browser.getAttribute('#video-player', 'ended') !== 'true'
+      ))
+    })
+  })
+
   beforeEach(function () {
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     server.execute(createVideo, '23456', 'Test 2', '', '', [''], 0)
@@ -65,7 +82,7 @@ describe('Player:', function () {
   it('if a player is not within a playlist and it ended related videos show up [TODO]', () => {
   })
 
-  it('like and dislike a video as an anonymous user @watch', () => {
+  it('like and dislike a video as an anonymous user', () => {
     assertUserIsNotLoggedIn(browser)
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitForClickable('#button-like')
@@ -109,5 +126,37 @@ describe('Player:', function () {
     })
     assert.equal(browser.getText('#button-like'), '')
     assert.equal(browser.getText('#button-dislike'), '1')
+  })
+
+  it('should play/pause a video when the spacebar is pressed', () => {
+    browser.url('http://localhost:3000/play/12345?playlist=98765')
+    browser.waitForClickable('#play-pause-button')
+    browser.switchTab()
+    browser.waitUntil(() => browser.hasFocus('#player-container'))
+    browser.keys('Space')
+
+    browser.waitUntilVideoIsPlaying()
+
+    browser.keys('Space')
+
+    browser.waitUntil(() => browser.getAttribute('#video-player', 'paused') === 'true')
+  })
+
+  it('should stay in full-screen mode when a video is paused via the space bar', () => {
+    browser.url('http://localhost:3000/play/12345?playlist=98765')
+    browser.waitAndClick('#play-pause-button')
+    browser.waitUntilVideoIsPlaying()
+
+    browser.waitAndClick('#fullscreen-button')
+
+    assert.equal(browser.execute(playerIsFullScreen).value, true)
+
+    browser.keys('Space')
+
+    browser.waitUntil(() => browser.getAttribute('#video-player', 'paused') === 'true')
+
+    assert.equal(browser.execute(playerIsFullScreen).value, true)
+
+    browser.waitAndClick('#fullscreen-button')
   })
 })
