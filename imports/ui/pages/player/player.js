@@ -549,6 +549,7 @@ Template.player.events({
   'keydown #player-container' (event, instance) {
     // Space key
     if (event.keyCode === 32) {
+      event.preventDefault()
       const dict = instance.playerState
       if (dict.get('playing')) {
         pauseVideo(instance)
