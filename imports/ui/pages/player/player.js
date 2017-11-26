@@ -135,8 +135,11 @@ Template.player.onCreated(function () {
   })
 })
 
-Template.player.onDestroyed(function () {
-  Meteor.clearTimeout(controlsHandler)
+Template.player.onRendered(function () {
+  const container = this.find('#player-container')
+  if (container) {
+    container.focus()
+  }
 })
 
 Template.player.helpers({
@@ -542,5 +545,16 @@ Template.player.events({
   },
   'click button.thumbs-list-settings' (event, instance) {
     $(event.currentTarget).parent().toggleClass('active')
+  },
+  'keydown #player-container' (event, instance) {
+    // Space key
+    if (event.keyCode === 32) {
+      const dict = instance.playerState
+      if (dict.get('playing')) {
+        pauseVideo(instance)
+      } else {
+        playVideo(instance)
+      }
+    }
   }
 })
