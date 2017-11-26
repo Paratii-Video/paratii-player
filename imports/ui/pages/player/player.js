@@ -96,6 +96,15 @@ Template.player.onCreated(function () {
   // Description
   this.playerState.set('showDescription', false)
 
+  this.togglePlay = () => {
+    const dict = this.playerState
+    if (dict.get('playing')) {
+      pauseVideo(instance)
+    } else {
+      playVideo(instance)
+    }
+  }
+
   log('navState:', this.navState.get())
 
   /* DETERMINED IF PLAYER IS EMBEDED */
@@ -373,12 +382,7 @@ Template.player.events({
     navState.set('minimized')
   },
   'click #play-pause-button' (event, instance) {
-    const dict = instance.playerState
-    if (dict.get('playing')) {
-      pauseVideo(instance)
-    } else {
-      playVideo(instance)
-    }
+    instance.togglePlay(instance)
   },
   'click #next-video-button' () {
     const playlistId = FlowRouter.getQueryParam('playlist')
@@ -550,12 +554,7 @@ Template.player.events({
     // Space key
     if (event.keyCode === 32) {
       event.preventDefault()
-      const dict = instance.playerState
-      if (dict.get('playing')) {
-        pauseVideo(instance)
-      } else {
-        playVideo(instance)
-      }
+      instance.togglePlay(instance)
     }
   }
 })
