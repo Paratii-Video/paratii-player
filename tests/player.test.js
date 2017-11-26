@@ -151,6 +151,7 @@ describe('Player:', function () {
 
     assert.equal(browser.execute(playerIsFullScreen).value, true)
 
+    browser.switchTab()
     browser.keys('Space')
 
     browser.waitUntil(() => browser.getAttribute('#video-player', 'paused') === 'true')
