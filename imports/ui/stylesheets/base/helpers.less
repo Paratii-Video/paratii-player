@@ -42,6 +42,12 @@
 
 // Hide on
 
+.hide-mobile {
+  .mobile & {
+    display: none;
+  }
+}
+
 .only-mobile {
   display: none;
 
@@ -82,6 +88,14 @@
   height: 100%;
   left: 0;
   position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.pos-f-full {
+  height: 100%;
+  left: 0;
+  position: fixed;
   top: 0;
   width: 100%;
 }

@@ -215,12 +215,35 @@
   }
 
   10%, 30%, 50%, 70%, 90% {
-    opacity: .75;
+    opacity: .5;
   }
 
   20%, 40%, 60%, 80% {
     opacity: 1;
   }
+}
+
+@keyframes blinkLong {
+  0% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: .25;
+  }
+
+  50% {
+    opacity: .5;
+  }
+
+  75% {
+    opacity: .25;
+  }
+
+  100% {
+    opacity: 1;
+  }
+
 }
 
 @keyframes dots {

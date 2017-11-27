@@ -2,6 +2,7 @@
   "name": "paratii-player",
   "version": "0.0.1",
   "private": true,
+  "version": "1.0.0",
   "scripts": {
     "start": "meteor run --settings settings-prod.json",
     "dev": "meteor run --settings settings-dev.json",
@@ -13,10 +14,14 @@
     "lint": "standard",
     "lint-fix": "standard --fix",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests --webdriverio.waitforTimeout=10000 --webdriverio.waitforInterval=200",
-    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=10000 --webdriverio.waitforInterval=200"
+    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=10000 --webdriverio.waitforInterval=200",
+    "paratii-version": "node hooks/post-commit-version"
   },
   "pre-commit": [
     "lint-fix"
+  ],
+  "post-commit": [
+    "paratii-version"
   ],
   "dependencies": {
     "babel-runtime": "^6.20.0",
@@ -28,7 +33,7 @@
     "clipboard": "^1.7.1",
     "eth-lightwallet": "^2.5.6",
     "hls.js": "^0.8.5",
-    "hlsjs-ipfs-loader": "github:ya7ya/hlsjs-ipfs-loader#master",
+    "hlsjs-ipfs-loader": "github:ya7ya/hlsjs-ipfs-loader#paratii/dev",
     "hooked-web3-provider": "^1.0.0",
     "inline-worker": "^1.1.0",
     "libp2p-websocket-star": "^0.4.0",
@@ -62,6 +67,7 @@
     "fibers": "^2.0.0",
     "mocha": "^3.4.1",
     "nightmare": "^2.10.0",
+    "post-commit": "0.0.1",
     "pre-commit": "^1.2.2",
     "shell-source": "^1.1.0",
     "shelljs": "^0.7.8",

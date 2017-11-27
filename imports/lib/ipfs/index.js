@@ -198,7 +198,7 @@ const paratiiIPFS = {
   }
 }
 
-$.getScript('/test/files/index.js', () => {
+$.getScript('/test/files/index.min.js', () => {
   let isProduction = Meteor.settings.isProduction
   let repo = paratiiIPFS.getRepoPath()
   if (!repo) {
