@@ -135,6 +135,13 @@ Template.search.helpers({
     }
     return videoTitle
   },
+  getThumbUrl (thumbSrc) {
+    if (thumbSrc.startsWith('/ipfs/')) {
+      return String('https://gateway.paratii.video' + thumbSrc)
+    } else {
+      return String(thumbSrc)
+    }
+  },
   hasNext () {
     return Template.instance().hasNext.get()
   },
