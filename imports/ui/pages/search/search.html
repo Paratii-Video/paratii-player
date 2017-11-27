@@ -22,17 +22,21 @@
                   <div class="thumbs-list-price">✓</div>
                 {{/if}}
                 {{#if thumb}}
-                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="{{ thumb }}"/></div>
+                  <div class="thumbs-list-thumb" style="background-image: url({{ getThumbUrl thumb }});">
+                    <img class="thumbs-list-image" src="{{ thumb }}"/>
+                  </div>
                 {{else}}
-                  <div class="thumbs-list-thumb"><img class="thumbs-list-image" src="/img/cover/default-thumb.png"/></div>
+                  <div class="thumbs-list-thumb" style="background-image: url('/img/cover/default-thumb.png');">
+                    <img class="thumbs-list-image" src="/img/cover/default-thumb.png"/>
+                  </div>
                 {{/if}}
               </a>
               <div class="thumb-list-modal">
                 <div class="main-modal-anim-4">
-                  <button class="button-text nocase grey" type="button">Watch later</button>
+                  <button class="button-text nocase grey" type="button">{{_ "Watch later" }}</button>
                 </div>
                 <div class="main-modal-anim-5">
-                  <button class="button-text nocase grey" type="button">Add to playlist</button>
+                  <button class="button-text nocase grey" type="button">{{_ "Add to playlist" }}</button>
                 </div>
               </div>
               <button class="thumbs-list-settings">

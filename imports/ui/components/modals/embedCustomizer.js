@@ -115,6 +115,11 @@ Template.modal_share_via_email.events({
       target['email'].value,
       'Paratii <sharing@player.paratii.video>',
       'You have to check this video I found (from Paratii with 💙)',
+      '<html xmlns="http://www.w3.org/1999/xhtml">' +
+      '<head>' +
+      ' <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' +
+      '</head>' +
+      '<body>' +
       '<br>Ay! <br>This video reminded me of you.<br>' +
       'Cool note: the system behind the thing has no owner or servers,' +
       'so videos spread by hopping from computer to computer,' +
@@ -124,7 +129,9 @@ Template.modal_share_via_email.events({
       'Here you get paid for watching stuff while your computer works a bit in' +
       'the background. Only thing you got to do is give your name and email.' +
       'Anyway, just give it a <a href="' + videoUrl + '">play</a><br>' +
-      '<a href="' + baseurl + '">Join Paratii</a><br>',
+      '<a href="' + baseurl + '">Join Paratii</a><br>' +
+      '</body>' +
+      '</html>',
       function (err, result) {
         if (err) {
           console.log(err)

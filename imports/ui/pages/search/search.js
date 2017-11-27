@@ -60,6 +60,9 @@ Template.search.events({
   'click button.thumbs-list-settings' (event, instance) {
     $(event.currentTarget).closest('.thumbs-list-item').toggleClass('active')
   },
+  'mouseleave li.thumbs-list-item' (event, instance) {
+    $(event.currentTarget).removeClass('active')
+  },
   'click .pagenext' () {
     Template.instance().page.set((Template.instance().page.get() + 1))
     FlowRouter.setQueryParams({p: Template.instance().page.get()})
@@ -131,6 +134,13 @@ Template.search.helpers({
       videoTitle = videoTitle.substring(0, 30)
     }
     return videoTitle
+  },
+  getThumbUrl (thumbSrc) {
+    if (thumbSrc.startsWith('/ipfs/')) {
+      return String('https://gateway.paratii.video' + thumbSrc)
+    } else {
+      return String(thumbSrc)
+    }
   },
   hasNext () {
     return Template.instance().hasNext.get()

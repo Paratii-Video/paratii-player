@@ -10,18 +10,20 @@ body,
 
 //
 
-.main-app {
-  &:extend(.pos-a-full all);
+.main {
+  &-app {
+    &:extend(.pos-a-full all);
 
-  .query-mini({
-    height: @screen-mini-height;
-    overflow-x: hidden;
-    overflow-y: initial;
-  });
+    .query-mini({
+      height: @screen-mini-height;
+      overflow-x: hidden;
+      overflow-y: initial;
+    });
 
-  .query-tiny({
-    height: @screen-tiny-height;
-  });
+    .query-tiny({
+      height: @screen-tiny-height;
+    });
+  }
 }
 
 //
@@ -31,15 +33,4 @@ body,
 
   background-color: white;
   z-index: @zindex-app-container;
-
-  // &.playing {
-  //   overflow-y: visible;
-  // }
-
-  // .query-tiny({
-  //   border: 0;
-  //   border-radius: 0;
-  //   left: 0;  
-  //   width: 100%;
-  // });
 }

@@ -13,7 +13,6 @@ import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
 // import '/imports/ui/components/modals/regenerateKeystore.js'
-
 import './player.html'
 
 let controlsHandler
@@ -30,7 +29,6 @@ function renderVideoElement (instance) {
   videoTag.className = 'player-video'
   videoTag.id = 'video-player'
   playerContainer.insertBefore(videoTag, playerContainer.firstChild)
-
   // get video tag element and bind it to player js adapter for HTML5 video
 
   log('this is the video', videoTag)
@@ -97,6 +95,15 @@ Template.player.onCreated(function () {
   // Description
   this.playerState.set('showDescription', false)
 
+  this.togglePlay = () => {
+    const dict = this.playerState
+    if (dict.get('playing')) {
+      pauseVideo(instance)
+    } else {
+      playVideo(instance)
+    }
+  }
+
   log('navState:', this.navState.get())
 
   /* DETERMINED IF PLAYER IS EMBEDED */
@@ -138,6 +145,13 @@ Template.player.onCreated(function () {
 
 Template.player.onDestroyed(function () {
   Meteor.clearTimeout(controlsHandler)
+})
+
+Template.player.onRendered(function () {
+  const container = this.find('#player-container')
+  if (container) {
+    container.focus()
+  }
 })
 
 Template.player.helpers({
@@ -371,12 +385,7 @@ Template.player.events({
     navState.set('minimized')
   },
   'click #play-pause-button' (event, instance) {
-    const dict = instance.playerState
-    if (dict.get('playing')) {
-      pauseVideo(instance)
-    } else {
-      playVideo(instance)
-    }
+    instance.togglePlay(instance)
   },
   'click #next-video-button' () {
     const playlistId = FlowRouter.getQueryParam('playlist')
@@ -543,5 +552,12 @@ Template.player.events({
   },
   'click button.thumbs-list-settings' (event, instance) {
     $(event.currentTarget).parent().toggleClass('active')
+  },
+  'keydown #player-container' (event, instance) {
+    // Space key
+    if (event.keyCode === 32) {
+      event.preventDefault()
+      instance.togglePlay(instance)
+    }
   }
 })
