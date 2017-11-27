@@ -43,14 +43,16 @@ export function add0x (input) {
 
 // Show & hide Modal
 export function showModal (templateName, options = null) {
-  Session.set('contentTemplate', templateName)
+  Session.set('modalContentTemplate', templateName)
   Session.set('modalOptions', options)
   Modal.show('mainModal', options, {backdrop: 'static'})
 }
 
 export function hideModal (template) {
-  Modal.hide()
-  Session.set('contentTemplate', null)
+  if (!template || Session.get('modalContentTemplate') === template) {
+    Modal.hide()
+    Session.set('modalContentTemplate', null)
+  }
 }
 
 // Manage errors on Alerts

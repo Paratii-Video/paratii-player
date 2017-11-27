@@ -43,7 +43,7 @@ Template.login.events({
         // $password.addClass('error')
         showModalAlert('That email and password combination is incorrect.', 'error')
       } else {
-        hideModal()
+        hideModal('login')
       }
     })
   },

@@ -95,14 +95,16 @@ describe('Profile and accounts workflow: @watch', function () {
     browser.waitAndClick('#at-btn')
 
     // the user is now logged in
+
     waitForUserIsLoggedIn(browser)
 
+    console.log(0)
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForClickable('#walletModal')
     browser.waitAndClick('#create-wallet')
     browser.waitAndSetValue('[name="user_password"]', 'password')
     browser.click('#btn-create-wallet')
-
+    console.log(1)
     waitForKeystore(browser)
 
     // the address of the new keystore should be the same as the old 'anonymous' address
@@ -150,9 +152,9 @@ describe('Profile and accounts workflow: @watch', function () {
     // the user is now still not logged in
     assertUserIsNotLoggedIn(browser)
 
-    browser.waitForClickable('.at-error')
-    let errorMsg = browser.getText('.at-error')
-    assert.equal(errorMsg, 'Login forbidden')
+    browser.waitForClickable('.main-alert.error')
+    let errorMsg = browser.getText('.main-alert.error p')
+    assert.equal(errorMsg, 'That email and password combination is incorrect.')
   })
 
   it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase', function () {
@@ -208,10 +210,9 @@ describe('Profile and accounts workflow: @watch', function () {
     // .setValue('[name="at-field-password_again"]', 'password')
     // submit the form
     browser.click('#at-btn')
-    browser.waitForVisible('.at-error')
-    const error = browser.getText('.at-error')
-    assert.isNotNull(error, 'should exist a error message')
-    assert.equal(error, 'Email already exists.')
+    browser.waitForClickable('.main-alert.error')
+    let errorMsg = browser.getText('.main-alert.error p')
+    assert.equal(errorMsg, 'Email already exists.')
   })
 
   it('do not overwrite a user address if failed to register a new user with a used email [TODO]', function () {
@@ -411,13 +412,12 @@ describe('Profile and accounts workflow: @watch', function () {
     assert.equal(url.value, 'http://localhost:3000/')
   })
 
-  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then continue anonymously ', function () {
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then continue anonymously @watch', function () {
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
     createUserKeystore(browser)
     browser.url('http://localhost:3000')
-
     assertUserIsNotLoggedIn(browser)
 
     browser.waitForVisible('#foundKeystore')
@@ -432,7 +432,7 @@ describe('Profile and accounts workflow: @watch', function () {
     assertUserIsNotLoggedIn(browser)
   })
 
-  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in ', function () {
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in @watch', function () {
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
@@ -450,7 +450,7 @@ describe('Profile and accounts workflow: @watch', function () {
   })
 
   describe('Password reset:', () => {
-    it('should not allow the user to change their password if they enter the incorrect current password', function () {
+    it('should not allow the user to change their password if they enter the incorrect current password ', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('.button-settings')
@@ -469,7 +469,7 @@ describe('Profile and accounts workflow: @watch', function () {
       })
     })
 
-    it('should not allow the user to attempt to change their password if they do not enter their current password', function () {
+    it('should not allow the user to attempt to change their password if they do not enter their current password ', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('.button-settings')
