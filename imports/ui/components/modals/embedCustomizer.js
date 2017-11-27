@@ -9,8 +9,8 @@ let clipboard
 const embedSizes = [
   {
     type: 'mini',
-    width: 570,
-    height: 320
+    width: 490,
+    height: 280
 
   },
   {

@@ -6,7 +6,7 @@ Template.mainModal.onCreated(function () {
 })
 
 Template.mainModal.helpers({
-  contentTemplate: () => Session.get('contentTemplate'),
+  modalContentTemplate: () => Session.get('modalContentTemplate'),
   options: () => Session.get('modalOptions'),
   wrapperClass: () => Session.get('modalOptions') ? Session.get('modalOptions').wrapperClass : null,
   blocking: () => Session.get('modalOptions') ? Session.get('modalOptions').blocking : null
