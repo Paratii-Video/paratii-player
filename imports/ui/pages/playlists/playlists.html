@@ -20,11 +20,11 @@
                   </svg>
                 </div>
                 {{#if thumb}}
-                  <div class="thumbs-list-thumb">
+                  <div class="thumbs-list-thumb" style="background-image: url({{ getThumbUrl thumb }});">
                     <img class="thumbs-list-image" src="{{ getThumbUrl thumb }}"/>
                   </div>
                 {{else}}
-                  <div class="thumbs-list-thumb">
+                  <div class="thumbs-list-thumb" style="background-image: url('/img/cover/default-thumb.png');">
                     <img class="thumbs-list-image" src="/img/cover/default-thumb.png"/>
                   </div>
                 {{/if}}
@@ -56,11 +56,11 @@
                   <div class="thumbs-list-price">✓</div>
                 {{/if}}
                 {{#if thumb}}
-                  <div class="thumbs-list-thumb">
+                  <div class="thumbs-list-thumb" style="background-image: url({{ getThumbUrl thumb }});">
                     <img class="thumbs-list-image" src="{{ getThumbUrl thumb }}"/>
                   </div>
                 {{else}}
-                  <div class="thumbs-list-thumb">
+                  <div class="thumbs-list-thumb" style="background-image: url('/img/cover/default-thumb.png');">
                     <img class="thumbs-list-image" src="/img/cover/default-thumb.png"/>
                   </div>
                 {{/if}}
