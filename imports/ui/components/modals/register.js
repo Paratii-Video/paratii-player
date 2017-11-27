@@ -35,9 +35,12 @@ Template.register.events({
   'submit #form-register' (event, instance) {
     event.preventDefault()
     const target = event.target
+    let email = target['at-field-email'].value
+    let password = target['at-field-password'].value
+
     let user = {
-      email: target['at-field-email'].value,
-      password: target['at-field-password'].value,
+      email: email,
+      password: password,
       profile: {
         name: target['at-field-name'].value
       }
@@ -47,7 +50,6 @@ Template.register.events({
 
     Meteor.call('users.create', user, function (err, result) {
       if (err) {
-        console.log(err.reason)
         showModalAlert(err.reason, 'error')
         if (err.reason === 'Need to set a username or email') {
           instance.errors.set('user', err.reason)
@@ -63,9 +65,15 @@ Template.register.events({
           instance.errors.set('password', null)
         }
       } else {
-        console.log(result)
-        hideModalAlert()
-        showModal('showSeed', {blocking: true})
+        Session.set('signup', true)
+        Meteor.loginWithPassword(email, password, (err) => {
+          if (err) {
+            throw (err)
+          } else {
+            hideModalAlert()
+            showModal('showSeed', {blocking: true})
+          }
+        })
       }
     })
 
