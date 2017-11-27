@@ -218,25 +218,24 @@
   &:extend(.pos-a-m all);
 
   backface-visibility: hidden;
+  background: no-repeat 50% 50%;
+  background-size: cover;
   min-height: 100%;
   overflow: hidden;
+  transform: scale(1.05) translate3d(-50%, -50%, 0);
+  transform-origin: left center;
+  transition: transform .75s @ease-smooth;
   width: 100%;
   z-index: 1;
+  
+  .thumbs-list-link:hover & {
+    transform: scale(1.1) translate3d(-50%, -50%, 0);
+    transition: transform .8s @ease-smooth;
+  }
 }
 
 .thumbs-list-image {
-  &:extend(.full-block all);
-
-  height: auto;
-  position: relative;
-  transform: scale(1.05);
-  transition: transform .75s @ease-smooth;
-  z-index: 2;
-
-  .thumbs-list-link:hover & {
-    transform: scale(1.1);
-    transition: transform .8s @ease-smooth;
-  }
+  &:extend(.visually-hidden all);
 }
 
 .thumbs-list-loader {
