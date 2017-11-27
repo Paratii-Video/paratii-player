@@ -60,12 +60,12 @@ function setHead () {
         // TODO: creatore page it's not defined
         // oembedresponse.author_url = 'Creator url, maybe the channel?'
         // TODO: get iframe code of the mini version
-        oembedresponse.html = '<iframe src="' + baseUrl + '/embed/' + videoId + '?type=mini" width="570" height="320" frameborder="0"></iframe>'
-        oembedresponse.width = 570
-        oembedresponse.height = 320
+        oembedresponse.html = '<iframe src="' + baseUrl + '/embed/' + videoId + '?type=mini" width="490" height="280" frameborder="0"></iframe>'
+        oembedresponse.width = 490
+        oembedresponse.height = 280
         oembedresponse.thumbnail_url = ipfsGateway + thumbUrl
-        oembedresponse.thumbnail_width = 570
-        oembedresponse.thumbnail_height = 320
+        oembedresponse.thumbnail_width = 490
+        oembedresponse.thumbnail_height = 280
         oembedresponse.referrer = ''
         oembedresponse.cache_age = 3600
       } else {
@@ -110,8 +110,8 @@ function twitterCardHeadPlayer (params, req, res, next) {
   req.dynamicHead += '<meta property="twitter:card" content="player" />'
   req.dynamicHead += '<meta property="twitter:title" content="' + videoTitle + '" />'
   req.dynamicHead += '<meta property="twitter:site" content="' + rootUrl + '/play/' + videoId + '">'
-  req.dynamicHead += '<meta property="twitter:player:width" content="570" />'
-  req.dynamicHead += '<meta property="twitter:player:height" content="320" />'
+  req.dynamicHead += '<meta property="twitter:player:width" content="490" />'
+  req.dynamicHead += '<meta property="twitter:player:height" content="280" />'
   if (thumbUrl) {
     req.dynamicHead += '<meta property="twitter:image" content="' + ipfsGateway + thumbUrl + '" />'
   }
