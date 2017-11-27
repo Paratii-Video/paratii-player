@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { Meteor } from 'meteor/meteor'
 import { web3 } from '/imports/lib/ethereum/web3.js'
 import { updateSession } from '/imports/lib/ethereum/connection.js'
 import { setRegistryAddress, getContractAddress } from '/imports/lib/ethereum/contracts.js'
@@ -12,6 +13,18 @@ Template.debug.onCreated(function () {
   // Meteor.call('getRegistryAddress', function (error, result) {
   //   Session.set('ParatiiRegistry', result)
   // })
+  this.version = new ReactiveVar()
+  var self = this
+  Meteor.call('getVersion', function (error, result) {
+    if (error) {
+      console.log('error', error)
+    }
+    if (result) {
+      console.log(result)
+      self.version.set(JSON.parse(result))
+    }
+  })
+
   getContractAddress('ParatiiToken').then(function (result) {
     Session.set('ParatiiToken', result)
   })
@@ -22,6 +35,7 @@ Template.debug.onCreated(function () {
     Session.set('VideoRegistry', result)
   })
 })
+
 Template.debug.events({
   'click #get-some-PTI' () {
     let beneficiary = getUserPTIAddress()
@@ -97,5 +111,8 @@ Template.debug.helpers({
       return web3.fromWei(balance, 'ether')
     }
     return ''
+  },
+  version () {
+    return Template.instance().version.get()
   }
 })

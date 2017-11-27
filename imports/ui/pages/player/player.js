@@ -14,7 +14,6 @@ import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
 // import '/imports/ui/components/modals/regenerateKeystore.js'
-
 import './player.html'
 
 let controlsHandler
@@ -31,7 +30,6 @@ function renderVideoElement (instance) {
   videoTag.className = 'player-video'
   videoTag.id = 'video-player'
   playerContainer.insertBefore(videoTag, playerContainer.firstChild)
-
   // get video tag element and bind it to player js adapter for HTML5 video
 
   log('this is the video', videoTag)
