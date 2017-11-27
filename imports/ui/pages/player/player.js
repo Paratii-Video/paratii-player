@@ -88,7 +88,7 @@ Template.player.onCreated(function () {
   this.playerState.set('volumeValue', 100)
   this.playerState.set('volScrubberTranslate', 100)
   this.playerState.set('muted', false)
-  this.playerState.set('locked', true)
+  this.playerState.set('locked', false)
   /* EMBED CONTROLS */
   this.playerState.set('autoplay', autoplay === 1)
   this.playerState.set('loop', loop === 1)
@@ -525,10 +525,14 @@ Template.player.events({
   },
   'click #embed' (event, instance) {
     const videoId = Template.instance().currentVideo.get()._id
+
+    const button = event.currentTarget
+    const title = button.dataset.title
     showModal('modal_share_video',
       {
         type: 'modal_share_links',
         videoId: videoId,
+        videoTitle: title,
         embed: window.top !== window.self,
         autoplay: !Template.instance().playerState.get('locked')
       }

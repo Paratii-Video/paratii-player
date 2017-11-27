@@ -3,9 +3,9 @@
   "public" : {
     "isProduction": true,
     "http_provider": "https://chain.paratii.video",
-    "ipfs_gateway": "https://gateway.paratii.video/ipfs",
+    "ipfs_gateway": "https://gateway.paratii.video",
     "first_block": 0,
-    "ParatiiRegistry":  "0xeefc4b0dba4206d195b5f7ed975d7448f1eda293",
+    "ParatiiRegistry": "0xf8045bba83f0b92ba911dbe6a3fa3d16b378ad4c",
     "paginationStep": 6
   }
 }
