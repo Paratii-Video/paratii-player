@@ -49,7 +49,7 @@
     &:extend(.pos-a-full all);
 
     background-color: black;
-    content: ''; 
+    content: '';
     opacity: .4;
     transition: opacity .35s;
     z-index: 2;
@@ -130,6 +130,9 @@
   position: relative;
   transition: color .5s;
   z-index: 2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
@@ -227,7 +230,7 @@
   transition: transform .75s @ease-smooth;
   width: 100%;
   z-index: 1;
-  
+
   .thumbs-list-link:hover & {
     transform: scale(1.1) translate3d(-50%, -50%, 0);
     transition: transform .8s @ease-smooth;
