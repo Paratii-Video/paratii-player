@@ -183,7 +183,9 @@ Template.player.helpers({
     return Template.instance().playerState.get('hideControls') ? 'hide-controls' : ''
   },
   formatNumber (number) {
-    return formatNumber(number)
+    let numberFormated = formatNumber(number)
+    if (numberFormated === false) numberFormated = 0
+    return numberFormated
   },
   formatTime (seconds) {
     const minutes = seconds / 60
