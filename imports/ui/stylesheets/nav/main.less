@@ -54,6 +54,7 @@
   &-list {
     display: block;
     margin: 0;
+    width: 100%;
 
     .query-mini({
       height: 100%;
@@ -63,19 +64,20 @@
   &-item {
     display: block;
     position: relative;
+    width: 100%;
   }
 
   &-link {
     display: block;
-    padding: 20px 0 28px;
-    width: @size-main-nav-width;
+    padding: 20px 0;
+    width: 100%;
   }
 
   &-icon {
     display: block;
     height: @size-main-nav-icon;
     margin: 0 auto;
-    width: @size-main-nav-icon;
+    width: 50%;
     
     .nav-profile & {
       background-color: @color-white;
@@ -86,22 +88,18 @@
 
     .nav-search & {
       height: 19px;
-      width: 30px;
     }
 
     .nav-playlists & {
-      height: 25px;
-      width: 25px;
+      height: 23px;
     }
 
     .nav-myvideos & {
       height: 22px;
-      width: 23px;
     }
 
     .nav-logout & {
       height: 25px;
-      width: 23px;
     }
   }
 
