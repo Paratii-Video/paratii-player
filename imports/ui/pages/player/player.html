@@ -77,11 +77,15 @@
           </div>
 
           <div class="player-infos-holder">
+
+            {{!-- Tags are hidden at the momente
             <p class="player-related player-infos-related">
               {{#each tag in tags }}
                 <span class="player-infos-related-tag">{{ tag }}</span>
               {{/each}}
             </p>
+            --}}
+
             <p class="player-uploader-name player-infos-uploader-name">{{_ "By" }} <strong>{{ uploader.name }}</strong></p>
             <div class="player-stats">
               <p class="player-stats-item">
