@@ -72,11 +72,12 @@
   &-back,
   &-fullscreen,
   &-settings {
+    &:extend(.hover-opacity all);
+
     height: 20px;
     width: 20px;
 
     &-svg {
-      &:extend(.hover-opacity all);
       &:extend(.full-block all);
 
       fill: @color-grey;

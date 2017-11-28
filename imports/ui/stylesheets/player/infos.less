@@ -23,7 +23,7 @@
     .query-mini({
       left: 0;
       padding: 0 20px 0 90px;
-      top: 30px;
+      top: 27px;
       transform: translate3d(0, 0, 0);
     });
 
@@ -47,6 +47,7 @@
     .related & {
       opacity: 1;
       transition: opacity .25s, padding .8s @ease-smooth;
+
       .player-related-videos{
         display: block
       }
@@ -68,6 +69,14 @@
     margin: 0 0 9px;
     max-width: 860px;
     padding-right: 40px;
+
+    // #truckate
+    max-height: 54px;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box; 
+    // /truckate
 
     .query-mini({
       font-size: 5vw;
@@ -158,8 +167,14 @@
       font-weight: 300;
       font-size: 14px;
       margin-bottom: 10px;
-      max-height: 122px;
+
+      // #truckate
+      max-height: 100px;
       overflow: hidden;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      display: -webkit-box; 
+      // /truckate
     }
 
     .show-description & {
@@ -187,10 +202,11 @@
   &-uploader-name {
     font-weight: 300;
     font-size: 16px;
-    margin: 0 0 19px;
+    margin: 0 0 10px;
   }
 
   // Price
+
   &-price {
     align-items: center;
     background: @color-purple;
@@ -204,12 +220,25 @@
     padding: 0 25px;
     position: relative;
     text-transform: uppercase;
+    transition: opacity .3s linear .3s;
 
     &-space {
       background: linear-gradient(to right, @color-purple 0%,@color-purple 50%,#7068e2 51%,@color-purple 100%);
       height: 40px;
       width: 50px;
       pointer-events: none;
+    }
+
+    .show-description & {
+      opacity: 0;
+      transition: opacity .3s linear;
+      pointer-events: none;
+    }
+  }
+
+  &-button {
+    &-description {
+      font-size: 12px;
     }
   }
 }
@@ -232,7 +261,7 @@
 .player-stats {
   align-items: center;
   display: flex;
-  margin-bottom: 19px;
+  margin-bottom: 10px;
 
   &-item {
     align-items: center;

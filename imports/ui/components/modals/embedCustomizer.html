@@ -117,10 +117,8 @@
         }}
       </div>
     </div>
-    <br>
-    <p class="main-modal-text main-modal-anim-4">Add the following code to your website</p>
+    <p class="main-modal-text main-modal-anim-4 visually-hidden">{{_ "Add the following code to your website" }}</p>
     <!--  Hide tiny/mini choice until these things are implemented..
-
     <div class="main-modal-share-option main-modal-anim-3">
       <p class="main-modal-subtitle">Sizes:</p>
       <div class="main-modal-share-options">
@@ -133,8 +131,7 @@
           </label>
         {{/each}}
       </div>
-    </div>
-  -->
+    </div> -->
     <input class="input-copy-code main-form-input main-modal-anim-5" onclick="this.focus();this.select()" readonly="readonly" value="{{ code }}" />
     <pre id="to_clip" class="visually-hidden">{{ code }}</pre>
 

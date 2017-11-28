@@ -2,178 +2,182 @@
   <div id="player-container" class="player-container {{ hideControls }} {{ descriptionClass }} {{ mutedClass }} {{ volumeClass }} {{ playPause }}" tabIndex=99>
 
     {{currentVideo}}
-
     <video id="video-player" class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
     </video>
-    {{#unless isLocked }}
-    <div class="player-controls">
-      <div class="player-controls-wrapper">
-        <div class="player-controls-buttons">
-          {{#if hasPlaylistId}}
-            <button id="previous-video-button" class="player-button player-button-prev" title="previous video">
-              <svg class="player-button-svg">
-                <use class="player-button-svg-use" xlink:href="#icon-skip"></use>
-              </svg>
-            </button>
-          {{/if}}
-          <button id="play-pause-button" class="player-button player-button-play-pause" title="{{playPause}}" data-icon="{{playPauseIcon}}">
-            <svg class="player-button-svg player-button-svg-pause">
-                <use class="player-button-svg-use" xlink:href="#icon-pause"></use>
-            </svg>
-            <svg class="player-button-svg player-button-svg-play">
-                <use class="player-button-svg-use" xlink:href="#icon-play"></use>
-              </svg>
-          </button>
-          {{#if hasPlaylistId}}
-            <button id="next-video-button" class="player-button player-button-next" title="next video">
-              <svg class="player-button-svg">
-                <use class="player-button-svg-use" xlink:href="#icon-skip"></use>
-              </svg>
-            </button>
-          {{/if}}
-          <button id="volume-button" class="player-button player-button-volume" title="volume">
-            <svg class="player-button-svg player-button-svg-mute">
-              <use class="player-button-svg-use" xlink:href="#icon-mute"></use>
-            </svg>
-            <svg class="player-button-svg player-button-svg-volume">
-              <use class="player-button-svg-use" xlink:href="#icon-volume"></use>
-            </svg>
-          </button>
-        </div>
+    
+    {{> fullScreenButton className="player-button player-button-fullscreen" target=videoPlayer }}
 
-        <div class="player-controls-volume">
-          <div id="vol-control" class="player-controls-volume-slider">
-            <div id="volume-value" class="player-controls-volume-bar" style="width: {{ volumeValue }}%"></div>
-            <div id="vol-scrubber" class="player-scrubber" style="left: {{volScrubberTranslate}}%"></div>
+    {{#unless isLocked }}
+      <div class="player-controls">
+        <div class="player-controls-wrapper">
+          <div class="player-controls-buttons">
+            {{#if hasPlaylistId}}
+              <button id="previous-video-button" class="player-button player-button-prev" title="previous video">
+                <svg class="player-button-svg">
+                  <use class="player-button-svg-use" xlink:href="#icon-skip"></use>
+                </svg>
+              </button>
+            {{/if}}
+            <button id="play-pause-button" class="player-button player-button-play-pause" title="{{playPause}}" data-icon="{{playPauseIcon}}">
+              <svg class="player-button-svg player-button-svg-pause">
+                  <use class="player-button-svg-use" xlink:href="#icon-pause"></use>
+              </svg>
+              <svg class="player-button-svg player-button-svg-play">
+                  <use class="player-button-svg-use" xlink:href="#icon-play"></use>
+                </svg>
+            </button>
+            {{#if hasPlaylistId}}
+              <button id="next-video-button" class="player-button player-button-next" title="next video">
+                <svg class="player-button-svg">
+                  <use class="player-button-svg-use" xlink:href="#icon-skip"></use>
+                </svg>
+              </button>
+            {{/if}}
+            <button id="volume-button" class="player-button player-button-volume" title="volume">
+              <svg class="player-button-svg player-button-svg-mute">
+                <use class="player-button-svg-use" xlink:href="#icon-mute"></use>
+              </svg>
+              <svg class="player-button-svg player-button-svg-volume">
+                <use class="player-button-svg-use" xlink:href="#icon-volume"></use>
+              </svg>
+            </button>
+          </div>
+
+          <div class="player-controls-volume">
+            <div id="vol-control" class="player-controls-volume-slider">
+              <div id="volume-value" class="player-controls-volume-bar" style="width: {{ volumeValue }}%"></div>
+              <div id="vol-scrubber" class="player-scrubber" style="left: {{volScrubberTranslate}}%"></div>
+            </div>
+          </div>
+
+          <div id="video-progress" class="player-progress player-controls-progress">
+            <div id="loaded-bar" class="player-progress-loaded" style="width: {{loadedProgress}}%"></div>
+            <div id="played-bar" class="player-progress-played" style="width: {{playedProgress}}%"></div>
+            <div id="scrubber" class="player-scrubber" style="left: {{scrubberTranslate}}%"></div>
+          </div>
+
+          <div class="player-controls-time">
+            <span id="total-time" class="player-time-total">{{formatTime totalTime}}</span>
           </div>
         </div>
-
-        <div id="video-progress" class="player-progress player-controls-progress">
-          <div id="loaded-bar" class="player-progress-loaded" style="width: {{loadedProgress}}%"></div>
-          <div id="played-bar" class="player-progress-played" style="width: {{playedProgress}}%"></div>
-          <div id="scrubber" class="player-scrubber" style="left: {{scrubberTranslate}}%"></div>
-        </div>
-
-        <div class="player-controls-time">
-          <span id="total-time" class="player-time-total">{{formatTime totalTime}}</span>
-        </div>
       </div>
-    </div>
-
-    {{> fullScreenButton className="player-button player-button-fullscreen" target=videoPlayer }}
     {{/unless }}
 
     {{#with video}}
-    <div class="player-overlay player-infos">
-      <div class="player-uploader player-infos-uploader">{{ uploader.name }} <img class="player-infos-uploader-image" src="{{ uploader.avatar }}"/></div>
+      <div class="player-overlay player-infos">
+        <div class="player-uploader player-infos-uploader">{{ uploader.name }} <img class="player-infos-uploader-image" src="{{ uploader.avatar }}"/></div>
 
-      <div class="player-info player-infos-wrapper">
-        <h2 class="player-title player-infos-title">{{ title }}</h2>
+        <div class="player-info player-infos-wrapper">
+          <h2 class="player-title player-infos-title">{{ title }}</h2>
 
-        <div class="player-infos-content">
-          <div class="player-description player-infos-description">
-            <p class="player-infos-description-text">{{ description }}</p>
-            <button class="button-text nocase white player-infos-button-description" type="button">{{_ "Hide description" }}</button>
-          </div>
-
-          <div class="player-infos-holder">
-            <p class="player-related player-infos-related">
-              {{#each tag in tags }}
-                <span class="player-infos-related-tag">{{ tag }}</span>
-              {{/each}}
-            </p>
-            <p class="player-uploader-name player-infos-uploader-name">{{_ "By" }} <strong>{{ uploader.name }}</strong></p>
-            <div class="player-stats">
-              <p class="player-stats-item">
-                <svg class="player-stats-icon player-stats-icon-views">
-                  <use class="player-stats-icon-use" xlink:href="#icon-views"></use>
-                </svg>{{formatNumber stats.views}}
-              </p>
-
-              <button id="button-like" class="player-stats-item player-stats-button">
-                <svg class="player-stats-icon player-stats-icon-likes">
-                  <use class="player-stats-icon-use" xlink:href="#icon-likes"></use>
-                </svg>{{formatNumber stats.likes}}
-              </button>
-
-              <button id="button-dislike" class="player-stats-item player-stats-button">
-                <svg class="player-stats-icon player-stats-icon-dislikes">
-                  <use class="player-stats-icon-use" xlink:href="#icon-dislikes"></use>
-                </svg>
-                {{formatNumber stats.dislikes}}
-              </button>
+          <div class="player-infos-content">
+            {{#if description}}
+            <div class="player-description player-infos-description">
+              <p class="player-infos-description-text">{{ description }}</p>
+              <button class="button-text nocase white player-infos-button-description" type="button">{{_ "Hide description" }}</button>
             </div>
-            <button class="button-text nocase white player-infos-button-description" type="button">{{_ "Show description" }}</button>
-            {{ #if status }}
-              <p id="status" class="player-infos-description-text">{{_ "STATUS:" }} {{ status }}</p>
+            {{/if}}
+
+            <div class="player-infos-holder">
+              <p class="player-related player-infos-related visually-hidden">
+                {{#each tag in tags }}
+                  <span class="player-infos-related-tag">{{ tag }}</span>
+                {{/each}}
+              </p>
+              <p class="player-uploader-name player-infos-uploader-name">{{_ "By" }} <strong>{{ uploader.name }}</strong></p>
+              <div class="player-stats">
+                <p class="player-stats-item">
+                  <svg class="player-stats-icon player-stats-icon-views">
+                    <use class="player-stats-icon-use" xlink:href="#icon-views"></use>
+                  </svg>{{formatNumber stats.views}}
+                </p>
+
+                <button id="button-like" class="player-stats-item player-stats-button">
+                  <svg class="player-stats-icon player-stats-icon-likes">
+                    <use class="player-stats-icon-use" xlink:href="#icon-likes"></use>
+                  </svg>{{formatNumber stats.likes}}
+                </button>
+
+                <button id="button-dislike" class="player-stats-item player-stats-button">
+                  <svg class="player-stats-icon player-stats-icon-dislikes">
+                    <use class="player-stats-icon-use" xlink:href="#icon-dislikes"></use>
+                  </svg>
+                  {{formatNumber stats.dislikes}}
+                </button>
+              </div>
+              {{#if description}}
+              <button class="button-text nocase white player-infos-button-description" type="button">{{_ "Show description" }}</button>
+              {{/if}}
+              {{ #if status }}
+                <p id="status" class="player-infos-description-text">{{_ "STATUS:" }} {{ status }}</p>
+              {{/if}}
+            </div>
+            {{#if isShowDescription}}
+            {{/if}}
+            {{#if relatedIsShowable }}
+            <div class="player-related-videos">
+              <ul class="thumbs-list">
+                {{#each relatedVideos}}
+
+                  <li class="thumbs-list-item">
+                    <a class="thumbs-list-link" href="{{videoPath this}}">
+                      <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
+                      <p class="thumbs-list-time">{{ duration }}</p>
+                     <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
+                      {{#if isLocked this}}
+                        <div class="thumbs-list-price">{{ price }} PTI</div>
+                      <!---
+                      {{else if hasPrice this}}
+                        <div class="thumbs-list-price">✓</div>
+                      -->
+                      {{else}}
+                        <div class="thumbs-list-play right">
+                          <svg class="thumbs-list-play-svg">
+                            <use class="thumbs-list-play-use" xlink:href="#icon-play"></use>
+                          </svg>
+                        </div>
+                      {{/if}}
+                      {{#if thumb}}
+                        <img class="videos-item-image" src="{{ thumb }}"/>
+                      {{else}}
+                        <img class="videos-item-image" src="/img/cover/default-thumb.png"/>
+                      {{/if}}
+                    </a>
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
+            {{/if}}
+            {{#if isLocked }}
+              <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">
+                <span class="player-infos-price-label">{{_ "Watch for" }}</span>
+                <span class="player-infos-price-space"></span>
+                <span class="player-infos-price-label">{{formatNumber price}}PTI</span>
+              </button>
             {{/if}}
           </div>
-          {{#if isShowDescription}}
-          {{/if}}
-          {{#if relatedIsShowable }}
-          <div class="player-related-videos">
-            <ul class="thumbs-list">
-              {{#each relatedVideos}}
-
-                <li class="thumbs-list-item">
-                  <a class="thumbs-list-link" href="{{videoPath this}}">
-                    <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
-                    <p class="thumbs-list-time">{{ duration }}</p>
-                   <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
-                    {{#if isLocked this}}
-                      <div class="thumbs-list-price">{{ price }} PTI</div>
-                    <!---
-                    {{else if hasPrice this}}
-                      <div class="thumbs-list-price">✓</div>
-                    -->
-                    {{else}}
-                      <div class="thumbs-list-play right">
-                        <svg class="thumbs-list-play-svg">
-                          <use class="thumbs-list-play-use" xlink:href="#icon-play"></use>
-                        </svg>
-                      </div>
-                    {{/if}}
-                    {{#if thumb}}
-                      <img class="videos-item-image" src="{{ thumb }}"/>
-                    {{else}}
-                      <img class="videos-item-image" src="/img/cover/default-thumb.png"/>
-                    {{/if}}
-                  </a>
-                </li>
-              {{/each}}
-            </ul>
-          </div>
-          {{/if}}
-          {{#if isLocked }}
-            <button id="unlock-video" class="player-price player-infos-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">
-              <span class="player-infos-price-label">{{_ "Watch for" }}</span>
-              <span class="player-infos-price-space"></span>
-              <span class="player-infos-price-label">{{formatNumber price}}PTI</span>
-            </button>
-          {{/if}}
+        </div>
+        <div class="player-share">
+          <button class="player-share-button player-share-button-add">
+            <svg class="player-share-button-icon">
+              <use class="player-share-button-icon-use" xlink:href="#icon-playlists-add"></use>
+            </svg>
+          </button>
+          <button id="embed" data-title="{{title}}" class="player-share-button player-share-button-share">
+            <svg class="player-share-button-icon">
+              <use class="player-share-button-icon-use" xlink:href="#icon-share"></use>
+            </svg>
+          </button>
+          <button class="player-share-button player-share-button-later active">
+            <svg class="player-share-button-icon player-share-button-later-watch">
+              <use class="player-share-button-icon-use" xlink:href="#icon-watch-later"></use>
+            </svg>
+            <svg class="player-share-button-icon player-share-button-later-add">
+              <use class="player-share-button-icon-use" xlink:href="#icon-watch-later-add"></use>
+            </svg>
+          </button>
         </div>
       </div>
-      <div class="player-share">
-        <button class="player-share-button player-share-button-add">
-          <svg class="player-share-button-icon">
-            <use class="player-share-button-icon-use" xlink:href="#icon-playlists-add"></use>
-          </svg>
-        </button>
-        <button id="embed" data-title="{{title}}" class="player-share-button player-share-button-share">
-          <svg class="player-share-button-icon">
-            <use class="player-share-button-icon-use" xlink:href="#icon-share"></use>
-          </svg>
-        </button>
-        <button class="player-share-button player-share-button-later active">
-          <svg class="player-share-button-icon player-share-button-later-watch">
-            <use class="player-share-button-icon-use" xlink:href="#icon-watch-later"></use>
-          </svg>
-          <svg class="player-share-button-icon player-share-button-later-add">
-            <use class="player-share-button-icon-use" xlink:href="#icon-watch-later-add"></use>
-          </svg>
-        </button>
-      </div>
-    </div>
     {{/with}}
   </div>
 </template>
