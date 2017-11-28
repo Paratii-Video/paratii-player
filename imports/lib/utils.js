@@ -1,3 +1,5 @@
+import { TAPi18n } from 'meteor/tap:i18n'
+
 export function log (message) {
   if (Meteor.settings.public.isTestEnv) {
     console.log(message)
@@ -86,8 +88,19 @@ export function hideModalAlert () {
   }, 600)
 }
 
+export function resetAlert () {
+  Session.set('globalAlertShow', null)
+  Session.set('globalAlertMessage', null)
+  Session.set('modalAlertShow', null)
+  Session.set('modalAlertMessage', null)
+}
+
 export function removeTrailingSlash (str) {
   return str.replace(/\/$/, '')
+}
+
+export function __ (message) {
+  return TAPi18n.__(message)
 }
 
 // export function setModalState (message) {
