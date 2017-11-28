@@ -1,7 +1,7 @@
 <template name="navigation">
   <nav id="nav" class="main-nav {{ navState }} {{ isMaximized }}">
     <ul class="main-nav-list">
-      <li class="main-nav-item profile {{isActivePath '/profile'}}">
+      <li class="main-nav-item nav-profile {{isActivePath '/profile'}}">
         <a id="nav-profile" class="main-nav-link" href="/profile">
           <div class="main-nav-icon">
             {{#if currentUser}}
@@ -18,18 +18,31 @@
               </svg>
             {{/if}}
           </div>
+          <p class="visually-hidden">{{_ "Profile" }}</p>
         </a>
       </li>
-      <li id="search" class="main-nav-item search {{isActivePath '/search'}} {{#if locked}}locked{{/if}}">
+      <li id="search" class="main-nav-item nav-search {{isActivePath '/search'}} {{#if locked}}locked{{/if}}">
         <a class="main-nav-link locked" href="/search">
           <div class="main-nav-icon">
             <svg class="main-nav-svg">
               <use class="main-nav-svg-use" xlink:href="#icon-search"></use>
             </svg>
           </div>
+          <p class="visually-hidden">{{_ "Search" }}</p>
         </a>
       </li>
-      <li id="myvideos" class="main-nav-item myvideos {{isActivePath '/myvideos'}} {{#if locked}}locked{{/if}}">
+
+      <li id="playlist" class="main-nav-item nav-playlists {{isActivePath '/playlists'}} {{#if locked}}locked{{/if}}">
+        <a class="main-nav-link" href="/playlists">
+          <div class="main-nav-icon">
+            <svg class="main-nav-svg">
+              <use class="main-nav-svg-use" xlink:href="#icon-playlist"></use>
+            </svg>
+          </div>
+          <p class="visually-hidden">{{_ "Playlists" }}</p>
+        </a>
+      </li>
+      <!-- <li id="myvideos" class="main-nav-item nav-myvideos {{isActivePath '/myvideos'}} {{#if locked}}locked{{/if}}">
         <a class="main-nav-link" href="/myvideos">
           <div class="main-nav-icon">
             <svg class="main-nav-svg">
@@ -37,15 +50,16 @@
             </svg>
           </div>
         </a>
-      </li>
+      </li> -->
       {{#if userIsLoggedIn }}
-      <li id="logout" class="main-nav-item logout">
+      <li id="logout" class="main-nav-item nav-logout">
         <a class="main-nav-link" href="/">
           <div class="main-nav-icon">
             <svg class="main-nav-svg">
               <use class="main-nav-svg-use" xlink:href="#icon-logout"></use>
             </svg>
           </div>
+          <p class="visually-hidden">{{_ "Log out" }}</p>
         </a>
       </li>
       {{/if}}
