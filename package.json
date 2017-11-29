@@ -18,7 +18,7 @@
     "remove-watcher": "node hooks/remove-watcher.js",
     "bar": "echo \"bar\" && exit 0"
   },
-  "pre-commit": [
+  "precommit": [
     "lint-fix",
     "remove-watcher",
     "bar"
