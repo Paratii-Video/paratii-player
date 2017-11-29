@@ -67,6 +67,11 @@ Template.player.onCreated(function () {
   const fullscreen = parseInt(FlowRouter.getQueryParam('fullscreen'))
   const type = parseInt(FlowRouter.getQueryParam('type'))
 
+  // TODO: this is the real referrer passed by embedly
+  const referrer = FlowRouter.getQueryParam('referrer')
+  const isEmbedly = (referrer !== undefined)
+  console.log('embedly: ' + (referrer !== undefined))
+
   this.currentVideo = new ReactiveVar()
 
   // this makes the tests work
@@ -92,6 +97,7 @@ Template.player.onCreated(function () {
   this.playerState.set('loop', loop === 1)
   this.playerState.set('playsinline', playsinline === 1)
   this.playerState.set('type', type === 1)
+  this.playerState.set('embedly', isEmbedly)
   // Description
   this.playerState.set('showDescription', false)
 
