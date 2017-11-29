@@ -1,11 +1,11 @@
 <template name="checkSeed">
   <div id="check-seed" class="main-modal-content">
-    <h3 class="main-modal-title main-modal-anim-1">Check the seed phrase</h3>
+    <h3 class="main-modal-title main-modal-anim-1">((_ "Check the seed phrase" ))</h3>
     <!-- {{#if errorMessage}}
     <p class="control-label visually-hidden">{{errorMessage}}</p>
     {{/if}} -->
 
-    <p class="main-modal-text"><strong class="color-red">Please copy down here your following 12 words</strong></p>
+    <p class="main-modal-text"><strong class="color-red">{{_ "Please copy down here your following 12 words" }}</strong></p>
     <br>
     <form id="form-check-seed" class="main-modal-form" action="">
       {{> mainFormInput
@@ -16,7 +16,7 @@
           error=errorMessage
       }}
       <div class="main-modal-footer main-modal-anim-4">
-        <button id="btn-check-seed-back" class="button-text main-modal-button">Back</button>
+        <button id="btn-check-seed-back" class="button-text grey-light main-modal-button">Back</button>
         <button id="btn-check-seed-finish" class="button-text main-modal-button" type="submit">Finish</button>
       </div>
     </form>
