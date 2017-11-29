@@ -31,5 +31,11 @@
    "Share this video": "Share this video",
    "Show description":"Show description",
    "STATUS:":"STATUS:",
-   "Watch for": "Watch for"
+   "Watch for": "Watch for",
+   "about-title": "About",
+   "about-subtitle": "Conscious Video Distribution",
+   "about-description": "Developing a player that relies on a public blockchain and puts revenue 100% in control of content producers.",
+   "my-video-title": "My Video",
+   "my-video-description": "Your favorites (not implemented in this Demo)",
+   "notfound-title": "Sorry, that page doesn't exist",
 }

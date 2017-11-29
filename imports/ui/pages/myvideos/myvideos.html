@@ -1,10 +1,10 @@
 <template name="myvideos">
   {{#isAuthorized}}
   <div class="playlistContainer">
-    <div class="titleContainer">My Videos</div>
+    <div class="titleContainer">{{_ "my-video-title" }}</div>
     <div class="line"></div>
     <div class="descriptionPlaylist">
-      Your favorites (not implemented in this Demo)
+      {{_ "my-video-description" }}
     </div>
   </div>
   {{/isAuthorized}}
