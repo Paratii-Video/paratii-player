@@ -1,11 +1,9 @@
 var fs = require('fs')
 var files = fs.readdirSync('tests/')
 
-console.log(files)
 
 files.forEach(file => {
   fs.readFile('tests/' + file, 'utf8', function (err, data) {
-    console.log(data)
     if (err) {
       return console.log(err)
     }
