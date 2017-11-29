@@ -86,23 +86,23 @@ describe('Player:', function () {
     assertUserIsNotLoggedIn(browser)
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitForClickable('#button-like')
-    assert.equal(browser.getText('#button-like'), '')
-    assert.equal(browser.getText('#button-dislike'), '')
+    assert.equal(browser.getText('#button-like'), '0')
+    assert.equal(browser.getText('#button-dislike'), '0')
 
     browser.click('#button-like')
     browser.waitUntil(() => {
       return browser.getText('#button-like') === '1'
     })
     assert.equal(browser.getText('#button-like'), '1')
-    assert.equal(browser.getText('#button-dislike'), '')
+    assert.equal(browser.getText('#button-dislike'), '0')
 
     browser.click('#button-dislike')
 
     browser.waitUntil(() => {
-      return browser.getText('#button-like') === ''
+      return browser.getText('#button-like') === '0'
     })
 
-    assert.equal(browser.getText('#button-like'), '')
+    assert.equal(browser.getText('#button-like'), '0')
     assert.equal(browser.getText('#button-dislike'), '1')
   })
   it('like and dislike a video as a logged-in user', () => {
@@ -110,21 +110,21 @@ describe('Player:', function () {
     assertUserIsLoggedIn(browser)
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitForClickable('#button-like')
-    assert.equal(browser.getText('#button-like'), '')
-    assert.equal(browser.getText('#button-dislike'), '')
+    assert.equal(browser.getText('#button-like'), '0')
+    assert.equal(browser.getText('#button-dislike'), '0')
 
     browser.click('#button-like')
     browser.waitUntil(() => {
       return browser.getText('#button-like') === '1'
     })
     assert.equal(browser.getText('#button-like'), '1')
-    assert.equal(browser.getText('#button-dislike'), '')
+    assert.equal(browser.getText('#button-dislike'), '0')
 
     browser.click('#button-dislike')
     browser.waitUntil(() => {
-      return browser.getText('#button-like') === ''
+      return browser.getText('#button-like') === '0'
     })
-    assert.equal(browser.getText('#button-like'), '')
+    assert.equal(browser.getText('#button-like'), '0')
     assert.equal(browser.getText('#button-dislike'), '1')
   })
 
