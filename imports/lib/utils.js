@@ -90,6 +90,43 @@ export function removeTrailingSlash (str) {
   return str.replace(/\/$/, '')
 }
 
+export function setIsNavigatingBack (navigatingBack = false) {
+  Session.set('navigatingBack', navigatingBack)
+}
+
+export function getIsNavigatingBack () {
+  return Session.get('navigatingBack')
+}
+
+function initPreviousPaths () {
+  if (!Session.get('prevPaths')) {
+    Session.set('prevPaths', [])
+  }
+}
+
+export function addPreviousPath (prevPath) {
+  initPreviousPaths()
+  if (prevPath && prevPath !== getPreviousPath()) {
+    const prevPaths = Session.get('prevPaths')
+    prevPaths.push(prevPath)
+    Session.set('prevPaths', prevPaths)
+  }
+}
+
+export function removeLastPreviousPath () {
+  initPreviousPaths()
+  const prevPaths = Session.get('prevPaths')
+  prevPaths.pop()
+  Session.set('prevPaths', prevPaths)
+}
+
+export function getPreviousPath () {
+  initPreviousPaths()
+  const prevPaths = Session.get('prevPaths')
+
+  return prevPaths[prevPaths.length - 1]
+}
+
 // export function setModalState (message) {
 //   Session.set('modalStateMessage', message)
 // }
