@@ -1,19 +1,19 @@
 // Internals
 
 .internals {
-  padding: 30px 30px 0 @size-main-nav-minimized-width + 30;
+  padding: 25px 30px 0 @size-main-nav-minimized-width + 30;
 
   &-header {
     background: white;
     display: flex;
-    margin: 0 0 25px;
+    margin: 0 0 15px;
     position: relative;
     width: 100%;
     z-index: 5;
 
     .button-back {
       animation: showFromLeft .75s @ease-smooth .2s forwards;
-      margin: 7px 7px 0 0;
+      margin: 9px 7px 0 0;
       opacity: 0;
     }
 
@@ -31,24 +31,27 @@
     }
 
     &-title {
+      &:extend(.truncate-single-line all);
+
       height: 35px;
       line-height: 35px;
     }
 
     &-label {
       flex: 1;
+      margin-bottom: 0;
       position: relative;
     }
 
     &-input {
-      padding: 0 3px 0 25px;
+      padding: 0 3px 0 32px;
 
       &-svg {
         &:extend(.pos-a-vm all);
 
         fill: @color-grey-light-1;
         height: 18px;
-        left: 0;
+        left: 2px;
         width: 18px;
         z-index: 1;
       }
@@ -76,7 +79,7 @@
   &-pagination {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     max-width: @screen-mini-width;
 
     &-button {
