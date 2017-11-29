@@ -21,7 +21,7 @@ describe('Search video :', function () {
 
     browser.setValue('[name="search"]', 'key')
     browser.pause(2000)
-    results = browser.elements('.thumbs-list li')
+    results = browser.elements('.thumbs-list li');
     assert.equal(results.value.length, 1)
     done()
   })
