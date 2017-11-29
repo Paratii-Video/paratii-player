@@ -9,8 +9,7 @@ const getPrevPage = () => (
 
 Template.backButton.helpers({
   shouldRender () {
-    const prevPage = getPrevPage()
-    return !!prevPage
+    return !!getPrevPage()
   }
 })
 
