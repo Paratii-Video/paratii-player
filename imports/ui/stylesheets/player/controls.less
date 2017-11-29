@@ -10,7 +10,7 @@
 .player-controls {
   bottom: 0px;
   left: 0px;
-  padding: 0 20px 0 90px;
+  padding: 0 30px 0 90px;
   position: absolute;
   transition: padding .65s @ease-smooth, transform .8s @ease-smooth;
   width: 100%;
@@ -22,10 +22,10 @@
 
   .hide-nav & {
     transition: padding .8s @ease-smooth, transform .65s @ease-smooth;
-    padding: 0 17px 0;
+    padding: 0 30px 0;
 
     .query-mini({
-      padding: 0 17px;
+      padding: 0 30px;
     });
   }
 
@@ -135,10 +135,6 @@
   &-volume {
     margin: 0;
     width: 15px;
-
-    .muted & {
-      width: 16px;
-    }
   }
 
   &-fullscreen {
@@ -155,7 +151,7 @@
     });
 
     .hide-controls & {
-      transform: translate3d(0, -50px, 0);
+      transform: translate3d(0, -60px, 0);
       transition: transform .65s @ease-smooth, opacity .3s;
     }
 
