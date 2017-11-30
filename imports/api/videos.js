@@ -42,32 +42,14 @@ if (Meteor.isServer) {
     if (!keyword) {
       keyword = ''
     }
-    const queryKeywords = new RegExp(keyword, '')
-    console.log('from server search', queryKeywords)
 
     const query = {
-      $text: {
-        $search: keyword
-      }
-      // $or: [
-      //   { title: queryKeywords },
-      //   { description: queryKeywords },
-      //   { 'uploader.name': queryKeywords },
-      //   { tags: queryKeywords }
-      // ]
-    }
-
-    const relevanceSettings = {
-      fields: {
-        score: {
-          $meta: 'textScore'
-        }
-      },
-      sort: {
-        score: {
-          $meta: 'textScore'
-        }
-      }
+      $or: [
+        { title: {$regex: keyword, $options: '-i'} },
+        { description: {$regex: keyword, $options: '-i'} },
+        { 'uploader.name': {$regex: keyword, $options: '-i'} },
+        { tags: {$regex: keyword, $options: '-i'} }
+      ]
     }
 
     let step
@@ -80,7 +62,7 @@ if (Meteor.isServer) {
     const limit = {limit: step, skip: (step * page)}
 
     // i've changed the cursor in order to clean query
-    Mongo.Collection._publishCursor(Videos.find(query, limit, relevanceSettings), this, 'SearchResults')
+    Mongo.Collection._publishCursor(Videos.find(query, limit), this, 'SearchResults')
     this.ready()
     // return Videos.find(query, relevanceSettings)
   })

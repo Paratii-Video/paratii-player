@@ -26,6 +26,8 @@ sniffer.phone()          // 'Sony'
 sniffer.isPhone()          // 'Sony'
 sniffer.tablet()          // null
 sniffer.isTablet()          // null
+sniffer.getReferrer()          // null
+sniffer.isEmbedly()          // null
 sniffer.userAgent()       // 'Safari'
 sniffer.os()              // 'AndroidOS'
 sniffer.is('iPhone')      // false

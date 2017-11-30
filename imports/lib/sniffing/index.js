@@ -4,6 +4,7 @@ function Sniffer (...opts) {
   this.classes = ''
   this.debug = (opts[0].debug)
   this.embedded = false
+  this.referrer = ''
   this._mobileSniffer = new MobileDetect(window.navigator.userAgent)
 }
 
@@ -14,6 +15,7 @@ Sniffer.prototype.log = function (...args) {
 }
 
 Sniffer.prototype.isEmbedded = function () {
+  this.embedded = window.top !== window.self
   return window.top !== window.self
 }
 
@@ -24,6 +26,7 @@ Sniffer.prototype.getClasses = function () {
   this.classes += (this.isPhone()) ? 'phone ' : ''
   this.classes += (this.isTablet()) ? 'tablet ' : ''
   this.classes += (this.isEmbedded()) ? 'embedded ' : ''
+  this.classes += (this.isEmbedly()) ? 'embedly ' : ''
   this.log('classes', this.classes)
 
   return this.classes
@@ -34,9 +37,19 @@ Sniffer.prototype.mobile = function () {
   return this._mobileSniffer.mobile()
 }
 
+Sniffer.prototype.getReferrer = function () {
+  this.log('getReferrer', this.referrer)
+  return this.referrer
+}
+
 Sniffer.prototype.isMobile = function () {
   this.log('isMobile', !!(this._mobileSniffer.mobile()))
   return !!(this._mobileSniffer.mobile())
+}
+Sniffer.prototype.isEmbedly = function () {
+  this.referrer = this.getParameterByName('referrer')
+  this.log('isEmbedly', this.referrer !== null && this.referrer !== '')
+  return this.referrer !== null && this.referrer !== ''
 }
 
 Sniffer.prototype.phone = function () {
@@ -87,6 +100,16 @@ Sniffer.prototype.versionStr = function (string) {
 Sniffer.prototype.match = function (string) {
   this.log('match', this._mobileSniffer.match(string))
   return this._mobileSniffer.match(string)
+}
+
+Sniffer.prototype.getParameterByName = function (name, url) {
+  if (!url) url = window.location.href
+  name = name.replace(/[[\]]/g, '\\$&')
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
+  var results = regex.exec(url)
+  if (!results) return null
+  if (!results[2]) return ''
+  return decodeURIComponent(results[2].replace(/\+/g, ' '))
 }
 
 export {Sniffer}
