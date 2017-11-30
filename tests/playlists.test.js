@@ -37,7 +37,7 @@ describe('price tag status', function () {
     assert.isTrue(priceTag)
   })
 
-  it('when the video has a price  and wasn\'t bought @watch', () => {
+  it('when the video has a price  and wasn\'t bought@watch', () => {
     createUserAndLogin(browser)
     assertUserIsLoggedIn(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
@@ -51,7 +51,7 @@ describe('price tag status', function () {
     })
   })
 
-  it('when the video was bought [TODO]', () => {
+  it('when the video was bought [TODO]  @watch', () => {
     createUserAndLogin(browser)
     browser.pause(5000)
     const address = getUserPTIAddressFromBrowser()

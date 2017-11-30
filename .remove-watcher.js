@@ -7,7 +7,7 @@ files.forEach(file => {
     if (err) {
       return console.log(err)
     }
-    var result = data.replace(/@watch/g, '')
+    var result = data.replace(/ @watch/g, '').replace(/@watch/g, '')
 
     fs.writeFile('tests/' + file, result, 'utf8', function (err) {
       if (err) return console.log(err)
