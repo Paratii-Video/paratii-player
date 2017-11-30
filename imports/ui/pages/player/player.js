@@ -543,11 +543,15 @@ Template.player.events({
 
     const button = event.currentTarget
     const title = button.dataset.title
+    const description = button.dataset.description
+    const thumb = button.dataset.thumb
     showModal('modal_share_video',
       {
         type: 'modal_share_links',
         videoId: videoId,
         videoTitle: title,
+        videoDescription: description,
+        videoThumb: thumb,
         embed: window.top !== window.self,
         autoplay: !Template.instance().playerState.get('locked')
       }
