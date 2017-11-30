@@ -1,16 +1,11 @@
-import { web3, logout, createUserAndLogin, getUserPTIAddressFromBrowser, nukeLocalStorage, resetDb } from './helpers.js'
+import { assertUserIsLoggedIn, web3, logout, createUserAndLogin, nukeLocalStorage } from './helpers.js'
 import { assert } from 'chai'
 
-describe('Video Store:', function () {
-  let contracts
+describe('Video Store: @watch', function () {
+  let contracts, userAccount
   let videoId = 'QmNZS5J3LS1tMEVEP3tz3jyd2LXUEjkYJHyWSuwUvHDaRJ' // this is  a known videoId defined in fixtures.js
 
   before(async function (done) {
-    // browser.execute(nukeLocalStorage)
-    // server.execute(resetDb)
-    // browser.url('http://localhost:3000')
-
-    // contracts = await getOrDeployParatiiContracts(server, browser)
     contracts = browser.contracts
     // check sanity: the video we are testing with should have the right info
     let videoRegistry = await contracts.VideoRegistry
@@ -20,36 +15,19 @@ describe('Video Store:', function () {
   })
 
   beforeEach(function () {
-    browser.execute(nukeLocalStorage)
-    server.execute(resetDb)
-    createUserAndLogin(browser)
-  })
-
-  afterEach(function () {
-    // browser.execute(nukeLocalStorage)
-    // server.execute(resetDb)
+    browser.url(`http://localhost:3000/`)
+    userAccount = createUserAndLogin(browser)
   })
 
   it('should be possible to buy (and unlock) a video  ', function () {
     // make sure we have enough funds
-    let userAccount = getUserPTIAddressFromBrowser()
     browser.sendSomeETH(userAccount, 2.1)
     browser.sendSomePTI(userAccount, 300)
 
+    assertUserIsLoggedIn(browser)
     browser.url(`http://localhost:3000/play/${videoId}`)
+    assertUserIsLoggedIn(browser)
 
-    browser.waitUntil(function () {
-      let ethBalance = browser.execute(function () {
-        return Session.get('eth_balance')
-      })
-      return ethBalance.value > 0
-    })
-    browser.waitUntil(function () {
-      let ptiBalance = browser.execute(function () {
-        return Session.get('pti_balance')
-      })
-      return ptiBalance.value > 0
-    })
     browser.waitAndClick('#unlock-video')
     browser.waitAndSetValue('[name="user_password"]', 'password')
     browser.waitAndClick('#send_trans_btn')
@@ -73,7 +51,6 @@ describe('Video Store:', function () {
 
   it('should show an error if the password is wrong @watch', function () {
     // make sure we have enough funds
-    let userAccount = getUserPTIAddressFromBrowser()
     browser.sendSomeETH(userAccount, 2.1)
     browser.sendSomePTI(userAccount, 300)
 
@@ -98,7 +75,6 @@ describe('Video Store:', function () {
 
   it('should show an error if the user does not have enough PTI ', function () {
     // make sure we have enough funds
-    let userAccount = getUserPTIAddressFromBrowser()
     browser.sendSomeETH(userAccount, 2.1)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
@@ -119,7 +95,6 @@ describe('Video Store:', function () {
   })
 
   it('should show an error if the user does not have enough ETH', function () {
-    let userAccount = getUserPTIAddressFromBrowser()
     browser.sendSomePTI(userAccount, 300)
 
     browser.url(`http://localhost:3000/play/${videoId}`)

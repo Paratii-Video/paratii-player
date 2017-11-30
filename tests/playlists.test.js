@@ -1,4 +1,4 @@
-import { assertUserIsLoggedIn, createVideo, createUserAndLogin, getUserPTIAddressFromBrowser } from './helpers.js'
+import { assertUserIsLoggedIn, createVideo, createUserAndLogin, getEthAccountFromBrowser } from './helpers.js'
 import { assert } from 'chai'
 
 function createPlaylist () {
@@ -53,7 +53,7 @@ describe('price tag status', function () {
   it('when the video was bought [TODO]', () => {
     createUserAndLogin(browser)
     browser.pause(5000)
-    const address = getUserPTIAddressFromBrowser()
+    const address = getEthAccountFromBrowser()
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     server.execute(fakeVideoUnlock, address)

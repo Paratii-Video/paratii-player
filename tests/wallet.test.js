@@ -1,4 +1,4 @@
-import { assertUserIsLoggedIn, web3, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
+import { assertUserIsLoggedIn, web3, createUserAndLogin, getSomeETH, getSomePTI, getEthAccountFromBrowser } from './helpers.js'
 // import { formatCoinBalance } from '/imports/lib/utils.js'
 import { assert } from 'chai'
 
@@ -9,7 +9,7 @@ describe('wallet: ', function () {
     browser.url('http://localhost:3000/')
     createUserAndLogin(browser)
     browser.url('http://localhost:3000/profile')
-    userAccount = getUserPTIAddressFromBrowser()
+    userAccount = getEthAccountFromBrowser()
     assertUserIsLoggedIn(browser)
   })
 

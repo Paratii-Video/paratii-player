@@ -57,22 +57,24 @@ before(async function (done) {
   })
 
   browser.addCommand('sendSomeETH', async function (beneficiary, amount, timeout) {
+    console.log(`send ${amount} to ${beneficiary}`)
     await sendSomeETH(beneficiary, amount)
-    await browser.waitUntil(function () {
-      let result = browser.execute(function () {
-        return Session.get('eth_balance')
-      })
-      return result.value && result.value > 0
-    }, timeout, `the ETH did not arrive..`)
+    // await browser.waitUntil(function () {
+    //   let result = browser.execute(function () {
+    //     return Session.get('eth_balance')
+    //   })
+    //   // console.log(result)
+    //   return result.value && result.value > 0
+    // }, timeout, `the ETH did not arrive..`)
   })
   browser.addCommand('sendSomePTI', async function (beneficiary, amount, timeout) {
     await sendSomePTI(beneficiary, amount)
-    await browser.waitUntil(function () {
-      let result = browser.execute(function () {
-        return Session.get('pti_balance')
-      })
-      return result.value && result.value > 0
-    }, timeout, `the PTI did not arrive..`)
+    // await browser.waitUntil(function () {
+    //   let result = browser.execute(function () {
+    //     return Session.get('pti_balance')
+    //   })
+    //   return result.value && result.value > 0
+    // }, timeout, `the PTI did not arrive..`)
   })
   browser.url('http://localhost:3000')
   browser.contracts = await getOrDeployParatiiContracts(server, browser)
@@ -113,17 +115,16 @@ export function createUserAndLogin (browser) {
   login(browser)
   waitForUserIsLoggedIn(browser)
 
-  // set the user's address to that of the wallet -
+  // set the user's account to that of the wallet -
   // TODO: this should be done on login, automagically, I suppose
-  let address = getUserPTIAddressFromBrowser()
-  server.execute(function (userId, address) {
-    Meteor.users.update(userId, {$set: { 'profile.ptiAddress': address }})
-  }, userId, address)
-  return userId
+  let account = getEthAccountFromBrowser()
+  server.execute(function (userId, account) {
+    Meteor.users.update(userId, {$set: { 'profile.ptiAddress': account }})
+  }, userId, account)
+  return account
 }
 
 export function createUserKeystore (browser) {
-  // let userId = server.execute(createUser)
   let userId = USERADDRESS
   browser.execute(createKeystore, null, userId)
   browser.waitUntil(function () {
@@ -131,7 +132,7 @@ export function createUserKeystore (browser) {
       return localStorage.getItem(`keystore-${userId}`)
     }, userId).value
   })
-  let address = getUserPTIAddressFromBrowser()
+  let address = getEthAccountFromBrowser()
   server.execute(function (userId, address) {
     Meteor.users.update(userId, {$set: { 'profile.ptiAddress': address }})
   }, userId, address)
@@ -189,7 +190,7 @@ export function getSomePTI (amount) {
   helpers.sendSomePTI(beneficiary, amount)
 }
 
-export function getUserPTIAddressFromBrowser () {
+export function getEthAccountFromBrowser () {
   return browser.execute(function () {
     const users = require('./imports/api/users.js')
     let address = users.getUserPTIAddress()
