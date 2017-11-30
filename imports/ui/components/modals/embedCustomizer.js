@@ -4,6 +4,7 @@ import { removeTrailingSlash } from '/imports/lib/utils.js'
 
 import '/imports/ui/components/form/mainFormInput.js'
 import './embedCustomizer.html'
+import '/imports/ui/email/sharing.html'
 
 let clipboard
 const embedSizes = [
@@ -109,29 +110,27 @@ Template.modal_share_via_email.events({
     const target = event.target
     const baseurl = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl)
     const videoUrl = baseurl + '/play/' + this.videoId
+    const videoTitle = this.videoTitle
+    const videoDescription = this.videoDescription
     console.log(target['email'].value)
+    var ipfsGateway = removeTrailingSlash(Meteor.settings.public.ipfs_gateway)
+    var thumbUrl = this.videoThumb
+    var thumbnailUrl = ipfsGateway + thumbUrl
+    var dataContext = {
+      video_url: videoUrl,
+      video_title: videoTitle,
+      video_thumb: thumbnailUrl,
+      video_description: videoDescription,
+      paratii_url: baseurl
+    }
+    var html = Blaze.toHTMLWithData(Template.email_template, dataContext)
+
     Meteor.call(
       'sendEmail',
       target['email'].value,
       'Paratii <sharing@player.paratii.video>',
       'You have to check this video I found (from Paratii with 💙)',
-      '<html xmlns="http://www.w3.org/1999/xhtml">' +
-      '<head>' +
-      ' <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' +
-      '</head>' +
-      '<body>' +
-      '<br>Ay! <br>This video reminded me of you.<br>' +
-      'Cool note: the system behind the thing has no owner or servers,' +
-      'so videos spread by hopping from computer to computer,' +
-      'pretty much like this one I\'m sending now.<br>' +
-      'Best part: it\'s not like Tubes where they control what goes up,' +
-      'what goes down and where the money flows to.' +
-      'Here you get paid for watching stuff while your computer works a bit in' +
-      'the background. Only thing you got to do is give your name and email.' +
-      'Anyway, just give it a <a href="' + videoUrl + '">play</a><br>' +
-      '<a href="' + baseurl + '">Join Paratii</a><br>' +
-      '</body>' +
-      '</html>',
+      html,
       function (err, result) {
         if (err) {
           console.log(err)

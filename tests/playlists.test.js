@@ -37,7 +37,8 @@ describe('price tag status', function () {
     assert.isTrue(priceTag)
   })
 
-  it('when the video has a price  and wasn\'t bought@watch', () => {
+
+  it('when the video has a price  and wasn\'t bought', () => {
     createUserAndLogin(browser)
     assertUserIsLoggedIn(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)

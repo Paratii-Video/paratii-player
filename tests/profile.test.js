@@ -20,7 +20,8 @@ import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('Profile and accounts workflow: ', function () {
+
+describe('Profile and accounts workflow:', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     browser.execute(nukeLocalStorage)
@@ -413,6 +414,7 @@ describe('Profile and accounts workflow: ', function () {
   })
 
   it('arriving on the app with a keystore, but without being logged in, should ask what to do, then continue anonymously ', function () {
+
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
@@ -432,7 +434,9 @@ describe('Profile and accounts workflow: ', function () {
     assertUserIsNotLoggedIn(browser)
   })
 
+
   it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in ', function () {
+
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
