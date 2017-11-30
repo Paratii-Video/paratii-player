@@ -99,32 +99,32 @@ export function getIsNavigatingBack () {
 }
 
 function initPreviousPaths () {
-  if (!Session.get('prevPaths')) {
-    Session.set('prevPaths', [])
+  if (!Session.get('navigationHistory')) {
+    Session.set('navigationHistory', [])
   }
 }
 
-export function addPreviousPath (prevPath) {
+export function addToNavigationHistory (prevPath) {
   initPreviousPaths()
-  if (prevPath && prevPath !== getPreviousPath()) {
-    const prevPaths = Session.get('prevPaths')
-    prevPaths.push(prevPath)
-    Session.set('prevPaths', prevPaths)
+  if (prevPath && prevPath !== getPrevPageFromHistory()) {
+    const navigationHistory = Session.get('navigationHistory')
+    navigationHistory.push(prevPath)
+    Session.set('navigationHistory', navigationHistory)
   }
 }
 
-export function removeLastPreviousPath () {
+export function popNavigationHistory () {
   initPreviousPaths()
-  const prevPaths = Session.get('prevPaths')
-  prevPaths.pop()
-  Session.set('prevPaths', prevPaths)
+  const navigationHistory = Session.get('navigationHistory')
+  navigationHistory.pop()
+  Session.set('navigationHistory', navigationHistory)
 }
 
-export function getPreviousPath () {
+export function getPrevPageFromHistory () {
   initPreviousPaths()
-  const prevPaths = Session.get('prevPaths')
+  const navigationHistory = Session.get('navigationHistory')
 
-  return prevPaths[prevPaths.length - 1]
+  return navigationHistory[navigationHistory.length - 1]
 }
 
 // export function setModalState (message) {

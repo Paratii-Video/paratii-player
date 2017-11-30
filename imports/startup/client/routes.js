@@ -1,6 +1,6 @@
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import { BlazeLayout } from 'meteor/kadira:blaze-layout'
-import { getIsNavigatingBack, setIsNavigatingBack, addPreviousPath } from '/imports/lib/utils'
+import { getIsNavigatingBack, setIsNavigatingBack, addToNavigationHistory } from '/imports/lib/utils'
 
 // Import needed templates
 import '/imports/ui/pages/about/about.js'
@@ -43,7 +43,7 @@ var publicRoute = FlowRouter.group({
   triggersExit: [
     (context) => {
       if (!getIsNavigatingBack()) {
-        addPreviousPath(context.path)
+        addToNavigationHistory(context.path)
       } else {
         setIsNavigatingBack(false)
       }

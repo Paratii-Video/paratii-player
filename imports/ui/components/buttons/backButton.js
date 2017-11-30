@@ -1,10 +1,10 @@
 import { FlowRouter } from 'meteor/kadira:flow-router'
-import { setIsNavigatingBack, getPreviousPath, removeLastPreviousPath } from '/imports/lib/utils'
+import { setIsNavigatingBack, getPrevPageFromHistory, popNavigationHistory } from '/imports/lib/utils'
 import './backButton.html'
 
 const getPrevPage = () => (
   Template.instance().data.prevPage ||
-  getPreviousPath()
+  getPrevPageFromHistory()
 )
 
 Template.backButton.helpers({
@@ -20,8 +20,8 @@ Template.backButton.events({
       setIsNavigatingBack(true)
       FlowRouter.go(prevPage)
 
-      if (prevPage === getPreviousPath()) {
-        removeLastPreviousPath()
+      if (prevPage === getPrevPageFromHistory()) {
+        popNavigationHistory()
       }
     }
   }
