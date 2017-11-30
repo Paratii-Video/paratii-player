@@ -13,14 +13,10 @@
     "lint": "standard",
     "lint-fix": "standard --fix",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests --webdriverio.waitforTimeout=10000 --webdriverio.waitforInterval=200",
-    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=30000 --webdriverio.waitforInterval=200",
-    "paratii-version": "node hooks/post-commit-version"
+    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=30000 --webdriverio.waitforInterval=200"
   },
   "pre-commit": [
     "lint-fix"
-  ],
-  "post-commit": [
-    "paratii-version"
   ],
   "dependencies": {
     "babel-runtime": "^6.20.0",
