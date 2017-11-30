@@ -1,9 +1,8 @@
 /* global localStorage */
 import { web3 } from '../imports/lib/ethereum/web3.js'
 import { getParatiiContracts } from '../imports/lib/ethereum/contracts.js'
-import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
+import { deployParatiiContracts, sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
-
 web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
 export { web3 }
 
@@ -56,8 +55,27 @@ before(async function (done) {
       }
     }, timeout, `Could not click on ${selector} (timeout: ${timeout}s)`)
   })
+
+  browser.addCommand('sendSomeETH', async function (beneficiary, amount, timeout) {
+    await sendSomeETH(beneficiary, amount)
+    await browser.waitUntil(function () {
+      let result = browser.execute(function () {
+        return Session.get('eth_balance')
+      })
+      return result.value && result.value > 0
+    }, timeout, `the ETH did not arrive..`)
+  })
+  browser.addCommand('sendSomePTI', async function (beneficiary, amount, timeout) {
+    await sendSomePTI(beneficiary, amount)
+    await browser.waitUntil(function () {
+      let result = browser.execute(function () {
+        return Session.get('pti_balance')
+      })
+      return result.value && result.value > 0
+    }, timeout, `the PTI did not arrive..`)
+  })
   browser.url('http://localhost:3000')
-  await getOrDeployParatiiContracts(server, browser)
+  browser.contracts = await getOrDeployParatiiContracts(server, browser)
   done()
 })
 

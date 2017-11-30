@@ -16,7 +16,6 @@ import {
   getUserPTIAddressFromBrowser,
   waitForKeystore
 } from './helpers.js'
-import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
@@ -117,7 +116,7 @@ describe('Profile and accounts workflow:', function () {
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
     const userAccount = getUserPTIAddressFromBrowser()
-    sendSomeETH(userAccount, 3.1)
+    browser.sendSomeETH(userAccount, 3.1)
     browser.url('http://localhost:3000/profile')
     browser.waitAndClick('.button-settings')
     browser.waitAndClick('.edit-password')
