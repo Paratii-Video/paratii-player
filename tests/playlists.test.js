@@ -37,11 +37,12 @@ describe('price tag status', function () {
     assert.isTrue(priceTag)
   })
 
-  it('when the video has a price  and wasn\'t bought ', () => {
+  it('when the video has a price  and wasn\'t bought @watch', () => {
     createUserAndLogin(browser)
     assertUserIsLoggedIn(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
+    browser.pause(2000)
     browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.thumbs-list-item')
     browser.moveToObject('.thumbs-list-item')
