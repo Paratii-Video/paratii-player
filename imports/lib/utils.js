@@ -98,31 +98,26 @@ export function getIsNavigatingBack () {
   return Session.get('navigatingBack')
 }
 
-function initPreviousPaths () {
-  if (!Session.get('navigationHistory')) {
-    Session.set('navigationHistory', [])
-  }
+function getNavHistory () {
+  return Session.get('navigationHistory') || []
 }
 
 export function addToNavigationHistory (prevPath) {
-  initPreviousPaths()
   if (prevPath && prevPath !== getPrevPageFromHistory()) {
-    const navigationHistory = Session.get('navigationHistory')
+    const navigationHistory = getNavHistory()
     navigationHistory.push(prevPath)
     Session.set('navigationHistory', navigationHistory)
   }
 }
 
 export function popNavigationHistory () {
-  initPreviousPaths()
-  const navigationHistory = Session.get('navigationHistory')
+  const navigationHistory = getNavHistory()
   navigationHistory.pop()
   Session.set('navigationHistory', navigationHistory)
 }
 
 export function getPrevPageFromHistory () {
-  initPreviousPaths()
-  const navigationHistory = Session.get('navigationHistory')
+  const navigationHistory = getNavHistory()
 
   return navigationHistory[navigationHistory.length - 1]
 }
