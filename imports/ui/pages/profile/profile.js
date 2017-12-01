@@ -5,7 +5,7 @@ import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Events } from '/imports/api/events.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
-import { showModal, showGlobalAlert, formatCoinBalance, __ } from '/imports/lib/utils.js'
+import { showModal, formatCoinBalance } from '/imports/lib/utils.js'
 import '/imports/ui/components/modals/mainModal.js'
 import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
@@ -22,9 +22,9 @@ Template.profile.onCreated(function () {
   Session.set('editProfileMenuOpen', false)
 })
 
-Template.profile.onRendered(function () {
-  showGlobalAlert('<strong>' + __('No money here') + '</strong>, ' + __('Still a demo'))
-})
+// Template.profile.onRendered(function () {
+//   showGlobalAlert('<strong>' + __('No money here') + '</strong>, ' + __('Still a demo'))
+// })
 
 Template.profile.helpers({
   editProfileMenuOpen  () {

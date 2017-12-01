@@ -461,7 +461,7 @@ describe('Profile and accounts workflow:', function () {
       assert.equal(browser.isVisible('.edit-password-modal'), true)
       browser.waitForVisible('.main-alert-content')
       browser.waitUntil(() => {
-        console.log(browser.getText('.main-alert-content'))
+        // console.log(browser.getText('.main-alert-content'))
         return browser.getText('.main-alert-content') === 'Wrong password'
       })
     })
