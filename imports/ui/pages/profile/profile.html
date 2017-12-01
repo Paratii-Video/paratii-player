@@ -1,12 +1,12 @@
 <template name="profile">
-  <div class="app-content scrollable-y">
+  <div class="internals profile">
     {{#if currentUser }} {{#isAuthorized}}
 
-    {{ >pageheader title=currentUser.profile.name addlButtons=editProfileButton }}
+    {{ >internalsHeader title=currentUser.profile.name addButtons='settingsButton'}}
     {{#if editProfileMenuOpen }}
       {{ >editProfile }}
     {{/if}}
-    <div class="walletContainer">
+    <div class="walletContainer emailContainer">
       <div class="profile-info profile-info-email"> {{userEmail}}</div>
     </div>
     {{#if userPTIAddress }}
@@ -39,25 +39,14 @@
           <!-- <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button> -->
         </div>
       </div>
+      <div>Don't worry if you don't have any money yet - this is still a demo. We are working on it!</div>
     </div>
 
     {{else}}
       <div class="walletContainer">
         <ul class="titleContainer"></ul>
         <div class="descriptionContainer">
-          {{# if wallet_is_generating }}
-          Please be patient, we are generating your wallet file.....
-          {{ else }}
-          <p>
-          We could not find a wallet associeted to your user. If you remember the 12-word seed, you can restore your wallet
-          </p>
-          <button class="btn btn-default blue-button" id="restore-keystore">Restore wallet</button>
-          <br><br>
-          <p>
-            Otherwise, you can use a new wallet (but you will not have access to any funds you might have)
-          </p>
-            <button class="btn btn-default blue-button" id="create-wallet">Use a new wallet</button>
-          {{/if}}
+            {{_ "No wallet for this account" }}
         </div>
       </div>
     {{/if}}
@@ -70,7 +59,7 @@
 
     {{else}}
     <div class="container">
-      Please log in to see this page.
+       {{_ "Please log in to see this page" }}
     </div>
     {{/if}}
   </div>

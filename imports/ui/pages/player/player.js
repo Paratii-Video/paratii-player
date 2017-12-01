@@ -5,16 +5,14 @@ import { web3 } from '/imports/lib/ethereum/connection.js'
 import { formatNumber, showModal, showGlobalAlert, log } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
-import { Videos, RelatedVideos } from '../../../api/videos.js'
+import { RelatedVideos, CurrentVideos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import HLSPlayer from './ipfs_hls.js'
 import { createIPFSPlayer } from './ipfs.js'
-import '/imports/ui/components/modals/sign.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
 // import '/imports/ui/components/modals/regenerateKeystore.js'
-
 import './player.html'
 
 let controlsHandler
@@ -31,7 +29,6 @@ function renderVideoElement (instance) {
   videoTag.className = 'player-video'
   videoTag.id = 'video-player'
   playerContainer.insertBefore(videoTag, playerContainer.firstChild)
-
   // get video tag element and bind it to player js adapter for HTML5 video
 
   log('this is the video', videoTag)
@@ -70,6 +67,11 @@ Template.player.onCreated(function () {
   const fullscreen = parseInt(FlowRouter.getQueryParam('fullscreen'))
   const type = parseInt(FlowRouter.getQueryParam('type'))
 
+  // TODO: this is the real referrer passed by embedly
+  const referrer = FlowRouter.getQueryParam('referrer')
+  const isEmbedly = (referrer !== undefined)
+  console.log('embedly: ' + (referrer !== undefined))
+
   this.currentVideo = new ReactiveVar()
 
   // this makes the tests work
@@ -89,14 +91,24 @@ Template.player.onCreated(function () {
   this.playerState.set('volumeValue', 100)
   this.playerState.set('volScrubberTranslate', 100)
   this.playerState.set('muted', false)
-  this.playerState.set('locked', true)
+  this.playerState.set('locked', false)
   /* EMBED CONTROLS */
   this.playerState.set('autoplay', autoplay === 1)
   this.playerState.set('loop', loop === 1)
   this.playerState.set('playsinline', playsinline === 1)
   this.playerState.set('type', type === 1)
+  this.playerState.set('embedly', isEmbedly)
   // Description
   this.playerState.set('showDescription', false)
+
+  this.togglePlay = () => {
+    const dict = this.playerState
+    if (dict.get('playing')) {
+      pauseVideo(instance)
+    } else {
+      playVideo(instance)
+    }
+  }
 
   log('navState:', this.navState.get())
 
@@ -114,7 +126,7 @@ Template.player.onCreated(function () {
   }
   const videoId = FlowRouter.getParam('_id')
   Meteor.subscribe('videos', function () {
-    self.currentVideo.set(Videos.findOne({ _id: videoId }))
+    self.currentVideo.set(CurrentVideos.findOne({ _id: videoId }))
     renderVideoElement(instance)
   })
 
@@ -141,6 +153,13 @@ Template.player.onDestroyed(function () {
   Meteor.clearTimeout(controlsHandler)
 })
 
+Template.player.onRendered(function () {
+  const container = this.find('#player-container')
+  if (container) {
+    container.focus()
+  }
+})
+
 Template.player.helpers({
   videoPlayer () {
     return Template.instance().find('#player-container')
@@ -148,7 +167,7 @@ Template.player.helpers({
   currentVideo () {
     const videoId = FlowRouter.getParam('_id')
 
-    Template.instance().currentVideo.set(Videos.findOne({ _id: videoId }))
+    Template.instance().currentVideo.set(CurrentVideos.findOne({ _id: videoId }))
   },
   isLocked () {
     return Template.instance().playerState.get('locked')
@@ -170,7 +189,9 @@ Template.player.helpers({
     return Template.instance().playerState.get('hideControls') ? 'hide-controls' : ''
   },
   formatNumber (number) {
-    return formatNumber(number)
+    let numberFormated = formatNumber(number)
+    if (numberFormated === false) numberFormated = 0
+    return numberFormated
   },
   formatTime (seconds) {
     const minutes = seconds / 60
@@ -238,6 +259,13 @@ Template.player.helpers({
     const params = { _id: video._id }
     const path = FlowRouter.path(pathDef, params)
     return path
+  },
+  getThumbTitle (title) {
+    let videoTitle = title
+    if (videoTitle.length > 30) {
+      videoTitle = videoTitle.substring(0, 30)
+    }
+    return videoTitle
   }
 })
 
@@ -296,10 +324,15 @@ Template.player.events({
     const balance = Session.get('pti_balance')
     const ethBalance = Session.get('eth_balance')
     if (Meteor.user()) {
-      if (ethBalance === 0) {
+      console.log('-0-------------------------')
+      console.log(`price: ${price}`)
+      console.log(`balance: ${balance}`)
+      console.log(`eth_balance: ${ethBalance}`)
+      console.log('-0-------------------------')
+      if (ethBalance === undefined || ethBalance === 0) {
         // check that the user has enough ether for a minimal transaction
         showGlobalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
-      } else if (parseFloat(price) > parseFloat(balance)) {
+      } else if (balance === undefined || balance === 0 || parseFloat(price) > parseFloat(balance)) {
         // The user balance is lower than the video price
         showGlobalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
       } else {
@@ -360,12 +393,7 @@ Template.player.events({
     navState.set('minimized')
   },
   'click #play-pause-button' (event, instance) {
-    const dict = instance.playerState
-    if (dict.get('playing')) {
-      pauseVideo(instance)
-    } else {
-      playVideo(instance)
-    }
+    instance.togglePlay(instance)
   },
   'click #next-video-button' () {
     const playlistId = FlowRouter.getQueryParam('playlist')
@@ -514,10 +542,18 @@ Template.player.events({
   },
   'click #embed' (event, instance) {
     const videoId = Template.instance().currentVideo.get()._id
+
+    const button = event.currentTarget
+    const title = button.dataset.title
+    const description = button.dataset.description
+    const thumb = button.dataset.thumb
     showModal('modal_share_video',
       {
         type: 'modal_share_links',
         videoId: videoId,
+        videoTitle: title,
+        videoDescription: description,
+        videoThumb: thumb,
         embed: window.top !== window.self,
         autoplay: !Template.instance().playerState.get('locked')
       }
@@ -525,5 +561,15 @@ Template.player.events({
   },
   'click .player-infos-button-description' (event, instance) {
     instance.playerState.set('showDescription', !instance.playerState.get('showDescription'))
+  },
+  'click button.thumbs-list-settings' (event, instance) {
+    $(event.currentTarget).parent().toggleClass('active')
+  },
+  'keydown #player-container' (event, instance) {
+    // Space key
+    if (event.keyCode === 32) {
+      event.preventDefault()
+      instance.togglePlay(instance)
+    }
   }
 })

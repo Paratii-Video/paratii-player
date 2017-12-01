@@ -4,11 +4,15 @@
     {{#if errorMessage}}
     <p class="control-label visually-hidden">{{errorMessage}}</p>
     {{/if}}
+
     {{#if seed}}
         <p class="main-modal-text"><strong class="color-red">Please write down the following 12 words</strong>
         This phrase is <strong>the only way</strong> to recover your account</p>
         <br>
         <p id="seed" class="main-modal-text"><strong class="color-grey-dark">{{seed}}</strong></p>
+        <div class="main-modal-footer main-modal-anim-4">
+          <button id="btn-check-seed" class="button-text main-modal-button signin" type="submit" data-loading-text="Waiting...">Continue</button>
+        </div>
     {{else}}
       <form id="form-show-seed" class="main-modal-form" action="">
         {{> mainFormInput

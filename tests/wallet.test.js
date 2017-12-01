@@ -1,5 +1,5 @@
-import { assertUserIsLoggedIn, web3, createUserAndLogin, getSomeETH, getSomePTI, getUserPTIAddressFromBrowser } from './helpers.js'
-import { sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
+import { assertUserIsLoggedIn, web3, createUserAndLogin, getEthAccountFromApp } from './helpers.js'
+// import { formatCoinBalance } from '/imports/lib/utils.js'
 import { assert } from 'chai'
 
 describe('wallet: ', function () {
@@ -9,31 +9,33 @@ describe('wallet: ', function () {
     browser.url('http://localhost:3000/')
     createUserAndLogin(browser)
     browser.url('http://localhost:3000/profile')
-    userAccount = getUserPTIAddressFromBrowser()
+    userAccount = getEthAccountFromApp()
     assertUserIsLoggedIn(browser)
   })
 
   it('should show ETH balance', function () {
-    sendSomeETH(userAccount, 3.1)
+    browser.sendSomeETH(userAccount, 3.1)
     browser.waitForVisible('.wallet-contents li:last-child .balance')
     browser.waitUntil(() => {
-      return browser.getText('.wallet-contents li:last-child .balance') === '3.10 ETH'
+      const amount = browser.getText('.wallet-contents li:last-child .balance')
+      return ['3.10 ETH', '3,10 ETH'].indexOf(amount) > -1
     })
   })
 
   it('should show PTI balance', function () {
-    sendSomePTI(userAccount, 1412.9599)
+    browser.sendSomePTI(userAccount, 1412.9599)
     browser.waitForVisible('.wallet-contents li:first-child .balance')
     browser.waitUntil(() => {
-      return browser.getText('.wallet-contents li:first-child .balance') === '1,412.96 PTI'
+      const amount = browser.getText('.wallet-contents li:first-child .balance')
+      return ['1,412.96 PTI', '1.412,96 PTI'].indexOf(amount) > -1
     })
   })
 
   it.skip('should be able to send some PTI, update the balance and transaction history', function (done) {
-    sendSomeETH(userAccount, 1)
+    browser.sendSomeETH(userAccount, 1)
     let description = 'Here is some PTI for you'
     let toAddress = web3.eth.accounts[2]
-    browser.execute(getSomePTI, 1412)
+    browser.sendSomePTI(userAccount, 1412)
     // open the send PTI dialog
     browser.click('a[href="#pti"]')
     browser.waitForClickable('#send-pti')
@@ -71,7 +73,7 @@ describe('wallet: ', function () {
   it.skip('should be able to send some ETH, update the balance and transaction history', function (done) {
     let description = 'Here is some ETH for you'
     browser.waitForExist('#public_address')
-    browser.execute(getSomeETH, 3)
+    browser.sendSomeEth(userAccount, 3)
     browser.waitForExist('#eth_amount')
     // open the send ETH dialog
     browser.waitForClickable('#send-eth')

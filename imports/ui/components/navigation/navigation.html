@@ -1,9 +1,9 @@
 <template name="navigation">
   <nav id="nav" class="main-nav {{ navState }} {{ isMaximized }}">
     <ul class="main-nav-list">
-      <li class="main-nav-item {{isActivePath '/profile'}}">
+      <li class="main-nav-item nav-profile {{isActivePath '/profile'}}">
         <a id="nav-profile" class="main-nav-link" href="/profile">
-          <div class="main-nav-icon avatar">
+          <div class="main-nav-icon">
             {{#if currentUser}}
               {{#if currentUser.profile.image }}
                 <img class="main-nav-svg" src="{{ currentUser.profile.image }}">
@@ -18,57 +18,48 @@
               </svg>
             {{/if}}
           </div>
-          {{#if currentUser}}
-            <span class="main-nav-text">{{ currentUser.profile.name }}</span>
-          {{else}}
-            <span class="main-nav-text">Sign up or login</span>
-          {{/if}}
+          <p class="visually-hidden">{{_ "Profile" }}</p>
         </a>
       </li>
-      <li id="playlist" class="main-nav-item {{isActivePath '/playlists'}} {{#if locked}}locked{{/if}}">
-        <a class="main-nav-link" href="/playlists">
-          <div class="main-nav-icon">
-            <svg class="main-nav-svg">
-              <use class="main-nav-svg-use" xlink:href="#icon-playlist"></use>
-            </svg>
-          </div>
-          <span class="main-nav-text">Playlists</span>
-        </a>
-      </li>
-      <li id="search" class="main-nav-item {{isActivePath '/search'}} locked">
+      <li id="search" class="main-nav-item nav-search {{isActivePath '/search'}} {{#if locked}}locked{{/if}}">
         <a class="main-nav-link locked" href="/search">
           <div class="main-nav-icon">
             <svg class="main-nav-svg">
               <use class="main-nav-svg-use" xlink:href="#icon-search"></use>
             </svg>
           </div>
-          <span class="main-nav-text">Search</span>
+          <p class="visually-hidden">{{_ "Search" }}</p>
         </a>
       </li>
-      <!-- hidden until it will be implemented
-      <li id="myvideos" class="main-nav-item {{isActivePath '/myvideos'}} locked">
-        <a class="main-nav-link locked" href="/myvideos">
+
+      <li id="playlist" class="main-nav-item nav-playlists {{isActivePath '/playlists'}} {{#if locked}}locked{{/if}}">
+        <a class="main-nav-link" href="/playlists">
+          <div class="main-nav-icon">
+            <svg class="main-nav-svg">
+              <use class="main-nav-svg-use" xlink:href="#icon-playlist"></use>
+            </svg>
+          </div>
+          <p class="visually-hidden">{{_ "Playlists" }}</p>
+        </a>
+      </li>
+      <!-- <li id="myvideos" class="main-nav-item nav-myvideos {{isActivePath '/myvideos'}} {{#if locked}}locked{{/if}}">
+        <a class="main-nav-link" href="/myvideos">
           <div class="main-nav-icon">
             <svg class="main-nav-svg">
               <use class="main-nav-svg-use" xlink:href="#icon-myvideos"></use>
             </svg>
           </div>
-          <span class="main-nav-text">My videos</span>
-          <svg class="main-nav-svg-locked">
-            <use class="main-nav-svg-use" xlink:href="#icon-locked"></use>
-          </svg>
         </a>
-      </li>
-    -->
+      </li> -->
       {{#if userIsLoggedIn }}
-      <li id="logout" class="main-nav-item">
+      <li id="logout" class="main-nav-item nav-logout">
         <a class="main-nav-link" href="/">
           <div class="main-nav-icon">
             <svg class="main-nav-svg">
               <use class="main-nav-svg-use" xlink:href="#icon-logout"></use>
             </svg>
           </div>
-          <span class="main-nav-text">Logout</span>
+          <p class="visually-hidden">{{_ "Log out" }}</p>
         </a>
       </li>
       {{/if}}

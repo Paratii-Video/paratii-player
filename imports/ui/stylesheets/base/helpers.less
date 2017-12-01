@@ -40,6 +40,23 @@
   visibility: initial;
 }
 
+// Hide on
+
+.hide-mobile {
+  .mobile & {
+    display: none;
+  }
+}
+
+.only-mobile {
+  display: none;
+
+  .mobile & {
+    display: block;
+  }
+}
+
+
 // Hovers
 
 .hover-opacity {
@@ -75,6 +92,14 @@
   width: 100%;
 }
 
+.pos-f-full {
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
 // middle
 
 .pos-a-m {
@@ -90,107 +115,4 @@
   position: absolute;
   top: 50%;
   transform: translate3d(0, -50%, 0);
-}
-
-
-// Animations
-
-//
-
-.anim-element-out {
-  opacity: 0;
-  transform: translate3d(0, 20px, 0);
-  transition: opacity .3s, transform .6s @ease-smooth;
-}
-
-// Keyframes
-
-@keyframes showFullDown {
-  from {
-    transform: translateY(-100%);
-  }
-
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes hideFullUp {
-  from {
-    transform: translateY(0);
-  }
-
-  to {
-    transform: translateY(-100%);
-  }
-}
-
-@keyframes showUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes hideDown {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  to {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-}
-
-@keyframes shakeAnim {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  10%, 30%, 50%, 70%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%, 40%, 60%, 80% {
-    transform: translate3d(1px, 0, 0);
-  }
-}
-
-@keyframes blink {
-  0%, 100% {
-    opacity: 1;
-  }
-
-  10%, 30%, 50%, 70%, 90% {
-    opacity: .75;
-  }
-
-  20%, 40%, 60%, 80% {
-    opacity: 1;
-  }
-}
-
-@keyframes dots {
-  0%, 100% {
-    content: ''
-  }
-
-  10%, 90% {
-    content: '.';
-  }
-
-  30%, 70% {
-    content: '..';
-  }
-
-  50% {
-    content: '...';
-  }
 }

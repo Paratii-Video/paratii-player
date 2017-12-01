@@ -1,5 +1,6 @@
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import { BlazeLayout } from 'meteor/kadira:blaze-layout'
+import { getIsNavigatingBack, setIsNavigatingBack, addToNavigationHistory } from '/imports/lib/utils'
 
 // Import needed templates
 import '/imports/ui/pages/about/about.js'
@@ -25,6 +26,8 @@ sniffer.phone()          // 'Sony'
 sniffer.isPhone()          // 'Sony'
 sniffer.tablet()          // null
 sniffer.isTablet()          // null
+sniffer.getReferrer()          // null
+sniffer.isEmbedly()          // null
 sniffer.userAgent()       // 'Safari'
 sniffer.os()              // 'AndroidOS'
 sniffer.is('iPhone')      // false
@@ -38,6 +41,15 @@ var publicRoute = FlowRouter.group({
   name: 'public',
   triggersEnter: [
     setBodyClass
+  ],
+  triggersExit: [
+    (context) => {
+      if (!getIsNavigatingBack()) {
+        addToNavigationHistory(context.path)
+      } else {
+        setIsNavigatingBack(false)
+      }
+    }
   ]
 })
 

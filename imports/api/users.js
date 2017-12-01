@@ -3,7 +3,7 @@
 import { Accounts } from 'meteor/accounts-base'
 import { check } from 'meteor/check'
 import { getKeystore } from '/imports/lib/ethereum/wallet.js'
-import { add0x } from '/imports/lib/utils.js'
+import { add0x, EMAIL_REGEX } from '/imports/lib/utils.js'
 
 const Promise = require('bluebird')
 
@@ -45,6 +45,10 @@ if (Meteor.isServer) {
         // data['emails.0.address'] = data.email;
         // data['emails.s 0.verified'] = false;
         // delete data.email;
+
+        if (!EMAIL_REGEX.test(data.email)) {
+          throw new Meteor.Error('Account update failed', 'Invalid email')
+        }
 
         // save oldEmail address
         const user = Meteor.users.findOne(this.userId)
@@ -108,6 +112,7 @@ export function getUserPTIAddress () {
     const keystore = getKeystore()
     if (keystore !== null) {
       const addresses = keystore.getAddresses()
+      console.log(`getting address from keystore: ${addresses[0]}`)
       if (addresses.length > 0) {
         Session.set('userPTIAddress', add0x(addresses[0]))
         return add0x(addresses[0])

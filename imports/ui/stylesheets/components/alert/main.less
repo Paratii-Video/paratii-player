@@ -10,8 +10,15 @@
   left: 0;
   position: fixed;
   top: 0;
+  transform: translate3d(@size-main-nav-minimized-width/2, 0, 0);
+  transition: transform .5s @ease-smooth;
   width: 100%;
   z-index: @zindex-alert;
+
+  .hide-nav &,
+  .main-modal & {
+    transform: translate3d(0, 0, 0);
+  }
 
   &-wrapper {
     background-color: @color-purple;

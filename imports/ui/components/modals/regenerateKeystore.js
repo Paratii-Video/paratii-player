@@ -1,6 +1,10 @@
 import './regenerateKeystore.html'
 import { Template } from 'meteor/templating'
-import { showModal } from '/imports/lib/utils.js'
+import { showModal, hideModalAlert } from '/imports/lib/utils.js'
+
+Template.regenerateKeystore.onCreated(function () {
+  hideModalAlert()
+})
 
 Template.regenerateKeystore.events({
   'click #restore-keystore' () {

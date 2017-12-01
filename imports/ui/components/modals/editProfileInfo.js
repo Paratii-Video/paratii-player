@@ -1,7 +1,7 @@
 /* eslint-env browser */
 
 import { Template } from 'meteor/templating'
-import { hideModal } from '/imports/lib/utils.js'
+import { hideModal, EMAIL_REGEX } from '/imports/lib/utils.js'
 import '/imports/api/users.js'
 import './editProfileInfo.html'
 
@@ -64,16 +64,22 @@ Template.editProfileInfo.events({
 
     const userUpdate = {}
 
+    const email = templateInstance.newEmail.get().trim()
+
     if (templateInstance.avatarUrl.get()) {
       userUpdate.avatar = templateInstance.avatarUrl.get()
     }
 
-    if (templateInstance.newEmail.get().trim()) {
-      userUpdate.email = templateInstance.newEmail.get()
+    if (email) {
+      if (!EMAIL_REGEX.test(email)) {
+        $('#new-email').addClass('error')
+        return
+      }
+      userUpdate.email = email
     }
 
     if (templateInstance.newUsername.get().trim()) {
-      userUpdate.name = templateInstance.newUsername.get()
+      userUpdate.name = templateInstance.newUsername.get().trim()
     }
 
     Meteor.call('users.update', userUpdate, function (error) {

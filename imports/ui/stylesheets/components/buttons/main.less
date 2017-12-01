@@ -2,6 +2,8 @@
 
 .button {
 
+  // Button text
+
   &-text {
     &:extend(.hover-opacity all);
     &:extend(.color-purple all);
@@ -62,5 +64,35 @@
         transform: translateY(-1px);
       }
     }
+  }
+
+
+  // Fullscreen
+
+  &-back,
+  &-fullscreen,
+  &-settings {
+    &:extend(.hover-opacity all);
+
+    &-svg {
+      &:extend(.full-block all);
+
+      fill: @color-grey;
+    }
+  }
+
+  &-back {
+    height: 16px;
+    width: 11px;
+  }
+
+  &-settings {
+    height: 20px;
+    width: 20px;
+  }
+
+  &-fullscreen {
+    height: 20px;
+    width: 20px;
   }
 }

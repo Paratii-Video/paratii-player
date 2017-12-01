@@ -1,28 +1,33 @@
 /* eslint-env browser */
 import { getSeedFromKeystore, getKeystore } from '/imports/lib/ethereum/wallet.js'
-import { showModalAlert } from '/imports/lib/utils.js'
-import './showSeed.html'
+import { showModal, showModalAlert, hideModalAlert } from '/imports/lib/utils.js'
 import '/imports/ui/components/alert/modalAlert.html'
 import '/imports/ui/components/form/mainFormInput.js'
+import '/imports/ui/components/modals/checkSeed.js'
+import './showSeed.html'
 
 Template.showSeed.onCreated(function () {
-  this.errorMessage = new ReactiveVar(null)
+  // this.errorMessage = new ReactiveVar(null)
+  hideModalAlert()
 })
 
 Template.showSeed.helpers({
   seed () {
     return Session.get('seed')
-  },
-  errorMessage () {
-    return Template.instance().errorMessage.get()
   }
+  // errorMessage () {
+  //   return Template.instance().errorMessage.get()
+  // }
 })
 
-Template.showSeed.onDestroyed(function () {
-  Session.set('seed', null)
-})
+// Template.showSeed.onDestroyed(function () {
+//   Session.set('seed', null)
+// })
 
 Template.showSeed.events({
+  'click #btn-check-seed' (event, instance) {
+    showModal('checkSeed', {blocking: true})
+  },
   'submit #form-show-seed' (event, instance) {
     event.preventDefault()
     const password = event.target.user_password.value
@@ -35,6 +40,7 @@ Template.showSeed.events({
         throw error
       }
       if (result) {
+        hideModalAlert()
         getSeedFromKeystore(password, keystore, () => {
           button.button('reset')
         })

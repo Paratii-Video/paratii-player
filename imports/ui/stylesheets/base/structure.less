@@ -9,13 +9,12 @@
   font-weight: 500;
   padding: 4px 8px 3px;
   text-align: center;
-}
 
-.player-tooltip--small {
-  font-size: 10px;
-  padding: 2px 4px 1px;
+  &.small {
+    font-size: 10px;
+    padding: 2px 4px 1px;
+  }
 }
-
 
 
 // Embed
@@ -31,49 +30,34 @@
   }
 }
 
-// Playlists/Videos list
 
-.thumb-list {
-  display: flex;
-  flex-wrap: wrap;
-}
+// Flip
 
-.thumb-list-item {
-  flex: 0 0 31.2%;
-  height: 100px;
-  margin: 0 0 15px;
-  position: relative;
+.flip {
+  transition: 0.6s;
+  transform-style: preserve-3d;
 
-  &:nth-child(3n-1) {
-    margin: 0 3.2% 7px;
-  }
-}
-
-.thumb-list-link {
-  &:extend(.full-block all);
-
-  backface-visibility: hidden;
-  border-radius: 4px;
-  color: @color-white;
-  overflow: hidden;
-  position: relative;
-  transition: color .35s;
-
-  &::before {
+  &-face {
     &:extend(.pos-a-full all);
 
-    background-color: black;
-    content: ''; 
-    opacity: .7;
-    transition: opacity .35s;
-    z-index: 2;
-  }
+    backface-visibility: hidden;
 
-  &:hover {
-    color: @color-white;
+    &-front {
+      transition: transform 1s @ease-smooth;
 
-    &::before {
-      opacity: .5;
+      .active & {
+        transform: rotateY(180deg);
+        transition: transform 1.2s @ease-smooth;
+      }
+    }
+    &-back {
+      transform: rotateY(180deg);
+      transition: transform 1s @ease-smooth;
+      
+      .active & {
+        transform: rotateY(0);
+        transition: transform 1.2s @ease-smooth;
+      }
     }
   }
 }
