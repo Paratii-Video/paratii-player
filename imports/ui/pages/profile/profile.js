@@ -22,6 +22,10 @@ Template.profile.onCreated(function () {
   Session.set('editProfileMenuOpen', false)
 })
 
+// Template.profile.onRendered(function () {
+//   showGlobalAlert('<strong>' + __('No money here') + '</strong>, ' + __('Still a demo'))
+// })
+
 Template.profile.helpers({
   editProfileMenuOpen  () {
     return Session.get('editProfileMenuOpen')

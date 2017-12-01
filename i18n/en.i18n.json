@@ -1,5 +1,8 @@
 {
-
+   "about-title": "About",
+   "about-subtitle": "Conscious Video Distribution",
+   "about-description": "Developing a player that relies on a public blockchain and puts revenue 100% in control of content producers.",
+   "my-video-title": "My Video",
    "By": "By",
    "current password": "current password",
    "Change password": "Change password",
@@ -18,8 +21,11 @@
    "modal-regenerateKeystore-title": "Restore wallet",
    "modal-regenerateKeystore-waiting": "Please be patient, we are generating your wallet file",
    "modal-restoreKeystore-title": "Restore wallet",
+   "my-video-description": "Your favorites (not implemented in this Demo)",
    "New password": "New password",
    "new password": "new password" ,
+   "No money here": "It's not you fault there's no money here",
+   "notfound-title": "Sorry, that page doesn't exist",
    "Playlists": "Playlists",
    "PTI address": "PTI address",
    "Register": "Register",
@@ -31,5 +37,6 @@
    "Share this video": "Share this video",
    "Show description":"Show description",
    "STATUS:":"STATUS:",
+   "Still a demo": "it's just that it's still a demo 😉",
    "Watch for": "Watch for"
 }

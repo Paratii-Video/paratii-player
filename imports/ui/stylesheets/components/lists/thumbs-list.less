@@ -2,8 +2,8 @@
 
 // Vars
 
-@size-thumbs-list-item-height: 100px;
-@size-thumbs-list-item-height-mini: 78px;
+@size-thumbs-list-item-height: 86px;
+@size-thumbs-list-item-height-mini: 70px;
 @size-thumbs-list-item-margin: 3.5%;
 @size-thumbs-list-item-width: 31%;
 
@@ -22,7 +22,7 @@
   color: @color-white;
   flex: 0 0 @size-thumbs-list-item-width;
   height: @size-thumbs-list-item-height;
-  margin: 0 0 @size-thumbs-list-item-margin;
+  margin: 0 0 10px;
   overflow: hidden;
   position: relative;
 
@@ -80,7 +80,15 @@
   }
 
   .button-text {
+    &:extend(.truncate-single-line all);
+
     display: block;
+    text-align: left;
+    width: 100%;
+
+    .query-mini({
+      font-size: 12px;
+    });
   }
 }
 
@@ -124,6 +132,8 @@
 //
 
 .thumbs-list-title {
+  &:extend(.truncate-single-line all);
+
   display: block;
   font-size: 14px;
   padding: 10px 10px 0;
@@ -201,17 +211,18 @@
 
 .thumbs-list-price {
   background-color: @color-purple;
-  bottom: 9px;
+  bottom: 4px;
   color: @color-white;
   font-size: 10px;
   opacity: 0;
   padding: 3px 6px 1px;
   position: absolute;
   transition: opacity .25s;
-  right: 10px;
+  right: 6px;
   z-index: 2;
 
   .thumbs-list-link:hover & {
+    color: @color-white; // safari
     opacity: 1;
     transition: opacity .3s linear .3s;
   }
