@@ -5037,9 +5037,9 @@ hls.js@^0.8.5:
   dependencies:
     url-toolkit "^2.0.1"
 
-"hlsjs-ipfs-loader@github:ya7ya/hlsjs-ipfs-loader#master":
+"hlsjs-ipfs-loader@github:ya7ya/hlsjs-ipfs-loader#paratii/dev":
   version "0.1.1"
-  resolved "https://codeload.github.com/ya7ya/hlsjs-ipfs-loader/tar.gz/6b5afdb1f8f3144b3b190affbe584610a0a00e53"
+  resolved "https://codeload.github.com/ya7ya/hlsjs-ipfs-loader/tar.gz/69dddcecc0e39fa64bdc3703b00d549539e42d2a"
   dependencies:
     aegir "^11.0.2"
     gulp "^3.9.1"
@@ -7746,6 +7746,14 @@ pluralize@^7.0.0:
 posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
+
+post-commit@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/post-commit/-/post-commit-0.0.1.tgz#4e15066dc376275677e18bbde32a2e0dceaa1a76"
+  dependencies:
+    cross-spawn "^5.0.1"
+    spawn-sync "^1.0.15"
+    which "1.2.x"
 
 pre-commit@^1.2.2:
   version "1.2.2"

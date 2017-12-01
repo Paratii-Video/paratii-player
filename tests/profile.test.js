@@ -13,10 +13,9 @@ import {
   assertUserIsNotLoggedIn,
   nukeLocalStorage,
   clearUserKeystoreFromLocalStorage,
-  getUserPTIAddressFromBrowser,
+  getEthAccountFromApp,
   waitForKeystore
 } from './helpers.js'
-import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
@@ -109,7 +108,7 @@ describe('Profile and accounts workflow:', function () {
     waitForKeystore(browser)
 
     // the address of the new keystore should be the same as the old 'anonymous' address
-    const publicAddress = getUserPTIAddressFromBrowser()
+    const publicAddress = getEthAccountFromApp()
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
@@ -117,8 +116,8 @@ describe('Profile and accounts workflow:', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
-    const userAccount = getUserPTIAddressFromBrowser()
-    sendSomeETH(userAccount, 3.1)
+    const userAccount = getEthAccountFromApp()
+    browser.sendSomeETH(userAccount, 3.1)
     browser.url('http://localhost:3000/profile')
     browser.waitAndClick('.button-settings')
     browser.waitAndClick('.edit-password')
@@ -186,7 +185,7 @@ describe('Profile and accounts workflow:', function () {
     browser.setValue('[name="field-password"]', 'password')
     browser.click('#btn-restorekeystore-restore')
     browser.waitUntil(function () {
-      let publicAddress = getUserPTIAddressFromBrowser()
+      let publicAddress = getEthAccountFromApp()
       return publicAddress === USERADDRESS
     })
   })
