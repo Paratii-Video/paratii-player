@@ -1,7 +1,7 @@
 import { assertUserIsLoggedIn, logout, createUserAndLogin, nukeLocalStorage, web3 } from './helpers.js'
 import { assert } from 'chai'
 
-describe('Video Store: @watch', function () {
+describe.skip('Video Store:', function () {
   let contracts, userAccount
   let videoId = 'QmNZS5J3LS1tMEVEP3tz3jyd2LXUEjkYJHyWSuwUvHDaRJ' // this is  a known videoId defined in fixtures.js
 

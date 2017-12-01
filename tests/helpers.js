@@ -60,28 +60,19 @@ before(async function (done) {
     console.log(`send ${amount} to ${beneficiary}`)
     await sendSomeETH(beneficiary, amount)
     await browser.waitUntil(function () {
-      let x = browser.execute(function () {
-        return Session.get('userPTIAddress')
-      })
-      console.log(`userPATIADderss: ${x.value}`)
       let result = browser.execute(function () {
         return Session.get('eth_balance')
       })
-      console.log(`ETh balance: ${result.value}`)
       return result.value && result.value > 0
     }, timeout, `the ETH did not arrive..`)
   })
   browser.addCommand('sendSomePTI', async function (beneficiary, amount, timeout) {
     await sendSomePTI(beneficiary, amount)
     await browser.waitUntil(function () {
-      let x = browser.execute(function () {
-        return Session.get('userPTIAddress')
-      })
-      console.log(`userPTIAddress: ${x.value}`)
       let result = browser.execute(function () {
         return Session.get('pti_balance')
       })
-      console.log(`PTI balance: ${result.value}`)
+      // console.log(`PTI balance: ${result.value}`)
       return result.value && result.value > 0
     }, timeout, `the PTI did not arrive..`)
   })
@@ -133,7 +124,6 @@ export function createUserAndLogin (browser) {
     return account
   })
   let account = getEthAccountFromApp()
-  console.log(`Newly create user's account: ${account}`)
   server.execute(function (userId, account) {
     Meteor.users.update(userId, {$set: { 'profile.ptiAddress': account }})
   }, userId, account)
