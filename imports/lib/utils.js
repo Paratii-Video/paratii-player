@@ -98,7 +98,7 @@ export function removeTrailingSlash (str) {
   return str.replace(/\/$/, '')
 }
 
-export function __ (message) {
+export function _ (message) {
   return require('meteor/tap:i18n').TAPi18n.__(message)
 }
 
