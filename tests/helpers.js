@@ -59,22 +59,31 @@ before(async function (done) {
   browser.addCommand('sendSomeETH', async function (beneficiary, amount, timeout) {
     console.log(`send ${amount} to ${beneficiary}`)
     await sendSomeETH(beneficiary, amount)
-    // await browser.waitUntil(function () {
-    //   let result = browser.execute(function () {
-    //     return Session.get('eth_balance')
-    //   })
-    //   // console.log(result)
-    //   return result.value && result.value > 0
-    // }, timeout, `the ETH did not arrive..`)
+    await browser.waitUntil(function () {
+      let x = browser.execute(function () {
+        return Session.get('userPTIAddress')
+      })
+      console.log(`userPATIADderss: ${x.value}`)
+      let result = browser.execute(function () {
+        return Session.get('eth_balance')
+      })
+      console.log(`ETh balance: ${result.value}`)
+      return result.value && result.value > 0
+    }, timeout, `the ETH did not arrive..`)
   })
   browser.addCommand('sendSomePTI', async function (beneficiary, amount, timeout) {
     await sendSomePTI(beneficiary, amount)
-    // await browser.waitUntil(function () {
-    //   let result = browser.execute(function () {
-    //     return Session.get('pti_balance')
-    //   })
-    //   return result.value && result.value > 0
-    // }, timeout, `the PTI did not arrive..`)
+    await browser.waitUntil(function () {
+      let x = browser.execute(function () {
+        return Session.get('userPTIAddress')
+      })
+      console.log(`userPTIAddress: ${x.value}`)
+      let result = browser.execute(function () {
+        return Session.get('pti_balance')
+      })
+      console.log(`PTI balance: ${result.value}`)
+      return result.value && result.value > 0
+    }, timeout, `the PTI did not arrive..`)
   })
   browser.url('http://localhost:3000')
   browser.contracts = await getOrDeployParatiiContracts(server, browser)
@@ -117,7 +126,14 @@ export function createUserAndLogin (browser) {
 
   // set the user's account to that of the wallet -
   // TODO: this should be done on login, automagically, I suppose
-  let account = getEthAccountFromBrowser()
+
+  // account is the address generated from the keystore
+  browser.waitUntil(function () {
+    let account = getEthAccountFromApp()
+    return account
+  })
+  let account = getEthAccountFromApp()
+  console.log(`Newly create user's account: ${account}`)
   server.execute(function (userId, account) {
     Meteor.users.update(userId, {$set: { 'profile.ptiAddress': account }})
   }, userId, account)
@@ -132,7 +148,7 @@ export function createUserKeystore (browser) {
       return localStorage.getItem(`keystore-${userId}`)
     }, userId).value
   })
-  let address = getEthAccountFromBrowser()
+  let address = getEthAccountFromApp()
   server.execute(function (userId, address) {
     Meteor.users.update(userId, {$set: { 'profile.ptiAddress': address }})
   }, userId, address)
@@ -176,21 +192,7 @@ export function assertUserIsNotLoggedIn (browser) {
   assert.isNotOk(userId)
 }
 
-export function getSomeETH (amount) {
-  const helpers = require('./imports/lib/ethereum/helpers.js')
-  const users = require('./imports/api/users.js')
-  let beneficiary = users.getUserPTIAddress()
-  helpers.sendSomeETH(beneficiary, amount)
-}
-
-export function getSomePTI (amount) {
-  const helpers = require('./imports/lib/ethereum/helpers.js')
-  const users = require('./imports/api/users.js')
-  let beneficiary = users.getUserPTIAddress()
-  helpers.sendSomePTI(beneficiary, amount)
-}
-
-export function getEthAccountFromBrowser () {
+export function getEthAccountFromApp () {
   return browser.execute(function () {
     const users = require('./imports/api/users.js')
     let address = users.getUserPTIAddress()

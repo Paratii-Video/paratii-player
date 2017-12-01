@@ -1,4 +1,4 @@
-import { assertUserIsLoggedIn, web3, logout, createUserAndLogin, nukeLocalStorage } from './helpers.js'
+import { assertUserIsLoggedIn, logout, createUserAndLogin, nukeLocalStorage, web3 } from './helpers.js'
 import { assert } from 'chai'
 
 describe('Video Store: @watch', function () {
@@ -14,20 +14,30 @@ describe('Video Store: @watch', function () {
     done()
   })
 
-  beforeEach(function () {
-    browser.url(`http://localhost:3000/`)
-    userAccount = createUserAndLogin(browser)
-  })
+  // beforeEach(function () {
+  //   server.execute(resetDb)
+  //   browser.execute(nukeLocalStorage)
+  //   browser.execute(nukeSessionStorage)
+  //   // browser.url(`http://localhost:3000/`)
+  // })
 
   it('should be possible to buy (and unlock) a video  ', function () {
     // make sure we have enough funds
+    userAccount = createUserAndLogin(browser)
+    browser.url(`http://localhost:3000/play/${videoId}`)
+
     browser.sendSomeETH(userAccount, 2.1)
     browser.sendSomePTI(userAccount, 300)
 
-    assertUserIsLoggedIn(browser)
-    browser.url(`http://localhost:3000/play/${videoId}`)
-    assertUserIsLoggedIn(browser)
-
+    // let result = browser.execute(function () {
+    //   return Session.get('eth_balance')
+    // })
+    // console.log(`Session('eth_balance') is ${result.value}`)
+    // let x = browser.execute(function () {
+    //   return Session.get('userPTIAddress')
+    // })
+    // console.log(`userPATIADDrss: ${x.value}`)
+    //
     browser.waitAndClick('#unlock-video')
     browser.waitAndSetValue('[name="user_password"]', 'password')
     browser.waitAndClick('#send_trans_btn')
@@ -49,12 +59,17 @@ describe('Video Store: @watch', function () {
     browser.waitForExist('.player-controls')
   })
 
-  it('should show an error if the password is wrong @watch', function () {
+  it('should show an error if the password is wrong', function () {
     // make sure we have enough funds
+    userAccount = createUserAndLogin(browser)
+    assertUserIsLoggedIn(browser)
+    browser.url(`http://localhost:3000/play/${videoId}`)
+    console.log(`Account of created user (userAccount): ${userAccount}`)
+    // let tmp = getEthAccountFromApp()
+    // console.log(`Account from keystore: ${tmp}`)
     browser.sendSomeETH(userAccount, 2.1)
     browser.sendSomePTI(userAccount, 300)
 
-    browser.url(`http://localhost:3000/play/${videoId}`)
     // browser.pause(2000)
     browser.waitAndClick('#unlock-video')
     browser.waitAndSetValue('[name="user_password"]', 'wrong_password')
@@ -75,6 +90,7 @@ describe('Video Store: @watch', function () {
 
   it('should show an error if the user does not have enough PTI ', function () {
     // make sure we have enough funds
+    userAccount = createUserAndLogin(browser)
     browser.sendSomeETH(userAccount, 2.1)
 
     browser.url(`http://localhost:3000/play/${videoId}`)
@@ -95,6 +111,7 @@ describe('Video Store: @watch', function () {
   })
 
   it('should show an error if the user does not have enough ETH', function () {
+    userAccount = createUserAndLogin(browser)
     browser.sendSomePTI(userAccount, 300)
 
     browser.url(`http://localhost:3000/play/${videoId}`)

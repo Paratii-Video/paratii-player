@@ -112,6 +112,7 @@ export function getUserPTIAddress () {
     const keystore = getKeystore()
     if (keystore !== null) {
       const addresses = keystore.getAddresses()
+      console.log(`getting address from keystore: ${addresses[0]}`)
       if (addresses.length > 0) {
         Session.set('userPTIAddress', add0x(addresses[0]))
         return add0x(addresses[0])

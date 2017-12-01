@@ -69,8 +69,8 @@ if (Meteor.isServer) {
 
   // Publish one video by id
   Meteor.publish('relatedVideos', function (_id, userID) {
-    console.log('Videos related to', _id)
-    console.log('for the user', userID)
+    // console.log('Videos related to', _id)
+    // console.log('for the user', userID)
     ReactiveAggregate(this, Videos, [
       { $sample: { size: 6 } }
     ]
