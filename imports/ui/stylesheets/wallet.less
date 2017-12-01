@@ -1,7 +1,8 @@
 
 .walletContainer {
   width: 100%;
-  padding: 10px 0;
+  height: auto;
+  padding-top: 10px;
 
   &.emailContainer {
     margin-top: -18px;
@@ -13,6 +14,10 @@
   font-size: 20px;
   font-weight: 300;
   margin-bottom: 10px;
+
+  .query-tiny({
+    font-size: 14px;
+  })
 }
 
 .wallet-contents {
@@ -25,11 +30,43 @@
 
     li {
 
-      @balance-dimension: 150px;
+      .set-balance-properties(
+        @dimension,
+        @name-font-size,
+        @balance-font-size,
+        @unit-font-size
+      ) {
+        flex: 0 0 @dimension;
+        max-width: @dimension;
+        height: @dimension;
 
-      flex: 0 0 @balance-dimension;
-      max-width: @balance-dimension;
-      height: @balance-dimension;
+        .unit-name {
+          font-size: @name-font-size;
+        }
+
+        .balance {
+          font-size: @balance-font-size;
+        }
+
+        .unit {
+          font-size: @unit-font-size;
+        }
+      }
+
+      .set-balance-properties(150px, 16px, 20px, 12px);
+
+      .query-mini({
+        .set-balance-properties(110px, 14px, 16px, 8px);
+      });
+
+      .query-tiny({
+        .set-balance-properties(75px, 10px, 11px, 5px);
+
+        a {
+          padding: 8px;
+        }
+      });
+
 
       &:not(:last-child) {
         margin-right: 15px;
@@ -39,7 +76,6 @@
         &:extend(.btn, .btn-default);
         border-radius: 6px;
         font-weight: 300;
-        font-size: 16px;
         text-transform: none;
         flex: 0 0 40%;
         height: 100%;
@@ -57,7 +93,6 @@
           width: 100%;
           text-align: left;
           flex: 0 0 10px;
-          font-size: 16px;
         }
 
         .balance-wrapper {
@@ -70,7 +105,6 @@
             text-align: right;
             align-items: baseline;
             width: 100%;
-            font-size: 20px;
             font-weight: 300;
             word-wrap: break-word;
 
@@ -79,15 +113,7 @@
             }
 
             .unit {
-              font-size: 12px;
               font-weight: 600;
-            }
-
-            .unit-empty {
-              display: inline-block;
-              width: 100%;
-              text-align: left;
-              font-size: 12px;
             }
           }
         }

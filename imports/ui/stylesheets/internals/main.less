@@ -6,6 +6,7 @@
   &-header {
     background: white;
     display: flex;
+    align-items: center;
     margin: 0 0 15px;
     position: relative;
     width: 100%;
@@ -13,14 +14,15 @@
 
     .button-back {
       animation: showFromLeft .75s @ease-smooth .2s forwards;
-      margin: 9px 7px 0 0;
       opacity: 0;
+      margin-right: 7px;
     }
 
     &-label,
     &-title {
       animation: showFromLeft .75s @ease-smooth forwards;
       margin-right: 40px;
+
     }
 
     &-input,
@@ -35,6 +37,9 @@
 
       height: 35px;
       line-height: 35px;
+      .query-tiny({
+        font-size: 16px;
+      })
     }
 
     &-label {
