@@ -1,7 +1,6 @@
 var fs = require('fs')
 var files = fs.readdirSync('tests/')
 
-
 files.forEach(file => {
   fs.readFile('tests/' + file, 'utf8', function (err, data) {
     if (err) {
@@ -10,7 +9,10 @@ files.forEach(file => {
     var result = data.replace(/ @watch/g, '').replace(/@watch/g, '')
 
     fs.writeFile('tests/' + file, result, 'utf8', function (err) {
-      if (err) return console.log(err)
+      if (err) {
+        cosnole.log(file)
+        console.log(err)
+      }
     })
   })
 })

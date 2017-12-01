@@ -19,7 +19,6 @@ import {
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-
 describe('Profile and accounts workflow:', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
@@ -60,7 +59,6 @@ describe('Profile and accounts workflow:', function () {
     // now a modal should be opened with the seed
     browser.waitForClickable('#seed')
     const seed = browser.getText('#seed strong', false)
-    console.log(seed)
     browser.waitForClickable('#btn-check-seed')
     browser.click('#btn-check-seed')
     browser.waitForClickable('[name="check_seed"]')
@@ -98,13 +96,12 @@ describe('Profile and accounts workflow:', function () {
 
     waitForUserIsLoggedIn(browser)
 
-    console.log(0)
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForClickable('#walletModal')
     browser.waitAndClick('#create-wallet')
     browser.waitAndSetValue('[name="user_password"]', 'password')
     browser.click('#btn-create-wallet')
-    console.log(1)
+
     waitForKeystore(browser)
 
     // the address of the new keystore should be the same as the old 'anonymous' address
@@ -413,7 +410,6 @@ describe('Profile and accounts workflow:', function () {
   })
 
   it('arriving on the app with a keystore, but without being logged in, should ask what to do, then continue anonymously ', function () {
-
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
@@ -433,9 +429,7 @@ describe('Profile and accounts workflow:', function () {
     assertUserIsNotLoggedIn(browser)
   })
 
-
   it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in ', function () {
-
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
