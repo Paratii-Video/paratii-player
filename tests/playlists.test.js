@@ -51,7 +51,7 @@ describe('price tag status', function () {
     })
   })
 
-  it('when the video was bought [TODO]  @watch', () => {
+  it('when the video was bought [TODO] ', () => {
     createUserAndLogin(browser)
     browser.pause(5000)
     const address = getEthAccountFromApp()

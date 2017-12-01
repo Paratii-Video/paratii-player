@@ -57,7 +57,7 @@ before(async function (done) {
   })
 
   browser.addCommand('sendSomeETH', async function (beneficiary, amount, timeout) {
-    console.log(`send ${amount} to ${beneficiary}`)
+    // console.log(`send ${amount} to ${beneficiary}`)
     await sendSomeETH(beneficiary, amount)
     await browser.waitUntil(function () {
       let result = browser.execute(function () {
