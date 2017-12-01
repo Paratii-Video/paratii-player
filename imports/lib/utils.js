@@ -1,3 +1,4 @@
+
 export function log (message) {
   if (Meteor.settings.public.isTestEnv) {
     console.log(message)
@@ -86,8 +87,51 @@ export function hideModalAlert () {
   }, 600)
 }
 
+export function resetAlert () {
+  Session.set('globalAlertShow', null)
+  Session.set('globalAlertMessage', null)
+  Session.set('modalAlertShow', null)
+  Session.set('modalAlertMessage', null)
+}
+
 export function removeTrailingSlash (str) {
   return str.replace(/\/$/, '')
+}
+
+export function __ (message) {
+  return require('meteor/tap:i18n').TAPi18n.__(message)
+}
+
+export function setIsNavigatingBack (navigatingBack = false) {
+  Session.set('navigatingBack', navigatingBack)
+}
+
+export function getIsNavigatingBack () {
+  return Session.get('navigatingBack')
+}
+
+function getNavHistory () {
+  return Session.get('navigationHistory') || []
+}
+
+export function addToNavigationHistory (prevPath) {
+  if (prevPath && prevPath !== getPrevPageFromHistory()) {
+    const navigationHistory = getNavHistory()
+    navigationHistory.push(prevPath)
+    Session.set('navigationHistory', navigationHistory)
+  }
+}
+
+export function popNavigationHistory () {
+  const navigationHistory = getNavHistory()
+  navigationHistory.pop()
+  Session.set('navigationHistory', navigationHistory)
+}
+
+export function getPrevPageFromHistory () {
+  const navigationHistory = getNavHistory()
+
+  return navigationHistory[navigationHistory.length - 1]
 }
 
 // export function setModalState (message) {

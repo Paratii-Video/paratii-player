@@ -50,10 +50,10 @@ export async function updateSession () {
     }
   } else {
     Session.set('eth_isConnected', false)
-    Session.set('eth_currentBlock', null)
+    // Session.set('eth_currentBlock', null)
     Session.set('eth_highestBlock', null)
-    Session.set('eth_balance', null)
-    Session.set('pti_balance', null)
+    // Session.set('eth_balance', null)
+    // Session.set('pti_balance', null)
   }
 }
 

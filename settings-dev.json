@@ -9,6 +9,6 @@
     "paginationStep": 6
   },
   "env" : {
-    "mail_server": "smtp://MAIL_USER:MAIL_PASSWORD@MAIL_HOST:MAIL_PORT"
+    "mail_server": "smtp://AKIAJ4WFPL45IS4LZAZQ:AhoGWyyEtivjS9eMdC10uYE4tuvclLcPXLr55Ex+ERcy@email-smtp.us-west-2.amazonaws.com:587"
   }
 }

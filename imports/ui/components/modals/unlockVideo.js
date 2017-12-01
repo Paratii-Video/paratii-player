@@ -66,7 +66,7 @@ Template.unlockVideo.events({
 
     if (ethBalance === 0) {
       // TODO: check that the user has enough ether for a minimal transaction
-      msg = `You need some Ether for sending a transaction - but you have none`
+      msg = _(`You need some Ether for sending a transaction - but you have none`)
       check.wallet_amount = msg
       showModalAlert(msg, 'error')
       return

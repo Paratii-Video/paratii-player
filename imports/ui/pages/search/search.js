@@ -81,8 +81,8 @@ Template.search.helpers({
       if (keyword.length > 2) {
         // Meteor.subscribe('searchedVideos', keyword)
         const videos = VideosResults.find({}, { sort: [['score', 'desc']] })
-        console.log(videos)
-        console.log(videos.fetch())
+        // console.log(videos)
+        // console.log(videos.fetch())
         if (videos.fetch().length > 0) {
           Template.instance().hasNext.set(true)
           return videos
