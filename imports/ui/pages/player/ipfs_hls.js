@@ -155,7 +155,7 @@ class HLSPlayer extends EventEmitter {
       hls.destroy()
     })
 
-    var self = this
+    // var self = this
     // -----------------------------------STATS---------------------------------
     // function updateStats () {
     //   metrics.elapsed = utils.duration(metrics.started)
