@@ -4,7 +4,6 @@ var files = fs.readdirSync('tests/')
 files.forEach(file => {
   fs.readFile('tests/' + file, 'utf8', function (err, data) {
     if (fs.lstatSync('tests/'+ file).isFile()) {
-      console.log(file)
       if (err) {
         return console.log(err)
       }
@@ -12,7 +11,6 @@ files.forEach(file => {
 
       fs.writeFile('tests/' + file, result, 'utf8', function (err) {
         if (err) {
-          cosnole.log(file)
           console.log(err)
         }
       })
