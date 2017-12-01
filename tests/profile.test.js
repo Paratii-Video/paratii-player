@@ -13,14 +13,13 @@ import {
   assertUserIsNotLoggedIn,
   nukeLocalStorage,
   clearUserKeystoreFromLocalStorage,
-  getUserPTIAddressFromBrowser,
+  getEthAccountFromApp,
   waitForKeystore
 } from './helpers.js'
-import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('Profile and accounts workflow: @watch', function () {
+describe('Profile and accounts workflow:', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     browser.execute(nukeLocalStorage)
@@ -60,7 +59,6 @@ describe('Profile and accounts workflow: @watch', function () {
     // now a modal should be opened with the seed
     browser.waitForClickable('#seed')
     const seed = browser.getText('#seed strong', false)
-    console.log(seed)
     browser.waitForClickable('#btn-check-seed')
     browser.click('#btn-check-seed')
     browser.waitForClickable('[name="check_seed"]')
@@ -98,17 +96,16 @@ describe('Profile and accounts workflow: @watch', function () {
 
     waitForUserIsLoggedIn(browser)
 
-    console.log(0)
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForClickable('#walletModal')
     browser.waitAndClick('#create-wallet')
     browser.waitAndSetValue('[name="user_password"]', 'password')
     browser.click('#btn-create-wallet')
-    console.log(1)
+
     waitForKeystore(browser)
 
     // the address of the new keystore should be the same as the old 'anonymous' address
-    const publicAddress = getUserPTIAddressFromBrowser()
+    const publicAddress = getEthAccountFromApp()
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
@@ -116,8 +113,8 @@ describe('Profile and accounts workflow: @watch', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
-    const userAccount = getUserPTIAddressFromBrowser()
-    sendSomeETH(userAccount, 3.1)
+    const userAccount = getEthAccountFromApp()
+    browser.sendSomeETH(userAccount, 3.1)
     browser.url('http://localhost:3000/profile')
     browser.waitAndClick('.button-settings')
     browser.waitAndClick('.edit-password')
@@ -185,7 +182,7 @@ describe('Profile and accounts workflow: @watch', function () {
     browser.setValue('[name="field-password"]', 'password')
     browser.click('#btn-restorekeystore-restore')
     browser.waitUntil(function () {
-      let publicAddress = getUserPTIAddressFromBrowser()
+      let publicAddress = getEthAccountFromApp()
       return publicAddress === USERADDRESS
     })
   })
@@ -412,7 +409,7 @@ describe('Profile and accounts workflow: @watch', function () {
     assert.equal(url.value, 'http://localhost:3000/')
   })
 
-  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then continue anonymously @watch', function () {
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then continue anonymously ', function () {
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
@@ -432,7 +429,7 @@ describe('Profile and accounts workflow: @watch', function () {
     assertUserIsNotLoggedIn(browser)
   })
 
-  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in @watch', function () {
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in ', function () {
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future

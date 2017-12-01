@@ -1,4 +1,3 @@
-import { TAPi18n } from 'meteor/tap:i18n'
 
 export function log (message) {
   if (Meteor.settings.public.isTestEnv) {
@@ -100,7 +99,39 @@ export function removeTrailingSlash (str) {
 }
 
 export function __ (message) {
-  return TAPi18n.__(message)
+  return require('meteor/tap:i18n').TAPi18n.__(message)
+}
+
+export function setIsNavigatingBack (navigatingBack = false) {
+  Session.set('navigatingBack', navigatingBack)
+}
+
+export function getIsNavigatingBack () {
+  return Session.get('navigatingBack')
+}
+
+function getNavHistory () {
+  return Session.get('navigationHistory') || []
+}
+
+export function addToNavigationHistory (prevPath) {
+  if (prevPath && prevPath !== getPrevPageFromHistory()) {
+    const navigationHistory = getNavHistory()
+    navigationHistory.push(prevPath)
+    Session.set('navigationHistory', navigationHistory)
+  }
+}
+
+export function popNavigationHistory () {
+  const navigationHistory = getNavHistory()
+  navigationHistory.pop()
+  Session.set('navigationHistory', navigationHistory)
+}
+
+export function getPrevPageFromHistory () {
+  const navigationHistory = getNavHistory()
+
+  return navigationHistory[navigationHistory.length - 1]
 }
 
 // export function setModalState (message) {
