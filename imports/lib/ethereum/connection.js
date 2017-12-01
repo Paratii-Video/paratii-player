@@ -1,6 +1,7 @@
 import { web3 } from './web3.js'
 import { getUserPTIAddress } from '../../api/users.js'
 import { getContract, getRegistryAddress, setRegistryAddress } from './contracts.js'
+import Paratii from 'paratii-lib'
 
 // TODO: store all this information in a settings.json object
 const GAS_PRICE = 50000000000
@@ -59,6 +60,9 @@ export async function updateSession () {
 
 export const initConnection = function () {
   console.log('initializing connection..')
+  // paratii = Paratii({
+  //   provider:
+  // })
   web3.setProvider(new web3.providers.HttpProvider(Meteor.settings.public.http_provider))
 
   setRegistryAddress(Meteor.settings.public.ParatiiRegistry)
