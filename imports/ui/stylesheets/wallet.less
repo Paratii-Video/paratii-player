@@ -10,7 +10,7 @@
 }
 
 .profile-info-email {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 300;
   margin-bottom: 10px;
 }
@@ -25,11 +25,12 @@
 
     li {
 
-      @balance-dimension: 150px;
+      @balance-width: 125px;
+      @balance-height: 110px;
 
-      flex: 0 0 @balance-dimension;
-      max-width: @balance-dimension;
-      height: @balance-dimension;
+      flex: 0 0 @balance-width;
+      max-width: @balance-width;
+      height: @balance-height;
 
       &:not(:last-child) {
         margin-right: 15px;
@@ -57,7 +58,7 @@
           width: 100%;
           text-align: left;
           flex: 0 0 10px;
-          font-size: 16px;
+          font-size: 18px;
         }
 
         .balance-wrapper {
@@ -70,7 +71,7 @@
             text-align: right;
             align-items: baseline;
             width: 100%;
-            font-size: 20px;
+            font-size: 15px;
             font-weight: 300;
             word-wrap: break-word;
 
