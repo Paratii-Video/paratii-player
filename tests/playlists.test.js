@@ -1,4 +1,4 @@
-import { assertUserIsLoggedIn, createVideo, createUserAndLogin, getUserPTIAddressFromBrowser } from './helpers.js'
+import { assertUserIsLoggedIn, createVideo, createUserAndLogin, getEthAccountFromApp } from './helpers.js'
 import { assert } from 'chai'
 
 function createPlaylist () {
@@ -37,11 +37,12 @@ describe('price tag status', function () {
     assert.isTrue(priceTag)
   })
 
-  it('when the video has a price  and wasn\'t bought @watch', () => {
+  it('when the video has a price  and wasn\'t bought', () => {
     createUserAndLogin(browser)
     assertUserIsLoggedIn(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
+    browser.pause(2000)
     browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.thumbs-list-item')
     browser.moveToObject('.thumbs-list-item')
@@ -50,10 +51,10 @@ describe('price tag status', function () {
     })
   })
 
-  it('when the video was bought [TODO]', () => {
+  it('when the video was bought [TODO] ', () => {
     createUserAndLogin(browser)
     browser.pause(5000)
-    const address = getUserPTIAddressFromBrowser()
+    const address = getEthAccountFromApp()
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     server.execute(fakeVideoUnlock, address)

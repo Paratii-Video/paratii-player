@@ -241,7 +241,7 @@ $.getScript('/test/files/index.min.js', () => {
   } else {
     window.ipfs = new Ipfs({
       bitswap: {
-        maxMessageSize: 32 * 1024
+        maxMessageSize: 256 * 1024
         // meterController: paratiiIPFS.meterController
       },
       repo: String(Math.random()),

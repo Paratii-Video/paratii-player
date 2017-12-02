@@ -40,7 +40,7 @@ function setHead () {
       // Get video id from the path
       var videoId = parsedExternalUrl.path.split('/')[2]
       var video = Videos.findOne({_id: videoId})
-      console.log(video)
+      // console.log(video)
       // If video exist build response
       if (video) {
         var baseUrl = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl)
