@@ -17,7 +17,7 @@
     "remove-watcher": "node .remove-watcher.js"
   },
   "precommit": [
-    "lint-fix",
+    "lint",
     "remove-watcher"
   ],
   "dependencies": {
