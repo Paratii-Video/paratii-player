@@ -7,7 +7,7 @@ import {
   showModal,
   showGlobalAlert,
   log,
-  toggleFullscreen,
+  toggleFullscreen
 } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
