@@ -5037,13 +5037,14 @@ hls.js@^0.8.5:
   dependencies:
     url-toolkit "^2.0.1"
 
-"hlsjs-ipfs-loader@github:ya7ya/hlsjs-ipfs-loader#paratii/dev":
+"hlsjs-ipfs-loader@github:ya7ya/hlsjs-ipfs-loader#paratii/bandwidth":
   version "0.1.1"
-  resolved "https://codeload.github.com/ya7ya/hlsjs-ipfs-loader/tar.gz/69dddcecc0e39fa64bdc3703b00d549539e42d2a"
+  resolved "https://codeload.github.com/ya7ya/hlsjs-ipfs-loader/tar.gz/17b3bd5bb2a29b5087ec0a9766aac117a9d7ed83"
   dependencies:
     aegir "^11.0.2"
     gulp "^3.9.1"
     lodash "^4.17.4"
+    streamspeed "^1.1.0"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -9340,6 +9341,10 @@ streamfilter@^1.0.5:
   resolved "https://registry.yarnpkg.com/streamfilter/-/streamfilter-1.0.5.tgz#87507111beb8e298451717b511cfed8f002abf53"
   dependencies:
     readable-stream "^2.0.2"
+
+streamspeed@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/streamspeed/-/streamspeed-1.1.0.tgz#a2088ae62af68657309b647c4ad2bd2fed4d949a"
 
 string-template@~0.2.1:
   version "0.2.1"

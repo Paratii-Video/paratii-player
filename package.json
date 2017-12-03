@@ -12,8 +12,8 @@
     "test-headless": "TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha --port 9999",
     "lint": "standard",
     "lint-fix": "standard --fix",
-    "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests --webdriverio.waitforTimeout=10000 --webdriverio.waitforInterval=200",
-    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=30000 --webdriverio.waitforInterval=200",
+    "chimp-watch": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=10000 --webdriverio.waitforInterval=200 webdriverio.logLevel=silent --watch",
+    "chimp-test": "chimp  --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=30000 --webdriverio.waitforInterval=200 webdriverio.logLevel=silent",
     "remove-watcher": "node .remove-watcher.js"
   },
   "precommit": [
