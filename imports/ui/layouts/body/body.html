@@ -1,11 +1,12 @@
 <template name="App_body">
-  {{> svgs }}
+  {{> svgs}}
 
-  <div id="player-fullscreen-container" class="main-app {{getRoute}}">
+  <div id="player-fullscreen-container" class="main-app {{ getRoute }} {{ showMainLoaderClass }}">
+    {{> mainLoader}}
 
     {{> globalAlert}}
 
-    <div class="nav-overlay {{light}}"></div>
+    <div class="nav-overlay {{ light }}"></div>
     {{> navigation }}
     <div id="app-container" class="app-container">
       {{> Template.dynamic template=main}}

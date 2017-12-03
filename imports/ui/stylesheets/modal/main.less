@@ -2,7 +2,7 @@
 
 // Vars
 
-@size-modal-wrapper-height: 280px;
+@size-modal-wrapper-height: 250px;
 @size-modal-wrapper-width: 310px;
 @size-modal-wrapper-width-wide: 530px;
 @size-modal-footer-height: 20px;
@@ -111,59 +111,13 @@
   }
 }
 
-// Animation(in/out elements)
-
-.main-modal-anim-1,
-.main-modal-anim-2,
-.main-modal-anim-3,
-.main-modal-anim-4,
-.main-modal-anim-5 {
-  &:extend(.anim-element-out all);
-
-  .show-content & {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.main-modal-anim-1 {
-  .show-content & {
-    transition: opacity .3s linear .1s, transform .75s @ease-smooth;
-  }
-}
-
-.main-modal-anim-2 {
-  .show-content & {
-    transition: opacity .3s linear .2s, transform .75s @ease-smooth .1s;
-  }
-}
-
-.main-modal-anim-3 {
-  .show-content & {
-    transition: opacity .3s linear .3s, transform .75s @ease-smooth .2s;
-  }
-}
-
-.main-modal-anim-4 {
-  .show-content & {
-    transition: opacity .3s linear .4s, transform .75s @ease-smooth .3s;
-  }
-}
-
-.main-modal-anim-5 {
-  .show-content & {
-    transition: opacity .3s linear .5s, transform .75s @ease-smooth .4s;
-  }
-}
-
-
 // Title
 
 .main-modal-title {
   color: @color-grey;
   font-size: 20px;
   font-weight: 500;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   overflow: hidden;
   padding: 0 25px 0 0;
   text-overflow: ellipsis;

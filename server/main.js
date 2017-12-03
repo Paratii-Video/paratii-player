@@ -41,4 +41,10 @@ Meteor.startup(async function () {
       return Meteor.settings.public.ParatiiRegistry
     }
   })
+
+  Meteor.methods({
+    'getVersion' () {
+      return Assets.getText('version.json')
+    }
+  })
 })

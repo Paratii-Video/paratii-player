@@ -13,10 +13,9 @@ import {
   assertUserIsNotLoggedIn,
   nukeLocalStorage,
   clearUserKeystoreFromLocalStorage,
-  getUserPTIAddressFromBrowser,
+  getEthAccountFromApp,
   waitForKeystore
 } from './helpers.js'
-import { sendSomeETH } from '../imports/lib/ethereum/helpers.js'
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
@@ -59,7 +58,6 @@ describe('Profile and accounts workflow:', function () {
     waitForKeystore(browser)
     // now a modal should be opened with the seed
     browser.waitForClickable('#seed')
-    // browser.pause(500)
     const seed = browser.getText('#seed strong', false)
     browser.waitForClickable('#btn-check-seed')
     browser.click('#btn-check-seed')
@@ -73,9 +71,6 @@ describe('Profile and accounts workflow:', function () {
   })
 
   it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
-    browser.execute(nukeLocalStorage)
-    server.execute(resetDb)
-
     // create a meteor user
     server.execute(createUser)
 
@@ -90,29 +85,27 @@ describe('Profile and accounts workflow:', function () {
       }).value
     })
     const anonymousAddress = getAnonymousAddress()
-    browser.waitForClickable('#nav-profile')
-    browser.click('#nav-profile')
+    browser.waitAndClick('#nav-profile')
 
     browser.waitForClickable('[name="at-field-email"]')
-    browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-    browser.setValue('[name="at-field-password"]', 'password')
-    browser.click('#at-btn')
+    browser.waitAndSetValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+    browser.waitAndSetValue('[name="at-field-password"]', 'password')
+    browser.waitAndClick('#at-btn')
 
     // the user is now logged in
+
     waitForUserIsLoggedIn(browser)
 
     // we should now see a modal presenting a choice to restore the wallet or use a new one
     browser.waitForClickable('#walletModal')
-    browser.waitForClickable('#create-wallet')
-    browser.click('#create-wallet')
-    browser.waitForClickable('[name="user_password"]')
-    browser.setValue('[name="user_password"]', 'password')
+    browser.waitAndClick('#create-wallet')
+    browser.waitAndSetValue('[name="user_password"]', 'password')
     browser.click('#btn-create-wallet')
 
     waitForKeystore(browser)
 
     // the address of the new keystore should be the same as the old 'anonymous' address
-    const publicAddress = getUserPTIAddressFromBrowser()
+    const publicAddress = getEthAccountFromApp()
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
@@ -120,20 +113,14 @@ describe('Profile and accounts workflow:', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
-    const userAccount = getUserPTIAddressFromBrowser()
-    sendSomeETH(userAccount, 3.1)
+    const userAccount = getEthAccountFromApp()
+    browser.sendSomeETH(userAccount, 3.1)
     browser.url('http://localhost:3000/profile')
-    browser.waitForClickable('#edit-profile')
-    browser.click('#edit-profile')
-    browser.waitForClickable('.edit-password')
-    browser.click('.edit-password')
-    // TODO remove this pause, problem with modals
-    browser.pause(2000)
-    browser.waitForClickable('[name="current-password"]', 5000)
-    browser.setValue('[name="current-password"]', 'password')
-    browser.setValue('[name="new-password"]', 'new-password')
-    browser.waitForClickable('#save-password')
-    browser.click('#save-password')
+    browser.waitAndClick('.button-settings')
+    browser.waitAndClick('.edit-password')
+    browser.waitAndSetValue('[name="current-password"]', 'password')
+    browser.waitAndSetValue('[name="new-password"]', 'new-password')
+    browser.waitAndClick('#save-password')
     browser.pause(2000)
     browser.waitForClickable('.wallet-contents li:last-child .amount')
     const amount = await browser.getText('.wallet-contents li:last-child .balance', false)
@@ -153,21 +140,18 @@ describe('Profile and accounts workflow:', function () {
     assertUserIsNotLoggedIn(browser)
 
     browser.url('http://localhost:3000')
-    browser.waitForClickable('#nav-profile')
-    browser.click('#nav-profile')
+    browser.waitAndClick('#nav-profile')
 
-    browser.waitForClickable('[name="at-field-email"]')
-
-    browser.setValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
-    browser.setValue('[name="at-field-password"]', 'wrong password')
-    browser.click('#at-btn')
+    browser.waitAndSetValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
+    browser.waitAndSetValue('[name="at-field-password"]', 'wrong password')
+    browser.waitAndClick('#at-btn')
 
     // the user is now still not logged in
     assertUserIsNotLoggedIn(browser)
 
-    browser.waitForClickable('.at-error')
-    let errorMsg = browser.getText('.at-error')
-    assert.equal(errorMsg, 'Login forbidden')
+    browser.waitForClickable('.main-alert.error')
+    let errorMsg = browser.getText('.main-alert.error p')
+    assert.equal(errorMsg, 'That email and password combination is incorrect.')
   })
 
   it('login as an existing user on a device with no keystore - restore keystore with a seedPhrase', function () {
@@ -198,7 +182,7 @@ describe('Profile and accounts workflow:', function () {
     browser.setValue('[name="field-password"]', 'password')
     browser.click('#btn-restorekeystore-restore')
     browser.waitUntil(function () {
-      let publicAddress = getUserPTIAddressFromBrowser()
+      let publicAddress = getEthAccountFromApp()
       return publicAddress === USERADDRESS
     })
   })
@@ -223,10 +207,9 @@ describe('Profile and accounts workflow:', function () {
     // .setValue('[name="at-field-password_again"]', 'password')
     // submit the form
     browser.click('#at-btn')
-    browser.waitForVisible('.at-error')
-    const error = browser.getText('.at-error')
-    assert.isNotNull(error, 'should exist a error message')
-    assert.equal(error, 'Email already exists.')
+    browser.waitForClickable('.main-alert.error')
+    let errorMsg = browser.getText('.main-alert.error p')
+    assert.equal(errorMsg, 'Email already exists.')
   })
 
   it('do not overwrite a user address if failed to register a new user with a used email [TODO]', function () {
@@ -426,13 +409,12 @@ describe('Profile and accounts workflow:', function () {
     assert.equal(url.value, 'http://localhost:3000/')
   })
 
-  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then continue anonymously', function () {
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then continue anonymously ', function () {
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
     createUserKeystore(browser)
     browser.url('http://localhost:3000')
-
     assertUserIsNotLoggedIn(browser)
 
     browser.waitForVisible('#foundKeystore')
@@ -447,7 +429,7 @@ describe('Profile and accounts workflow:', function () {
     assertUserIsNotLoggedIn(browser)
   })
 
-  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in', function () {
+  it('arriving on the app with a keystore, but without being logged in, should ask what to do, then proceed to log in ', function () {
     // We show a modal with a short explation :
     // 'A wallet was found on this computer. Please sign in to use this wallet; or continue navigating anonymously'
     // if the user chooses the second option, a session var should be st so the user is not bothered again in the future
@@ -457,7 +439,7 @@ describe('Profile and accounts workflow:', function () {
 
     browser.waitForVisible('#foundKeystore')
     // the user can now choose between contiuing anonimously, or to log in
-    // we choose anonimity
+    // we choose to log in
     browser.waitAndClick('#btn-foundKeystore-login')
 
     // we should now see the login modal
@@ -465,11 +447,11 @@ describe('Profile and accounts workflow:', function () {
   })
 
   describe('Password reset:', () => {
-    it('should not allow the user to change their password if they enter the incorrect current password', function () {
+    it('should not allow the user to change their password if they enter the incorrect current password ', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
       browser.waitAndSetValue('#current-password', 'foobar')
@@ -479,16 +461,16 @@ describe('Profile and accounts workflow:', function () {
       assert.equal(browser.isVisible('.edit-password-modal'), true)
       browser.waitForVisible('.main-alert-content')
       browser.waitUntil(() => {
-        console.log(browser.getText('.main-alert-content'))
+        // console.log(browser.getText('.main-alert-content'))
         return browser.getText('.main-alert-content') === 'Wrong password'
       })
     })
 
-    it('should not allow the user to attempt to change their password if they do not enter their current password', function () {
+    it('should not allow the user to attempt to change their password if they do not enter their current password ', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
       browser.waitAndSetValue('#current-password', 'myshinynewpassword')
@@ -501,7 +483,7 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to attempt to change their password if they do not enter a new password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitAndClick('#edit-profile')
+      browser.waitAndClick('.button-settings')
       browser.waitAndClick('.edit-password')
       browser.waitAndSetValue('#current-password', 'myshinynewpassword')
       browser.click('#save-password')
@@ -513,8 +495,8 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to attempt to change their password if they do not enter their current password or a new password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
       browser.waitForClickable('#current-password')
@@ -524,8 +506,8 @@ describe('Profile and accounts workflow:', function () {
     it('should allow the user to attempt to change their password if they enter the correct current password and a new password', function () {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-password')
       browser.click('.edit-password')
       browser.waitAndSetValue('#current-password', 'password')
@@ -557,8 +539,8 @@ describe('Profile and accounts workflow:', function () {
     it('should render the current profile\'s information correctly', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
@@ -571,8 +553,8 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to save profile information if no new information is entered', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
@@ -583,8 +565,8 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to save profile information if only whitespace is entered into the name or email fields', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
-      browser.click('#edit-profile')
+      browser.waitForClickable('.button-settings')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
@@ -601,11 +583,11 @@ describe('Profile and accounts workflow:', function () {
     it('should allow the user to update their name', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
+      browser.waitForClickable('.button-settings')
 
-      assert.equal(browser.getText('.header-title'), 'foobar baz')
+      assert.equal(browser.getText('.internals-header-title'), 'foobar baz')
 
-      browser.click('#edit-profile')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
@@ -615,18 +597,18 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#save-profile-info')
 
       browser.waitUntil(() => {
-        return browser.getText('.header-title') === 'my shiny new name'
+        return browser.getText('.internals-header-title') === 'my shiny new name'
       })
     })
 
     it('should allow the user to update their email', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
+      browser.waitForClickable('.button-settings')
 
       assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
 
-      browser.click('#edit-profile')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.waitAndClick('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')
@@ -644,11 +626,11 @@ describe('Profile and accounts workflow:', function () {
     it('should not allow the user to update their email if they enter an invalid email', () => {
       createUserAndLogin(browser)
       browser.url('http://localhost:3000/profile')
-      browser.waitForClickable('#edit-profile')
+      browser.waitForClickable('.button-settings')
 
       assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
 
-      browser.click('#edit-profile')
+      browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.waitAndClick('.edit-profile-info')
       browser.waitForVisible('.edit-profile-info-modal')

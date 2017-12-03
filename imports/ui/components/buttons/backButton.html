@@ -1,7 +1,9 @@
 <template name="backButton">
-  <button id="back-button" class="button-back {{ className }}">
-    <svg class="button-back-svg">
-      <use class="button-back-svg-use" xlink:href="#icon-return"></use>
-    </svg>
-  </button>
+  {{#if shouldRender}}
+    <button id="back-button" class="button-back {{ className }}">
+      <svg class="button-back-svg">
+        <use class="button-back-svg-use" xlink:href="#icon-return"></use>
+      </svg>
+    </button>
+  {{/if}}
 </template>

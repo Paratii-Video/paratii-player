@@ -198,7 +198,7 @@ const paratiiIPFS = {
   }
 }
 
-$.getScript('/test/files/index.js', () => {
+$.getScript('/test/files/index.min.js', () => {
   let isProduction = Meteor.settings.isProduction
   let repo = paratiiIPFS.getRepoPath()
   if (!repo) {
@@ -241,7 +241,7 @@ $.getScript('/test/files/index.js', () => {
   } else {
     window.ipfs = new Ipfs({
       bitswap: {
-        maxMessageSize: 32 * 1024
+        maxMessageSize: 256 * 1024
         // meterController: paratiiIPFS.meterController
       },
       repo: String(Math.random()),

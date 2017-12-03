@@ -1,3 +1,4 @@
+
 export function log (message) {
   if (Meteor.settings.public.isTestEnv) {
     console.log(message)
@@ -43,16 +44,16 @@ export function add0x (input) {
 
 // Show & hide Modal
 export function showModal (templateName, options = null) {
-  // const template = { contentTemplate: templateName }
-  // const modalOptions = Object.assign(template, options)
-  Session.set('contentTemplate', templateName)
+  Session.set('modalContentTemplate', templateName)
   Session.set('modalOptions', options)
   Modal.show('mainModal', options, {backdrop: 'static'})
 }
 
 export function hideModal (template) {
-  Modal.hide()
-  Session.set('contentTemplate', null)
+  if (!template || Session.get('modalContentTemplate') === template) {
+    Modal.hide()
+    Session.set('modalContentTemplate', null)
+  }
 }
 
 // Manage errors on Alerts
@@ -84,6 +85,53 @@ export function hideModalAlert () {
   Meteor.setTimeout(() => {
     Session.set('modalAlertMessage', null)
   }, 600)
+}
+
+export function resetAlert () {
+  Session.set('globalAlertShow', null)
+  Session.set('globalAlertMessage', null)
+  Session.set('modalAlertShow', null)
+  Session.set('modalAlertMessage', null)
+}
+
+export function removeTrailingSlash (str) {
+  return str.replace(/\/$/, '')
+}
+
+export function _ (message) {
+  return require('meteor/tap:i18n').TAPi18n.__(message)
+}
+
+export function setIsNavigatingBack (navigatingBack = false) {
+  Session.set('navigatingBack', navigatingBack)
+}
+
+export function getIsNavigatingBack () {
+  return Session.get('navigatingBack')
+}
+
+function getNavHistory () {
+  return Session.get('navigationHistory') || []
+}
+
+export function addToNavigationHistory (prevPath) {
+  if (prevPath && prevPath !== getPrevPageFromHistory()) {
+    const navigationHistory = getNavHistory()
+    navigationHistory.push(prevPath)
+    Session.set('navigationHistory', navigationHistory)
+  }
+}
+
+export function popNavigationHistory () {
+  const navigationHistory = getNavHistory()
+  navigationHistory.pop()
+  Session.set('navigationHistory', navigationHistory)
+}
+
+export function getPrevPageFromHistory () {
+  const navigationHistory = getNavHistory()
+
+  return navigationHistory[navigationHistory.length - 1]
 }
 
 // export function setModalState (message) {

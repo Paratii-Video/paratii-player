@@ -40,13 +40,63 @@
 @ease-smooth: cubic-bezier(0.4, 0.2, 0, 1);
 
 
-//
+// Classes
 
 .anim-element-out {
   opacity: 0;
   transform: translate3d(0, 20px, 0);
   transition: opacity .3s, transform .6s @ease-smooth;
 }
+
+.main-modal-anim-1,
+.main-modal-anim-2,
+.main-modal-anim-3,
+.main-modal-anim-4,
+.main-modal-anim-5 {
+  &:extend(.anim-element-out all);
+
+  .active &,
+  .show-content & {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.main-modal-anim-1 {
+  .active &,
+  .show-content & {
+    transition: opacity .3s linear .1s, transform .75s @ease-smooth;
+  }
+}
+
+.main-modal-anim-2 {
+  .active &,
+  .show-content & {
+    transition: opacity .3s linear .2s, transform .75s @ease-smooth .1s;
+  }
+}
+
+.main-modal-anim-3 {
+  .active &,
+  .show-content & {
+    transition: opacity .3s linear .3s, transform .75s @ease-smooth .2s;
+  }
+}
+
+.main-modal-anim-4 {
+  .active &,
+  .show-content & {
+    transition: opacity .3s linear .4s, transform .75s @ease-smooth .3s;
+  }
+}
+
+.main-modal-anim-5 {
+  .active &,
+  .show-content & {
+    transition: opacity .3s linear .5s, transform .75s @ease-smooth .4s;
+  }
+}
+
 
 // Keyframes
 
@@ -165,12 +215,35 @@
   }
 
   10%, 30%, 50%, 70%, 90% {
-    opacity: .75;
+    opacity: .5;
   }
 
   20%, 40%, 60%, 80% {
     opacity: 1;
   }
+}
+
+@keyframes blinkLong {
+  0% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: .25;
+  }
+
+  50% {
+    opacity: .5;
+  }
+
+  75% {
+    opacity: .25;
+  }
+
+  100% {
+    opacity: 1;
+  }
+
 }
 
 @keyframes dots {

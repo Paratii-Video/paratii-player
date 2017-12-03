@@ -3,8 +3,9 @@ import '/imports/ui/icons/fullscreen.html'
 import '/imports/ui/icons/gear.html'
 import '/imports/ui/components/buttons/backButton.js'
 import '/imports/ui/components/svgs/svgs.js'
-import { add0x, showModal, hideModal, log } from '/imports/lib/utils.js'
+import { add0x, showModal, hideModal, resetAlert, log } from '/imports/lib/utils.js'
 import { keystoresCheck, createAnonymousKeystoreIfNotExists, getKeystore, mergeOrCreateNewWallet } from '/imports/lib/ethereum/wallet.js'
+import '/imports/ui/components/loaders/mainLoader.js'
 import '/imports/ui/components/alert/globalAlert.js'
 import '/imports/ui/components/modals/foundKeystore.js'
 
@@ -13,6 +14,8 @@ if (Meteor.isClient) {
   Accounts.onLogin(function (user) {
     // User is logged in
     log('onLogin')
+    // This one is used to hide/show the foundKeystore modal
+    window.sessionStorage.setItem('navigation', 'logged')
     // if any modal is still open, we can safely close it now to make it possible to open new ones
     // get the user's keystore
     const keystore = getKeystore()
@@ -44,10 +47,13 @@ if (Meteor.isClient) {
     Session.set('tempKeystore', null)
     Session.set('tempAddress', null)
     Session.set('wallet-state', null)
+    // This one is used to hide/show the foundKeystore modal
+    window.sessionStorage.setItem('navigation', 'anonymous')
   })
 }
 
 Template.App_body.onCreated(function () {
+  resetAlert()
   // TODO: perhaps use a ReactiveDict here and store other state variables as well
   this.navState = new ReactiveVar('minimized')
 
@@ -64,7 +70,9 @@ Template.App_body.onCreated(function () {
     if (keystores.users > 0) {
       // There is at least one User keystore
       // Propose to login if not create anonymous keystore
-      showModal('foundKeystore')
+      if (window.sessionStorage.getItem('navigation') !== 'anonymous') {
+        showModal('foundKeystore')
+      }
     } else {
       // If there is no User keystore
     }
@@ -95,6 +103,9 @@ Template.App_body.helpers({
     var current = FlowRouter.current()
     var route = current.route.name
     return route
+  },
+  showMainLoaderClass () {
+    return (Session.get('showMainLoader')) ? 'show-main-loader' : false
   }
 })
 

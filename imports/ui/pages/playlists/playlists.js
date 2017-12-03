@@ -4,6 +4,7 @@ import { Videos } from '../../../../imports/api/videos.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import '/imports/ui/components/internals/internalsHeader.js'
+import '/imports/ui/components/internals/internalsPagination.js'
 import '/imports/ui/components/modals/playlist.js'
 import '/imports/ui/components/buttons/settingsButton.js'
 import './playlists.html'
@@ -14,6 +15,7 @@ Template.playlists.onCreated(function () {
 
   // paging init
   this.page = new ReactiveVar()
+  this.totalVideos = new ReactiveVar()
 
   // autorun this when the playlist changes
   this.autorun(() => {
@@ -25,6 +27,7 @@ Template.playlists.onCreated(function () {
     Meteor.subscribe('videosPlaylist', FlowRouter.getParam('_id'), this.page.get(), () => {
       const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
       const videosId = playlist.videos
+      this.totalVideos.set(playlist.videos.length)
 
       console.log('playlistvideos', playlist.videos.length)
       // for each video of the playlist checks if the user bought it
@@ -63,7 +66,6 @@ Template.playlists.helpers({
         const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
         const videosIds = playlist.videos
         const videos = Videos.find({ _id: { '$in': videosIds } })
-
         return videos
       }
     }
@@ -101,8 +103,8 @@ Template.playlists.helpers({
       return 'Playlists'
     }
   },
-  getBackButton () {
-    return (FlowRouter.getParam('_id'))
+  getPrevPage () {
+    return '/playlists'
   },
   addSettingsButton () {
     return 'settingsButton'
@@ -114,11 +116,40 @@ Template.playlists.helpers({
     }
     return videoTitle
   },
+  hasNext () {
+    console.log('has next', Template.instance().totalVideos.get())
+    const currentPage = Template.instance().page.get()
+    const totalItem = Template.instance().totalVideos.get()
+    const step = Meteor.settings.public.paginationStep
+    if (currentPage * step >= totalItem - step) {
+      return false
+    } else {
+      return true
+    }
+  },
+  hasPrev () {
+    console.log('has prev', Template.instance().totalVideos.get())
+    const currentPage = Template.instance().page.get()
+    const step = Meteor.settings.public.paginationStep
+
+    if (currentPage * step === 0) {
+      return false
+    } else {
+      return true
+    }
+  },
   getprevpage () {
     return '/' + FlowRouter.getRouteName() + '/' + getCurrentPlaylistId() + '?p=' + (parseInt(Template.instance().page.get()))
   },
   getnextpage () {
     return '/' + FlowRouter.getRouteName() + '/' + getCurrentPlaylistId() + '?p=' + (parseInt(Template.instance().page.get()))
+  },
+  getThumbUrl (thumbSrc) {
+    if (thumbSrc.startsWith('/ipfs/')) {
+      return String('https://gateway.paratii.video' + thumbSrc)
+    } else {
+      return String(thumbSrc)
+    }
   }
 })
 
@@ -142,5 +173,8 @@ Template.playlists.events({
   },
   'click button.thumbs-list-settings' (event, instance) {
     $(event.currentTarget).closest('.thumbs-list-item').toggleClass('active')
+  },
+  'mouseleave li.thumbs-list-item' (event, instance) {
+    $(event.currentTarget).removeClass('active')
   }
 })

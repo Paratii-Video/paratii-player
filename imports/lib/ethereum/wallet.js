@@ -63,6 +63,7 @@ function saveKeystore (seedPhrase, keystore, address, key) {
   Session.set('seed', seedPhrase)
   RLocalStorage.setItem(`keystore-${key}`, keystore)
   Session.set(`keystore-${key}`, keystore)
+  console.log(`keystore with ${key}: address: ${address}`)
   Session.set('userPTIAddress', add0x(address))
 }
 
@@ -126,7 +127,7 @@ function mergeOrCreateNewWallet (password) {
     }
   } else {
     console.log('anonymousKeystore is not null, we have no keystore, this was an existing user,')
-    showModal('regenerateKeystore')
+    showModal('regenerateKeystore', {blocking: true})
   }
 }
 
@@ -150,8 +151,6 @@ export function getKeystore (user = null) {
   // using lightwallet to deserialize the keystore
   if (serializedKeystore !== null) {
     const keystore = lightwallet.keystore.deserialize(serializedKeystore)
-    // const address = keystore.getAddresses()[0]
-    // Session.set('userPTIAddress', add0x(address))
     return keystore
   }
   return null

@@ -7,7 +7,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmVf18CJ4kBJTXVZKMWVm54obnwVzMQs6JU9YxuTfDm5F2',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/sIp11sadEyU/default.jpg',
+    'thumb': '/ipfs/QmVf18CJ4kBJTXVZKMWVm54obnwVzMQs6JU9YxuTfDm5F2/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -21,11 +21,11 @@ export const videos = [
   {
     '_id': 'QmNZS5J3LS1tMEVEP3tz3jyd2LXUEjkYJHyWSuwUvHDaRJ',
     'title': 'The mathematician who cracked Wall Street | Jim Simons',
-    'description': "Jim Simons was a mathematician and cryptographer who realized: the complex math he used to break codes could help explain patterns in the world of finance. Billions later, he’s working to support the next generation of math teachers and scholars. TED’s Chris Anderson sits down with Simons to talk about his extraordinary life in numbers.\n\nTEDTalks is a daily video podcast of the best talks and performances from the TED Conference, where the world's leading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and much more.\nFind closed captions and translated subtitles in many languages at http://www.ted.com/translate\n\nFollow TED news on Twitter: http://www.twitter.com/tednews\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: http://www.youtube.com/user/TEDtalksD...",
+    'description': 'Jim Simons was a mathematician and cryptographer who realized: the complex math he used to break codes could help explain patterns in the world of finance. Billions later, he’s working to support the next generation of math teachers and scholars. TED’s Chris Anderson sits down with Simons to talk about his extraordinary life in numbers.\n\nTEDTalks is a daily video podcast of the best talks and performances from the TED Conference, where the world\'sleading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and much more.\nFind closed captions and translated subtitles in many languages at http://www.ted.com/translate\n\nFollow TED news on Twitter: http://www.twitter.com/tednews\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: http://www.youtube.com/user/TEDtalksD...',
     'price': 14,
     'src': '/ipfs/QmQvhvzMXKX71jLGjSfM9iKiWVKETXDmkPaQXhe4WrMmZ9',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/U5kIdtMJGc8/default.jpg',
+    'thumb': '/ipfs/QmQvhvzMXKX71jLGjSfM9iKiWVKETXDmkPaQXhe4WrMmZ9/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -55,7 +55,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmU1f8mKebPzCHskk3DDsFUJLxFLVeCxJ1BqyhQvkV8FyJ',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/66SaEDzlmP4/default.jpg',
+    'thumb': '/ipfs/QmU1f8mKebPzCHskk3DDsFUJLxFLVeCxJ1BqyhQvkV8FyJ/thumbnail-1280x720_3.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -80,7 +80,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmYWbuJZiDYA5RdUEBo9SXfVZWKbM4Y93Swu9ftezwkMjG',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/MB-drzcRCD8/default.jpg',
+    'thumb': '/ipfs/QmYWbuJZiDYA5RdUEBo9SXfVZWKbM4Y93Swu9ftezwkMjG/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -102,7 +102,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmPDG5AxEpfsQ1cfWU6Kcguc9Bn6eDEdKiUbqxUwSRQBi7',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/fwEsXBDFk6c/default.jpg',
+    'thumb': '/ipfs/QmPDG5AxEpfsQ1cfWU6Kcguc9Bn6eDEdKiUbqxUwSRQBi7/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -122,12 +122,12 @@ export const videos = [
   },
   {
     '_id': 'QmPRWjy3xqbxukKBMVTYH6Zk44gkVJFwzexzvZYfM164Rv',
-    'title': "We've stopped trusting institutions and started trusting strangers | Rachel Botsman",
-    'description': "Something profound is changing our concept of trust, says Rachel Botsman. While we used to place our trust in institutions like governments and banks, today we increasingly rely on others, often strangers, on platforms like Airbnb and Uber and through technologies like the blockchain. This new era of trust could bring with it a more transparent, inclusive and accountable society — if we get it right. Who do you trust?\n\nTEDTalks is a daily video podcast of the best talks and performances from the TED Conference, where the world's leading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and much more.\nFind closed captions and translated subtitles in many languages at http://www.ted.com/translate\n\nFollow TED news on Twitter: http://www.twitter.com/tednews\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: http://www.youtube.com/user/TEDtalksD...",
+    'title': 'We\'ve stopped trusting institutions and started trusting strangers | Rachel Botsman',
+    'description': 'Something profound is changing our concept of trust, says Rachel Botsman. While we used to place our trust in institutions like governments and banks, today we increasingly rely on others, often strangers, on platforms like Airbnb and Uber and through technologies like the blockchain. This new era of trust could bring with it a more transparent, inclusive and accountable society — if we get it right. Who do you trust?\n\nTEDTalks is a daily video podcast of the best talks and performances from the TED Conference',
     'price': 0,
     'src': '/ipfs/QmWVYEZKE1E4U8Xgh88Td5iqhFgnHq4giTM7JoaDu89WMw',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/GqGksNRYu8s/default.jpg',
+    'thumb': '/ipfs/QmWVYEZKE1E4U8Xgh88Td5iqhFgnHq4giTM7JoaDu89WMw/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -158,7 +158,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmTJ6eCzaK2rzVr4hcbyxu8ZjSdSLDoHUn7ddgndeTXCa7',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/pQjwySXLm6Y/default.jpg',
+    'thumb': '/ipfs/QmTJ6eCzaK2rzVr4hcbyxu8ZjSdSLDoHUn7ddgndeTXCa7/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -180,7 +180,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/Qma1wQ1H3hBD5imQiFv6SWW4idx6FV1F1BdnFjADCdwA7z',
     'mimetype': 'video/mp4',
-    'thumb': 'thumbnail-1280x720_1.png',
+    'thumb': '/ipfs/Qma1wQ1H3hBD5imQiFv6SWW4idx6FV1F1BdnFjADCdwA7z/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -197,7 +197,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmevuGixcmVJg8FB2y6i1GvBSNWTaTNFpbxwgKnhUf2RAd',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/yZCe_ra2a8w/default.jpg',
+    'thumb': '/ipfs/QmevuGixcmVJg8FB2y6i1GvBSNWTaTNFpbxwgKnhUf2RAd/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -215,7 +215,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmXtoDgqzSr5ECwzQYYeqsDJoSmccj7xpJdDqsicBqm2Lo',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/DY2qhydRK_0/default.jpg',
+    'thumb': '/ipfs/QmXtoDgqzSr5ECwzQYYeqsDJoSmccj7xpJdDqsicBqm2Lo/thumbnail-1280x720_3.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -233,7 +233,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmaW2T8QESQvABYFTiFbFGjMXiBfVxcZiU3tpzNiStH18f',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/G9Bp56y3X8U/default.jpg',
+    'thumb': '/ipfs/QmaW2T8QESQvABYFTiFbFGjMXiBfVxcZiU3tpzNiStH18f/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -251,7 +251,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmQZbQJ5nRkAafVg3yhE8Jmftwgh69cBx2Kyjaht5jgU1a',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/ycF0WFHY5kc/default.jpg',
+    'thumb': '/ipfs/QmQZbQJ5nRkAafVg3yhE8Jmftwgh69cBx2Kyjaht5jgU1a/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -269,7 +269,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmaHJqPEHxRh6wkgiXsFL4Xt9ZhLVJ6JD4sbD6MRi5zveB',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/sIp11sadEyU/default.jpg',
+    'thumb': '/ipfs/QmaHJqPEHxRh6wkgiXsFL4Xt9ZhLVJ6JD4sbD6MRi5zveB/thumbnail-1280x720_3.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -287,7 +287,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmRDpg7zQxVZqC1sjq3Lyb1SYZMekBpcmdJWc1HKDWQ7xM',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/l9dpjN3Mwps/default.jpg',
+    'thumb': '/ipfs/QmRDpg7zQxVZqC1sjq3Lyb1SYZMekBpcmdJWc1HKDWQ7xM/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -313,11 +313,11 @@ export const videos = [
   {
     '_id': 'QmRfgwZWphXHhFU2h3pTozoYkZCB58KPo7zqsqsYKLdezG',
     'title': 'Thelonious Monk - Underground (HD FULL ALBUM)',
-    'description': "Thelonious Sphere Monk (October 10, 1917 – February 17, 1982) was an American jazz pianist and composer. Monk had a unique improvisational style and made numerous contributions to the standard jazz repertoire, including \"'Round Midnight\", \"Blue Monk\", \"Straight, No Chaser\" \"Ruby, My Dear\", \"In Walked Bud\", and \"Well, You Needn't\".\n\nAlthough this album is most widely known for its provocative cover image, which depicts Monk as a fictitious French Resistance fighter in the Second World War, it contains a number of new Monk compositions, some of which appear in recorded form only on this album. This is the last Monk album featuring the Thelonious Monk Quartet, and the last featuring Charlie Rouse (who appears on only half the tracks, having missed a recording session to attend his father's funeral).\n(Taken from Wikipedia)\n\nTracklist:\n\n01 - 00:00 - Thelonious\n02 - 03:17 - Ugly Beauty\n03 - 14:04 - Raise Four\n04 - 21:06 - Boo Boo’s Birthday (Take 11)\n05 - 27:04 - Easy Street\n06 - 34:57 - Green Chimneys\n07 - 48:09 - In Walked Bud\n08 - 54:59 - Ugly Beauty (Take 4)\n09 - 62:38 - Boo Boo’s Birthday (Take 2)\n10 - 68:14 - Thelonious (Take 3)\n\nThelonious Monk - Piano\nCharlie Rouse - Tenor Sax\nLary Gales - Bass\nBen Riley - Drums\n\nJon Hendricks - vocals on \"In Walked Bud\"\n\nProducer: Teo Macero\n\nLearn more about Thelonious Monk:\nhttp://monkinstitute.org/about-us/the...",
+    'description': 'Thelonious Sphere Monk (October 10, 1917 – February 17, 1982) was an American jazz pianist and composer. Monk had a unique improvisational style and made numerous contributions to the standard jazz repertoire, including \'Round Midnight\', \'Blue Monk\', \'Straight, No Chaser\' \'Ruby, My Dear\', \'In Walked Bud\', and \'Well, You Needn\'t\'.\n\nAlthough this album is most widely known for its provocative cover image, which depicts Monk as a fictitious French Resistance fighter in the Second World War, it contains a number of new Monk compositions, some of which appear in recorded form only on this album. This is the last Monk album featuring the Thelonious Monk Quartet, and the last featuring Charlie Rouse (who appears on only half the tracks, having missed a recording session to attend his father\'sfuneral)',
     'price': 0,
     'src': '/ipfs/QmcG7zfXxsjrCrRby6SBG2wLabzix61WZkFwJAQQJmQvuV',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/eXKIEJ0ez98/default.jpg',
+    'thumb': '/ipfs/QmcG7zfXxsjrCrRby6SBG2wLabzix61WZkFwJAQQJmQvuV/thumbnail-1280x720_3.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -343,7 +343,7 @@ export const videos = [
       'Thelonious',
       'Ugly Beauty',
       'Raise Four',
-      "Boo Boo's Birthday",
+      'Boo Boo\'sBirthday',
       'Easy Street',
       'Green Chimneys',
       'In Walked Bud',
@@ -360,7 +360,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmPMU2eiLf5sqXw37EwKd5U6d65GqyD7FoaihHXBA5avxE',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/LR1fOVVxqZU/default.jpg',
+    'thumb': '/ipfs/QmPMU2eiLf5sqXw37EwKd5U6d65GqyD7FoaihHXBA5avxE/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -378,7 +378,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmdALMEdZ9KbiFBDqPq61SAy3wotbB3Fy57ods1a9gg191',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/wpXBENzAmfg/default.jpg',
+    'thumb': '/ipfs/QmdALMEdZ9KbiFBDqPq61SAy3wotbB3Fy57ods1a9gg191/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -400,7 +400,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmSJPDbaUsFR236vaVKYyqFPoVShBv2RrYgJ1yeqStj4uB',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/pQjwySXLm6Y/default.jpg',
+    'thumb': '/ipfs/QmSJPDbaUsFR236vaVKYyqFPoVShBv2RrYgJ1yeqStj4uB/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -422,7 +422,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/Qmeds3RhqZfVPGy4DD6kL1W4xVXXfcikqR9jxpTMLKjGAZ',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/2u60czobhBo/default.jpg',
+    'thumb': '/ipfs/Qmeds3RhqZfVPGy4DD6kL1W4xVXXfcikqR9jxpTMLKjGAZ/thumbnail-1280x720_3.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -440,7 +440,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmPMnPN53mRGXvm2y3t3Ba8aypuW53aMYbfienZVZNRbWX',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/k7rgse0gISI/default.jpg',
+    'thumb': '/ipfs/QmPMnPN53mRGXvm2y3t3Ba8aypuW53aMYbfienZVZNRbWX/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -458,7 +458,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmRPaoXoARwgt4c83wWRuZoaSL3Vn4X2MtbVEzzjpcyaxW',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/2GwN3vc_9ic/default.jpg',
+    'thumb': '/ipfs/QmRPaoXoARwgt4c83wWRuZoaSL3Vn4X2MtbVEzzjpcyaxW/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -472,11 +472,11 @@ export const videos = [
   {
     '_id': 'QmTu5dEdUk37hAcXBBa9Y8zRfd5rnY4gSCTahbYYkJPZsU',
     'title': 'DEVCON1: Ethereum for Dummies - Dr. Gavin Wood',
-    'description': "DEVCON1 10:45am Day 5\n\nEthereum's CTO Dr. Gavin Wood presents \"Ethereum for Dummies\" or \"So, now we've built it, WTF is it?\"",
+    'description': 'DEVCON1 10:45am Day 5\n\nEthereum\'sCTO Dr. Gavin Wood presents \'Ethereum for Dummies\' or \'So, now we\'ve built it, WTF is it?\'',
     'price': 0,
     'src': '/ipfs/Qmf52shAzKuuNSiZDyYoMeitzrb54yzwczxNoyuKEdpVHz',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/U_LK0t_qaPo/default.jpg',
+    'thumb': '/ipfs/Qmf52shAzKuuNSiZDyYoMeitzrb54yzwczxNoyuKEdpVHz/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -515,7 +515,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmYSAM1QnHtc6NH13MnYgeenUbLwBLQF6c3owjeAfurQMN',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/7Y3fWXA6d5k/default.jpg',
+    'thumb': '/ipfs/QmYSAM1QnHtc6NH13MnYgeenUbLwBLQF6c3owjeAfurQMN/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -534,11 +534,11 @@ export const videos = [
   {
     '_id': 'QmVKgd4AzrnjKFiuuXEKvfuDz1uoYGeagddrdNTmYvN2wX',
     'title': 'Keith Chen: Could your language affect your ability to save money?',
-    'description': "What can economists learn from linguists? Behavioral economist Keith Chen introduces a fascinating pattern from his research: that languages without a concept for the future -- \"It rain tomorrow,\" instead of \"It will rain tomorrow\" -- correlate strongly with high savings rates.\n\nTEDTalks is a daily video podcast of the best talks and performances from the TED Conference, where the world's leading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and much more.\nFind closed captions and translated subtitles in many languages at http://www.ted.com/translate\n\nFollow TED news on Twitter: http://www.twitter.com/tednews\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: http://www.youtube.com/user/TEDtalksD...",
+    'description': 'What can economists learn from linguists? Behavioral economist Keith Chen introduces a fascinating pattern from his research: that languages without a concept for the future -- \'It rain tomorrow,\' instead of \'It will rain tomorrow\' -- correlate strongly with high savings rates.\n\nTEDTalks is a daily video podcast of the best talks and performances from the TED Conference, where the world\'sleading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and much more.\nFind closed captions and translated subtitles in many languages at http://www.ted.com/translate\n\nFollow TED news on Twitter: http://www.twitter.com/tednews\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: http://www.youtube.com/user/TEDtalksD...',
     'price': 0,
     'src': '/ipfs/Qmeb223WSUVerCuF1bEqqv848ZCC6ECmZus4jzVMsXrhpE',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/lw3YTbubyjI/default.jpg',
+    'thumb': '/ipfs/Qmeb223WSUVerCuF1bEqqv848ZCC6ECmZus4jzVMsXrhpE/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -569,7 +569,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmTigQbUpPrTiQ97koyNZGYfx5FRMf3viz2rxkz4kTcx9K',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/JbokkV1Roj4/default.jpg',
+    'thumb': '/ipfs/QmTigQbUpPrTiQ97koyNZGYfx5FRMf3viz2rxkz4kTcx9K/thumbnail-502x360_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -591,7 +591,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmTQAKHPifrS5m6CSLcBs1kroCRPSsCaJsdN9XHFctqj4N',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/gBy-pu1kzdQ/default.jpg',
+    'thumb': '/ipfs/QmTQAKHPifrS5m6CSLcBs1kroCRPSsCaJsdN9XHFctqj4N/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -605,11 +605,11 @@ export const videos = [
   {
     '_id': 'QmVfLF8tNK9jhxyTeqMNhj1TbUMDXRMTEhC2iZdcft6fWY',
     'title': 'Santiment: A Better Way to Trade Crypto Markets',
-    'description': 'This is "Santiment: A Better Way to Trade Crypto Markets" by Santiment on Vimeo, the home for high quality videos and the people who love them.',
+    'description': 'This is \'Santiment: A Better Way to Trade Crypto Markets\' by Santiment on Vimeo, the home for high quality videos and the people who love them.',
     'price': 0,
     'src': '/ipfs/QmT8gz3ZCde4LKjypmHsKLRTGh1AFzQxp31qKE2VgNcC3Y',
     'mimetype': 'video/mp4',
-    'thumb': 'thumbnail-1280x720_1.png',
+    'thumb': '/ipfs/QmT8gz3ZCde4LKjypmHsKLRTGh1AFzQxp31qKE2VgNcC3Y/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -626,7 +626,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmVmf5BgvH2Qvq9R4b4P7r9kx4ZNMQ24E41iAwAXkvoLZn',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/dhJnt0N497c/default.jpg',
+    'thumb': '/ipfs/QmVmf5BgvH2Qvq9R4b4P7r9kx4ZNMQ24E41iAwAXkvoLZn/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -661,7 +661,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmNo1yJnFP3E5pTQFu5bnSkZtxs4G4sSDYLVLxefbVZxq1',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/5ScY7ruD_eg/default.jpg',
+    'thumb': '/ipfs/QmNo1yJnFP3E5pTQFu5bnSkZtxs4G4sSDYLVLxefbVZxq1/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -679,7 +679,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmXQvcG42ZWK4r7rkfL3JNCmWas4haWbhkD6tAmRRw376o',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/P35M74KcLmA/default.jpg',
+    'thumb': '/ipfs/QmXQvcG42ZWK4r7rkfL3JNCmWas4haWbhkD6tAmRRw376o/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -697,7 +697,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/Qme3GH9CWn8iTzaUG5Lo6ZYRSuFF7tASaWNsRwTwcymHpQ',
     'mimetype': 'video/mp4',
-    'thumb': 'thumbnail-1280x720_1.png',
+    'thumb': '/ipfs/Qme3GH9CWn8iTzaUG5Lo6ZYRSuFF7tASaWNsRwTwcymHpQ/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -710,11 +710,11 @@ export const videos = [
   {
     '_id': 'QmX6LC9u4R4Q4aQtEnZKhFbzEesNtXFFjZSZg8rzdzrG36',
     'title': 'How the blockchain is changing money and business | Don Tapscott',
-    'description': "What is the blockchain? If you don't know, you should; if you do, chances are you still need some clarification on how it actually works. Don Tapscott is here to help, demystifying this world-changing, trust-building technology which, he says, represents nothing less than the second generation of the internet and holds the potential to transform money, business, government and society.\n\nTEDTalks is a daily video podcast of the best talks and performances from the TED Conference, where the world's leading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and much more.\nFind closed captions and translated subtitles in many languages at http://www.ted.com/translate\n\nFollow TED news on Twitter: http://www.twitter.com/tednews\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: http://www.youtube.com/user/TEDtalksD...",
+    'description': 'What is the blockchain? If you don\'t know, you should; if you do, chances are you still need some clarification on how it actually works. Don Tapscott is here to help, demystifying this world-changing, trust-building technology which, he says, represents nothing less than the second generation of the internet and holds the potential to transform money, business, government and society.\n\nTEDTalks is a daily video podcast of the best talks and performances from the TED Conference, where the world\'s leading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and much more.\nFind closed captions and translated subtitles in many languages at http://www.ted.com/translate\n\nFollow TED news on Twitter: http://www.twitter.com/tednews\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: http://www.youtube.com/user/TEDtalksD...',
     'price': 0,
     'src': '/ipfs/QmP7UrJauwsnsguuQsjpXw6SzSWTU8KaSnjzfF57SDz5Nj',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/Pl8OlkkwRpc/default.jpg',
+    'thumb': '/ipfs/QmP7UrJauwsnsguuQsjpXw6SzSWTU8KaSnjzfF57SDz5Nj/thumbnail-1280x720_3.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -746,7 +746,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmX4qHN35WBwLhXWZgkQERPYWgtQev4ZrpJNvUv7tjYyBr',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/Ymg_sq9j_To/default.jpg',
+    'thumb': '/ipfs/QmX4qHN35WBwLhXWZgkQERPYWgtQev4ZrpJNvUv7tjYyBr/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -764,7 +764,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmcsGURc4MtPXYa5X1nAw6bppWHopBHRjZ7SeHPQeWTmUQ',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/P35M74KcLmA/default.jpg',
+    'thumb': '/ipfs/QmcsGURc4MtPXYa5X1nAw6bppWHopBHRjZ7SeHPQeWTmUQ/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -782,7 +782,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmYWbuJZiDYA5RdUEBo9SXfVZWKbM4Y93Swu9ftezwkMjG',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/MB-drzcRCD8/default.jpg',
+    'thumb': '/ipfs/QmYWbuJZiDYA5RdUEBo9SXfVZWKbM4Y93Swu9ftezwkMjG/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -800,11 +800,11 @@ export const videos = [
   {
     '_id': 'QmZ324xmvYEa7cHqk32jz51jiMHzRRLHkHxMur3hKy8GaX',
     'title': 'How the blockchain will radically transform the economy | Bettina Warburg',
-    'description': "Say hello to the decentralized economy -- the blockchain is about to change everything. In this lucid explainer of the complex (and confusing) technology, Bettina Warburg describes how the blockchain will eliminate the need for centralized institutions like banks or governments to facilitate trade, evolving age-old models of commerce and finance into something far more interesting: a distributed, transparent, autonomous system for exchanging value.\n\nTEDTalks is a daily video podcast of the best talks and performances from the TED Conference, where the world's leading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and much more.\nFind closed captions and translated subtitles in many languages at http://www.ted.com/translate\n\nFollow TED news on Twitter: http://www.twitter.com/tednews\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: http://www.youtube.com/user/TEDtalksD...",
+    'description': 'Say hello to the decentralized economy -- the blockchain is about to change everything. In this lucid explainer of the complex (and confusing) technology, Bettina Warburg describes how the blockchain will eliminate the need for centralized institutions like banks or governments to facilitate trade, evolving age-old models of commerce and finance into something far more interesting: a distributed, transparent, autonomous system for exchanging value.\n\nTEDTalks is a daily video podcast of the best talks and performances from the TED Conference.',
     'price': 0,
     'src': '/ipfs/QmSveLgoX6kVU2mjVcX14mnJFvwfLMdN2onSdTpKNz5K4V',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/RplnSVTzvnU/default.jpg',
+    'thumb': '/ipfs/QmSveLgoX6kVU2mjVcX14mnJFvwfLMdN2onSdTpKNz5K4V/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -837,7 +837,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmZEPqtxBNXfqtYNih35AAeiYLP4fyrYfdFtk9xQFzZepa',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/fOJgNPdwy18/default.jpg',
+    'thumb': '/ipfs/QmZEPqtxBNXfqtYNih35AAeiYLP4fyrYfdFtk9xQFzZepa/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -859,7 +859,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmRDpg7zQxVZqC1sjq3Lyb1SYZMekBpcmdJWc1HKDWQ7xM',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/l9dpjN3Mwps/default.jpg',
+    'thumb': '/ipfs/QmRDpg7zQxVZqC1sjq3Lyb1SYZMekBpcmdJWc1HKDWQ7xM/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -889,7 +889,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/Qmcw1YXdtmik4KsELVjVW25T5F9EZRVYefATXhbWDYK19t',
     'mimetype': 'video/mp4',
-    'thumb': 'thumbnail-640x360_1.png',
+    'thumb': '/ipfs/Qmcw1YXdtmik4KsELVjVW25T5F9EZRVYefATXhbWDYK19t/thumbnail-640x360_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -906,7 +906,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/Qmaa7MurPx8Sn4d5vN1pG2Ba6aLFyyKSqF55Tnk5n1KzUH',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/LR1fOVVxqZU/default.jpg',
+    'thumb': '/ipfs/Qmaa7MurPx8Sn4d5vN1pG2Ba6aLFyyKSqF55Tnk5n1KzUH/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -924,7 +924,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmfRKofRfoqiUbvNvcEMbWrALBTHGQKti93i1xFCnyBeUu',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/CKa5gTPg6aY/default.jpg',
+    'thumb': '/ipfs/QmfRKofRfoqiUbvNvcEMbWrALBTHGQKti93i1xFCnyBeUu/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -951,7 +951,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmZUbZ7HKWwgRyXw6ERt443knQYjoQzJ6KoYuetN6xgLji',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/8Y_RgEIJisA/default.jpg',
+    'thumb': '/ipfs/QmZUbZ7HKWwgRyXw6ERt443knQYjoQzJ6KoYuetN6xgLji/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -969,7 +969,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmY1NVqNmXjpaNAcnYhjfQk89NYBU5P1p7gD9ZjRFQA3n6',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/H9MclB0J6-A/default.jpg',
+    'thumb': '/ipfs/QmY1NVqNmXjpaNAcnYhjfQk89NYBU5P1p7gD9ZjRFQA3n6/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -991,7 +991,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmejwMM42y5xYuV3sACxztQsK6YqMxTnMAq4FEWokxqwZ6',
     'mimetype': 'video/mp4',
-    'thumb': 'thumbnail-1280x720_1.png',
+    'thumb': '/ipfs/QmejwMM42y5xYuV3sACxztQsK6YqMxTnMAq4FEWokxqwZ6/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -1008,7 +1008,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmaWGPxjeW8s747ho9dBvZ1Fa7pDR6JrRNBKSFVhQkWTL3',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/fwEsXBDFk6c/default.jpg',
+    'thumb': '/ipfs/QmaWGPxjeW8s747ho9dBvZ1Fa7pDR6JrRNBKSFVhQkWTL3/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -1028,12 +1028,12 @@ export const videos = [
   },
   {
     '_id': 'QmcLrjZcHqiB4rv3Tf6CoBEUNEPGQsRCK18gJQS2Xs6am1',
-    'title': "Poverty isn't a lack of character; it's a lack of cash | Rutger Bregman",
-    'description': "\"Ideas can and do change the world,\" says historian Rutger Bregman, sharing his case for a provocative one: guaranteed basic income. Learn more about the idea's 500-year history and a forgotten modern experiment where it actually worked -- and imagine how much energy and talent we would unleash if we got rid of poverty once and for all.\n\nThe TED Talks channel features the best talks and performances from the TED Conference, where the world's leading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and more.\n\nFollow TED on Twitter: http://www.twitter.com/TEDTalks\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: https://www.youtube.com/TED",
+    'title': 'Poverty isn\'t a lack of character; it\'sa lack of cash | Rutger Bregman',
+    'description': '\'Ideas can and do change the world,\' says historian Rutger Bregman, sharing his case for a provocative one: guaranteed basic income. Learn more about the idea\'s500-year history and a forgotten modern experiment where it actually worked -- and imagine how much energy and talent we would unleash if we got rid of poverty once and for all.\n\nThe TED Talks channel features the best talks and performances from the TED Conference, where the world\'sleading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and more.\n\nFollow TED on Twitter: http://www.twitter.com/TEDTalks\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: https://www.youtube.com/TED',
     'price': 0,
     'src': '/ipfs/QmWFmxUcShFirqXnkhXJGwrJNPopK42RKYtbBT6fy5TGEK',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/ydKcaIE6O1k/default.jpg',
+    'thumb': '/ipfs/QmWFmxUcShFirqXnkhXJGwrJNPopK42RKYtbBT6fy5TGEK/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -1062,11 +1062,11 @@ export const videos = [
   {
     '_id': 'QmciKoXJ7u9vTCa5TniiUxzNTPWD5fHvTUUDQivd3YBbdb',
     'title': 'Devcon2: Regulatory Considerations for Dapp Development',
-    'description': "Presentation Slides Download: https://ethereumfoundation.org/devcon...\n\nDevcon2: Regulatory Considerations for Dapp Development.\n\nDapp development and token distribution particularly, pose unique questions for regulators and law enforcement. Ethereum Foundation Executive Director, Ming Chan, will introduce the topic of regulatory issues when creating Dapps, followed by Peter Van Valkenburgh introducing Coin Center. Peter will give a brief summary of Coin Center's advocacy work and the current legal landscape surrounding these technologies.\n\nSpeakers: Ming Chan and Peter Van Valkenburgh\n\nEthereum Developer Conference, 2016 September 19 - 21,\nShanghai, China",
+    'description': 'Presentation Slides Download: https://ethereumfoundation.org/devcon...\n\nDevcon2: Regulatory Considerations for Dapp Development.\n\nDapp development and token distribution particularly, pose unique questions for regulators and law enforcement. Ethereum Foundation Executive Director, Ming Chan, will introduce the topic of regulatory issues when creating Dapps, followed by Peter Van Valkenburgh introducing Coin Center. Peter will give a brief summary of Coin Center\'sadvocacy work and the current legal landscape surrounding these technologies.\n\nSpeakers: Ming Chan and Peter Van Valkenburgh\n\nEthereum Developer Conference, 2016 September 19 - 21,\nShanghai, China',
     'price': 0,
     'src': '/ipfs/QmWBCVR7N4QtnMYtKC34tGjJXbJgnDSEDZVLA6wDxmK7BP',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/5J8BL60_zj8/default.jpg',
+    'thumb': '/ipfs/QmWBCVR7N4QtnMYtKC34tGjJXbJgnDSEDZVLA6wDxmK7BP/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -1094,7 +1094,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/Qmb1va4tA3vpv2K4RfjYqT1a184E2Ka2dfUh2ZJF6xMN7L',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/bSdwqa3Yl0Q/default.jpg',
+    'thumb': '/ipfs/Qmb1va4tA3vpv2K4RfjYqT1a184E2Ka2dfUh2ZJF6xMN7L/thumbnail-1280x720_3.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -1123,7 +1123,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmTtWttorVKfpwttiWk4ri8DZseKEPrZzT7JVLaCZCNPoP',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/2MfOQcHooNo/default.jpg',
+    'thumb': '/ipfs/QmTtWttorVKfpwttiWk4ri8DZseKEPrZzT7JVLaCZCNPoP/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -1152,7 +1152,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmZwP1YRqy3QdGpMTWobXpkkGJ7VguLtXmJnfFCLd9gWL2',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/zSF5fGPG4Ro/default.jpg',
+    'thumb': '/ipfs/QmZwP1YRqy3QdGpMTWobXpkkGJ7VguLtXmJnfFCLd9gWL2/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -1174,7 +1174,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmdALMEdZ9KbiFBDqPq61SAy3wotbB3Fy57ods1a9gg191',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/wpXBENzAmfg/default.jpg',
+    'thumb': '/ipfs/QmdALMEdZ9KbiFBDqPq61SAy3wotbB3Fy57ods1a9gg191/thumbnail-1280x720_1.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -1196,7 +1196,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmVmf5BgvH2Qvq9R4b4P7r9kx4ZNMQ24E41iAwAXkvoLZn',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/dhJnt0N497c/default.jpg',
+    'thumb': '/ipfs/QmVmf5BgvH2Qvq9R4b4P7r9kx4ZNMQ24E41iAwAXkvoLZn/thumbnail-1280x720_2.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -1231,7 +1231,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmRhf69i7kRifoLh7J8iypzbsPtQjDEweMf4mwL2Yia8y3',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/NbnZi9SImYY/default.jpg',
+    'thumb': '/ipfs/QmRhf69i7kRifoLh7J8iypzbsPtQjDEweMf4mwL2Yia8y3/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0
@@ -1249,7 +1249,7 @@ export const videos = [
     'price': 0,
     'src': '/ipfs/QmPtuzp74oi9rmThkApSm8UMbRBEbJ8KeGCa2x1FXhHc5U',
     'mimetype': 'video/mp4',
-    'thumb': 'https://i.ytimg.com/vi/ZXZOdLuIAiE/default.jpg',
+    'thumb': '/ipfs/QmPtuzp74oi9rmThkApSm8UMbRBEbJ8KeGCa2x1FXhHc5U/thumbnail-1280x720_4.png',
     'stats': {
       'likes': 0,
       'dislikes': 0

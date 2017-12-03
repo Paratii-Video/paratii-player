@@ -1,14 +1,17 @@
 import { Template } from 'meteor/templating'
 import Clipboard from 'clipboard'
+import { removeTrailingSlash } from '/imports/lib/utils.js'
+
 import '/imports/ui/components/form/mainFormInput.js'
 import './embedCustomizer.html'
+import '/imports/ui/email/sharing.html'
 
 let clipboard
 const embedSizes = [
   {
     type: 'mini',
-    width: 570,
-    height: 320
+    width: 490,
+    height: 280
 
   },
   {
@@ -54,27 +57,35 @@ Template.modal_share_links.onCreated(function () {
 
 Template.modal_share_links.helpers({
   embedBaseUrl () {
-    return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    return removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
   },
   facebook () {
     var baseurl = 'https://www.facebook.com/sharer/sharer.php?u='
-    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    return baseurl + removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
   },
   twitter () {
-    var baseurl = 'https://twitter.com/intent/tweet?text='
-    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    var baseurl = 'https://twitter.com/intent/tweet'
+    var url = '?url=' + removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
+    var text = '&text=🎬 Worth a watch: ' + this.videoTitle
+    return baseurl + url + text
   },
   whatsapp () {
     var baseurl = 'whatsapp://send?text='
-    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    var url = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
+    var text = '🎬 Worth a watch: ' + this.videoTitle + ' '
+    return baseurl + text + url
+  },
+  whatsappDesktop () {
+    var baseurl = 'https://web.whatsapp.com/send?text='
+    var url = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
+    var text = '🎬 Worth a watch: ' + this.videoTitle + ' '
+    return baseurl + text + url
   },
   telegram () {
-    var baseurl = 'https://t.me/share/url?url='
-    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
-  },
-  email () {
-    var baseurl = 'mailto:?&subject=Paratii&body='
-    return baseurl + Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId
+    var baseurl = 'https://t.me/share/url'
+    var url = '?url=' + removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/play/' + this.videoId
+    var text = '&text=🎬 Worth a watch: ' + this.videoTitle
+    return baseurl + url + text
   }
 })
 
@@ -97,14 +108,29 @@ Template.modal_share_via_email.events({
   'submit #send_email' (event, instance) {
     event.preventDefault()
     const target = event.target
+    const baseurl = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl)
+    const videoUrl = baseurl + '/play/' + this.videoId
+    const videoTitle = this.videoTitle
+    const videoDescription = this.videoDescription
     console.log(target['email'].value)
+    var ipfsGateway = removeTrailingSlash(Meteor.settings.public.ipfs_gateway)
+    var thumbUrl = this.videoThumb
+    var thumbnailUrl = ipfsGateway + thumbUrl
+    var dataContext = {
+      video_url: videoUrl,
+      video_title: videoTitle,
+      video_thumb: thumbnailUrl,
+      video_description: videoDescription,
+      paratii_url: baseurl
+    }
+    var html = Blaze.toHTMLWithData(Template.email_template, dataContext)
+
     Meteor.call(
       'sendEmail',
-
       target['email'].value,
       'Paratii <sharing@player.paratii.video>',
-      'Check this out!',
-      Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/play/' + this.videoId,
+      'You have to check this video I found (from Paratii with 💙)',
+      html,
       function (err, result) {
         if (err) {
           console.log(err)
@@ -167,7 +193,7 @@ Template.modal_share_via_email.onRendered(() => {
 Template.modal_share_embed.helpers({
   embedSizes,
   embedBaseUrl () {
-    return Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + 'embed/' + this.videoId
+    return removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + 'embed/' + this.videoId
   },
   code () {
     const iframe = document.createElement('iframe')
@@ -190,7 +216,7 @@ Template.modal_share_embed.helpers({
       parameters.fullscreen = 1
     }
     parameters.type = Template.instance().iframe.get('size').type
-    const src = buildUrl(Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/embed/' + this.videoId, parameters)
+    const src = buildUrl(removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl) + '/embed/' + this.videoId, parameters)
     iframe.src = 'srcplaceholder'
 
     iframe.width = Template.instance().iframe.get('size').width

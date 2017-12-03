@@ -2,12 +2,13 @@
 
 // Vars
 
-@size-thumbs-list-item-height: 100px;
-@size-thumbs-list-item-height-mini: 78px;
+@size-thumbs-list-item-height: 86px;
+@size-thumbs-list-item-height-mini: 70px;
 @size-thumbs-list-item-margin: 3.5%;
 @size-thumbs-list-item-width: 31%;
 
 //
+
 .thumbs-list {
   display: flex;
   flex-wrap: wrap;
@@ -15,11 +16,13 @@
 }
 
 .thumbs-list-item {
-  color: @color-white;
+  background: url('img/loader.gif') no-repeat 50%;
   border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(25,25,25,0.2);
+  color: @color-white;
   flex: 0 0 @size-thumbs-list-item-width;
   height: @size-thumbs-list-item-height;
-  margin: 0 0 @size-thumbs-list-item-margin;
+  margin: 0 0 10px;
   overflow: hidden;
   position: relative;
 
@@ -32,6 +35,9 @@
   }
 }
 
+
+// Containers
+
 .thumbs-list-link {
   &:extend(.full-block all);
 
@@ -43,7 +49,7 @@
     &:extend(.pos-a-full all);
 
     background-color: black;
-    content: ''; 
+    content: '';
     opacity: .4;
     transition: opacity .35s;
     z-index: 2;
@@ -58,13 +64,85 @@
   }
 }
 
+.thumb-list-modal {
+  &:extend(.pos-a-full all);
+
+  background-color: #f1f1f1;
+  overflow: hidden;
+  padding: 9px 10px;
+  transform: scaleY(0);
+  transition: transform .35s @ease-smooth;
+  z-index: 2;
+
+  .active & {
+    transform: scaleY(1);
+    transition: transform .6s @ease-smooth;
+  }
+
+  .button-text {
+    &:extend(.truncate-single-line all);
+
+    display: block;
+    text-align: left;
+    width: 100%;
+
+    .query-mini({
+      font-size: 12px;
+    });
+  }
+}
+
+
+//
+
+.thumbs-list-settings {
+  &:extend(.hover-opacity all);
+
+  bottom: 0;
+  height: 30px;
+  left: 11px;
+  position: absolute;
+  width: 15px;
+  z-index: 5;
+
+  .thumb-list-modal & {
+    transform: translate3d(0, 100%, 0);
+    transition: transform .5s @ease-smooth;
+
+    .active & {
+      transform: translate3d(0, 0, 0);
+      transition: transform .5s @ease-smooth .6s;
+    }
+  }
+
+  &-svg {
+    &:extend(.full-block all);
+
+    height: 3px;
+    fill: @color-white;
+    transition: fill .3s;
+
+    .active & {
+      fill: @color-purple;
+    }
+  }
+}
+
+
+//
+
 .thumbs-list-title {
+  &:extend(.truncate-single-line all);
+
   display: block;
   font-size: 14px;
   padding: 10px 10px 0;
   position: relative;
   transition: color .5s;
   z-index: 2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
@@ -117,28 +195,6 @@
   }
 }
 
-.thumbs-list-settings {
-  bottom: 0;
-  height: 30px;
-  left: 10px;
-  position: absolute;
-  width: 15px;
-  z-index: 5;
-
-  &-svg {
-    &:extend(.full-block all);
-
-    height: 3px;
-    fill: @color-white;
-    transition: fill .3s;
-
-    .active &,
-    .thumbs-list-settings:hover & {
-      fill: @color-purple;
-    }
-  }
-}
-
 .thumbs-list-time {
   bottom: 7px;
   font-size: 12px;
@@ -155,17 +211,18 @@
 
 .thumbs-list-price {
   background-color: @color-purple;
-  bottom: 9px;
+  bottom: 4px;
   color: @color-white;
   font-size: 10px;
   opacity: 0;
   padding: 3px 6px 1px;
   position: absolute;
   transition: opacity .25s;
-  right: 10px;
+  right: 6px;
   z-index: 2;
 
   .thumbs-list-link:hover & {
+    color: @color-white; // safari
     opacity: 1;
     transition: opacity .3s linear .3s;
   }
@@ -175,32 +232,28 @@
   &:extend(.pos-a-m all);
 
   backface-visibility: hidden;
+  background: no-repeat 50% 50%;
+  background-size: cover;
+  min-height: 100%;
   overflow: hidden;
+  transform: scale(1.05) translate3d(-50%, -50%, 0);
+  transform-origin: left center;
+  transition: transform .75s @ease-smooth;
   width: 100%;
   z-index: 1;
-}
-
-.thumbs-list-image {
-  &:extend(.full-block all);
-
-  height: auto;
-  transform: scale(1.05);
-  transition: transform .75s @ease-smooth;
 
   .thumbs-list-link:hover & {
-    transform: scale(1.1);
+    transform: scale(1.1) translate3d(-50%, -50%, 0);
     transition: transform .8s @ease-smooth;
   }
 }
 
-.thumb-list-modal {
+.thumbs-list-image {
+  &:extend(.visually-hidden all);
+}
+
+.thumbs-list-loader {
   &:extend(.pos-a-full all);
 
-  background-color: #f1f1f1;
-  padding: 10px 12px;
-  z-index: 4;
-
-  .button-text {
-    display: block;
-  }
+  z-index: 2;
 }

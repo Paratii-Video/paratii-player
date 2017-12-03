@@ -38,48 +38,39 @@ if (Meteor.isServer) {
   })
 
   // Publish searched videos
-  Meteor.publish('searchedVideos', function (keyword) {
+  Meteor.publish('searchedVideos', function (keyword, page) {
     if (!keyword) {
       keyword = ''
     }
-    const queryKeywords = new RegExp(keyword, '')
-    console.log('from server search', queryKeywords)
 
     const query = {
-      $text: {
-        $search: keyword
-      }
-      // $or: [
-      //   { title: queryKeywords },
-      //   { description: queryKeywords },
-      //   { 'uploader.name': queryKeywords },
-      //   { tags: queryKeywords }
-      // ]
+      $or: [
+        { title: {$regex: keyword, $options: '-i'} },
+        { description: {$regex: keyword, $options: '-i'} },
+        { 'uploader.name': {$regex: keyword, $options: '-i'} },
+        { tags: {$regex: keyword, $options: '-i'} }
+      ]
     }
 
-    const relevanceSettings = {
-      fields: {
-        score: {
-          $meta: 'textScore'
-        }
-      },
-      sort: {
-        score: {
-          $meta: 'textScore'
-        }
-      }
+    let step
+    if (Meteor.settings.public.paginationStep === null) {
+      step = 6
+    } else {
+      step = Meteor.settings.public.paginationStep
     }
+
+    const limit = {limit: step, skip: (step * page)}
 
     // i've changed the cursor in order to clean query
-    Mongo.Collection._publishCursor(Videos.find(query, relevanceSettings), this, 'SearchResults')
+    Mongo.Collection._publishCursor(Videos.find(query, limit), this, 'SearchResults')
     this.ready()
     // return Videos.find(query, relevanceSettings)
   })
 
   // Publish one video by id
   Meteor.publish('relatedVideos', function (_id, userID) {
-    console.log('Videos related to', _id)
-    console.log('for the user', userID)
+    // console.log('Videos related to', _id)
+    // console.log('for the user', userID)
     ReactiveAggregate(this, Videos, [
       { $sample: { size: 6 } }
     ]
@@ -92,8 +83,6 @@ if (Meteor.isServer) {
   Meteor.publish('videoPlay', function (_id) {
     return Videos.find(_id)
   })
-
-  // Publish videos by playlist, paged
 
   Meteor.publish('videosPlaylist', function (_id, page) {
     if (_id === null) {
@@ -111,6 +100,7 @@ if (Meteor.isServer) {
       } else {
         step = Meteor.settings.public.paginationStep
       }
+
       return Videos.find({ _id: { '$in': videosIds } }, {limit: step, skip: (step * page)})
     }
   })

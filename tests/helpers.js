@@ -1,9 +1,8 @@
 /* global localStorage */
 import { web3 } from '../imports/lib/ethereum/web3.js'
 import { getParatiiContracts } from '../imports/lib/ethereum/contracts.js'
-import { deployParatiiContracts } from '../imports/lib/ethereum/helpers.js'
+import { deployParatiiContracts, sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
 import { assert } from 'chai'
-
 web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
 export { web3 }
 
@@ -56,15 +55,37 @@ before(async function (done) {
       }
     }, timeout, `Could not click on ${selector} (timeout: ${timeout}s)`)
   })
+
+  browser.addCommand('sendSomeETH', async function (beneficiary, amount, timeout) {
+    // console.log(`send ${amount} to ${beneficiary}`)
+    await sendSomeETH(beneficiary, amount)
+    await browser.waitUntil(function () {
+      let result = browser.execute(function () {
+        return Session.get('eth_balance')
+      })
+      return result.value && result.value > 0
+    }, timeout, `the ETH did not arrive..`)
+  })
+  browser.addCommand('sendSomePTI', async function (beneficiary, amount, timeout) {
+    await sendSomePTI(beneficiary, amount)
+    await browser.waitUntil(function () {
+      let result = browser.execute(function () {
+        return Session.get('pti_balance')
+      })
+      // console.log(`PTI balance: ${result.value}`)
+      return result.value && result.value > 0
+    }, timeout, `the PTI did not arrive..`)
+  })
   browser.url('http://localhost:3000')
-  await getOrDeployParatiiContracts(server, browser)
+  browser.contracts = await getOrDeployParatiiContracts(server, browser)
   done()
 })
 
-// The beforeEac  function is run before each single est
+// The beforeEach function is run before each single test
 beforeEach(function () {
   server.execute(resetDb)
   browser.execute(nukeLocalStorage)
+  browser.execute(nukeSessionStorage)
 })
 
 export function getProvider () {
@@ -94,24 +115,30 @@ export function createUserAndLogin (browser) {
   login(browser)
   waitForUserIsLoggedIn(browser)
 
-  // set the user's address to that of the wallet -
+  // set the user's account to that of the wallet -
   // TODO: this should be done on login, automagically, I suppose
-  let address = getUserPTIAddressFromBrowser()
-  server.execute(function (userId, address) {
-    Meteor.users.update(userId, {$set: { 'profile.ptiAddress': address }})
-  }, userId, address)
-  return userId
+
+  // account is the address generated from the keystore
+  browser.waitUntil(function () {
+    let account = getEthAccountFromApp()
+    return account
+  })
+  let account = getEthAccountFromApp()
+  server.execute(function (userId, account) {
+    Meteor.users.update(userId, {$set: { 'profile.ptiAddress': account }})
+  }, userId, account)
+  return account
 }
 
 export function createUserKeystore (browser) {
-  let userId = server.execute(createUser)
+  let userId = USERADDRESS
   browser.execute(createKeystore, null, userId)
   browser.waitUntil(function () {
     return browser.execute(function (userId) {
       return localStorage.getItem(`keystore-${userId}`)
     }, userId).value
   })
-  let address = getUserPTIAddressFromBrowser()
+  let address = getEthAccountFromApp()
   server.execute(function (userId, address) {
     Meteor.users.update(userId, {$set: { 'profile.ptiAddress': address }})
   }, userId, address)
@@ -155,21 +182,7 @@ export function assertUserIsNotLoggedIn (browser) {
   assert.isNotOk(userId)
 }
 
-export function getSomeETH (amount) {
-  const helpers = require('./imports/lib/ethereum/helpers.js')
-  const users = require('./imports/api/users.js')
-  let beneficiary = users.getUserPTIAddress()
-  helpers.sendSomeETH(beneficiary, amount)
-}
-
-export function getSomePTI (amount) {
-  const helpers = require('./imports/lib/ethereum/helpers.js')
-  const users = require('./imports/api/users.js')
-  let beneficiary = users.getUserPTIAddress()
-  helpers.sendSomePTI(beneficiary, amount)
-}
-
-export function getUserPTIAddressFromBrowser () {
+export function getEthAccountFromApp () {
   return browser.execute(function () {
     const users = require('./imports/api/users.js')
     let address = users.getUserPTIAddress()
@@ -255,6 +268,10 @@ export function clearUserKeystoreFromLocalStorage () {
 
 export function nukeLocalStorage () {
   localStorage.clear()
+}
+
+export function nukeSessionStorage () {
+  window.sessionStorage.clear()
 }
 
 // export function createVideo (id, title, price) {
