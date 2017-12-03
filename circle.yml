@@ -1,0 +1,114 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:8.6.0
+        environment:
+          # lang settings required for Meteor's Mongo
+          LANG: C.UTF-8
+          LANGUAGE: C.UTF-8
+          LC_ALL: C.UTF-8
+          LC_NUMERIC: en_US.UTF-8
+          METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
+          METEOR_BIN_TMP_FILE: meteor-bin-temp
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+      - restore_cache:
+          key: meteor-release-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+      - restore_cache:
+          key: meteor-packages-{{ checksum ".meteor/versions" }}-{{ checksum ".circleci/config.yml" }}
+      - restore_cache:
+          key: npm-packages-{{ checksum "package.json" }}-{{ checksum ".circleci/config.yml" }}
+      # - run:
+      #     name: restore cached meteor bin
+      #     command: |
+      #       if [ -e ~/build-temp/meteor-bin ]
+      #       then
+      #           echo "Cached Meteor bin found, restoring it"
+      #           sudo cp ~/build-temp/meteor-bin /usr/local/bin/meteor
+      #       else
+      #           echo "No cached Meteor bin found."
+      #       fi
+      # - run:
+      #     name: install Meteor
+      #     command: |
+      #       # only install meteor if bin isn't found
+      #       command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
+
+      - run: curl https://install.meteor.com | /bin/sh
+      - run: npm install
+      - run: meteor list
+      - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      - run: for v in $(curl http://archive.ubuntu.com/ubuntu/pool/main/n/nss/ | grep "href=" | grep "libnss3.*deb\"" -o | grep -o "libnss3.*deb" | grep "3.28" | grep "14.04"); do curl -L -o $v http://archive.ubuntu.com/ubuntu/pool/main/n/nss/$v; done && rm libnss3-tools*_i386.deb libnss3-dev*_i386.deb
+      - run: sudo dpkg -i google-chrome.deb || true
+      - run: sudo dpkg -i libnss3*.deb || true
+      - run: sudo apt-get update
+      - run: sudo apt-get install -f || true
+      - run: sudo dpkg -i libnss3*.deb || true
+      - run: sudo apt-get install -f || true
+      - run: sudo apt-get install --only-upgrade lsb-base
+      - run: sudo dpkg -i google-chrome.deb
+      - run: google-chrome --version
+    # - run: pkill -f meteor
+      - run:
+          name: copy meteor bin to build cache
+          command: |
+            mkdir -p ~/build-temp
+            cp /usr/local/bin/meteor ~/build-temp/meteor-bin
+      - save_cache:
+          key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+          paths:
+            - ~/build-temp
+      - save_cache:
+          key: meteor-release-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+          paths:
+            - ~/.meteor
+      - save_cache:
+          key: meteor-packages-{{ checksum ".meteor/versions" }}-{{ checksum ".circleci/config.yml" }}
+          paths:
+            - .meteor/
+      - save_cache:
+          key: npm-packages-{{ checksum "package.json" }}-{{ checksum ".circleci/config.yml" }}
+          paths:
+            - ./node_modules/
+            - ~/.npm/
+      - run: sleep 10
+      - run: yarn lint
+      # - run: TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999
+      - run:
+          name: run testrpc in background
+          command: yarn testrpc
+          background: true
+      - run:
+          name: run meteor server in background
+          command: yarn dev
+          background: true
+      - run: sleep 120
+      - run: yarn chimp-test
+
+
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ./deploy.sh production
+            fi
+            if [ "${CIRCLE_BRANCH}" == "dev" ]; then
+              ./deploy.sh staging
+            fi
