@@ -29,8 +29,8 @@ test:
     - google-chrome --version
   override:
     - sleep 10
-    - TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
-        timeout: 1020
+    # - TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
+    #     timeout: 1020
     - npm run dev-concurrently:
         background: true
     - sleep 60
