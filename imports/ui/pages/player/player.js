@@ -509,7 +509,7 @@ Template.player.events({
     }, 3000)
   },
   'click #video-player' (event, instance) {
-    pauseVideo(instance)
+    instance.togglePlay()
   },
   'mouseover #volume-button, mouseover #vol-control' (event, instance) {
     Meteor.clearTimeout(volumeHandler)
