@@ -134,7 +134,6 @@ describe('Player:', function () {
     browser.switchTab()
     browser.waitUntil(() => browser.hasFocus('#player-container'))
     browser.keys('Space')
-
     browser.waitUntilVideoIsPlaying()
 
     browser.keys('Space')

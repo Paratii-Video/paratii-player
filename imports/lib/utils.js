@@ -134,6 +134,41 @@ export function getPrevPageFromHistory () {
   return navigationHistory[navigationHistory.length - 1]
 }
 
+const isFullscreen = () => (
+  document.fullscreenElement ||
+  document.mozFullScreenElement ||
+  document.webkitFullscreenElement ||
+  document.msFullscreenElement
+)
+
+const requestCancelFullscreen = (element) => {
+  if (element.exitFullscreen) {
+    element.exitFullscreen()
+  } else if (element.mozCancelFullScreen) {
+    element.mozCancelFullScreen()
+  } else if (element.webkitExitFullscreen) {
+    element.webkitExitFullscreen()
+  }
+}
+
+const requestFullscreen = (element) => {
+  if (element.requestFullscreen) {
+    element.requestFullscreen()
+  } else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen()
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen()
+  }
+}
+
+export const toggleFullscreen = (element) => {
+  if (isFullscreen()) {
+    requestCancelFullscreen(document)
+  } else {
+    requestFullscreen(element)
+  }
+}
+
 // export function setModalState (message) {
 //   Session.set('modalStateMessage', message)
 // }

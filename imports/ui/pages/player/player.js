@@ -2,7 +2,13 @@ import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
 import { web3 } from '/imports/lib/ethereum/connection.js'
-import { formatNumber, showModal, showGlobalAlert, log } from '/imports/lib/utils.js'
+import {
+  formatNumber,
+  showModal,
+  showGlobalAlert,
+  log,
+  toggleFullscreen,
+} from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { RelatedVideos, CurrentVideos } from '../../../api/videos.js'
@@ -510,6 +516,9 @@ Template.player.events({
   },
   'click #video-player' (event, instance) {
     instance.togglePlay()
+  },
+  'dblclick #video-player' () {
+    toggleFullscreen(document.body)
   },
   'mouseover #volume-button, mouseover #vol-control' (event, instance) {
     Meteor.clearTimeout(volumeHandler)
