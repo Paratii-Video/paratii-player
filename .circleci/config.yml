@@ -35,7 +35,7 @@ jobs:
           - v1-dependencies-
 
       - run: curl https://install.meteor.com | /bin/sh
-      - run: yarn install
+      - run: npm install
       - run: meteor list
 
       - save_cache:
@@ -67,7 +67,7 @@ jobs:
           background: true
       - run: sleep 60
       - run: yarn chimp-test
-      - run: pkill -f meteor
+      # - run: pkill -f meteor
 
       - deploy:
           command: |
