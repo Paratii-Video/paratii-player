@@ -1,4 +1,4 @@
-/* global localStorage */
+/* global localStorage XMLHttpRequest */
 import { web3 } from '../imports/lib/ethereum/web3.js'
 import { getParatiiContracts } from '../imports/lib/ethereum/contracts.js'
 import { deployParatiiContracts, sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
@@ -54,6 +54,15 @@ before(async function (done) {
         }
       }
     }, timeout, `Could not click on ${selector} (timeout: ${timeout}s)`)
+  })
+  browser.addCommand('waitUntilRequestHasStatus', function (url, status = 200, method = 'GET', timeout) {
+    browser.waitUntil(() => {
+      console.log('requesting')
+      const request = new XMLHttpRequest()
+      request.open(method, url, false)
+      request.send(null)
+      return request.status === status
+    }, timeout, `The ${method} request to ${url} never achieved a ${status} status`)
   })
 
   browser.addCommand('sendSomeETH', async function (beneficiary, amount, timeout) {
