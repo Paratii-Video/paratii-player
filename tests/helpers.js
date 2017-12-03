@@ -56,6 +56,16 @@ before(async function (done) {
     }, timeout, `Could not click on ${selector} (timeout: ${timeout}s)`)
   })
 
+  browser.addCommand('waitAndRemove', function (selector, timeout) {
+    this.waitForVisible(selector)
+    browser.execute((selectorToRemove) => {
+      const element = document.querySelector(selectorToRemove)
+      if (element) {
+        element.remove()
+      }
+    }, selector)
+  })
+
   browser.addCommand('sendSomeETH', async function (beneficiary, amount, timeout) {
     // console.log(`send ${amount} to ${beneficiary}`)
     await sendSomeETH(beneficiary, amount)

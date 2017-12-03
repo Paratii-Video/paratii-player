@@ -142,6 +142,21 @@ describe('Player:', function () {
     browser.waitUntil(() => browser.getAttribute('#video-player', 'paused') === 'true')
   })
 
+  it('should play/pause a video when the player is single-clicked', () => {
+    browser.url('http://localhost:3000/play/12345?playlist=98765')
+    browser.waitAndRemove('.player-uploader-name')
+    browser.waitAndRemove('.player-stats')
+    browser.waitAndRemove('.player-title')
+    browser.waitAndRemove('.player-info')
+    browser.waitAndClick('#video-player')
+
+    browser.waitUntilVideoIsPlaying()
+
+    browser.waitAndClick('#video-player')
+
+    browser.waitUntil(() => browser.getAttribute('#video-player', 'paused') === 'true')
+  })
+
   it('should stay in full-screen mode when a video is paused via the space bar', () => {
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitAndClick('#play-pause-button')
