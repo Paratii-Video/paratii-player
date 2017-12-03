@@ -156,6 +156,23 @@ describe('Player:', function () {
     browser.waitUntil(() => browser.getAttribute('#video-player', 'paused') === 'true')
   })
 
+  it('should toggle full-screen mode on double click', () => {
+    browser.url('http://localhost:3000/play/12345?playlist=98765')
+    browser.waitAndRemove('.player-uploader-name')
+    browser.waitAndRemove('.player-stats')
+    browser.waitAndRemove('.player-title')
+    browser.waitAndRemove('.player-info')
+    browser.waitForClickable('#video-player')
+    browser.doubleClick('#video-player')
+
+    browser.waitUntil(() => browser.execute(playerIsFullScreen).value)
+
+    browser.waitForClickable('#video-player')
+    browser.doubleClick('#video-player')
+
+    browser.waitUntil(() => !browser.execute(playerIsFullScreen).value)
+  })
+
   it('should stay in full-screen mode when a video is paused via the space bar', () => {
     browser.url('http://localhost:3000/play/12345?playlist=98765')
     browser.waitAndClick('#play-pause-button')
