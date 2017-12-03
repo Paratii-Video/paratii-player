@@ -57,7 +57,6 @@ before(async function (done) {
   })
   browser.addCommand('waitUntilRequestHasStatus', function (url, status = 200, method = 'GET', timeout) {
     browser.waitUntil(() => {
-      console.log('requesting')
       const request = new XMLHttpRequest()
       request.open(method, url, false)
       request.send(null)
