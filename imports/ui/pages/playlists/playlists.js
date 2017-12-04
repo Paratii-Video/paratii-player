@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating'
-import { formatNumber, showModal } from '/imports/lib/utils.js'
+import { formatNumber, showModal, _, showLoader, hideLoader } from '/imports/lib/utils.js'
 import { Videos } from '../../../../imports/api/videos.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
@@ -12,6 +12,8 @@ import './playlists.html'
 Template.playlists.onCreated(function () {
   this.lockeds = new ReactiveDict()
   Meteor.subscribe('playlists')
+
+  showLoader(_('loader-playlist'))
 
   // paging init
   this.page = new ReactiveVar()
@@ -28,8 +30,7 @@ Template.playlists.onCreated(function () {
       const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
       const videosId = playlist.videos
       this.totalVideos.set(playlist.videos.length)
-
-      console.log('playlistvideos', playlist.videos.length)
+      hideLoader()
       // for each video of the playlist checks if the user bought it
       videosId.forEach((id) => {
         Meteor.call('videos.isLocked', id, getUserPTIAddress(), (err, result) => {
