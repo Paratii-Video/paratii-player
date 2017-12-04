@@ -53,10 +53,6 @@
 
     {{/isAuthorized}}
 
-    <table class="table table-striped all_transactions">
-      {{#each events}} {{> transaction}} {{/each}}
-    </table>
-
     {{else}}
     <div class="container">
        {{_ "Please log in to see this page" }}
