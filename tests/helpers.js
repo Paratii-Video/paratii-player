@@ -96,6 +96,15 @@ beforeEach(function () {
   server.execute(resetDb)
   browser.execute(nukeLocalStorage)
   browser.execute(nukeSessionStorage)
+  browser.execute(() => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen()
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen()
+    }
+  })
 })
 
 export function getProvider () {

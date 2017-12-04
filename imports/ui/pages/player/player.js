@@ -79,6 +79,7 @@ Template.player.onCreated(function () {
   console.log('embedly: ' + (referrer !== undefined))
 
   this.currentVideo = new ReactiveVar()
+  this.playerContainer = new ReactiveVar()
 
   // this makes the tests work
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized')
@@ -163,12 +164,13 @@ Template.player.onRendered(function () {
   const container = this.find('#player-container')
   if (container) {
     container.focus()
+    this.playerContainer.set(container)
   }
 })
 
 Template.player.helpers({
   videoPlayer () {
-    return Template.instance().find('#player-container')
+    return Template.instance().playerContainer.get()
   },
   currentVideo () {
     const videoId = FlowRouter.getParam('_id')
@@ -517,8 +519,8 @@ Template.player.events({
   'click #video-player' (event, instance) {
     instance.togglePlay()
   },
-  'dblclick #video-player' () {
-    toggleFullscreen(document.body)
+  'dblclick #video-player' (event, instance) {
+    toggleFullscreen(instance.playerContainer.get())
   },
   'mouseover #volume-button, mouseover #vol-control' (event, instance) {
     Meteor.clearTimeout(volumeHandler)
