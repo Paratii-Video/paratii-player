@@ -1,11 +1,13 @@
 import { VideosResults } from '../../../../imports/api/videos.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
+import { _, hideLoader } from '/imports/lib/utils.js'
 
 import '/imports/ui/components/internals/internalsHeader.js'
 import './search.html'
 
 Template.search.onCreated(function () {
   // Meteor.subscribe('searchedVideos', '')
+  hideLoader()
   this.keywords = new ReactiveVar()
   this.sorting = new ReactiveVar()
   this.sorting.set('price_asc')
@@ -110,12 +112,12 @@ Template.search.helpers({
         const currentPage = Template.instance().page.get()
         if (currentPage > 0) {
           Template.instance().hasNext.set(false)
-          return 'No more results for: ' + Template.instance().keywords.get()
+          return _('No more results for: ') + '  ' + Template.instance().keywords.get()
         } else {
-          return 'No results for: ' + Template.instance().keywords.get()
+          return _('No results for: ') + ' ' + Template.instance().keywords.get()
         }
       } else {
-        return 'Please enter almost 3 characters'
+        return _('Please enter at least 3 characters')
       }
     }
   },

@@ -10,6 +10,7 @@ function noop () {}
 
 const paratiiIPFS = {
   protocol: null,
+  onReadyHook: [],
   /**
   * initIPFS - initiates Ipfs instance
   *
@@ -21,6 +22,19 @@ const paratiiIPFS = {
     } else {
       paratiiIPFS.start(callback)
     }
+  },
+  triggerOnReady: () => {
+    // FIXME THSI IS DEV only
+    // trigger functions once IPFS is ready.
+    console.info('onReady Trigger')
+    paratiiIPFS.onReadyHook.forEach((func) => {
+      // VALIDATION IS REQUIRED HERE>>>>>>>>>>>>
+      console.info('Triggering ', func)
+      func()
+    })
+  },
+  addOnReady: (func) => {
+    paratiiIPFS.onReadyHook.push(func)
   },
   getRepoPath: () => {
     if (window.localStorage) {
@@ -198,7 +212,7 @@ const paratiiIPFS = {
   }
 }
 
-$.getScript('/test/files/index.min.js', () => {
+$.getScript('/test/files/index.js', () => {
   let isProduction = Meteor.settings.isProduction
   let repo = paratiiIPFS.getRepoPath()
   if (!repo) {
@@ -241,7 +255,7 @@ $.getScript('/test/files/index.min.js', () => {
   } else {
     window.ipfs = new Ipfs({
       bitswap: {
-        maxMessageSize: 32 * 1024
+        maxMessageSize: 128 * 1024
         // meterController: paratiiIPFS.meterController
       },
       repo: String(Math.random()),
@@ -253,7 +267,10 @@ $.getScript('/test/files/index.min.js', () => {
             // run our own star-signal server.
             // https://github.com/libp2p/js-libp2p-webrtc-star
             // '/ip4/34.213.133.148/tcp/42000/wss/p2p-webrtc-star'
-            '/dns4/star.paratii.video/wss/p2p-webrtc-star'
+            // '/dns4/star.paratii.video/wss/p2p-webrtc-star',
+            '/dns4/star.paratii.video/tcp/443/wss/p2p-webrtc-star'
+            // '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
+            // '/dns4/wrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star'
           ]
         },
         Bootstrap: [
@@ -307,6 +324,7 @@ $.getScript('/test/files/index.min.js', () => {
 
       setTimeout(() => {
         paratiiIPFS.protocol.start(noop)
+        paratiiIPFS.triggerOnReady()
       }, 10)
 
       // callback()
