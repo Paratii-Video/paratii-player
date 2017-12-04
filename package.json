@@ -17,7 +17,7 @@
     "remove-watcher": "node .remove-watcher.js"
   },
   "precommit": [
-    "lint-fix",
+    "lint",
     "remove-watcher"
   ],
   "dependencies": {
@@ -30,7 +30,7 @@
     "clipboard": "^1.7.1",
     "eth-lightwallet": "^2.5.6",
     "hls.js": "^0.8.5",
-    "hlsjs-ipfs-loader": "github:ya7ya/hlsjs-ipfs-loader#paratii/bandwidth",
+    "hlsjs-ipfs-loader": "github:ya7ya/hlsjs-ipfs-loader#paratii/v0.27",
     "hooked-web3-provider": "^1.0.0",
     "inline-worker": "^1.1.0",
     "libp2p-websocket-star": "^0.4.0",
