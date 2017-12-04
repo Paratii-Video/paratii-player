@@ -8,7 +8,7 @@ const playerIsFullScreen = () => !!(
   document.msFullscreenElement
 )
 
-describe('Player: @watch', function () {
+describe('Player:', function () {
   before(function () {
     browser.addCommand('waitUntilVideoIsPlaying', () => {
       browser.waitUntil(() => (

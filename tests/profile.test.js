@@ -109,7 +109,7 @@ describe('Profile and accounts workflow: ', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('change password @watch', async function (done) {
+  it('change password', async function (done) {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
