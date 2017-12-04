@@ -1,12 +1,13 @@
 import { VideosResults } from '../../../../imports/api/videos.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-import { _ } from '/imports/lib/utils.js'
+import { _, hideLoader } from '/imports/lib/utils.js'
 
 import '/imports/ui/components/internals/internalsHeader.js'
 import './search.html'
 
 Template.search.onCreated(function () {
   // Meteor.subscribe('searchedVideos', '')
+  hideLoader()
   this.keywords = new ReactiveVar()
   this.sorting = new ReactiveVar()
   this.sorting.set('price_asc')

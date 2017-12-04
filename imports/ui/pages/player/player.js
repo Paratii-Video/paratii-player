@@ -7,7 +7,8 @@ import {
   showModal,
   showGlobalAlert,
   log,
-  toggleFullscreen
+  toggleFullscreen,
+  showLoader, hideLoader, _
 } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
@@ -62,6 +63,8 @@ function renderVideoElement (instance) {
 }
 
 Template.player.onCreated(function () {
+  showLoader(_('loader-video'))
+
   const self = this
   const userPTIAddress = getUserPTIAddress()
   const instance = Template.instance()
@@ -359,6 +362,9 @@ Template.player.events({
     } else {
       showModal('login')
     }
+  },
+  'canplay #video-player' () {
+    hideLoader()
   },
   'play #video-player' (event, instance) {
     log('video is playing')

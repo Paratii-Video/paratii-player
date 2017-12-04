@@ -1,4 +1,4 @@
-// import paratiiIPFS from '../../../lib/ipfs/index.js'
+import paratiiIPFS from '../../../lib/ipfs/index.js'
 // import utils from './utils.js'
 // import hrtime from 'browser-process-hrtime'
 
@@ -22,6 +22,7 @@ class HLSPlayer extends EventEmitter {
     if (!opts || !opts.video) {
       throw new Error('opts.video is required for HLSPlayer')
     }
+    this.DAG = null
 
     this.videoEl = opts.video
     Hls.DefaultConfig.loader = HlsjsIpfsLoader
@@ -30,6 +31,28 @@ class HLSPlayer extends EventEmitter {
       this.init()
     }
   }
+
+  getDAG (callback) {
+    if (!callback) callback = () => {}
+    if (!window.ipfs) {
+      return callback(null)
+    }
+
+    if (this.DAG && this.DAG !== null) {
+      return callback(null, this.DAG)
+    }
+    console.log('getting parent DAG ' + splitPath(this.videoEl.src)[0])
+    window.ipfs.object.get(splitPath(this.videoEl.src)[0], (err, res) => {
+      if (err) throw err
+      this.DAG = res.links
+      console.log('DAG: ', res.links)
+      callback(null, res.links)
+    })
+  }
+
+  // stop () {
+  //   hls.stopLoad()
+  // }
 
   init () {
     // let metrics = {
@@ -54,11 +77,39 @@ class HLSPlayer extends EventEmitter {
     this.emit('status', 'creating IPFS instance')
     this.emit('status', 'IPFS Ready. Searching for ' + splitPath(this.videoEl.src)[0])
     this.video = document.getElementById('video-player')
-    const hls = new Hls()
+    const hls = new Hls({
+      ipfs: window.ipfs,
+      ipfsHash: splitPath(this.videoEl.src)[0],
+      enableWorker: true,
+      startLevel: 0,
+      autoLevelEnabled: false,
+      autoStartLoad: true,
+      maxLoadingDelay: 2
+    })
 
-    hls.config.ipfs = window.ipfs
-    hls.config.ipfsHash = splitPath(this.videoEl.src)[0]
-    hls.startLevel = 3
+    if (paratiiIPFS.isOnline()) {
+      this.getDAG((err, dag) => {
+        if (err) throw err
+        hls.config.dag = dag
+      })
+    } else {
+      paratiiIPFS.addOnReady(this.getDAG.bind(this))
+    }
+
+    // hls.config.ipfs = window.ipfs
+    // hls.config.ipfsHash = splitPath(this.videoEl.src)[0]
+    // emitter listener
+    hls.config.emitter = this
+    this.on('loader-status', (params) => {
+      console.log('got ', params.event)
+      if (params.event === 'DAG') {
+        hls.config.dag = params.DAG
+      }
+    })
+
+    // hls.config.startLevel = 2
+    // hls.config.autoLevelCapping = -1
+    // hls.config.maxLoadingDelay = 1
     hls.attachMedia(this.video)
     // Events monitoring
     hls.on(Hls.Events.MEDIA_ATTACHED, (event, data) => {
@@ -70,6 +121,7 @@ class HLSPlayer extends EventEmitter {
         //   // video.play()
         this.emit('ready')
         console.log('manifest loaded, found ' + data.levels.length + ' quality level')
+        hls.startLoad()
         // hls.loadLevel = hls.levels.length - 2
       })
     })
@@ -150,10 +202,11 @@ class HLSPlayer extends EventEmitter {
     //     // }
     //   // }, 5000)
     // })
-    this.videoEl.addEventListener('DOMNodeRemoved', (ev) => {
-      console.log('video switching. freeing HLS context')
-      hls.destroy()
-    })
+    // console.log('video ', this.video)
+    // this.video.addEventListener('DOMNodeRemoved', (ev) => {
+    //   console.log('video switching. freeing HLS context')
+    //   hls.destroy()
+    // })
 
     // var self = this
     // -----------------------------------STATS---------------------------------
