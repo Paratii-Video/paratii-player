@@ -69,7 +69,7 @@ before(async function (done) {
   browser.addCommand('sendSomeETH', async function (beneficiary, amount, timeout) {
     // console.log(`send ${amount} to ${beneficiary}`)
     await sendSomeETH(beneficiary, amount)
-    await browser.waitUntil(function () {
+    browser.waitUntil(function () {
       let result = browser.execute(function () {
         return Session.get('eth_balance')
       })
@@ -78,7 +78,7 @@ before(async function (done) {
   })
   browser.addCommand('sendSomePTI', async function (beneficiary, amount, timeout) {
     await sendSomePTI(beneficiary, amount)
-    await browser.waitUntil(function () {
+    browser.waitUntil(function () {
       let result = browser.execute(function () {
         return Session.get('pti_balance')
       })
