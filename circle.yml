@@ -37,8 +37,8 @@ test:
     - sleep 60
     - npm run chimp-test
     - npm run lint
-  post:
-    - pkill -f meteor
+  # post:
+  #   - pkill -f meteor
 
 deployment:
   production:
