@@ -16,7 +16,7 @@
    "link-create-new-wallet": "create a new wallet",
    "loader-almost-ready": "The player is almost ready!",
    "loader-playlist": "We are loading our playlists!",
-   "loader-video": "Looking for other players that have this file"
+   "loader-video": "Looking for other players that have this file",
    "Log in": "Log in",
    "Log out": "Log out",
    "modal-found-keystore-title": "We found a keystore",
@@ -42,5 +42,5 @@
    "Show description":"Show description",
    "STATUS:":"STATUS:",
    "Still a demo": "it's just that it's still a demo 😉",
-   "Watch for": "Watch for",
+   "Watch for": "Watch for"
 }
