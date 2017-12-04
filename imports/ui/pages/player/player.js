@@ -44,7 +44,6 @@ function renderVideoElement (instance) {
     let hlsPlayer = new HLSPlayer({video: currentVideo})
     instance.playerState.set('ipfs', true)
     hlsPlayer.on('status', (text) => {
-      window.alert(text)
       instance.playerState.set('status', text)
     })
   } else {
