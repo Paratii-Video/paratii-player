@@ -2,7 +2,7 @@ import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
 import { web3 } from '/imports/lib/ethereum/connection.js'
-import { formatNumber, showModal, showGlobalAlert, log } from '/imports/lib/utils.js'
+import { formatNumber, showModal, showGlobalAlert, log, showLoader, hideLoader, _ } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { RelatedVideos, CurrentVideos } from '../../../api/videos.js'
@@ -44,6 +44,7 @@ function renderVideoElement (instance) {
     let hlsPlayer = new HLSPlayer({video: currentVideo})
     instance.playerState.set('ipfs', true)
     hlsPlayer.on('status', (text) => {
+      window.alert(text)
       instance.playerState.set('status', text)
     })
   } else {
@@ -56,6 +57,8 @@ function renderVideoElement (instance) {
 }
 
 Template.player.onCreated(function () {
+  showLoader(_('loader-video'))
+
   const self = this
   const userPTIAddress = getUserPTIAddress()
   const instance = Template.instance()
@@ -351,6 +354,9 @@ Template.player.events({
     } else {
       showModal('login')
     }
+  },
+  'canplay #video-player' () {
+    hideLoader()
   },
   'play #video-player' (event, instance) {
     log('video is playing')

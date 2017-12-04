@@ -19,7 +19,7 @@ import {
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('Profile and accounts workflow:', function () {
+describe('Profile and accounts workflow: ', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     browser.execute(nukeLocalStorage)
@@ -109,13 +109,13 @@ describe('Profile and accounts workflow:', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('change password', async function (done) {
+  it('change password @watch', async function (done) {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
+    browser.url('http://localhost:3000/profile')
     const userAccount = getEthAccountFromApp()
     browser.sendSomeETH(userAccount, 3.1)
-    browser.url('http://localhost:3000/profile')
     browser.waitAndClick('.button-settings')
     browser.waitAndClick('.edit-password')
     browser.waitAndSetValue('[name="current-password"]', 'password')
