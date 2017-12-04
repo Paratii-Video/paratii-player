@@ -5037,9 +5037,9 @@ hls.js@^0.8.5:
   dependencies:
     url-toolkit "^2.0.1"
 
-"hlsjs-ipfs-loader@github:ya7ya/hlsjs-ipfs-loader#master":
+"hlsjs-ipfs-loader@github:ya7ya/hlsjs-ipfs-loader#paratii/dev":
   version "0.1.1"
-  resolved "https://codeload.github.com/ya7ya/hlsjs-ipfs-loader/tar.gz/6b5afdb1f8f3144b3b190affbe584610a0a00e53"
+  resolved "https://codeload.github.com/ya7ya/hlsjs-ipfs-loader/tar.gz/69dddcecc0e39fa64bdc3703b00d549539e42d2a"
   dependencies:
     aegir "^11.0.2"
     gulp "^3.9.1"

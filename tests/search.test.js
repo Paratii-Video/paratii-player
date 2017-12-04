@@ -7,7 +7,7 @@ describe('Search video :', function () {
     browser.url('http:localhost:3000/search')
   })
 
-  it('search is triggered if user enter a 3 character lenght keyword', function (done) {
+  it('search is triggered if user enter a 3 character lenght keyword ', function (done) {
     server.execute(createVideo, '12345', 'this is the video key title', 'this is the video key description ', 'Uploader key name', ['foo', 'keyword'], 0)
     browser.setValue('[name="search"]', 'k')
     browser.pause(2000)
