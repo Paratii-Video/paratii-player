@@ -37,7 +37,7 @@ describe('Page Navigation:', function () {
     })
   })
 
-  describe('profile page', () => {
+  describe('profile page ', () => {
     it('should not display a back button if the user first navigates to the page', () => {
       browser.url('http://localhost:3000/profile')
 
@@ -48,10 +48,10 @@ describe('Page Navigation:', function () {
       assert.equal(browser.isVisible('#back-button'), false)
     })
 
-    it('should navigate to the previous page when the user clicks the back button after having nagivating from another page', () => {
+    it('should navigate to the previous page when the user clicks the back button after having nagivating from another page ', () => {
       browser.url('http://localhost:3000/playlists')
 
-      browser.waitAndClick('#nav-profile')
+      browser.waitAndClick('.nav-profile')
 
       browser.waitUntil(() => {
         return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'foobar baz'
@@ -150,7 +150,7 @@ describe('Page Navigation:', function () {
       return browser.isEnabled('input#search')
     })
 
-    browser.waitAndClick('#nav-profile')
+    browser.waitAndClick('.nav-profile')
 
     browser.waitUntil(() => {
       return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'foobar baz'
@@ -207,7 +207,7 @@ describe('Page Navigation:', function () {
       return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === playlistTitle
     })
 
-    browser.waitAndClick('#nav-profile')
+    browser.waitAndClick('.nav-profile')
 
     browser.waitUntil(() => {
       return browser.isVisible('.internals-header-title') && browser.getText('.internals-header-title') === 'foobar baz'
