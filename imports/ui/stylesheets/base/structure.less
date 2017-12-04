@@ -29,35 +29,3 @@
     }
   }
 }
-
-
-// Flip
-
-.flip {
-  transition: 0.6s;
-  transform-style: preserve-3d;
-
-  &-face {
-    &:extend(.pos-a-full all);
-
-    backface-visibility: hidden;
-
-    &-front {
-      transition: transform 1s @ease-smooth;
-
-      .active & {
-        transform: rotateY(180deg);
-        transition: transform 1.2s @ease-smooth;
-      }
-    }
-    &-back {
-      transform: rotateY(180deg);
-      transition: transform 1s @ease-smooth;
-      
-      .active & {
-        transform: rotateY(0);
-        transition: transform 1.2s @ease-smooth;
-      }
-    }
-  }
-}
