@@ -1,4 +1,4 @@
-import { web3, Paratii } from './web3.js'
+import { web3 } from './web3.js'
 import { getContract, setRegistryAddress } from './contracts.js'
 
 let paratii
@@ -33,12 +33,6 @@ export const initConnection = function () {
   if (Meteor.isServer) {
     console.log('initConnection')
   }
-
-  paratii = Paratii({
-    provider: Meteor.settings.public.http_provider,
-    registryAddress: Meteor.settings.public.ParatiiRegistry
-    // wallet: wallet
-  })
 }
 
 export { paratii, web3, GAS_PRICE, GAS_LIMIT }
