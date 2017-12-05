@@ -69,13 +69,17 @@ jobs:
       - run: sleep 10
       - run: yarn lint
       # - run: TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999
+      # - run:
+      #     name: run testrpc in background
+      #     command: yarn testrpc
+      #     background: true
+      # - run:
+      #     name: run meteor server in background
+      #     command: yarn dev
+      #     background: true
       - run:
-          name: run testrpc in background
-          command: yarn testrpc
-          background: true
-      - run:
-          name: run meteor server in background
-          command: yarn dev
+          name: run meteor server and testrpc with concurrently
+          command: npm run dev-concurrently
           background: true
       - run: sleep 120
       - run: yarn chimp-test
@@ -85,6 +89,8 @@ jobs:
           command: |
             mkdir -p ~/build-temp
             cp /usr/local/bin/meteor ~/build-temp/meteor-bin
+
+
       - save_cache:
           key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
           paths:
