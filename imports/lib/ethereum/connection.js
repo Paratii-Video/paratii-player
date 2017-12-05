@@ -3,10 +3,10 @@ import { web3 } from './web3.js'
 import { getUserPTIAddress } from '../../api/users.js'
 import { getContract, getRegistryAddress } from './contracts.js'
 let paratii
+
 // TODO: store all this information in a settings.json object
 const GAS_PRICE = 50000000000
 const GAS_LIMIT = 4e6
-
 // must not define this varable because ethereum-tools will trip
 
 export async function PTIContract () {
