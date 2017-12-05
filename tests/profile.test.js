@@ -19,14 +19,14 @@ import {
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('Profile and accounts workflow: @watch', function () {
+describe('Profile and accounts workflow:', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
   })
 
-  it('register a new user @watch', function () {
+  it('register a new user', function () {
     browser.execute(nukeLocalStorage)
     browser.url('http://localhost:3000')
 
@@ -70,7 +70,7 @@ describe('Profile and accounts workflow: @watch', function () {
     assertUserIsLoggedIn(browser)
   })
 
-  it('login as an existing user on a device with no keystore - use existing anonymous keystore @watch', function () {
+  it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
     // create a meteor user
     server.execute(createUser)
 
@@ -109,22 +109,28 @@ describe('Profile and accounts workflow: @watch', function () {
     assert.equal(publicAddress, add0x(anonymousAddress))
   })
 
-  it('change password', async function (done) {
+  it('change password', function () {
     browser.execute(clearUserKeystoreFromLocalStorage)
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
     browser.url('http://localhost:3000/profile')
+    console.log(1)
     const userAccount = getEthAccountFromApp()
     browser.sendSomeETH(userAccount, 3.1)
+    browser.waitForVisible('.wallet-contents li:last-child .amount')
+    let amount = browser.getText('.wallet-contents li:last-child .balance', false)
+    assert.isOk(['3.10 ETH', '3,10 ETH'].indexOf(amount) > -1)
+
     browser.waitAndClick('.button-settings')
     browser.waitAndClick('.edit-password')
     browser.waitAndSetValue('[name="current-password"]', 'password')
     browser.waitAndSetValue('[name="new-password"]', 'new-password')
     browser.waitAndClick('#save-password')
     browser.waitForVisible('.wallet-contents li:last-child .amount')
-    const amount = await browser.getText('.wallet-contents li:last-child .balance', false)
+    console.log(2)
+
+    amount = browser.getText('.wallet-contents li:last-child .balance', false)
     assert.isOk(['3.10 ETH', '3,10 ETH'].indexOf(amount) > -1)
-    done()
   })
 
   it('show an error message if provided wrong password ', function () {

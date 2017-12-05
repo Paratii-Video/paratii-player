@@ -6,8 +6,6 @@ import SendEtherSpec from './contracts/SendEther.json'
 import VideoRegistrySpec from './contracts/VideoRegistry.json'
 import VideoStoreSpec from './contracts/VideoStore.json'
 
-let paratii = global.paratii
-
 const CONTRACTS = {
   'ParatiiAvatar': {
     spec: ParatiiAvatarSpec
