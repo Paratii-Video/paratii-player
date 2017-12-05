@@ -13,7 +13,7 @@
     "lint": "standard",
     "lint-fix": "standard --fix",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=10000 --webdriverio.waitforInterval=200 --webdriverio.logLevel=silent --watch",
-    "chimp-test": "chimp  --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=30000 --webdriverio.waitforInterval=200 --webdriverio.logLevel=silent",
+    "chimp-test": "chimp  --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.waitforTimeout=30000 --webdriverio.waitforInterval=200 --webdriverio.logLevel=silent --browser=chrome",
     "remove-watcher": "node .remove-watcher.js"
   },
   "precommit": [

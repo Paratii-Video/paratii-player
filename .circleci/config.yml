@@ -21,6 +21,7 @@ jobs:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       - image: circleci/mongo:3.4.4
+      - image: circleci/java:8
 
     working_directory: ~/repo
 
@@ -68,15 +69,15 @@ jobs:
       - run: google-chrome --version
       - run: sleep 10
       - run: yarn lint
-      # - run: TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999
-      # - run:
-      #     name: run testrpc in background
-      #     command: yarn testrpc
-      #     background: true
-      # - run:
-      #     name: run meteor server in background
-      #     command: yarn dev
-      #     background: true
+      - run: TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999
+      - run:
+          name: run testrpc in background
+          command: yarn testrpc
+          background: true
+      - run:
+          name: run meteor server in background
+          command: yarn dev
+          background: true
       - run:
           name: run meteor server and testrpc with concurrently
           command: npm run dev-concurrently
