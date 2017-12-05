@@ -1,4 +1,3 @@
-import { paratii } from './connection.js'
 import { web3 } from './web3.js'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'
 import ParatiiRegistrySpec from './contracts/ParatiiRegistry.json'
@@ -6,6 +5,8 @@ import ParatiiTokenSpec from './contracts/ParatiiToken.json'
 import SendEtherSpec from './contracts/SendEther.json'
 import VideoRegistrySpec from './contracts/VideoRegistry.json'
 import VideoStoreSpec from './contracts/VideoStore.json'
+
+let paratii = global.paratii
 
 const CONTRACTS = {
   'ParatiiAvatar': {
@@ -33,17 +34,18 @@ export function setRegistryAddress (address) {
 }
 
 export function getRegistryAddress () {
-  return paratii.config.registryAddress
+  return Meteor.settings.public.ParatiiRegistry
+  // return paratii.config.registryAddress
 }
 
 export function getParatiiRegistry () {
-  return paratii.contracts.ParatiiRegistry
-  // let address = getRegistryAddress()
-  // if (!address) {
-  //   let msg = `No paratii registry address known!`
-  //   throw Error(msg)
-  // }
-  // return web3.eth.contract(ParatiiRegistrySpec.abi).at(address)
+  // return paratii.contracts.ParatiiRegistry
+  let address = getRegistryAddress()
+  if (!address) {
+    let msg = `No paratii registry address known!`
+    throw Error(msg)
+  }
+  return web3.eth.contract(ParatiiRegistrySpec.abi).at(address)
 }
 
 // TODO: optimization: do not ask the contract addresses from the registry each time, only on startup/first access

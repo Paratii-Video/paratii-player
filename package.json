@@ -12,8 +12,8 @@
     "test-headless": "TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha --port 9999",
     "lint": "standard",
     "lint-fix": "standard --fix",
-    "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests --webdriverio.waitforTimeout=10000 --webdriverio.waitforInterval=200",
-    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.logLevel=silent --webdriverio.waitforTimeout=60000 --webdriverio.waitforInterval=200",
+    "chimp-watch": "chimp --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.logLevel=silent --webdriverio.waitforTimeout=10000 --webdriverio.waitforInterval=200 --watch",
+    "chimp-test": "chimp  --ddp=http://localhost:3000 --mocha --path=tests --webdriverio.logLevel=silent --webdriverio.waitforTimeout=60000 --webdriverio.waitforInterval=200",
     "remove-watcher": "node .remove-watcher.js"
   },
   "precommit": [
@@ -38,7 +38,7 @@
     "mobile-detect": "^1.3.7",
     "moment": "^2.19.1",
     "multihashes": "^0.4.12",
-    "paratii-lib": "github:Paratii-Video/paratii-lib#master",
+    "paratii-lib": "file:../paratii-lib",
     "paratii-protocol": "github:ya7ya/paratii-protocol#master",
     "player.js": "^0.1.0",
     "pretty-bytes": "^4.0.2",

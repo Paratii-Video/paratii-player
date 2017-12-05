@@ -2,7 +2,7 @@ import { Paratii } from 'paratii-lib'
 import { web3 } from './web3.js'
 import { getUserPTIAddress } from '../../api/users.js'
 import { getContract, getRegistryAddress } from './contracts.js'
-let paratii
+let paratii = global.paratii
 
 // TODO: store all this information in a settings.json object
 const GAS_PRICE = 50000000000
@@ -67,11 +67,11 @@ export async function updateSession () {
 }
 
 export const initConnection = function () {
-  console.log('initializing connection..')
+  console.log('...initializing connection...')
   // # look for wallet in local storage, based on the meteor user or otherwise the 'anonys' wallet
   // serializedWallet = await walletFromLocalStorage()
   // wallet = Paratii.xxx.deseralizeWallet(serializedWallet)
-  paratii = Paratii({
+  global.paratii = paratii = Paratii({
     provider: Meteor.settings.public.http_provider,
     registryAddress: Meteor.settings.public.ParatiiRegistry
     // wallet: wallet

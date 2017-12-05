@@ -19,14 +19,14 @@ import {
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('Profile and accounts workflow: ', function () {
+describe('Profile and accounts workflow: @watch', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     browser.execute(nukeLocalStorage)
     server.execute(resetDb)
   })
 
-  it('register a new user', function () {
+  it('register a new user @watch', function () {
     browser.execute(nukeLocalStorage)
     browser.url('http://localhost:3000')
 
@@ -70,7 +70,7 @@ describe('Profile and accounts workflow: ', function () {
     assertUserIsLoggedIn(browser)
   })
 
-  it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
+  it('login as an existing user on a device with no keystore - use existing anonymous keystore @watch', function () {
     // create a meteor user
     server.execute(createUser)
 
@@ -85,8 +85,8 @@ describe('Profile and accounts workflow: ', function () {
       }).value
     })
     const anonymousAddress = getAnonymousAddress()
-    browser.waitAndClick('#nav-profile')
 
+    browser.waitAndClick('#nav-profile')
     browser.waitForClickable('[name="at-field-email"]')
     browser.waitAndSetValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
     browser.waitAndSetValue('[name="at-field-password"]', 'password')

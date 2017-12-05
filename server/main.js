@@ -44,7 +44,11 @@ Meteor.startup(async function () {
 
   Meteor.methods({
     'getVersion' () {
-      return Assets.getText('version.json')
+      try {
+        return Assets.getText('version.json')
+      } catch (err) {
+        return ''
+      }
     }
   })
 })
