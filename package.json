@@ -37,7 +37,7 @@
     "meteor-node-stubs": "~0.2.4",
     "moment": "^2.19.1",
     "multihashes": "^0.4.12",
-    "paratii-lib": "file:../paratii-lib",
+    "paratii-lib": "github:Paratii-Video/paratii-lib#master",
     "paratii-protocol": "github:ya7ya/paratii-protocol#master",
     "player.js": "^0.1.0",
     "pretty-bytes": "^4.0.2",
