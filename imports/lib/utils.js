@@ -42,6 +42,17 @@ export function add0x (input) {
   return input
 }
 
+// Show & hide Loader
+export function showLoader (message) {
+  Session.set('mainLoaderText', message)
+  Session.set('showMainLoader', true)
+}
+
+export function hideLoader () {
+  Session.set('showMainLoader', false)
+  Session.set('mainLoaderText', null)
+}
+
 // Show & hide Modal
 export function showModal (templateName, options = null) {
   Session.set('modalContentTemplate', templateName)
