@@ -1,7 +1,7 @@
 /* global localStorage XMLHttpRequest */
-import { web3 } from '../imports/lib/ethereum/web3.js'
-import { getParatiiContracts } from '../imports/lib/ethereum/contracts.js'
-import { deployParatiiContracts, sendSomeETH, sendSomePTI } from '../imports/lib/ethereum/helpers.js'
+import { web3 } from './ethereum/web3.js'
+import { getParatiiContracts } from './ethereum/contracts.js'
+import { deployParatiiContracts, sendSomeETH, sendSomePTI } from './ethereum/helpers.js'
 import { assert } from 'chai'
 web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
 export { web3 }

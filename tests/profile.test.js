@@ -19,7 +19,7 @@ import {
 import { add0x } from '../imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('Profile and accounts workflow:', function () {
+describe('Profile and accounts workflow: @watch', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000/')
     browser.execute(nukeLocalStorage)
@@ -114,7 +114,6 @@ describe('Profile and accounts workflow:', function () {
     createUserAndLogin(browser)
     waitForUserIsLoggedIn(browser)
     browser.url('http://localhost:3000/profile')
-    console.log(1)
     const userAccount = getEthAccountFromApp()
     browser.sendSomeETH(userAccount, 3.1)
     browser.waitForVisible('.wallet-contents li:last-child .amount')
@@ -127,7 +126,6 @@ describe('Profile and accounts workflow:', function () {
     browser.waitAndSetValue('[name="new-password"]', 'new-password')
     browser.waitAndClick('#save-password')
     browser.waitForVisible('.wallet-contents li:last-child .amount')
-    console.log(2)
 
     amount = browser.getText('.wallet-contents li:last-child .balance', false)
     assert.isOk(['3.10 ETH', '3,10 ETH'].indexOf(amount) > -1)
