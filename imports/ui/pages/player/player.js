@@ -2,7 +2,14 @@ import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
 import { web3 } from '/imports/lib/ethereum/connection.js'
-import { formatNumber, showModal, showGlobalAlert, log, showLoader, hideLoader, _ } from '/imports/lib/utils.js'
+import {
+  formatNumber,
+  showModal,
+  showGlobalAlert,
+  log,
+  toggleFullscreen,
+  showLoader, hideLoader, _
+} from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { RelatedVideos, CurrentVideos } from '../../../api/videos.js'
@@ -75,6 +82,7 @@ Template.player.onCreated(function () {
   console.log('embedly: ' + (referrer !== undefined))
 
   this.currentVideo = new ReactiveVar()
+  this.playerContainer = new ReactiveVar()
 
   // this makes the tests work
   this.navState = bodyView ? bodyView.templateInstance().navState : new ReactiveVar('minimized')
@@ -159,12 +167,13 @@ Template.player.onRendered(function () {
   const container = this.find('#player-container')
   if (container) {
     container.focus()
+    this.playerContainer.set(container)
   }
 })
 
 Template.player.helpers({
   videoPlayer () {
-    return Template.instance().find('#player-container')
+    return Template.instance().playerContainer.get()
   },
   currentVideo () {
     const videoId = FlowRouter.getParam('_id')
@@ -514,7 +523,10 @@ Template.player.events({
     }, 3000)
   },
   'click #video-player' (event, instance) {
-    pauseVideo(instance)
+    instance.togglePlay()
+  },
+  'dblclick #video-player' (event, instance) {
+    toggleFullscreen(instance.playerContainer.get())
   },
   'mouseover #volume-button, mouseover #vol-control' (event, instance) {
     Meteor.clearTimeout(volumeHandler)
