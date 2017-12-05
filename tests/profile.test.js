@@ -70,7 +70,7 @@ describe('Profile and accounts workflow: @watch', function () {
     assertUserIsLoggedIn(browser)
   })
 
-  it('login as an existing user on a device with no keystore - use existing anonymous keystore', function () {
+  it('login as an existing user on a device with no keystore - use existing anonymous keystore ', function () {
     // create a meteor user
     server.execute(createUser)
 
