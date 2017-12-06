@@ -106,6 +106,13 @@
                   </svg>
                   {{formatNumber stats.dislikes}}
                 </button>
+
+
+                <button id="embed" data-title="{{title}}" class="player-stats-item ">
+                  <svg class="player-stats-icon">
+                    <use class="player-stats-icon-use" xlink:href="#icon-share"></use>
+                  </svg>
+                </button>
               </div>
               {{#if description}}
               <button class="button-text nocase white player-infos-button-description" type="button">{{_ "Show description" }}</button>
@@ -158,26 +165,6 @@
               </button>
             {{/if}}
           </div>
-        </div>
-        <div class="player-share">
-          <button class="player-share-button player-share-button-add">
-            <svg class="player-share-button-icon">
-              <use class="player-share-button-icon-use" xlink:href="#icon-playlists-add"></use>
-            </svg>
-          </button>
-          <button id="embed" data-title="{{title}}" class="player-share-button player-share-button-share">
-            <svg class="player-share-button-icon">
-              <use class="player-share-button-icon-use" xlink:href="#icon-share"></use>
-            </svg>
-          </button>
-          <button class="player-share-button player-share-button-later active">
-            <svg class="player-share-button-icon player-share-button-later-watch">
-              <use class="player-share-button-icon-use" xlink:href="#icon-watch-later"></use>
-            </svg>
-            <svg class="player-share-button-icon player-share-button-later-add">
-              <use class="player-share-button-icon-use" xlink:href="#icon-watch-later-add"></use>
-            </svg>
-          </button>
         </div>
       </div>
     {{/with}}
