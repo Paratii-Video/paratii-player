@@ -13,7 +13,7 @@ describe('wallet:', function () {
     assertUserIsLoggedIn(browser)
   })
 
-  it('should show ETH balance @watch', function () {
+  it('should show ETH balance', function () {
     browser.sendSomeETH(userAccount, 3.1)
     browser.waitForVisible('.wallet-contents li:last-child .balance')
     browser.waitUntil(() => {
@@ -22,7 +22,7 @@ describe('wallet:', function () {
     })
   })
 
-  it('should show PTI balance @watch', function () {
+  it('should show PTI balance', function () {
     browser.sendSomePTI(userAccount, 1412.9599)
     browser.waitForVisible('.wallet-contents li:first-child .balance')
     browser.waitUntil(() => {
