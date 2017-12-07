@@ -20,6 +20,7 @@ import '/imports/ui/components/buttons/settingsButton.js'
 
 Template.profile.onCreated(function () {
   Session.set('editProfileMenuOpen', false)
+  $('div.main-app').removeClass('editProfileMenuOpen')
   hideLoader()
 })
 

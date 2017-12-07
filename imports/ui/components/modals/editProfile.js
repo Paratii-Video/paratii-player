@@ -15,6 +15,7 @@ Template.editProfile.events({
   'click .edit-profile-info' () {
     $(Template.instance().firstNode).removeClass('show')
     Meteor.setTimeout(() => {
+      $('div.main-app').removeClass('editProfileMenuOpen')
       Session.set('editProfileMenuOpen', false)
       showModal('editProfileInfo', {
         wrapperClass: 'modal-profile wide'
@@ -24,6 +25,7 @@ Template.editProfile.events({
   'click .edit-password' () {
     $(Template.instance().firstNode).removeClass('show')
     Meteor.setTimeout(() => {
+      $('div.main-app').removeClass('editProfileMenuOpen')
       Session.set('editProfileMenuOpen', false)
       showModal('editPassword')
     }, 250)
