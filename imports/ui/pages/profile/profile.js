@@ -114,7 +114,10 @@ Template.profile.events({
           Session.set('editProfileMenuOpen', false)
         }, 400)
       }
+
+      $('div.main-app').removeClass('editProfileMenuOpen')
     } else {
+      $('div.main-app').addClass('editProfileMenuOpen')
       Session.set('editProfileMenuOpen', true)
     }
   }

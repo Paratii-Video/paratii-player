@@ -14,7 +14,7 @@
       display: flex;
       flex-wrap: wrap;
       margin: 10px 00;
-      max-width: @screen-mini-width;
+      max-width: @screen-mini-width - 30;
     }
 
     &-item {
@@ -49,6 +49,14 @@
 
   .main-dropdown {
     z-index: @zindex-internals-dropdown;
+  }
+
+  .button-settings {
+    &-svg {
+      .editProfileMenuOpen & {
+        fill: @color-purple;
+      }
+    }
   }
 }
 
