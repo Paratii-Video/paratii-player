@@ -17,7 +17,7 @@ Template.editProfile.events({
     Meteor.setTimeout(() => {
       Session.set('editProfileMenuOpen', false)
       showModal('editProfileInfo', {
-        wrapperClass: 'edit-profile-info-modal'
+        wrapperClass: 'modal-profile wide'
       })
     }, 250)
   },

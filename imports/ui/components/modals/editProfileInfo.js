@@ -18,7 +18,7 @@ Template.editProfileInfo.helpers({
     return (user && user.emails && user.emails[0] && user.emails[0].address) || ''
   },
   imageUrl () {
-    return Template.instance().avatarUrl.get() || Meteor.user().profile.image || '/img/avatar_img.svg'
+    return Template.instance().avatarUrl.get() || Meteor.user().profile.image
   },
   disabled () {
     return (

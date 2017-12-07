@@ -1,0 +1,120 @@
+// Profile page
+
+.profile {
+  height: 100%;
+
+  &-user-email {
+    font-weight: 300;
+  }
+
+  //
+
+  &-wallet {
+    &-list {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 10px 00;
+      max-width: @screen-mini-width;
+    }
+
+    &-item {
+      border-radius: 6px;
+      box-shadow: 0 1px 2px rgba(25,25,25,0.2);
+      flex: 0 0 31%;
+      font-weight: 300;
+      height: 110px;
+      padding: 15px 10px;
+      
+      &.active {
+        background-color: @color-purple;
+        color: @color-white;
+      }
+
+      &:nth-child(3n-1) {
+        margin: 0 3.5%;
+      }
+
+      //
+
+      &-name {
+        font-size: 20px;
+      }
+
+      &-balance {
+        font-size: 16px;
+        text-align: right;
+      }
+    }
+  }
+
+  .main-dropdown {
+    z-index: @zindex-internals-dropdown;
+  }
+}
+
+
+// Main dropdown
+
+.main-dropdown {
+  &:extend(.pos-a-full all);
+
+  pointer-events: none;
+
+  &::before {
+    &:extend(.pos-a-full all);
+
+    background: rgba(0, 0, 0, .6);
+    content: '';
+    opacity: 0;
+    transition: opacity .25s linear .2s;
+    z-index: 1;
+  }
+
+  &.show {
+    pointer-events: initial;
+
+    &::before {
+      opacity: 1;
+      transition: opacity .5s;
+    }
+  }
+
+  //
+
+  &-wrapper {
+    background-color: @color-white;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(25,25,25,0.2);
+    left: 0;
+    opacity: 0;
+    padding: 5px 13px 8px;
+    position: absolute;
+    top: 0;
+    transition: opacity .25s;
+    z-index: 2;
+
+    .profile & {
+      left: auto;
+      right: 65px;
+      top: 70px;
+      width: 160px;
+    }
+
+    .show & {
+      opacity: 1;
+      transition: opacity .5s linear .2s;
+    }
+  }
+
+  &-list {
+    margin: 0;
+  }
+
+  &-button {
+    &:extend(.hover-opacity all);
+
+    height: 35px;
+    line-height: 36px;
+  }
+
+}
