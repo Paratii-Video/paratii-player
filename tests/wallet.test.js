@@ -2,7 +2,7 @@ import { assertUserIsLoggedIn, web3, createUserAndLogin, getEthAccountFromApp } 
 // import { formatCoinBalance } from '/imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('wallet: ', function () {
+describe('wallet:', function () {
   let userAccount
 
   beforeEach(function () {
@@ -13,7 +13,7 @@ describe('wallet: ', function () {
     assertUserIsLoggedIn(browser)
   })
 
-  it('should show ETH balance', function () {
+  it('should show ETH balance @watch', function () {
     browser.sendSomeETH(userAccount, 3.1)
     browser.waitForVisible('.wallet-contents li:last-child .balance')
     browser.waitUntil(() => {

@@ -40,7 +40,7 @@ describe('test setup:', function () {
   it('should have sane default settings', function () {
     // the `VideoRedistributionPoolShare` should be set to some reasonable number
     let share = contracts.ParatiiRegistry.getNumber('VideoRedistributionPoolShare')
-    assert.equal(Number(share), web3.toWei(0.3))
+    assert.equal(Number(share), web3.utils.toWei(0.3))
     // check if the VideoStore is whitelisted
     let isOnWhiteList = contracts.ParatiiAvatar.isOnWhiteList(contracts.VideoStore.address)
     assert.equal(isOnWhiteList, true)

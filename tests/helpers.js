@@ -1,13 +1,40 @@
 /* global localStorage XMLHttpRequest */
-import { web3 } from './ethereum/web3.js'
-import { getParatiiContracts } from './ethereum/contracts.js'
-import { deployParatiiContracts, sendSomeETH, sendSomePTI } from './ethereum/helpers.js'
-import { assert } from 'chai'
-web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'))
-export { web3 }
+import { Paratii, utils } from 'paratii-lib'
 
+import { assert } from 'chai'
 export const SEED = 'road inherit leave arm unlock estate option merge mechanic rate blade dumb'
 export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
+
+let paratii = new Paratii({
+  provider: 'http://127.0.0.1:8545'
+})
+
+// let web3 = paratii.web3
+// export { web3 }
+export { paratii }
+const add0x = utils.add0x
+
+export async function sendSomeETH (beneficiary, amount) {
+  let fromAddress = paratii.web3.eth.accounts.wallet[0].address
+  await paratii.personal.setAccount(fromAddress)
+  console.log(`Sending ${amount} ETH from ${fromAddress} to ${beneficiary} `)
+  beneficiary = add0x(beneficiary)
+  let result = await paratii.eth.transfer(beneficiary, amount, 'ETH')
+  return result
+}
+
+export async function sendSomePTI (beneficiary, amount) {
+  const contract = await paratii.eth.getContract('ParatiiToken')
+  let fromAddress = paratii.web3.eth.accounts.wallet[0].address
+  await paratii.personal.setAccount(fromAddress)
+  console.log(`Sending ${amount} ETH from ${fromAddress} to ${beneficiary} `)
+  console.log(fromAddress)
+  let value = amount
+  // console.log(`Sending ${value} PTI from ${fromAddress} to ${beneficiary} using contract ${contract}`)
+  let result = await contract.transfer(
+    beneficiary, Number(paratii.web3.utils.toWei(String(value))), { gas: 200000, from: fromAddress })
+  return result
+}
 
 // The before  function will be run once, before all tests
 before(async function (done) {
@@ -251,11 +278,16 @@ export async function getOrDeployParatiiContracts (server, browser) {
     return Meteor.settings.public.ParatiiRegistry
   })
   if (paratiiRegistryAddress) {
+    paratii = new Paratii({
+      provider: 'http://127.0.0.1:8545',
+      registryAddress: paratiiRegistryAddress
+    })
+
     setRegistryAddress(browser, paratiiRegistryAddress)
-    contracts = await getParatiiContracts(paratiiRegistryAddress)
+    contracts = await paratii.eth.getContracts()
   } else {
-    contracts = await deployParatiiContracts()
-    setRegistryAddress(browser, contracts['ParatiiRegistry'].address)
+    contracts = await paratii.eth.deployContracts()
+    setRegistryAddress(browser, contracts.ParatiiRegistry.address)
   }
   return contracts
 }
@@ -341,7 +373,7 @@ export function createPlaylist (id, title, videos) {
 }
 
 export function mustBeTestChain () {
-  let host = server.execute(function () { return web3.currentProvider.host })
+  let host = server.execute(function () { return paratii.web3.currentProvider.host })
   let localNodes = 'http://localhost:8545'
   if (host !== localNodes) {
     let msg = `These tests can only be run on a local test node (e.g. ${localNodes})- your app is using ${host} instead.`

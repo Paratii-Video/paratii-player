@@ -87,7 +87,7 @@ export const initConnection = function () {
     console.log('initConnection')
   }
 
-  paratii = Paratii({
+  paratii = new Paratii({
     provider: Meteor.settings.public.http_provider,
     registryAddress: Meteor.settings.public.ParatiiRegistry
     // wallet: wallet
