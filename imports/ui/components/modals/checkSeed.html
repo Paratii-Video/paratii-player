@@ -1,6 +1,6 @@
 <template name="checkSeed">
   <div id="check-seed" class="main-modal-content">
-    <h3 class="main-modal-title main-modal-anim-1">{{_ "Check the seed phrase" }}</h3>
+    <h3 class="main-modal-title anim-show-up-1">{{_ "Check the seed phrase" }}</h3>
     <!-- {{#if errorMessage}}
     <p class="control-label visually-hidden">{{errorMessage}}</p>
     {{/if}} -->
@@ -9,13 +9,13 @@
     <br>
     <form id="form-check-seed" class="main-modal-form" action="">
       {{> mainFormInput
-          class="main-modal-anim-2"
+          class="anim-show-up-2"
           name="check_seed"
           type="textarea"
           placeholder="Enter your copied seed"
           error=errorMessage
       }}
-      <div class="main-modal-footer main-modal-anim-4">
+      <div class="main-modal-footer anim-show-up-4">
         <button id="btn-check-seed-back" class="button-text grey-light main-modal-button">Back</button>
         <button id="btn-check-seed-finish" class="button-text main-modal-button" type="submit">Finish</button>
       </div>

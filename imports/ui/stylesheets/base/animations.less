@@ -48,11 +48,11 @@
   transition: opacity .3s, transform .6s @ease-smooth;
 }
 
-.main-modal-anim-1,
-.main-modal-anim-2,
-.main-modal-anim-3,
-.main-modal-anim-4,
-.main-modal-anim-5 {
+.anim-show-up-1,
+.anim-show-up-2,
+.anim-show-up-3,
+.anim-show-up-4,
+.anim-show-up-5 {
   &:extend(.anim-element-out all);
 
   .active &,
@@ -62,35 +62,35 @@
   }
 }
 
-.main-modal-anim-1 {
+.anim-show-up-1 {
   .active &,
   .show-content & {
     transition: opacity .3s linear .1s, transform .75s @ease-smooth;
   }
 }
 
-.main-modal-anim-2 {
+.anim-show-up-2 {
   .active &,
   .show-content & {
     transition: opacity .3s linear .2s, transform .75s @ease-smooth .1s;
   }
 }
 
-.main-modal-anim-3 {
+.anim-show-up-3 {
   .active &,
   .show-content & {
     transition: opacity .3s linear .3s, transform .75s @ease-smooth .2s;
   }
 }
 
-.main-modal-anim-4 {
+.anim-show-up-4 {
   .active &,
   .show-content & {
     transition: opacity .3s linear .4s, transform .75s @ease-smooth .3s;
   }
 }
 
-.main-modal-anim-5 {
+.anim-show-up-5 {
   .active &,
   .show-content & {
     transition: opacity .3s linear .5s, transform .75s @ease-smooth .4s;
@@ -117,11 +117,9 @@
 @keyframes scaleDown {
   from{
     transform: scale(0.5);
-    opacity: 0;
   }
   to{
     transform: scale(1);
-    opacity: 1;
   }
 }
 
@@ -129,11 +127,9 @@
 @keyframes scaleUpTwist {
   from{
     transform: scale(2) rotate(50deg);
-    opacity: 0;
   }
   to{
     transform: scale(1) rotate(0deg);
-    opacity: 1;
   }
 }
 
