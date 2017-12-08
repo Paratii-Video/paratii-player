@@ -6,7 +6,7 @@
       <div class="modal-profile-content edit-profile-inputs-wrapper">
         <label class="modal-profile-avatar avatar-wrapper  anim-show-up-2">
           <div class="modal-profile-avatar-icon">
-            <input type="file" name="new-avatar" hidden>
+            <input class="visually-hidden" type="file" name="new-avatar">
             {{#if imageUrl }}
               <img class="modal-profile-avatar-image current-avatar" src="{{ imageUrl }}">
             {{else}}
