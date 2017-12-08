@@ -542,7 +542,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForVisible('.modal-profile')
 
       assert.equal(browser.getAttribute('#new-username', 'placeholder'), 'foobar baz')
       assert.equal(browser.getAttribute('#new-email', 'placeholder'), 'guildenstern@rosencrantz.com')
@@ -556,7 +556,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForVisible('.modal-profile')
 
       assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
     })
@@ -568,12 +568,12 @@ describe('Profile and accounts workflow:', function () {
       browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForVisible('.modal-profile')
       browser.waitAndSetValue('#new-username', '        \n ')
 
       assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
 
-      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForVisible('.modal-profile')
       browser.waitAndSetValue('#new-email', '       ')
 
       assert.equal(browser.getAttribute('#save-profile-info', 'disabled'), 'true')
@@ -589,7 +589,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.click('.edit-profile-info')
-      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForVisible('.modal-profile')
       browser.waitAndSetValue('#new-username', 'my shiny new name')
 
       browser.waitForClickable('#save-profile-info')
@@ -605,12 +605,12 @@ describe('Profile and accounts workflow:', function () {
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('.button-settings')
 
-      assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
+      assert.equal(browser.getText('.profile-user-email'), 'guildenstern@rosencrantz.com')
 
       browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.waitAndClick('.edit-profile-info')
-      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForVisible('.modal-profile')
 
       browser.waitAndSetValue('#new-email', 'myGreatEmail@aol.com')
 
@@ -618,7 +618,7 @@ describe('Profile and accounts workflow:', function () {
       browser.click('#save-profile-info')
 
       browser.waitUntil(() => {
-        return browser.getText('.profile-info-email') === 'myGreatEmail@aol.com'
+        return browser.getText('.profile-user-email') === 'myGreatEmail@aol.com'
       })
     })
 
@@ -627,12 +627,12 @@ describe('Profile and accounts workflow:', function () {
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('.button-settings')
 
-      assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
+      assert.equal(browser.getText('.profile-user-email'), 'guildenstern@rosencrantz.com')
 
       browser.click('.button-settings')
       browser.waitForClickable('.edit-profile-info')
       browser.waitAndClick('.edit-profile-info')
-      browser.waitForVisible('.edit-profile-info-modal')
+      browser.waitForVisible('.modal-profile')
 
       browser.waitAndSetValue('#new-email', 'fajwefnnnfnann')
 
@@ -643,8 +643,8 @@ describe('Profile and accounts workflow:', function () {
         return browser.getAttribute('#new-email', 'class').indexOf('error') >= 0
       })
 
-      assert.equal(browser.isVisible('.edit-profile-info-modal'), true)
-      assert.equal(browser.getText('.profile-info-email'), 'guildenstern@rosencrantz.com')
+      assert.equal(browser.isVisible('.modal-profile'), true)
+      assert.equal(browser.getText('.profile-user-email'), 'guildenstern@rosencrantz.com')
     })
   })
 })
