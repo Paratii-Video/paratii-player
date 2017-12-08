@@ -16,7 +16,6 @@ if (Meteor.settings.public.first_block === undefined) {
 setHead()
 
 Meteor.startup(async function () {
-  process.env.MAIL_URL = 'smtp://AKIAJ4WFPL45IS4LZAZQ:AhoGWyyEtivjS9eMdC10uYE4tuvclLcPXLr55Ex+ERcy@email-smtp.us-west-2.amazonaws.com:587'
   if (Meteor.settings.env.mail_server == null) {
     process.env.MAIL_URL = Meteor.settings.env.mail_server
   }
