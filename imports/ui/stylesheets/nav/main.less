@@ -74,11 +74,12 @@
   }
 
   &-icon {
+    &:extend(.hidden-with-border all);
+
     display: block;
     height: @size-main-nav-icon;
     margin: 0 auto;
     position: relative;
-    overflow: hidden;
     width: 50%;
     
     .nav-profile & {
