@@ -122,7 +122,7 @@ describe('Profile and accounts workflow:', function () {
     browser.waitAndSetValue('[name="new-password"]', 'new-password')
     browser.waitAndClick('#save-password')
     browser.waitForVisible('li.profile-wallet-item:last-child .amount')
-    const amount = await browser.getText('li.profile-wallet-item:last-child .balance', false)
+    const amount = await browser.getText('li.profile-wallet-item:last-child .profile-wallet-item-balance', false)
     assert.isOk(['3.10 ETH', '3,10 ETH'].indexOf(amount) > -1)
     done()
   })
