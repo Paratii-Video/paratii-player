@@ -605,6 +605,7 @@ describe('Profile and accounts workflow:', function () {
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('.button-settings')
 
+      browser.waitForVisible('.profile-user-email')
       assert.equal(browser.getText('.profile-user-email'), 'guildenstern@rosencrantz.com')
 
       browser.click('.button-settings')
@@ -627,6 +628,7 @@ describe('Profile and accounts workflow:', function () {
       browser.url('http://localhost:3000/profile')
       browser.waitForClickable('.button-settings')
 
+      browser.waitForVisible('.profile-user-email')
       assert.equal(browser.getText('.profile-user-email'), 'guildenstern@rosencrantz.com')
 
       browser.click('.button-settings')
@@ -644,6 +646,7 @@ describe('Profile and accounts workflow:', function () {
       })
 
       assert.equal(browser.isVisible('.modal-profile'), true)
+      browser.waitForVisible('.profile-user-email')
       assert.equal(browser.getText('.profile-user-email'), 'guildenstern@rosencrantz.com')
     })
   })
