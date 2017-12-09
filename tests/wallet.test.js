@@ -21,7 +21,7 @@ describe('wallet:', function () {
     })
   })
 
-  it('should show PTI balance @watch', function () {
+  it('should show PTI balance', function () {
     browser.sendSomePTI(userAccount, 1412.9599)
     browser.waitForVisible('.wallet-contents li:first-child .balance')
     browser.waitUntil(() => {
