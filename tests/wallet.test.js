@@ -1,5 +1,4 @@
 import { assertUserIsLoggedIn, web3, createUserAndLogin, getEthAccountFromApp } from './helpers.js'
-// import { formatCoinBalance } from '/imports/lib/utils.js'
 import { assert } from 'chai'
 
 describe('wallet:', function () {
@@ -22,7 +21,7 @@ describe('wallet:', function () {
     })
   })
 
-  it('should show PTI balance', function () {
+  it('should show PTI balance @watch', function () {
     browser.sendSomePTI(userAccount, 1412.9599)
     browser.waitForVisible('.wallet-contents li:first-child .balance')
     browser.waitUntil(() => {

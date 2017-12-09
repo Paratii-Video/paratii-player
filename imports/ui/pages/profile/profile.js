@@ -74,6 +74,9 @@ Template.profile.helpers({
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
+        console.log(balance)
+        console.log(amount)
+        console.log(formatCoinBalance(amount))
         return `<span class="amount">${formatCoinBalance(amount)}</span> <span class="unit"> PTI</span>`
       } else {
         return 'You don\'t own Paratii'

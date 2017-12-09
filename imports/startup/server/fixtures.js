@@ -29,6 +29,7 @@ export async function deployContractsAndInstallFixture (fixture) {
     console.log('done installing contracts!')
     setRegistryAddress(contracts.ParatiiRegistry.address)
     installFixture(fixture)
+
     return contracts
   } catch (error) {
     // log the errors, otherwise they will just be ignored by useful meteor
@@ -44,9 +45,10 @@ if (Meteor.settings.public.isTestEnv) {
   let fixture = require('/imports/fixtures/octobersprintfixture.js')
   deployContractsAndInstallFixture(fixture).then(function (contracts) {
     setRegistryAddress(contracts.ParatiiRegistry.address)
+    watchEvents()
     Meteor.startup(
       function () {
-        watchEvents()
+        // watchEvents()
       }
     )
   })
