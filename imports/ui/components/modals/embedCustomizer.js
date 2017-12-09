@@ -1,10 +1,11 @@
 import { Template } from 'meteor/templating'
 import Clipboard from 'clipboard'
-import { removeTrailingSlash } from '/imports/lib/utils.js'
+import { removeTrailingSlash, showModalAlert } from '/imports/lib/utils.js'
 
 import '/imports/ui/components/form/mainFormInput.js'
 import './embedCustomizer.html'
 import '/imports/ui/email/sharing.html'
+import '/imports/ui/components/alert/modalAlert.js'
 
 let clipboard
 const embedSizes = [
@@ -138,6 +139,8 @@ Template.modal_share_via_email.events({
           console.log(result)
           if (result === 'sent') {
             let templateView = instance.view.parentView.parentView
+
+            showModalAlert(_(`E-mail sent!`), 'success')
 
             $('div.main-modal').removeClass('show-content')
             Meteor.setTimeout(() => templateView.templateInstance().modalState.set('type', 'modal_share_links'), 300)
