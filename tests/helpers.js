@@ -1,6 +1,6 @@
-/* global localStorage XMLHttpRequest */
+/* global localStorage */
 import { Paratii, utils } from 'paratii-lib'
-
+import { XMLHttpRequest } from 'xmlhttprequest'
 import { assert } from 'chai'
 export const SEED = 'road inherit leave arm unlock estate option merge mechanic rate blade dumb'
 export const USERADDRESS = '0xdef933d2d0203821af2a1579d77fb42b4f8dcf7b'
