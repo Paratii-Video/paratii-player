@@ -25,7 +25,7 @@ function fakeVideoUnlock (address) {
 }
 
 describe('price tag status', function () {
-  it('when the video has no price @watch', () => {
+  it('when the video has no price', () => {
     createUserAndLogin(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     server.execute(createPlaylist)
