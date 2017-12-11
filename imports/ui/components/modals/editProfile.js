@@ -18,7 +18,7 @@ Template.editProfile.events({
       $('div.main-app').removeClass('editProfileMenuOpen')
       Session.set('editProfileMenuOpen', false)
       showModal('editProfileInfo', {
-        wrapperClass: 'modal-profile wide'
+        wrapperClass: 'wide'
       })
     }, 250)
   },
