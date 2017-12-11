@@ -29,17 +29,19 @@ let previousVolume = 100
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = instance.currentVideo.get()
-
-  document.getElementById('video-player').remove()
-  const playerContainer = document.getElementById('player-container')
-  const videoTag = document.createElement('video')
-  videoTag.className = 'player-video'
-  videoTag.id = 'video-player'
-  playerContainer.insertBefore(videoTag, playerContainer.firstChild)
+  window.alert('rendervideoelement')
+  const video = document.getElementById('video-player')
+  video.src = ''
+  // document.getElementById('video-player').remove()
+  // const playerContainer = document.getElementById('player-container')
+  // const videoTag = document.createElement('video')
+  // videoTag.className = 'player-video'
+  // videoTag.id = 'video-player'
+  // playerContainer.insertBefore(videoTag, playerContainer.firstChild)
   // get video tag element and bind it to player js adapter for HTML5 video
 
-  log('this is the video', videoTag)
-  log('this is playerjs', playerjs)
+  // log('this is the video', videoTag)
+  // log('this is playerjs', playerjs)
 
   if (currentVideo.src.startsWith('magnet:')) {
     createWebtorrentPlayer(instance, currentVideo)
@@ -151,12 +153,12 @@ Template.player.onCreated(function () {
     } else {
       self.playerState.set('locked', results)
       // hide everything if the video is unlocked and autoplay is true
-      if (self.playerState.get('autoplay') && !self.playerState.get('locked')) {
-        self.playerState.set('playing', true)
-
-        self.playerState.set('hideControls', true)
-        self.navState.set('closed')
-      }
+      // if (self.playerState.get('autoplay') && !self.playerState.get('locked')) {
+      //   self.playerState.set('playing', true)
+      //
+      //   self.playerState.set('hideControls', true)
+      //   self.navState.set('closed')
+      // }
     }
   })
 })
@@ -426,7 +428,9 @@ Template.player.events({
     const params = { _id: nextId }
     const queryParams = { playlist: playlistId }
     Template.instance().currentVideo.set()
+
     FlowRouter.go(pathDef, params, queryParams)
+    renderVideoElement()
   },
   'click #previous-video-button' (event, instance) {
     if (instance.playerState.get('currentTime') > 5) {
@@ -447,6 +451,7 @@ Template.player.events({
       const params = { _id: previousId }
       const queryParams = { playlist: playlistId }
       FlowRouter.go(pathDef, params, queryParams)
+      renderVideoElement()
     }
   },
   'timeupdate' (event, instance) {
