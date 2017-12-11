@@ -8,6 +8,7 @@
     &:extend(.hover-opacity all);
     &:extend(.color-purple all);
 
+    cursor: pointer;
     font-size: 14px;
     font-weight: 500;
     text-transform: uppercase;
@@ -37,6 +38,14 @@
 
     &.lowercase {
       &:extend(.text-lowercase);
+    }
+
+    //
+
+    &[disabled],
+    &.disabled {
+      color: @color-grey-light;
+      cursor: not-allowed;
     }
 
     // Icon
@@ -83,7 +92,7 @@
 
   &-back {
     height: 16px;
-    width: 11px;
+    width: 26px;
   }
 
   &-settings {

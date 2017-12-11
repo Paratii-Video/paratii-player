@@ -15,15 +15,17 @@ Template.editProfile.events({
   'click .edit-profile-info' () {
     $(Template.instance().firstNode).removeClass('show')
     Meteor.setTimeout(() => {
+      $('div.main-app').removeClass('editProfileMenuOpen')
       Session.set('editProfileMenuOpen', false)
       showModal('editProfileInfo', {
-        wrapperClass: 'edit-profile-info-modal'
+        wrapperClass: 'wide'
       })
     }, 250)
   },
   'click .edit-password' () {
     $(Template.instance().firstNode).removeClass('show')
     Meteor.setTimeout(() => {
+      $('div.main-app').removeClass('editProfileMenuOpen')
       Session.set('editProfileMenuOpen', false)
       showModal('editPassword')
     }, 250)

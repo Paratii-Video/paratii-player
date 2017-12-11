@@ -1,19 +1,19 @@
 <template name="mainFormInput">
   {{#if isPassword }}
     <div class="main-form-label password {{ class }}">
-      <input class="main-form-input main-form-input-password password {{#if error}}error{{/if}}" name="{{ name }}" type="{{ passwordType }}" placeholder="{{ placeholder }}" />
+      <input id="{{ inputId }}" class="main-form-input main-form-input-password password {{#if error}}error{{/if}}" name="{{ name }}" type="{{ passwordType }}" placeholder="{{ placeholder }}" />
       <button class="button-text main-form-button-password password" type="button">Show</button>
     </div>
   {{else}}
     {{#if isCheckbox }}
       <label class="main-form-label main-form-label-checkbox {{ class }}">
         {{ label }}
-        <input class="main-form-checkbox" type="checkbox" name="{{ name }}">
+        <input id="{{ inputId }}" class="main-form-checkbox" type="checkbox" name="{{ name }}">
         <span class="main-form-checkbox-checked"></span>
       </label>
     {{else}}
       <div class="main-form-label {{ class }}">
-        <input class="main-form-input {{ type }} {{#if error}}error{{/if}}" name="{{ name }}" type="{{ type }}" placeholder="{{ placeholder }}" />
+        <input id="{{ inputId }}" class="main-form-input {{ type }} {{#if error}}error{{/if}}" name="{{ name }}" type="{{ type }}" placeholder="{{ placeholder }}" />
       </div>
     {{/if}}
   {{/if}}

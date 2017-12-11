@@ -22,6 +22,12 @@ Template.editPassword.helpers({
   },
   errorMessage () {
     return Template.instance().errorMessage.get()
+  },
+  currentPassword () {
+    return 'current password'
+  },
+  newPassword () {
+    return 'new password'
   }
 })
 

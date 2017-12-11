@@ -1,9 +1,9 @@
 <template name="register">
 	<div id="registerModal" class="main-modal-content">
-    <h3 class="main-modal-title main-modal-anim-1">{{_ "Register" }}</h3>
+    <h3 class="main-modal-title anim-show-up-1">{{_ "Register" }}</h3>
     <form id="form-register" class="main-modal-form" action="">
 	    {{> mainFormInput
-	        class="main-modal-anim-1"
+	        class="anim-show-up-1"
 	        name="at-field-name"
 	        type="text"
 	        placeholder="Name"
@@ -11,7 +11,7 @@
 	     }}
 
 	     {{> mainFormInput
-	         class="main-modal-anim-2"
+	         class="anim-show-up-2"
 	         name="at-field-email"
 	         type="email"
 	         placeholder="Enter your email"
@@ -19,13 +19,13 @@
 	      }}
 
 	     {{> mainFormInput
-	         class="main-modal-anim-3"
+	         class="anim-show-up-3"
 	         name="at-field-password"
 	         type="password"
 	         placeholder="Enter your password"
 	         error=getPasswordError
 	      }}
-	    <div class="main-modal-footer main-modal-anim-4">
+	    <div class="main-modal-footer anim-show-up-4">
 				<button id="at-signUp" class="button-text grey-light main-modal-button" type="button">{{_ "Login" }}</button>
 	      <button id="at-btn" class="button-text main-modal-button signup" type="submit">{{_ "Register" }}</button>
 	    </div>

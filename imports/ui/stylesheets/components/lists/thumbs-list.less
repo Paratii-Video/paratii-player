@@ -16,6 +16,8 @@
 }
 
 .thumbs-list-item {
+  &:extend(.hidden-with-border all);
+
   background: url('img/loader.gif') no-repeat 50%;
   border-radius: 4px;
   box-shadow: 0 1px 2px rgba(25,25,25,0.2);
@@ -23,7 +25,6 @@
   flex: 0 0 @size-thumbs-list-item-width;
   height: @size-thumbs-list-item-height;
   margin: 0 0 10px;
-  overflow: hidden;
   position: relative;
 
   .query-mini({
@@ -237,14 +238,14 @@
   background-size: cover;
   min-height: 100%;
   overflow: hidden;
-  transform: scale(1.05) translate3d(-50%, -50%, 0);
+  transform: translate3d(-50%, -50%, 0);
   transform-origin: left center;
   transition: transform .75s @ease-smooth;
   width: 100%;
   z-index: 1;
 
   .thumbs-list-link:hover & {
-    transform: scale(1.1) translate3d(-50%, -50%, 0);
+    transform: scale(1.07) translate3d(-50%, -50%, 0);
     transition: transform .8s @ease-smooth;
   }
 }
