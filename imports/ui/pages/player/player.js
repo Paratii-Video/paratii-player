@@ -29,9 +29,6 @@ let previousVolume = 100
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = instance.currentVideo.get()
-  window.alert('rendervideoelement')
-  const video = document.getElementById('video-player')
-  video.src = ''
   // document.getElementById('video-player').remove()
   // const playerContainer = document.getElementById('player-container')
   // const videoTag = document.createElement('video')
@@ -66,7 +63,7 @@ function renderVideoElement (instance) {
   }
 }
 
-Template.player.onCreated(function () {
+function initVideo () {
   showLoader(_('loader-video'))
 
   const self = this
@@ -161,7 +158,9 @@ Template.player.onCreated(function () {
       // }
     }
   })
-})
+}
+
+Template.player.onCreated(initVideo)
 
 Template.player.onDestroyed(function () {
   Meteor.clearTimeout(controlsHandler)
@@ -433,6 +432,7 @@ Template.player.events({
     Template.instance().currentVideo.set()
 
     FlowRouter.go(pathDef, params, queryParams)
+    initVideo()
   },
   'click #previous-video-button' (event, instance) {
     if (instance.playerState.get('currentTime') > 5) {
@@ -453,6 +453,7 @@ Template.player.events({
       const params = { _id: previousId }
       const queryParams = { playlist: playlistId }
       FlowRouter.go(pathDef, params, queryParams)
+      initVideo()
     }
   },
   'timeupdate' (event, instance) {
