@@ -29,8 +29,6 @@ let previousVolume = 100
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = instance.currentVideo.get()
-  const video = document.getElementById('video-player')
-  video.src = ''
   // document.getElementById('video-player').remove()
   // const playerContainer = document.getElementById('player-container')
   // const videoTag = document.createElement('video')
