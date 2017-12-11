@@ -1,5 +1,4 @@
 /* globals ReactiveAggregate */
-import { PTIContract } from '/imports/lib/ethereum/connection.js'
 import { getContract } from '../lib/ethereum/contracts.js'
 
 /*****************************
@@ -144,13 +143,16 @@ async function watchSendEtherEvents () {
 async function watchPTIContractTransferEvents () {
   // set a filter for ALL PTI transactions    console.log(log.args)
 
-  console.log('Watching for PTI Transactions')
-  let filter = (await PTIContract()).Transfer({}, {
+  let contract = await getContract('ParatiiToken')
+  console.log(`Watching for PTI Transactions on contract at ${contract.address}`)
+
+  let filter = contract.Transfer({}, {
     fromBlock: 'latest',
     toBlock: 'latest'
   })
 
   filter.watch(function (error, log) {
+    console.log(log)
     if (error) {
       // TODO: proper error handling
       console.log('Error watching for PTI Transactions')

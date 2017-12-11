@@ -34,6 +34,7 @@ function _deploy (contractSpec, param1, cb) {
         if (!myContract.address) {
           // check address on the second call (contract deployed)
         } else {
+          console.log(`deploying contract ${contractSpec.contractName || contractSpec.contract_name} to ${myContract.address}}`)
           cb(null, myContract)
         }
       } else {
@@ -54,6 +55,7 @@ function _deploy (contractSpec, param1, cb) {
         if (!myContract.address) {
           // check address on the second call (contract deployed)
         } else {
+          console.log(`deploying contract ${contractSpec.contractName || contractSpec.contract_name} to ${myContract.address}}`)
           cb(null, myContract)
         }
       } else {

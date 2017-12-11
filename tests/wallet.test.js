@@ -1,8 +1,7 @@
 import { assertUserIsLoggedIn, web3, createUserAndLogin, getEthAccountFromApp } from './helpers.js'
-// import { formatCoinBalance } from '/imports/lib/utils.js'
 import { assert } from 'chai'
 
-describe('wallet: ', function () {
+describe('wallet:', function () {
   let userAccount
 
   beforeEach(function () {

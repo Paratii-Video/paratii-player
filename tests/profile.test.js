@@ -2,13 +2,13 @@
 import {
   SEED,
   USERADDRESS,
+  assertUserIsLoggedIn,
+  createUser,
   createUserKeystore,
   getAnonymousAddress,
-  createUser,
   resetDb,
   createUserAndLogin,
   login,
-  assertUserIsLoggedIn,
   waitForUserIsLoggedIn,
   assertUserIsNotLoggedIn,
   nukeLocalStorage,
@@ -85,8 +85,8 @@ describe('Profile and accounts workflow:', function () {
       }).value
     })
     const anonymousAddress = getAnonymousAddress()
-    browser.waitAndClick('#nav-profile')
 
+    browser.waitAndClick('#nav-profile')
     browser.waitForClickable('[name="at-field-email"]')
     browser.waitAndSetValue('[name="at-field-email"]', 'guildenstern@rosencrantz.com')
     browser.waitAndSetValue('[name="at-field-password"]', 'password')

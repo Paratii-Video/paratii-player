@@ -1,4 +1,5 @@
 import { web3 } from './web3.js'
+// import { paratii } from './connection.js'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'
 import ParatiiRegistrySpec from './contracts/ParatiiRegistry.json'
 import ParatiiTokenSpec from './contracts/ParatiiToken.json'
@@ -33,9 +34,11 @@ export function setRegistryAddress (address) {
 
 export function getRegistryAddress () {
   return Meteor.settings.public.ParatiiRegistry
+  // return paratii.config.registryAddress
 }
 
 export function getParatiiRegistry () {
+  // return paratii.contracts.ParatiiRegistry
   let address = getRegistryAddress()
   if (!address) {
     let msg = `No paratii registry address known!`

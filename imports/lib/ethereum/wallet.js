@@ -12,6 +12,7 @@ import { getContract } from './contracts.js'
 function createKeystore (password, seedPhrase, key, cb) {
   // create a new seedPhrase if we have none, and save in in localstorage under 'keystore-{key}'
   Session.set('generating-keystore', true)
+  // wallet = paratii.web3.eth.accounts.wallet.create(1, seedPhrase)
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed()
   }
@@ -34,6 +35,7 @@ function createKeystore (password, seedPhrase, key, cb) {
       // generate one new address/private key pairs
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 1)
+      // address = wallet[0].address
       const address = keystore.getAddresses()[0]
       if (key) {
         // if there is a logged user, save the keystore under the given key
@@ -99,10 +101,13 @@ function mergeOrCreateNewWallet (password) {
     if (anonymousKeystore !== null) {
       // we have an anonmous keystore - we need to regenarate a new keystore
       // with the same seed but the new password
+      // personal.wallet.mnemonic
       getSeedFromKeystore('password', anonymousKeystore, function (err, seedPhrase) {
         if (err) {
           throw err
         }
+        // wallet = personal.wallet.create(seedPhrase)
+        // keystore = wallet.encrypt(password)
         createKeystore(password, seedPhrase, key, function (error, result) {
           if (error) {
             throw error
@@ -150,6 +155,7 @@ export function getKeystore (user = null) {
   // }
   // using lightwallet to deserialize the keystore
   if (serializedKeystore !== null) {
+    // keystore = paratii.personal.wallet.decrypt(serializedKeystore)
     const keystore = lightwallet.keystore.deserialize(serializedKeystore)
     return keystore
   }
@@ -208,9 +214,6 @@ function restoreWallet (password, seedPhrase, cb) {
 }
 
 function sendTransaction (password, contractName, functionName, args, value, callback) {
-  // send some ETH or PTI
-  // @param value The amount of ETH to transfer (expressed in Wei)
-  //
   if (!value) {
     value = 0
   }
@@ -218,6 +221,7 @@ function sendTransaction (password, contractName, functionName, args, value, cal
     args = []
   }
   console.log(`Sending transaction: ${contractName}.${functionName}(${args}), with value ${value} ETH`)
+  // paratii.personal.wallet.address
   const fromAddr = getUserPTIAddress()
   const nonce = web3.eth.getTransactionCount(fromAddr)
   const keystore = getKeystore()
