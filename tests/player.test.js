@@ -36,7 +36,7 @@ describe('Player:', function () {
     server.execute(createPlaylist, '98765', 'Playlist test', ['12345', '23456'])
   })
 
-  it('play a free video @watch', function () {
+  it('play a free video', function () {
     browser.url('http://localhost:3000/play/12345')
     browser.waitForExist('#video-player')
     browser.waitForExist('.player-overlay')
