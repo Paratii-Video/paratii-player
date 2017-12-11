@@ -50,9 +50,11 @@ function renderVideoElement (instance) {
   } else if (currentVideo.src.startsWith('/ipfs')) {
     let hlsPlayer = new HLSPlayer({video: currentVideo})
     instance.playerState.set('ipfs', true)
-    hlsPlayer.on('status', (text) => {
-      instance.playerState.set('status', text)
-    })
+    instance.playerState.set('status', '')
+    console.log('hlsPlayer Ready, ', hlsPlayer)
+    // hlsPlayer.on('status', (text) => {
+    //   instance.playerState.set('status', text)
+    // })
   } else {
     const videoElement = $('#video-player')
     const sourceElement = document.createElement('source')
