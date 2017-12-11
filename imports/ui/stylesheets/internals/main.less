@@ -4,12 +4,9 @@
   padding: 25px 30px 0 @size-main-nav-minimized-width + 30;
 
   &-header {
-    background: white;
     display: flex;
     margin: 0 0 15px;
-    position: relative;
     width: 100%;
-    z-index: 5;
 
     .button-back {
       animation: showFromLeft .75s @ease-smooth .2s forwards;
@@ -20,7 +17,6 @@
     &-label,
     &-title {
       animation: showFromLeft .75s @ease-smooth forwards;
-      margin-right: 65px;
     }
 
     &-input,
@@ -28,6 +24,7 @@
       color: @color-grey;
       font-size: 20px;
       font-weight: 500;
+      margin: 0 65px 0 0;
     }
 
     &-title {
@@ -40,7 +37,6 @@
     &-label {
       flex: 1;
       margin-bottom: 0;
-      position: relative;
     }
 
     &-input {
@@ -59,14 +55,23 @@
 
 
     &-actions {
+      align-items: center;
+      display: flex;
       position: absolute;
-      right: 0;
-      top: 7px;
+      right: 30px;
+      top: 30px;
 
       button {
-        animation: scaleDown .5s @ease-smooth forwards .5s;
-        margin: 0 0 0 15px;
-        opacity: 0;
+        svg {        
+          animation: scaleDown .5s @ease-smooth forwards .5s;
+          transform: scale(0);
+        }
+      }
+
+      .button-settings {
+        margin: 0 15px 0 0;
+        position: relative;
+        z-index: @zindex-internals-header-button-settings;
       }
     }
   }

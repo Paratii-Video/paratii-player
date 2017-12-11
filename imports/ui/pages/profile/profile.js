@@ -20,6 +20,7 @@ import '/imports/ui/components/buttons/settingsButton.js'
 
 Template.profile.onCreated(function () {
   Session.set('editProfileMenuOpen', false)
+  $('div.main-app').removeClass('editProfileMenuOpen')
   hideLoader()
 })
 
@@ -106,18 +107,22 @@ Template.profile.events({
   'click #show-seed' () {
     showModal('showSeed')
   },
-  'click .button-settings' () {
-    Session.set('editProfileMenuOpen', true)
-  },
-  'click' (e) {
-    if (Session.get('editProfileMenuOpen')) {
+  'click .button-settings' (e) {
+    let iseditProfileMenuOpen = Session.get('editProfileMenuOpen')
+
+    if (iseditProfileMenuOpen) {
       const menu = document.querySelectorAll('.edit-profile-menu')
       if (!menu.length || !menu[0].contains(e.target)) {
         $(menu[0]).removeClass('show')
         Meteor.setTimeout(() => {
           Session.set('editProfileMenuOpen', false)
-        }, 250)
+        }, 400)
       }
+
+      $('div.main-app').removeClass('editProfileMenuOpen')
+    } else {
+      $('div.main-app').addClass('editProfileMenuOpen')
+      Session.set('editProfileMenuOpen', true)
     }
   }
 })
