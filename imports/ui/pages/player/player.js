@@ -430,7 +430,6 @@ Template.player.events({
     Template.instance().currentVideo.set()
 
     FlowRouter.go(pathDef, params, queryParams)
-    renderVideoElement()
   },
   'click #previous-video-button' (event, instance) {
     if (instance.playerState.get('currentTime') > 5) {
@@ -451,7 +450,6 @@ Template.player.events({
       const params = { _id: previousId }
       const queryParams = { playlist: playlistId }
       FlowRouter.go(pathDef, params, queryParams)
-      renderVideoElement()
     }
   },
   'timeupdate' (event, instance) {
