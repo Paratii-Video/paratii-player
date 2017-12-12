@@ -600,12 +600,12 @@ Template.player.events({
     }
   },
   'click #resolution-button' (event, instance) {
-    $('#app-container').toggleClass('resolution-menu')
+    $('#player-container').toggleClass('resolution-menu')
   },
   'click button.player-resolution-button' (event, instance) {
     // console.log($(event.currentTarget).data('resolution'))
     $('button.player-resolution-button.active').removeClass('active')
     $(event.currentTarget).addClass('active')
-    $('#app-container').removeClass('resolution-menu')
+    $('#player-container').removeClass('resolution-menu')
   }
 })
