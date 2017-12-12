@@ -49,11 +49,16 @@
 // Resolution
 
 .player-resolution {
+  opacity: 0;
   position: absolute;
   right: 70px;
   top: 30px;
-  transition: transform .8s @ease-smooth, opacity .3s;
+  transition: opacity .2s, transform .8s @ease-smooth, opacity .3s;
   z-index: @zindex-player-button-fullscreen;
+
+  .playing & {
+    opacity: 1;
+  }
 
   .hide-controls & {
     transform: translate3d(0, -60px, 0);
