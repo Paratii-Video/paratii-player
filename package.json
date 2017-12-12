@@ -21,6 +21,7 @@
     "remove-watcher"
   ],
   "dependencies": {
+    "@paratii-video/paratii-mediaplayer": "0.0.4",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",

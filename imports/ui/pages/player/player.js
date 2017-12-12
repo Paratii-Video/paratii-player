@@ -1,5 +1,6 @@
 import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
+import CreatePlayer from '@paratii-video/paratii-mediaplayer'
 import { sprintf } from 'meteor/sgi:sprintfjs'
 import { web3 } from '/imports/lib/ethereum/connection.js'
 import {
@@ -19,7 +20,6 @@ import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
-// import '/imports/ui/components/modals/regenerateKeystore.js'
 import './player.html'
 
 let controlsHandler
@@ -28,38 +28,45 @@ let previousVolume = 100
 
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
-  const currentVideo = instance.currentVideo.get()
+  // const currentVideo = instance.currentVideo.get()
 
-  document.getElementById('video-player').remove()
-  const playerContainer = document.getElementById('player-container')
-  const videoTag = document.createElement('video')
-  videoTag.className = 'player-video'
-  videoTag.id = 'video-player'
-  playerContainer.insertBefore(videoTag, playerContainer.firstChild)
-  // get video tag element and bind it to player js adapter for HTML5 video
+  // document.getElementById('video-player').remove()
+  // const playerContainer = document.getElementById('player-container')
+  // const videoTag = document.createElement('video')
+  // videoTag.className = 'player-video'
+  // videoTag.id = 'video-player'
+  // playerContainer.insertBefore(videoTag, playerContainer.firstChild)
+  // // get video tag element and bind it to player js adapter for HTML5 video
 
-  log('this is the video', videoTag)
-  log('this is playerjs', playerjs)
+  // log('this is the video', videoTag)
+  // log('this is playerjs', playerjs)
 
-  if (currentVideo.src.startsWith('magnet:')) {
-    createWebtorrentPlayer(instance, currentVideo)
-    instance.playerState.set('torrent', true)
-  } else if (currentVideo.src.startsWith('/ipfs/Qmb3eFpLCNGg1NrPcY5RcHhznibVGuPT28fzZQ7egTzv37')) {
-    createIPFSPlayer(instance, currentVideo)
-    instance.playerState.set('ipfs', true)
-  } else if (currentVideo.src.startsWith('/ipfs')) {
-    let hlsPlayer = new HLSPlayer({video: currentVideo})
-    instance.playerState.set('ipfs', true)
-    hlsPlayer.on('status', (text) => {
-      instance.playerState.set('status', text)
-    })
-  } else {
-    const videoElement = $('#video-player')
-    const sourceElement = document.createElement('source')
-    sourceElement.src = currentVideo.src
-    sourceElement.type = currentVideo.mimetype
-    videoElement.append(sourceElement)
-  }
+  // if (currentVideo.src.startsWith('magnet:')) {
+  //   createWebtorrentPlayer(instance, currentVideo)
+  //   instance.playerState.set('torrent', true)
+  // } else if (currentVideo.src.startsWith('/ipfs/Qmb3eFpLCNGg1NrPcY5RcHhznibVGuPT28fzZQ7egTzv37')) {
+  //   createIPFSPlayer(instance, currentVideo)
+  //   instance.playerState.set('ipfs', true)
+  // } else if (currentVideo.src.startsWith('/ipfs')) {
+  //   let hlsPlayer = new HLSPlayer({video: currentVideo})
+  //   instance.playerState.set('ipfs', true)
+  //   hlsPlayer.on('status', (text) => {
+  //     instance.playerState.set('status', text)
+  //   })
+  // } else {
+  //   const videoElement = $('#video-player')
+  //   const sourceElement = document.createElement('source')
+  //   sourceElement.src = currentVideo.src
+  //   sourceElement.type = currentVideo.mimetype
+  //   videoElement.append(sourceElement)
+  // }
+  CreatePlayer({
+    mimeType: instance.currentVideo.get().mimetype,
+    selector: '#video-player',
+    events: {
+      onReady: hideLoader
+    }
+  })
 }
 
 Template.player.onCreated(function () {
@@ -327,6 +334,7 @@ const setLoadedProgress = (instance) => {
   }
 }
 
+/*
 Template.player.events({
   'click #unlock-video' (event) {
     event.stopPropagation()
@@ -590,3 +598,4 @@ Template.player.events({
     }
   }
 })
+*/
