@@ -23,12 +23,12 @@ import '/imports/ui/components/buttons/fullScreenButton.js'
 import './player.html'
 
 let controlsHandler
-let volumeHandler
-let previousVolume = 100
+// let volumeHandler
+// let previousVolume = 100
 
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
-  // const currentVideo = instance.currentVideo.get()
+  const currentVideo = instance.currentVideo.get()
 
   // document.getElementById('video-player').remove()
   // const playerContainer = document.getElementById('player-container')
@@ -48,11 +48,11 @@ function renderVideoElement (instance) {
   //   createIPFSPlayer(instance, currentVideo)
   //   instance.playerState.set('ipfs', true)
   // } else if (currentVideo.src.startsWith('/ipfs')) {
-  //   let hlsPlayer = new HLSPlayer({video: currentVideo})
-  //   instance.playerState.set('ipfs', true)
-  //   hlsPlayer.on('status', (text) => {
-  //     instance.playerState.set('status', text)
-  //   })
+  let hlsPlayer = new HLSPlayer({video: currentVideo})
+  instance.playerState.set('ipfs', true)
+  hlsPlayer.on('status', (text) => {
+    instance.playerState.set('status', text)
+  })
   // } else {
   //   const videoElement = $('#video-player')
   //   const sourceElement = document.createElement('source')
@@ -65,7 +65,8 @@ function renderVideoElement (instance) {
     selector: '#video-player',
     events: {
       onReady: hideLoader
-    }
+    },
+    ipfsHash: FlowRouter.getParam('_id')
   })
 }
 
