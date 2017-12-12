@@ -25,6 +25,9 @@ class HLSPlayer extends EventEmitter {
     this.DAG = null
 
     this.videoEl = opts.video
+    this.playerState = opts.playerState
+    console.log('playerState: ', this.playerState.get('autoplay'))
+
     Hls.DefaultConfig.loader = HlsjsIpfsLoader
     Hls.DefaultConfig.debug = true
     if (Hls.isSupported()) {
@@ -117,10 +120,9 @@ class HLSPlayer extends EventEmitter {
       console.log('video and hls.js are now bound together !')
       // hls.loadSource('https://gateway.paratii.video/ipfs/'+splitPath(this.videoEl.src)[0]+'/master.m3u8');
       hls.loadSource('master.m3u8')
-      hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-        //   // video.play()
+      hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
         this.emit('ready')
-        console.log('manifest loaded, found ' + data.levels.length + ' quality level')
+        console.log('manifest loaded, found ' + data.levels.length + ' quality level , video: ', this.video)
         hls.startLoad()
         // hls.loadLevel = hls.levels.length - 2
       })

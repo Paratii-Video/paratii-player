@@ -47,7 +47,7 @@ function renderVideoElement (instance) {
     createIPFSPlayer(instance, currentVideo)
     instance.playerState.set('ipfs', true)
   } else if (currentVideo.src.startsWith('/ipfs')) {
-    let hlsPlayer = new HLSPlayer({video: currentVideo})
+    let hlsPlayer = new HLSPlayer({video: currentVideo, playerState: instance.playerState})
     instance.playerState.set('ipfs', true)
     instance.playerState.set('status', '')
     console.log('hlsPlayer Ready, ', hlsPlayer)
@@ -367,8 +367,11 @@ Template.player.events({
       showModal('login')
     }
   },
-  'canplay #video-player' () {
+  'canplay #video-player' (event, instance) {
     hideLoader()
+    if (instance.playerState.get('autoplay')) {
+      playVideo()
+    }
   },
   'play #video-player' (event, instance) {
     log('video is playing')
