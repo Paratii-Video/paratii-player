@@ -25,6 +25,7 @@ import './player.html'
 let controlsHandler
 let volumeHandler
 let previousVolume = 100
+let hlsPlayer
 
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
@@ -47,13 +48,17 @@ function renderVideoElement (instance) {
     createIPFSPlayer(instance, currentVideo)
     instance.playerState.set('ipfs', true)
   } else if (currentVideo.src.startsWith('/ipfs')) {
-    let hlsPlayer = new HLSPlayer({video: currentVideo, playerState: instance.playerState})
+    hlsPlayer = new HLSPlayer({video: currentVideo, playerState: instance.playerState})
     instance.playerState.set('ipfs', true)
     instance.playerState.set('status', '')
     console.log('hlsPlayer Ready, ', hlsPlayer)
     // hlsPlayer.on('status', (text) => {
     //   instance.playerState.set('status', text)
     // })
+    hlsPlayer.on('ready', (data) => {
+      // TODO Trigger template here .. :D
+      console.log('levels: ', data)
+    })
   } else {
     const videoElement = $('#video-player')
     const sourceElement = document.createElement('source')
@@ -606,6 +611,10 @@ Template.player.events({
     // console.log($(event.currentTarget).data('resolution'))
     $('button.player-resolution-button.active').removeClass('active')
     $(event.currentTarget).addClass('active')
+    // console.log('event currentTarget: ', event.currentTarget.dataset['resolution'])
+    if (hlsPlayer) {
+      hlsPlayer.setResolution(event.currentTarget.dataset['resolution'])
+    }
     $('#player-container').removeClass('resolution-menu')
   }
 })

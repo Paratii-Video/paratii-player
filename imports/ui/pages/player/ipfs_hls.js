@@ -23,6 +23,7 @@ class HLSPlayer extends EventEmitter {
       throw new Error('opts.video is required for HLSPlayer')
     }
     this.DAG = null
+    this.hls = null
 
     this.videoEl = opts.video
     this.playerState = opts.playerState
@@ -53,6 +54,22 @@ class HLSPlayer extends EventEmitter {
     })
   }
 
+  setResolution (levelNumber) {
+    if (!this.hls) {
+      console.warn('Hls is not yet available, ', this.hls)
+    } else {
+      this.hls.currentLevel = levelNumber
+    }
+  }
+
+  getResolution () {
+    if (!this.hls) {
+      console.warn('Hls is not yet available')
+    } else {
+      return this.hls.currentLevel
+    }
+  }
+
   // stop () {
   //   hls.stopLoad()
   // }
@@ -80,7 +97,7 @@ class HLSPlayer extends EventEmitter {
     this.emit('status', 'creating IPFS instance')
     this.emit('status', 'IPFS Ready. Searching for ' + splitPath(this.videoEl.src)[0])
     this.video = document.getElementById('video-player')
-    const hls = new Hls({
+    const hls = this.hls = new Hls({
       ipfs: window.ipfs,
       ipfsHash: splitPath(this.videoEl.src)[0],
       enableWorker: true,
@@ -121,8 +138,8 @@ class HLSPlayer extends EventEmitter {
       // hls.loadSource('https://gateway.paratii.video/ipfs/'+splitPath(this.videoEl.src)[0]+'/master.m3u8');
       hls.loadSource('master.m3u8')
       hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-        this.emit('ready')
-        console.log('manifest loaded, found ' + data.levels.length + ' quality level , video: ', this.video)
+        this.emit('ready', (data))
+        // console.log('manifest loaded, found ' + data.levels.length + ' quality level , video: ', this.video)
         hls.startLoad()
         // hls.loadLevel = hls.levels.length - 2
       })
