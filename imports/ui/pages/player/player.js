@@ -296,6 +296,7 @@ const endedVideo = (instance) => {
   }
   $('#app-container').removeClass('playing')
 }
+
 const playVideo = (instance) => {
   const video = document.getElementById('video-player')
   video.play()
@@ -597,5 +598,14 @@ Template.player.events({
       event.preventDefault()
       instance.togglePlay(instance)
     }
+  },
+  'click #resolution-button' (event, instance) {
+    $('#player-container').toggleClass('resolution-menu')
+  },
+  'click button.player-resolution-button' (event, instance) {
+    // console.log($(event.currentTarget).data('resolution'))
+    $('button.player-resolution-button.active').removeClass('active')
+    $(event.currentTarget).addClass('active')
+    $('#player-container').removeClass('resolution-menu')
   }
 })
