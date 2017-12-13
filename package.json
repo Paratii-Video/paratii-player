@@ -21,7 +21,6 @@
     "remove-watcher"
   ],
   "dependencies": {
-    "@paratii-video/paratii-mediaplayer": "0.0.4",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",
@@ -38,6 +37,7 @@
     "meteor-node-stubs": "~0.2.4",
     "moment": "^2.19.1",
     "multihashes": "^0.4.12",
+    "paratii-mediaplayer": "github:Paratii-Video/paratii-mediaplayer#master",
     "paratii-protocol": "github:ya7ya/paratii-protocol#master",
     "player.js": "^0.1.0",
     "pretty-bytes": "^4.0.2",

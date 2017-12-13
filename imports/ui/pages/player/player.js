@@ -1,6 +1,6 @@
 import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
-import CreatePlayer from '@paratii-video/paratii-mediaplayer'
+import CreatePlayer from 'paratii-mediaplayer'
 import { sprintf } from 'meteor/sgi:sprintfjs'
 import { web3 } from '/imports/lib/ethereum/connection.js'
 import {
@@ -81,7 +81,7 @@ function renderVideoElement (instance) {
 }
 
 Template.player.onCreated(function () {
-  showLoader(_('loader-video'))
+  // showLoader(_('loader-video'))
 
   const self = this
   const userPTIAddress = getUserPTIAddress()
