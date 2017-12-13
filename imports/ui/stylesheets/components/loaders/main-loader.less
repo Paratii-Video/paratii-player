@@ -42,8 +42,16 @@
     position: relative;
     z-index: 2;
 
+    .query-mini({
+      margin: 0 20px 0 (@size-main-nav-width + 20);
+    });
+
     .hide-nav & {
       margin: 0 30px;
+
+      .query-mini({
+        margin: 0 20px;
+      });
     }
   }
 
@@ -67,6 +75,10 @@
   &-item {
     padding: 0 10px 20px;
     width: 31%;
+
+    .query-mini({
+      font-size: 12px;
+    });
   }
 
   // Text and dots
@@ -74,7 +86,7 @@
   &-text {
     &:extend(.anim-element-out all);
 
-    bottom: 80px;
+    bottom: 72px;
     font-size: 20px;
     font-weight: 800;
     left: 0;
