@@ -1,7 +1,13 @@
 <template name="mainLoader">
   <div class="main-loader">
     <div class="main-loader-content">
-      <p class="main-loader-text {{#if mainLoaderText}}show{{/if}}">{{ mainLoaderText }}</p>
+      {{#if showLoaderPhrases}}
+        {{#each loaderPhrases}}
+          <p class="main-loader-text {{#if showPhrase @index }}show{{/if}}">{{ mainLoaderText(@index) }}</p>
+        {{/each}}
+      {{else}}
+        <p class="main-loader-text {{#if mainLoaderText}}show{{/if}}">{{ mainLoaderText }}</p>
+      {{/if}}
 
       <div class="main-loader-icon">
         <svg class="main-loader-svg" xmlns="http://www.w3.org/2000/svg" viewBox="660 1917.237 23.943 3.763">

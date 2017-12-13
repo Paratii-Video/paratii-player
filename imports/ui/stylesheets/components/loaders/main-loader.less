@@ -37,6 +37,7 @@
     margin: 0 0 40px;
     max-width: 80%;
     position: relative;
+    width: 80%;
     z-index: 2;
 
     .hide-nav & {
@@ -47,7 +48,7 @@
   &-icon {
     &:extend(.anim-element-out all);
 
-    margin: 30px auto 0;
+    margin: 0 auto;
     width: 60px;
 
     .show-main-loader & {
@@ -63,11 +64,15 @@
   &-text {
     &:extend(.anim-element-out all);
 
+    bottom: 40px;
     color: @color-white-dark;
     font-size: 20px;
     font-weight: 800;
+    left: 0;
     text-align: center;
     padding: 0 20px;
+    position: absolute;
+    width: 100%;
 
     .show-main-loader & {    
       &.show {
