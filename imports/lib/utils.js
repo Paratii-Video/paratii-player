@@ -43,9 +43,40 @@ export function add0x (input) {
 }
 
 // Show & hide Loader
-export function showLoader (message) {
-  Session.set('mainLoaderText', message)
-  Session.set('showMainLoader', true)
+
+export function showLoader (message, time) {
+  let index = 0
+  let timeout = time || 1000
+  Session.set('showLoaderMultiple', typeof message === 'object')
+
+  function canChange () {
+    return Session.get('showMainLoader') && Session.get('showLoaderMultiple')
+  }
+
+  function changeText () {
+    Meteor.setTimeout(() => {
+      if (canChange()) {
+        $('p.main-loader-text').removeClass('show')
+        Meteor.setTimeout(() => {
+          if (canChange()) {
+            index = (index + 1 === message.length) ? 0 : index + 1
+            Session.set('mainLoaderText', message[index])
+            $('p.main-loader-text').addClass('show')
+            changeText()
+          }
+        }, 400)
+      }
+    }, timeout)
+  }
+
+  if (Session.get('showLoaderMultiple')) {
+    Session.set('mainLoaderText', message[index])
+    Session.set('showMainLoader', true)
+    changeText()
+  } else {
+    Session.set('mainLoaderText', message)
+    Session.set('showMainLoader', true)
+  }
 }
 
 export function hideLoader () {
