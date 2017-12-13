@@ -2,15 +2,16 @@
 .walletContainer {
   width: 100%;
   padding: 10px 0;
+  font-weight: 300;
 
   &.emailContainer {
+    margin-top: -18px;
     padding: 0;
   }
 }
 
 .profile-info-email {
-  font-size: 20px;
-  font-weight: 300;
+  font-size: 16px;
   margin-bottom: 10px;
 }
 
@@ -24,18 +25,20 @@
 
     li {
 
-      @button-dimension: 160px;
+      @balance-width: 125px;
+      @balance-height: 110px;
 
-      flex: 0 0 @button-dimension;
-      max-width: @button-dimension;
-      height: @button-dimension;
+      flex: 0 0 @balance-width;
+      max-width: @balance-width;
+      height: @balance-height;
 
       &:not(:last-child) {
-        margin-right: 15px;
+        margin-right: 10px;
       }
 
       a {
         &:extend(.btn, .btn-default);
+        padding: 15px 10px;
         border-radius: 6px;
         font-weight: 300;
         font-size: 16px;
@@ -49,13 +52,14 @@
 
         &:hover {
           background-clip: @color-white;
+          border-color: @color-grey-light;
         }
 
         .unit-name {
           width: 100%;
           text-align: left;
           flex: 0 0 10px;
-          font-size: 16px;
+          font-size: 20px;
         }
 
         .balance-wrapper {
@@ -68,7 +72,7 @@
             text-align: right;
             align-items: baseline;
             width: 100%;
-            font-size: 20px;
+            font-size: 15px;
             font-weight: 300;
             word-wrap: break-word;
 

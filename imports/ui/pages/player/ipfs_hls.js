@@ -23,8 +23,12 @@ class HLSPlayer extends EventEmitter {
       throw new Error('opts.video is required for HLSPlayer')
     }
     this.DAG = null
+    this.hls = null
 
     this.videoEl = opts.video
+    this.playerState = opts.playerState
+    console.log('playerState: ', this.playerState.get('autoplay'))
+
     Hls.DefaultConfig.loader = HlsjsIpfsLoader
     Hls.DefaultConfig.debug = true
     if (Hls.isSupported()) {
@@ -48,6 +52,22 @@ class HLSPlayer extends EventEmitter {
       console.log('DAG: ', res.links)
       callback(null, res.links)
     })
+  }
+
+  setResolution (levelNumber) {
+    if (!this.hls) {
+      console.warn('Hls is not yet available, ', this.hls)
+    } else {
+      this.hls.currentLevel = levelNumber
+    }
+  }
+
+  getResolution () {
+    if (!this.hls) {
+      console.warn('Hls is not yet available')
+    } else {
+      return this.hls.currentLevel
+    }
   }
 
   // stop () {
@@ -77,11 +97,11 @@ class HLSPlayer extends EventEmitter {
     this.emit('status', 'creating IPFS instance')
     this.emit('status', 'IPFS Ready. Searching for ' + splitPath(this.videoEl.src)[0])
     this.video = document.getElementById('video-player')
-    const hls = new Hls({
+    const hls = this.hls = new Hls({
       ipfs: window.ipfs,
       ipfsHash: splitPath(this.videoEl.src)[0],
       enableWorker: true,
-      startLevel: 0,
+      startLevel: 2,
       autoLevelEnabled: false,
       autoStartLoad: true,
       maxLoadingDelay: 2
@@ -117,10 +137,9 @@ class HLSPlayer extends EventEmitter {
       console.log('video and hls.js are now bound together !')
       // hls.loadSource('https://gateway.paratii.video/ipfs/'+splitPath(this.videoEl.src)[0]+'/master.m3u8');
       hls.loadSource('master.m3u8')
-      hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-        //   // video.play()
-        this.emit('ready')
-        console.log('manifest loaded, found ' + data.levels.length + ' quality level')
+      hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+        this.emit('ready', (data))
+        // console.log('manifest loaded, found ' + data.levels.length + ' quality level , video: ', this.video)
         hls.startLoad()
         // hls.loadLevel = hls.levels.length - 2
       })

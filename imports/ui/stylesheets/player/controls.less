@@ -46,6 +46,76 @@
   }
 }
 
+// Resolution
+
+.player-resolution {
+  opacity: 1;
+  position: absolute;
+  right: 70px;
+  top: 30px;
+  transition: opacity .2s, transform .8s @ease-smooth, opacity .3s;
+  z-index: @zindex-player-button-fullscreen;
+
+  .playing & {
+    opacity: 1;
+  }
+
+  .hide-controls & {
+    transform: translate3d(0, -60px, 0);
+    transition: transform .65s @ease-smooth, opacity .3s;
+  }
+
+  &-list {
+    left: 50%;
+    opacity: 0;
+    position: absolute;
+    text-align: center;
+    transform: translate3d(-50%, 20px, 0);
+    transition: opacity .25s, transform .35s @ease-smooth;
+    top: @size-player-controls-button-height + 20;
+
+    .resolution-menu & {
+      opacity: 1;
+      transform: translate3d(-50%, 0, 0);
+      transition: opacity .3s, transform .5s @ease-smooth;
+    }
+
+    .resolution-menu.hide-controls & {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  &-button {
+    &:extend(.hover-opacity all);
+
+    color: @color-white;
+    font-size: 16px;
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+
+    &::before {
+      &:extend(.pos-a-vm all);
+
+      background: @color-white;
+      border-radius: 100%;
+      content: '';
+      display: none;
+      height: 5px;
+      left: -10px;
+      width: 5px;
+    }
+
+    &.active {
+      &::before {
+        display: block;
+      }
+    }
+  }
+}
+
+
 // Buttons
 
 .player-controls-buttons {
@@ -135,6 +205,21 @@
   &-volume {
     margin: 0;
     width: 15px;
+  }
+
+  &-resolution {
+    width: @size-player-controls-button-height;
+
+    .query-mini({
+      height: 20px;
+      width: 20px;
+    });
+
+    .player-button-svg {
+      .resolution-menu & {
+        fill: @color-purple;
+      }
+    }
   }
 
   &-fullscreen {

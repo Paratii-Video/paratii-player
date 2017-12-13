@@ -5,7 +5,7 @@ import { getKeystore } from '/imports/lib/ethereum/wallet.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { Events } from '/imports/api/events.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
-import { showModal, formatCoinBalance } from '/imports/lib/utils.js'
+import { showModal, formatCoinBalance, hideLoader } from '/imports/lib/utils.js'
 import '/imports/ui/components/modals/mainModal.js'
 import '/imports/ui/components/modals/editProfile.js'
 import '/imports/ui/components/modals/doTransaction.js'
@@ -20,6 +20,8 @@ import '/imports/ui/components/buttons/settingsButton.js'
 
 Template.profile.onCreated(function () {
   Session.set('editProfileMenuOpen', false)
+  $('div.main-app').removeClass('editProfileMenuOpen')
+  hideLoader()
 })
 
 // Template.profile.onRendered(function () {
@@ -73,6 +75,9 @@ Template.profile.helpers({
     if (balance !== undefined) {
       if (balance > 0) {
         const amount = web3.fromWei(balance, 'ether')
+        console.log(balance)
+        console.log(amount)
+        console.log(formatCoinBalance(amount))
         return `<span class="amount">${formatCoinBalance(amount)}</span> <span class="unit"> PTI</span>`
       } else {
         return 'You don\'t own Paratii'
@@ -102,18 +107,22 @@ Template.profile.events({
   'click #show-seed' () {
     showModal('showSeed')
   },
-  'click .button-settings' () {
-    Session.set('editProfileMenuOpen', true)
-  },
-  'click' (e) {
-    if (Session.get('editProfileMenuOpen')) {
+  'click .button-settings' (e) {
+    let iseditProfileMenuOpen = Session.get('editProfileMenuOpen')
+
+    if (iseditProfileMenuOpen) {
       const menu = document.querySelectorAll('.edit-profile-menu')
       if (!menu.length || !menu[0].contains(e.target)) {
         $(menu[0]).removeClass('show')
         Meteor.setTimeout(() => {
           Session.set('editProfileMenuOpen', false)
-        }, 250)
+        }, 400)
       }
+
+      $('div.main-app').removeClass('editProfileMenuOpen')
+    } else {
+      $('div.main-app').addClass('editProfileMenuOpen')
+      Session.set('editProfileMenuOpen', true)
     }
   }
 })

@@ -2,8 +2,8 @@
   <div class="main-modal-content main-modal-unlock">
 
 
-    <h3 class="main-modal-title main-modal-anim-1">Unlock {{ videotitle }} {{ modalError }} {{modalState}}</h3>
-    <div class="main-modal-unlock-info main-modal-anim-2">
+    <h3 class="main-modal-title anim-show-up-1">Unlock {{ videotitle }} {{ modalError }} {{modalState}}</h3>
+    <div class="main-modal-unlock-info anim-show-up-2">
       <div class="main-modal-avatar">
         {{#if currentUser }}
           {{#if currentUser.profile.image }}
@@ -55,14 +55,14 @@
         <input name="wallet_amount" type="text" value="{{price}}" class="visually-hidden" aria-describedby="sizing-addon1" readonly>
       {{/if}}
       {{> mainFormInput
-          class="main-modal-unlock-label main-modal-anim-3"
+          class="main-modal-unlock-label anim-show-up-3"
           name="user_password"
           type="password"
           placeholder="Enter your password"
           error=getPasswordError
       }}
-      <a class="button-text lowercase main-form-button-forgot main-modal-unlock-anchor } main-modal-anim-3" href="#" target="_blank">Forgot password?</a>
-      <div class="main-modal-footer main-modal-anim-4">
+      <a class="button-text lowercase main-form-button-forgot main-modal-unlock-anchor } anim-show-up-3" href="#" target="_blank">Forgot password?</a>
+      <div class="main-modal-footer anim-show-up-4">
         <!-- {{#if modalError }}
         <span class="main-modal-footer-waiting error">{{ modalError }}</span>
         {{/if}}

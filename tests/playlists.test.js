@@ -25,10 +25,11 @@ function fakeVideoUnlock (address) {
 }
 
 describe('price tag status', function () {
-  it('when the video has no price ', () => {
+  it('when the video has no price', () => {
     createUserAndLogin(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 0)
     server.execute(createPlaylist)
+    browser.waitUntilRequestHasStatus('http://localhost:3000/playlists/98765', 200)
     browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.thumbs-list-item')
 
@@ -42,7 +43,7 @@ describe('price tag status', function () {
     assertUserIsLoggedIn(browser)
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
-    browser.pause(2000)
+    browser.waitUntilRequestHasStatus('http://localhost:3000/playlists/98765', 200)
     browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.thumbs-list-item')
     browser.moveToObject('.thumbs-list-item')
@@ -58,8 +59,8 @@ describe('price tag status', function () {
     server.execute(createVideo, '12345', 'Test 1', '', '', [''], 10)
     server.execute(createPlaylist)
     server.execute(fakeVideoUnlock, address)
+    browser.waitUntilRequestHasStatus('http://localhost:3000/playlists/98765', 200)
     browser.url('http:localhost:3000/playlists/98765')
     browser.waitForExist('.thumbs-list-item')
-    // assert.equal(browser.getText('.thumbs-list-price'), '✓')
   })
 })

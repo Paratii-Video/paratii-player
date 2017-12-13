@@ -6,15 +6,15 @@
           <div class="main-nav-icon">
             {{#if currentUser}}
               {{#if currentUser.profile.image }}
-                <img class="main-nav-svg" src="{{ currentUser.profile.image }}">
+                <img class="main-nav-image" src="{{ currentUser.profile.image }}">
               {{else}}
-                <svg class="main-nav-svg">
-                  <use class="main-nav-svg-use" xlink:href="#icon-avatar"></use>
+                <svg class="main-nav-image">
+                  <use class="main-nav-image-use" xlink:href="#icon-avatar"></use>
                 </svg>
               {{/if}}
             {{else}}
-              <svg class="main-nav-svg">
-                <use class="main-nav-svg-use" xlink:href="#icon-avatar"></use>
+              <svg class="main-nav-image">
+                <use class="main-nav-image-use" xlink:href="#icon-avatar"></use>
               </svg>
             {{/if}}
           </div>
@@ -24,8 +24,8 @@
       <li id="search" class="main-nav-item nav-search {{isActivePath '/search'}} {{#if locked}}locked{{/if}}">
         <a class="main-nav-link locked" href="/search">
           <div class="main-nav-icon">
-            <svg class="main-nav-svg">
-              <use class="main-nav-svg-use" xlink:href="#icon-search"></use>
+            <svg class="main-nav-image">
+              <use class="main-nav-image-use" xlink:href="#icon-search"></use>
             </svg>
           </div>
           <p class="visually-hidden">{{_ "Search" }}</p>
@@ -35,8 +35,8 @@
       <li id="playlist" class="main-nav-item nav-playlists {{isActivePath '/playlists'}} {{#if locked}}locked{{/if}}">
         <a class="main-nav-link" href="/playlists">
           <div class="main-nav-icon">
-            <svg class="main-nav-svg">
-              <use class="main-nav-svg-use" xlink:href="#icon-playlist"></use>
+            <svg class="main-nav-image">
+              <use class="main-nav-image-use" xlink:href="#icon-playlist"></use>
             </svg>
           </div>
           <p class="visually-hidden">{{_ "Playlists" }}</p>
@@ -45,8 +45,8 @@
       <!-- <li id="myvideos" class="main-nav-item nav-myvideos {{isActivePath '/myvideos'}} {{#if locked}}locked{{/if}}">
         <a class="main-nav-link" href="/myvideos">
           <div class="main-nav-icon">
-            <svg class="main-nav-svg">
-              <use class="main-nav-svg-use" xlink:href="#icon-myvideos"></use>
+            <svg class="main-nav-image">
+              <use class="main-nav-image-use" xlink:href="#icon-myvideos"></use>
             </svg>
           </div>
         </a>
@@ -55,8 +55,8 @@
       <li id="logout" class="main-nav-item nav-logout">
         <a class="main-nav-link" href="/">
           <div class="main-nav-icon">
-            <svg class="main-nav-svg">
-              <use class="main-nav-svg-use" xlink:href="#icon-logout"></use>
+            <svg class="main-nav-image">
+              <use class="main-nav-image-use" xlink:href="#icon-logout"></use>
             </svg>
           </div>
           <p class="visually-hidden">{{_ "Log out" }}</p>

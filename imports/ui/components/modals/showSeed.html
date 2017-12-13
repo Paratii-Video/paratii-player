@@ -1,6 +1,6 @@
 <template name="showSeed">
   <div id="show-seed" class="main-modal-content">
-    <h3 class="main-modal-title main-modal-anim-1">Show the seed phrase</h3>
+    <h3 class="main-modal-title anim-show-up-1">Show the seed phrase</h3>
     {{#if errorMessage}}
     <p class="control-label visually-hidden">{{errorMessage}}</p>
     {{/if}}
@@ -10,23 +10,23 @@
         This phrase is <strong>the only way</strong> to recover your account</p>
         <br>
         <p id="seed" class="main-modal-text"><strong class="color-grey-dark">{{seed}}</strong></p>
-        <div class="main-modal-footer main-modal-anim-4">
+        <div class="main-modal-footer anim-show-up-4">
           <button id="btn-check-seed" class="button-text main-modal-button signin" type="submit" data-loading-text="Waiting...">Continue</button>
         </div>
     {{else}}
       <form id="form-show-seed" class="main-modal-form" action="">
         {{> mainFormInput
-            class="main-modal-anim-2"
+            class="anim-show-up-2"
             name="user_password"
             type="password"
             placeholder="Enter your password"
             error=errorMessage
         }}
-        <div class="main-modal-anim-3">
+        <div class="anim-show-up-3">
           <button id="button-forgot" class="button-text nocase main-form-button-forgot" type="button">Forgot password?</button>
         </div>
         {{#unless seed}}
-        <div class="main-modal-footer main-modal-anim-4">
+        <div class="main-modal-footer anim-show-up-4">
           <button id="btn-show-seed" class="button-text main-modal-button signin" type="submit" data-loading-text="Getting seed...">Get seed</button>
         </div>
         {{/unless}}

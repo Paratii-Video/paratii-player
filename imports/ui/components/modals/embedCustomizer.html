@@ -13,9 +13,9 @@
 
 <template name="modal_share_links">
   <div class="main-modal-content main-modal-share">
-    <h3 class="main-modal-title main-modal-anim-1">{{_ "Share this video" }}</h3>
-    <input class="input-copy-code main-form-input main-modal-anim-2" onclick="this.focus();this.select()" readonly="readonly" value="{{ embedBaseUrl }}" />
-    <ul class="main-modal-share-list main-modal-anim-3">
+    <h3 class="main-modal-title anim-show-up-1">{{_ "Share this video" }}</h3>
+    <input class="input-copy-code main-form-input anim-show-up-2" onclick="this.focus();this.select()" readonly="readonly" value="{{ embedBaseUrl }}" />
+    <ul class="main-modal-share-list anim-show-up-3">
       <li class="main-modal-share-item">
         <a class="main-modal-share-link" target="_blank" href="{{ facebook }}">
           <svg class="main-modal-share-link-svg">
@@ -59,7 +59,7 @@
         </a>
       </li>
     </ul>
-    <div class="main-modal-footer main-modal-anim-4">
+    <div class="main-modal-footer anim-show-up-4">
       <pre id="to_clip" class="visually-hidden">{{ embedBaseUrl }}</pre>
       <button class="button-text grey-light gotoembed">{{_ "Embed video" }}</button>
       <button id="copy_url"  class="button-text" data-clipboard-target="#to_clip">{{_ "Copy link" }}</button>
@@ -71,13 +71,14 @@
 <template name="modal_share_via_email">
   <div class="main-modal-content main-modal-share">
     <form class="" id="send_email">
-      <h3 class="main-modal-title main-modal-anim-1">Share this video via email</h3>
-      <div class="main-modal-anim-2">
-          <input type="email" name="email" placeholder="Friend email">
+      <h3 class="main-modal-title anim-show-up-1">Share this video via email</h3>
+      <div class="main-form-label anim-show-up-2">
+        <input class="main-form-input email" name="email" type="email" placeholder="Friend email" />
       </div>
-      <div class="main-modal-footer main-modal-anim-4">
-        <button class="button-text grey-light gotolinks">Share video</button>
-        <button type="submit" class="button-text">Send</button>
+      
+      <div class="main-modal-footer anim-show-up-3">
+        <button class="button-text grey-light gotolinks" type="button">Share video</button>
+        <button class="button-text" type="submit">Send</button>
       </div>
     </form>
   </div>
@@ -85,8 +86,8 @@
 
 <template name="modal_share_embed">
   <div class="main-modal-content main-modal-share">
-    <h3 class="main-modal-title main-modal-anim-1">Embed video</h3>
-    <div class="main-modal-share-option main-modal-anim-2">
+    <h3 class="main-modal-title anim-show-up-1">Embed video</h3>
+    <div class="main-modal-share-option anim-show-up-2">
       <p class="main-modal-subtitle">Capabilities:</p>
       <div class="main-modal-share-options">
         {{> mainFormInput
@@ -117,9 +118,9 @@
         }}
       </div>
     </div>
-    <p class="main-modal-text main-modal-anim-4 visually-hidden">{{_ "Add the following code to your website" }}</p>
+    <p class="main-modal-text anim-show-up-4 visually-hidden">{{_ "Add the following code to your website" }}</p>
     <!--  Hide tiny/mini choice until these things are implemented..
-    <div class="main-modal-share-option main-modal-anim-3">
+    <div class="main-modal-share-option anim-show-up-3">
       <p class="main-modal-subtitle">Sizes:</p>
       <div class="main-modal-share-options">
         {{#each embedSizes}}
@@ -132,10 +133,10 @@
         {{/each}}
       </div>
     </div> -->
-    <input class="input-copy-code main-form-input main-modal-anim-5" onclick="this.focus();this.select()" readonly="readonly" value="{{ code }}" />
+    <input class="input-copy-code main-form-input anim-show-up-5" onclick="this.focus();this.select()" readonly="readonly" value="{{ code }}" />
     <pre id="to_clip" class="visually-hidden">{{ code }}</pre>
 
-    <div class="main-modal-footer main-modal-anim-5">
+    <div class="main-modal-footer anim-show-up-5">
       <button class="button-text grey-light gotolinks">Share video</button>
       <button id="copy_embed_code"  class="button-text" data-clipboard-target="#to_clip">Copy code</button>
     </div>

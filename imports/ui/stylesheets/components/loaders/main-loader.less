@@ -33,7 +33,9 @@
   // Text and dots
 
   &-content {
+    left: 30px;
     margin: 0 0 40px;
+    max-width: 80%;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity .35s linear .25s, transform .7s @ease-smooth .2s; 
@@ -45,17 +47,32 @@
       transform: translateY(0);
       transition: opacity .3s linear .25s, transform 1s @ease-smooth .2s; 
     }
+
+    .hide-nav & {
+      left: 0;
+    }
   }
 
   &-text {
     color: @color-white-dark;
     font-size: 20px;
     font-weight: 300;
+    text-align: center;
+    padding: 0 20px;
+
+    .query-mini({
+      font-size: 18px;
+    });
   }
 
   &-icon {
     margin: 20px auto 0;
     width: 60px;
+
+    .query-mini({
+      margin-top: 15px;
+      width: 50px;
+    });
   }
 
   &-svg {

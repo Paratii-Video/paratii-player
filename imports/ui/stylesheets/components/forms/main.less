@@ -13,6 +13,7 @@
   }
 
   &-label {
+    border-bottom: 1px solid @color-grey;
     display: block;
     font-size: 14px;
     font-weight: 300;
@@ -33,6 +34,7 @@
     }
 
     &-checkbox {
+      border-bottom: none;
       color: @color-grey-light;
       cursor: pointer;
       padding: 0 0 0 20px;
@@ -62,7 +64,6 @@
   &-input,
   &-textarea {
     background: 0;
-    border-bottom: 1px solid @color-grey;
     display: block;
     font-size: 14px;
     transition: border-color .3s;
@@ -81,7 +82,7 @@
       color: @color-grey;
       font-size: 14px;
       font-weight: 500;
-      -webkit-box-shadow: 0 0 0px 1000px white inset;
+      -webkit-box-shadow: 0 0 0 1000px white inset;
       -webkit-text-fill-color: @color-grey;
 
       &.error {

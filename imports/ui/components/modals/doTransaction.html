@@ -1,15 +1,15 @@
 <template name="doTransaction">
   <div class="main-modal-content show-content {{ action }}">
-    <h3 class="main-modal-title main-modal-anim-1">{{ label }}</h3>
+    <h3 class="main-modal-title anim-show-up-1">{{ label }}</h3>
     <form id="form-doTransaction" class="main-modal-form" action="">
-      <div class="main-form-label main-modal-anim-2">
+      <div class="main-form-label anim-show-up-2">
         {{#if action}}
           <input class="main-form-input" name="wallet_amount" type="text" value="{{price}}" aria-describedby="sizing-addon1" readonly>
         {{else}}
           <input class="main-form-input {{#if getErrors 'wallet_amount'}}error{{/if}}" name="wallet_amount" type="number" step="0.0001" min="0.0001" placeholder="Amount of {{ type }} you wish to send" aria-describedby="sizing-addon1">
         {{/if}}
       </div>
-      <div class="main-form-label main-modal-anim-3">
+      <div class="main-form-label anim-show-up-3">
         {{#if action }}
           <input class="main-form-input" name="wallet_friend_number" type="text" value="{{address}}" aria-describedby="sizing-addon1" readonly>
           {{> dapp_identicon identity='{{address}}' class="dapp-small"}}
@@ -17,7 +17,7 @@
           {{> dapp_addressInput class="address_input form-control" placeholder="Friend's Wallet" value="" aria-describedby="sizing-addon1" name="wallet_friend_number"}}
         {{/if}}
       </div>
-      <div class="main-form-label main-modal-anim-4">
+      <div class="main-form-label anim-show-up-4">
         {{#if action }}
           <input class="main-form-input" name="tx_description" type="text" value="{{ videotitle }}" aria-describedby="sizing-addon1" readonly>
         {{else}}
@@ -25,13 +25,13 @@
         {{/if}}
       </div>
       {{> mainFormInput
-          class="main-modal-anim-5"
+          class="anim-show-up-5"
           name="user_password"
           type="password"
           placeholder="Enter your password"
           error=getPasswordError
       }}
-      <div class="main-modal-footer main-modal-anim-5">
+      <div class="main-modal-footer anim-show-up-5">
         <button id="send_trans_btn" class="button-text main-modal-button signup" type="submit">Send {{ type }}</button>
       </div>
     </form>

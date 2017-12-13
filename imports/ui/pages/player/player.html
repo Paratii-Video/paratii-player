@@ -5,6 +5,23 @@
     <video id="video-player" class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
     </video>
 
+    <div class="player-resolution">
+      <button id="resolution-button" class="player-button player-button-resolution">
+        <svg class="player-button-svg">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-gear"></use>
+        </svg>
+      </button>
+      <ul class="player-resolution-list">
+        <li class="player-resolution-item"><button class="player-resolution-button active" data-resolution="0">144p</button></li>
+        <li class="player-resolution-item"><button class="player-resolution-button" data-resolution="1">240p</button></li>
+        <li class="player-resolution-item"><button class="player-resolution-button" data-resolution="2">360p</button></li>
+        <li class="player-resolution-item"><button class="player-resolution-button" data-resolution="3">480p</button></li>
+        <li class="player-resolution-item"><button class="player-resolution-button" data-resolution="4">720p</button></li>
+        <!-- <li class="player-resolution-item"><button class="player-resolution-button" data-resolution="5">1080</button></li> -->
+      </ul>
+    </div>
+
+
     {{> fullScreenButton className="player-button player-button-fullscreen" target=videoPlayer }}
 
     {{#unless isLocked }}
@@ -106,6 +123,13 @@
                   </svg>
                   {{formatNumber stats.dislikes}}
                 </button>
+
+
+                <button id="embed" data-title="{{title}}" data-description="{{description}}" data-thumb="{{thumb}}" class="player-stats-item ">
+                  <svg class="player-stats-icon">
+                    <use class="player-stats-icon-use" xlink:href="#icon-share"></use>
+                  </svg>
+                </button>
               </div>
               {{#if description}}
               <button class="button-text nocase white player-infos-button-description" type="button">{{_ "Show description" }}</button>
@@ -158,26 +182,6 @@
               </button>
             {{/if}}
           </div>
-        </div>
-        <div class="player-share">
-          <button class="player-share-button player-share-button-add">
-            <svg class="player-share-button-icon">
-              <use class="player-share-button-icon-use" xlink:href="#icon-playlists-add"></use>
-            </svg>
-          </button>
-          <button id="embed" data-title="{{title}}" class="player-share-button player-share-button-share">
-            <svg class="player-share-button-icon">
-              <use class="player-share-button-icon-use" xlink:href="#icon-share"></use>
-            </svg>
-          </button>
-          <button class="player-share-button player-share-button-later active">
-            <svg class="player-share-button-icon player-share-button-later-watch">
-              <use class="player-share-button-icon-use" xlink:href="#icon-watch-later"></use>
-            </svg>
-            <svg class="player-share-button-icon player-share-button-later-add">
-              <use class="player-share-button-icon-use" xlink:href="#icon-watch-later-add"></use>
-            </svg>
-          </button>
         </div>
       </div>
     {{/with}}

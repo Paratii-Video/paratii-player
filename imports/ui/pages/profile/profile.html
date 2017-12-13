@@ -1,66 +1,46 @@
 <template name="profile">
   <div class="internals profile">
-    {{#if currentUser }} {{#isAuthorized}}
-
-    {{ >internalsHeader title=currentUser.profile.name addButtons='settingsButton'}}
-    {{#if editProfileMenuOpen }}
-      {{ >editProfile }}
-    {{/if}}
-    <div class="walletContainer emailContainer">
-      <div class="profile-info profile-info-email"> {{userEmail}}</div>
-    </div>
-    {{#if userPTIAddress }}
-    <div class="walletContainer">
-      <div class="wallet-contents">
-        <ul class="nav nav-tabs nav-justified">
-          <li class="active">
-            <a>
-              <div class="unit-name">Paratii</div>
-              <div class="balance-wrapper"><span class="balance">{{{ pti_balance }}}</span></div>
-            </a>
-          </li>
-          <li>
-            <a>
-              <div class="unit-name">Ether</div>
-              <div class="balance-wrapper"><span class="balance">{{{ eth_balance }}}</span></div>
-            </a>
-          </li>
-        </ul>
-        <div class="tab-content wallet-tab-content">
-          <div class="tab-pane active" id="pti">
-            <!-- <button id="#earn-pti" class="earn-button">Earn more PTI</button> -->
-            <!-- <button class="btn btn-default blue-button btn-block" id="send-eth">Send Ether</button> -->
-          </div>
-          <div class="tab-pane" id="eth">
-            <!-- <button id="#earn-eth" class="earn-button">Earn more ETH</button> -->
-            <!-- <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button> -->
-          </div>
-          <!-- <a href="/transactions" class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</a> -->
-          <!-- <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button> -->
+    {{#if currentUser }}
+      {{#isAuthorized}}
+        {{ >internalsHeader title=currentUser.profile.name addButtons='settingsButton'}}
+        {{#if editProfileMenuOpen }}
+          {{ >editProfile }}
+        {{/if}}
+        <div class="internals-content">
+          <p class="profile-user-email"> {{userEmail}}</p>
+          {{#if userPTIAddress }}
+            <ul class="profile-wallet-list">
+              <li class="profile-wallet-item active">
+                <p class="profile-wallet-item-name">Paratii</p>
+                <p class="profile-wallet-item-balance">{{{ pti_balance }}}</p>
+              </li>
+              <li class="profile-wallet-item">
+                <p class="profile-wallet-item-name">Ether</p>
+                <p class="profile-wallet-item-balance">{{{ eth_balance }}}</p>
+              </li>
+            </ul>
+            <p>Don't worry if you don't have any money yet - this is still a demo. We are working on it!</p>
+            <div class="tab-content wallet-tab-content">
+              <div class="tab-pane active" id="pti">
+                <!-- <button id="#earn-pti" class="earn-button">Earn more PTI</button> -->
+                <!-- <button class="btn btn-default blue-button btn-block" id="send-eth">Send Ether</button> -->
+              </div>
+              <div class="tab-pane" id="eth">
+                <!-- <button id="#earn-eth" class="earn-button">Earn more ETH</button> -->
+                <!-- <button class="btn btn-default blue-button btn-block" id="send-pti">Send Paratii</button> -->
+              </div>
+              <!-- <a href="/transactions" class="btn btn-default blue-button btn-block" style="margin-top: 5px;" id="transaction-history">Transaction History</a> -->
+              <!-- <button class="btn btn-default blue-button btn-block" id="show-seed">Show the seed for this wallet</button> -->
+            </div>
+          {{else}}
+            <p>{{_ "No wallet for this account" }}</p>
+          {{/if}}
         </div>
-      </div>
-      <div>Don't worry if you don't have any money yet - this is still a demo. We are working on it!</div>
-    </div>
-
+      {{/isAuthorized}}
     {{else}}
-      <div class="walletContainer">
-        <ul class="titleContainer"></ul>
-        <div class="descriptionContainer">
-            {{_ "No wallet for this account" }}
-        </div>
+      <div class="internals-content">
+         {{_ "Please log in to see this page" }}
       </div>
-    {{/if}}
-
-    {{/isAuthorized}}
-
-    <table class="table table-striped all_transactions">
-      {{#each events}} {{> transaction}} {{/each}}
-    </table>
-
-    {{else}}
-    <div class="container">
-       {{_ "Please log in to see this page" }}
-    </div>
     {{/if}}
   </div>
 </template>
