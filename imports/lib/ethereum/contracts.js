@@ -1,3 +1,4 @@
+// import { paratii } from './paratii.js'
 import { web3 } from './web3.js'
 // import { paratii } from './connection.js'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'

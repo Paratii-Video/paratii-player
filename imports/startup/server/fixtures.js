@@ -3,11 +3,12 @@
 */
 
 import { Meteor } from 'meteor/meteor'
-import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
+// import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { watchEvents } from '/imports/api/transactions.js'
 import { getParatiiContracts, setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
 import { populateMongoDb } from '/imports/fixtures/fixtures.js'
 import { web3 } from '/imports/lib/ethereum/web3.js'
+import { paratii } from '/imports/lib/ethereum/paratii.js'
 
 export async function installFixture (fixture) {
   await populateMongoDb(fixture)
@@ -21,7 +22,7 @@ export async function installFixture (fixture) {
 export async function deployContractsAndInstallFixture (fixture) {
   console.log('Test environment: deploying contracts on startup')
   try {
-    let contracts = await deployParatiiContracts()
+    let contracts = await paratii.eth.deployContracts()
 
     await contracts.ParatiiRegistry.registerNumber('VideoRedistributionPoolShare', web3.toWei(0.3), {from: web3.eth.accounts[0]})
     await contracts.ParatiiAvatar.addToWhitelist(contracts.VideoStore.address, {from: web3.eth.accounts[0]})
