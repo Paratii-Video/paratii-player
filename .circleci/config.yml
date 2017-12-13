@@ -78,11 +78,11 @@ jobs:
           name: run meteor server in background
           command: yarn dev
           background: true
-      - run:
-          name: run meteor server and testrpc with concurrently
-          command: npm run dev-concurrently
-          background: true
-      - run: sleep 120
+      #- run:
+      #    name: run meteor server and testrpc with concurrently
+      #    command: npm run dev-concurrently
+      #    background: true
+      - run: sleep 60
       - run: yarn chimp-test
       # - run: pkill -f meteor
       - run:
