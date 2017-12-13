@@ -1,6 +1,14 @@
 <template name="mainLoader">
   <div class="main-loader">
     <div class="main-loader-content">
+      <ul class="main-loader-list">
+        {{#if showLoaderList}}
+          {{#each item in loaderList}}
+            <li class="main-loader-item">{{{ item }}}</li>
+          {{/each}}
+        {{/if}}
+      </ul>
+
       {{#if showLoaderPhrases}}
         {{#each loaderPhrases}}
           <p class="main-loader-text {{#if showPhrase @index }}show{{/if}}">{{ mainLoaderText(@index) }}</p>

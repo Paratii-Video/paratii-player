@@ -4,6 +4,10 @@ function canChangeLoaderPhrase () {
   return Session.get('showMainLoader') && Session.get('showLoaderPhrases')
 }
 
+function canShowLoaderList () {
+  return Session.get('showMainLoader') && Session.get('mainLoaderList')
+}
+
 Template.mainLoader.onCreated(() => {
   let phraseInterval = null
   let duration = 4500
@@ -34,6 +38,12 @@ Template.mainLoader.onCreated(() => {
 Template.mainLoader.helpers({
   loaderPhrases () {
     return Session.get('mainLoaderText')
+  },
+  loaderList () {
+    return Session.get('mainLoaderList')
+  },
+  showLoaderList () {
+    return canShowLoaderList()
   },
   showLoaderPhrases () {
     return canChangeLoaderPhrase()
