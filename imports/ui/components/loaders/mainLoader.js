@@ -6,7 +6,7 @@ function canChangeLoaderPhrase () {
 
 Template.mainLoader.onCreated(() => {
   let phraseInterval = null
-  let duration = 2000
+  let duration = 4500
 
   function changeText () {
     if (phraseInterval) Meteor.clearInterval(phraseInterval)
