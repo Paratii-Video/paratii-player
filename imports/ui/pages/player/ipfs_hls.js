@@ -101,7 +101,7 @@ class HLSPlayer extends EventEmitter {
       ipfs: window.ipfs,
       ipfsHash: splitPath(this.videoEl.src)[0],
       enableWorker: true,
-      startLevel: 0,
+      startLevel: 2,
       autoLevelEnabled: false,
       autoStartLoad: true,
       maxLoadingDelay: 2
