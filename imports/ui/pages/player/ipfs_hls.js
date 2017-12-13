@@ -11,7 +11,6 @@ function splitPath (path) {
   if (path[path.length - 1] === '/') {
     path = path.substring(0, path.length - 1)
   }
-
   return path.substring(6).split('/')
 }
 
@@ -256,11 +255,11 @@ class HLSPlayer extends EventEmitter {
     //   }
     // }
 
-      // print peers and bitswap state for debugging ---------------------------
+    // print peers and bitswap state for debugging ---------------------------
     // let pollStats = setInterval(() => {
     //   updateStats()
     // }, 10000)
-      // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
   }
 }
 

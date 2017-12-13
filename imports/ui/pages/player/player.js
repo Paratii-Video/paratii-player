@@ -26,6 +26,13 @@ let controlsHandler
 // let volumeHandler
 // let previousVolume = 100
 
+function splitPath (path) {
+  if (path[path.length - 1] === '/') {
+    path = path.substring(0, path.length - 1)
+  }
+  return path.substring(6).split('/')
+}
+
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = instance.currentVideo.get()
@@ -48,11 +55,11 @@ function renderVideoElement (instance) {
   //   createIPFSPlayer(instance, currentVideo)
   //   instance.playerState.set('ipfs', true)
   // } else if (currentVideo.src.startsWith('/ipfs')) {
-  let hlsPlayer = new HLSPlayer({video: currentVideo})
-  instance.playerState.set('ipfs', true)
-  hlsPlayer.on('status', (text) => {
-    instance.playerState.set('status', text)
-  })
+  // let hlsPlayer = new HLSPlayer({video: currentVideo})
+  // instance.playerState.set('ipfs', true)
+  // hlsPlayer.on('status', (text) => {
+  //   instance.playerState.set('status', text)
+  // })
   // } else {
   //   const videoElement = $('#video-player')
   //   const sourceElement = document.createElement('source')
@@ -61,12 +68,15 @@ function renderVideoElement (instance) {
   //   videoElement.append(sourceElement)
   // }
   CreatePlayer({
-    mimeType: instance.currentVideo.get().mimetype,
-    selector: '#video-player',
+    selector: '#player-container',
+    source: 'https://gateway.paratii.video' + currentVideo.src + '/master.m3u8',
+    thumb: 'https://gateway.paratii.video' + currentVideo.thumb,
+    mimeType: currentVideo.mimetype,
+    ipfsHash: splitPath(currentVideo.src),
     events: {
       onReady: hideLoader
-    },
-    ipfsHash: FlowRouter.getParam('_id')
+    }
+
   })
 }
 
