@@ -74,7 +74,7 @@
 
   &-item {
     padding: 0 10px 20px;
-    width: 31%;
+    width: 33%;
 
     .query-mini({
       font-size: 12px;
@@ -84,7 +84,7 @@
   // Text and dots
 
   &-text {
-    &:extend(.anim-element-out all);
+    .anim-element-out;
 
     bottom: 72px;
     font-size: 20px;
@@ -95,9 +95,7 @@
 
     .show-main-loader & {    
       &.show {
-        &:extend(.anim-element-in all);
-
-        transition-delay: .3s, .2s;
+        animation: showUp 1s @ease-smooth forwards;
       }
     }
 

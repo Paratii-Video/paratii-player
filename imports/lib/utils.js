@@ -45,6 +45,7 @@ export function add0x (input) {
 // Show & hide Loader
 
 export function showLoader (message, list) {
+  Session.set('mainLoaderIndex', 0)
   Session.set('showLoaderPhrases', typeof message === 'object')
   Session.set('mainLoaderList', list)
   Session.set('mainLoaderText', message)
