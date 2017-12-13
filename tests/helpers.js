@@ -22,8 +22,6 @@ export { paratii }
 const add0x = utils.add0x
 
 export async function sendSomeETH (beneficiary, amount) {
-  // let fromAddress = paratii.eth.web3.eth.accounts.wallet[0].address
-  // await paratii.setAccount(fromAddress)
   beneficiary = add0x(beneficiary)
   amount = paratii.eth.web3.utils.toWei(String(amount))
   console.log(`Sending ${amount} ETH from ${paratii.config.account.address} to ${beneficiary} `)
@@ -32,25 +30,10 @@ export async function sendSomeETH (beneficiary, amount) {
 }
 
 export async function sendSomePTI (beneficiary, amount) {
-  // const contract = await paratii.eth.getContract('ParatiiToken')
-  // console.log(paratii.eth.web3.eth.accounts.wallet)
-  // console.log(paratii.eth.web3.eth.accounts.wallet[0])
-  // let fromAddress = paratii.eth.web3.eth.accounts.wallet[0].address
-  // await paratii.setAccount(fromAddress)
-  // console.log(await paratii.diagnose())
   amount = paratii.eth.web3.utils.toWei(String(amount))
   console.log(`Sending ${amount} PTI from ${paratii.config.account.address} to ${beneficiary} `)
-  // let contract = await paratii.eth.getContract('ParatiiToken')
-  // console.log(`using contract at ${contract.options.address}`)
-  // console.log(await paratii.config)
-  // console.log(await paratii.diagnose())
   let result = await paratii.eth.transfer(beneficiary, amount, 'PTI')
   return result
-  // let value = amount
-  // // console.log(`Sending ${value} PTI from ${fromAddress} to ${beneficiary} using contract ${contract}`)
-  // let result = await contract.method.transfer(
-  //   beneficiary, Number(paratii.web3.utils.toWei(String(value)))).send({ gas: 200000, from: fromAddress })
-  // return result
 }
 
 // The before  function will be run once, before all tests
