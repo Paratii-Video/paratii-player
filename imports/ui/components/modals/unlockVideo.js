@@ -15,6 +15,7 @@ Template.unlockVideo.onRendered(function () {
 })
 
 // Template.unlockVideo.helpers(modalHelpers)
+
 Template.unlockVideo.helpers({
   ima () {
     return Session.get('dataUrl')

@@ -18,7 +18,6 @@ import '/imports/ui/pages/search/search.js'
 import {Sniffer} from '/imports/lib/sniffing/index.js'
 
 var sniffer = new Sniffer({debug: true, test: false})
-
 sniffer.getClasses()          // 'Sony'
 sniffer.mobile()          // 'Sony'
 sniffer.isMobile()          // 'Sony'
