@@ -1,7 +1,7 @@
 // TODO: refactoring: remove all refs to the buyvideo workflow from this modal (it's in 'unlockVideo.js' now)
 import { Template } from 'meteor/templating'
 import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
-import { web3 } from '/imports/lib/ethereum/web3.js'
+import { paratii } from '/imports/lib/ethereum/paratii.js'
 import { checkPassword } from '/imports/api/users.js'
 
 import '/imports/lib/validate.js'
@@ -9,7 +9,7 @@ import '/imports/ui/components/form/mainFormInput.js'
 import './doTransaction.html'
 
 Template.doTransaction.onCreated(function () {
-  console.log(web3)
+  console.log(paratii.eth.web3)
 })
 
 Template.doTransaction.helpers({
@@ -43,10 +43,10 @@ Template.doTransaction.events({
 
     switch (type) {
       case 'Eth':
-        balance = web3.fromWei(Session.get('eth_balance'), 'ether')
+        balance = paratii.eth.web3.fromWei(Session.get('eth_balance'), 'ether')
         break
       case 'PTI':
-        balance = web3.fromWei(Session.get('pti_balance'), 'ether')
+        balance = paratii.eth.web3.fromWei(Session.get('pti_balance'), 'ether')
         extraInfo.videoid = this.videoid // Video id whne you unlock a video
         break
       default:
@@ -74,11 +74,11 @@ Template.doTransaction.events({
       Modal.hide('doTransaction')
       switch (type) {
         case 'Eth':
-          let value = web3.toWei(amount, 'ether')
+          let value = paratii.eth.web3.toWei(amount, 'ether')
           sendTransaction(password, 'SendEther', 'transfer', [recipient, description], value)
           break
         case 'PTI':
-          amount = web3.toWei(amount, 'ether')
+          amount = paratii.eth.web3.toWei(amount, 'ether')
           sendTransaction(password, 'ParatiiToken', 'transfer', [recipient, amount])
           break
         default:

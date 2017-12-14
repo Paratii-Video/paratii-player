@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating'
 import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
-import { web3 } from '/imports/lib/ethereum/connection.js'
-import { getContract } from '/imports/lib/ethereum/contracts.js'
+import { paratii } from '/imports/lib/ethereum/connection.js'
+// import { getContract } from '/imports/lib/ethereum/contracts.js'
 import { checkPassword, getUserPTIAddress } from '/imports/api/users.js'
 import { showModalAlert } from '/imports/lib/utils.js'
 import '/imports/lib/validate.js'
@@ -38,23 +38,23 @@ Template.unlockVideo.events({
     event.preventDefault()
 
     // TODO: GET THE ACTUAL PRICE of the video
-    let price = web3.toWei(this.price)
+    let price = paratii.eth.web3.utils.toWei(this.price)
     let videoId = this.videoid // Video id whne you unlock a video
     let msg
     const password = event.target.user_password.value
     const check = Session.get('checkTransaction')
 
     // let balance
-    // balance = web3.fromWei(Session.get('pti_balance'), 'ether')
+    // balance = paratii.eth.web3.fromWei(Session.get('pti_balance'), 'ether')
     let balance = Session.get('pti_balance')
     if (parseFloat(price) <= 0 || isNaN(parseFloat(price)) === true) {
       // TODO: if the price is 0, this is an error in the data, not a user error:
-      msg = `You don't have enough PTI: your balance is ${web3.fromWei(balance)}`
+      msg = `You don't have enough PTI: your balance is ${paratii.eth.web3.utils.fromWei(balance)}`
       check.wallet_amount = 'This value is not allowed'
       showModalAlert(msg, 'error')
       return
     } else if (parseFloat(price) > parseFloat(balance)) {
-      msg = `You don't have enough PTI: your balance is ${web3.fromWei(balance)}`
+      msg = `You don't have enough PTI: your balance is ${paratii.eth.web3.utils.fromWei(balance)}`
       check.wallet_amount = msg
       showModalAlert(msg, 'error')
       return
@@ -91,7 +91,7 @@ Template.unlockVideo.events({
 
       // the transaction has two steps - we first approve that the paratiiavatar can move `price`, and then instruct the videoStore to buy the video
       // check if the video is known and get the price
-      let videoRegistry = await getContract('VideoRegistry')
+      let videoRegistry = await paratii.eth.getContract('VideoRegistry')
       console.log('videoRegistry located at:', videoRegistry.address)
       let videoInfo = await videoRegistry.getVideoInfo(videoId)
       console.log('VideoInfo from registry:', videoInfo)
@@ -102,11 +102,11 @@ Template.unlockVideo.events({
 
       console.log(`price from BC: ${Number(videoInfo[1])}`)
       console.log(`approve ${price}`, price)
-      let paratiiAvatar = await getContract('ParatiiAvatar')
+      let paratiiAvatar = await paratii.eth.getContract('ParatiiAvatar')
       console.log(`approve ${price}`, price)
       await promisify(sendTransaction)(password, 'ParatiiToken', 'approve', [paratiiAvatar.address, price], 0)
 
-      let paratiiToken = await getContract('ParatiiToken')
+      let paratiiToken = await paratii.eth.getContract('ParatiiToken')
       console.log('allowance:', Number(await paratiiToken.allowance(getUserPTIAddress(), paratiiAvatar.address)))
 
       console.log(`now calling buyVideo ${videoId}`)

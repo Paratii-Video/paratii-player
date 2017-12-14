@@ -1,5 +1,5 @@
 /* globals ReactiveAggregate */
-import { getContract } from '../lib/ethereum/contracts.js'
+// import { paratii } from '../lib/ethereum/paratii.js'
 
 /*****************************
 Transactions data model looks like this.
@@ -116,106 +116,110 @@ export function watchEvents () {
 
 async function watchSendEtherEvents () {
   console.log('Watching for ETH Transactions')
-  let filter = (await getContract('SendEther')).LogSendEther({}, {
-    fromBlock: 'latest',
-    toBlock: 'latest'
-  })
-
-  filter.watch(function (error, log) {
-    if (error) {
-      console.log(error)
-    }
-    const transaction = {
-      blockNumber: log.blockNumber,
-      currency: 'ETH',
-      description: log.args.description || '',
-      from: log.args.from,
-      hash: log.transactionHash,
-      logIndex: log.logIndex,
-      to: log.args.to,
-      source: 'SendEther.LogSendEther',
-      value: log.args.value.toNumber()
-    }
-    return addOrUpdateTransaction(transaction)
-  })
+  // TODO: watch send ether to new web3 or paratii-lib
+  // let filter = (await paratii.eth.getContract('SendEther')).LogSendEther({}, {
+  //   fromBlock: 'latest',
+  //   toBlock: 'latest'
+  // })
+  //
+  // filter.watch(function (error, log) {
+  //   if (error) {
+  //     console.log(error)
+  //   }
+  //   const transaction = {
+  //     blockNumber: log.blockNumber,
+  //     currency: 'ETH',
+  //     description: log.args.description || '',
+  //     from: log.args.from,
+  //     hash: log.transactionHash,
+  //     logIndex: log.logIndex,
+  //     to: log.args.to,
+  //     source: 'SendEther.LogSendEther',
+  //     value: log.args.value.toNumber()
+  //   }
+  //   return addOrUpdateTransaction(transaction)
+  // })
 };
 
 async function watchPTIContractTransferEvents () {
   // set a filter for ALL PTI transactions    console.log(log.args)
+  // TODO: watch pti for new web3 or paratii lib
 
-  let contract = await getContract('ParatiiToken')
-  console.log(`Watching for PTI Transactions on contract at ${contract.address}`)
-
-  let filter = contract.Transfer({}, {
-    fromBlock: 'latest',
-    toBlock: 'latest'
-  })
-
-  filter.watch(function (error, log) {
-    console.log(log)
-    if (error) {
-      // TODO: proper error handling
-      console.log('Error watching for PTI Transactions')
-      console.log(error)
-      return
-    }
-    const transaction = {
-      blockNumber: log.blockNumber,
-      currency: 'PTI',
-      description: log.args.description || '',
-      from: log.args.from,
-      hash: log.transactionHash,
-      logIndex: log.logIndex,
-      source: 'PTIContract.Transfer',
-      to: log.args.to,
-      value: log.args.value && log.args.value.toNumber()
-    }
-    return addOrUpdateTransaction(transaction)
-  })
+  // let contract = await paratii.eth.getContract('ParatiiToken')
+  // console.log(`Watching for PTI Transactions on contract at ${contract.options.address}`)
+  //
+  // let filter = contract.Transfer({}, {
+  //   fromBlock: 'latest',
+  //   toBlock: 'latest'
+  // })
+  //
+  // filter.watch(function (error, log) {
+  //   console.log(log)
+  //   if (error) {
+  //     // TODO: proper error handling
+  //     console.log('Error watching for PTI Transactions')
+  //     console.log(error)
+  //     return
+  //   }
+  //   const transaction = {
+  //     blockNumber: log.blockNumber,
+  //     currency: 'PTI',
+  //     description: log.args.description || '',
+  //     from: log.args.from,
+  //     hash: log.transactionHash,
+  //     logIndex: log.logIndex,
+  //     source: 'PTIContract.Transfer',
+  //     to: log.args.to,
+  //     value: log.args.value && log.args.value.toNumber()
+  //   }
+  //   return addOrUpdateTransaction(transaction)
+  // })
 }
 //
 async function watchVideoStoreBuyVideoEvents () {
   console.log('Watching the VideoStore')
-  let filter = (await getContract('VideoStore')).LogBuyVideo({}, {
-    fromBlock: 'latest',
-    toBlock: 'latest'
-  })
 
-  filter.watch(Meteor.bindEnvironment(
-    function (error, log) {
-      console.log('Adding a BuyVideo to event log ')
-      if (error) {
-        console.log(error)
-        throw (error)
-      }
-      /* register the sale in the user collection */
-      // find our user
-      let user = Meteor.users.findOne({'profile.ptiAddress': log.args.buyer})
-      if (!user) {
-        let msg = `No user found with account ${log.args.buyer}!`
-        console.log(msg)
-        // so we create a new user object to at least have some trace of the sale
-        throw Error(msg)
-      } else {
-        let videos = user.profile.videos || {}
-        videos[log.args.videoId] = { acquired: log.transactionHash }
-        Meteor.users.update(user._id, {$set: {'profile.videos': videos}})
-        console.log(`User ${user._id} has bought videos ${videos}`)
-      }
-
-      /* add the transaction to the transaction history */
-      const transaction = {
-        blockNumber: log.blockNumber,
-        currency: 'PTI',
-        description: `Bought video ${log.args.videoId}`,
-        from: log.args.buyer,
-        hash: log.transactionHash,
-        logIndex: log.logIndex,
-        source: 'VideoStore.BuyVideo',
-        to: '',
-        value: log.args.price && log.args.price.toNumber()
-      }
-      addOrUpdateTransaction(transaction)
-    })
-  )
+  // TODO: watcher for paratii-lib or new web3
+  // let filter = (await paratii.eth.getContract('VideoStore')).LogBuyVideo({}, {
+  //   fromBlock: 'latest',
+  //   toBlock: 'latest'
+  // })
+  //
+  // filter.watch(Meteor.bindEnvironment(
+  //   function (error, log) {
+  //     console.log('Adding a BuyVideo to event log ')
+  //     if (error) {
+  //       console.log(error)
+  //       throw (error)
+  //     }
+  //     /* register the sale in the user collection */
+  //     // find our user
+  //     let user = Meteor.users.findOne({'profile.ptiAddress': log.args.buyer})
+  //     if (!user) {
+  //       let msg = `No user found with account ${log.args.buyer}!`
+  //       console.log(msg)
+  //       // so we create a new user object to at least have some trace of the sale
+  //       throw Error(msg)
+  //     } else {
+  //       let videos = user.profile.videos || {}
+  //       videos[log.args.videoId] = { acquired: log.transactionHash }
+  //       Meteor.users.update(user._id, {$set: {'profile.videos': videos}})
+  //       console.log(`User ${user._id} has bought videos ${videos}`)
+  //     }
+  //
+  //     /* add the transaction to the transaction history */
+  //     const transaction = {
+  //       blockNumber: log.blockNumber,
+  //       currency: 'PTI',
+  //       description: `Bought video ${log.args.videoId}`,
+  //       from: log.args.buyer,
+  //       hash: log.transactionHash,
+  //       logIndex: log.logIndex,
+  //       source: 'VideoStore.BuyVideo',
+  //       to: '',
+  //       value: log.args.price && log.args.price.toNumber()
+  //     }
+  //     addOrUpdateTransaction(transaction)
+  //   })
+  // )
 };

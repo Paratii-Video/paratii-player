@@ -3,16 +3,15 @@ import lightwallet from 'eth-lightwallet/dist/lightwallet.js'
 import { Accounts } from 'meteor/accounts-base'
 import { add0x, showModal } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-import { web3 } from './web3.js'
+import { paratii } from './paratii.js'
 import { GAS_PRICE, GAS_LIMIT } from './connection.js'
-import { getContract } from './contracts.js'
 
 // createKeystore will create a new keystore, and save it in the session object and in local storage
 // it generates an address, and save that in the session too
 function createKeystore (password, seedPhrase, key, cb) {
   // create a new seedPhrase if we have none, and save in in localstorage under 'keystore-{key}'
   Session.set('generating-keystore', true)
-  // wallet = paratii.web3.eth.accounts.wallet.create(1, seedPhrase)
+  // wallet = paratii.paratii.eth.web3.eth.accounts.wallet.create(1, seedPhrase)
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed()
   }
@@ -223,27 +222,27 @@ function sendTransaction (password, contractName, functionName, args, value, cal
   console.log(`Sending transaction: ${contractName}.${functionName}(${args}), with value ${value} ETH`)
   // paratii.personal.wallet.address
   const fromAddr = getUserPTIAddress()
-  const nonce = web3.eth.getTransactionCount(fromAddr)
+  const nonce = paratii.eth.web3.eth.getTransactionCount(fromAddr)
   const keystore = getKeystore()
   keystore.keyFromPassword(password, async function (error, pwDerivedKey) {
     let contract
     if (error) throw error
     // sign the transaction
     const txOptions = {
-      nonce: web3.toHex(nonce),
-      gasPrice: web3.toHex(GAS_PRICE),
-      gasLimit: web3.toHex(GAS_LIMIT)
+      nonce: paratii.eth.web3.toHex(nonce),
+      gasPrice: paratii.eth.web3.toHex(GAS_PRICE),
+      gasLimit: paratii.eth.web3.toHex(GAS_LIMIT)
     }
 
     let rawTx
-    contract = await getContract(contractName)
+    contract = await paratii.eth.getContract(contractName)
     txOptions.to = contract.address
-    txOptions.value = web3.toHex(value)
+    txOptions.value = paratii.eth.web3.toHex(value)
     rawTx = lightwallet.txutils.functionTx(contract.abi, functionName, args, txOptions)
     console.log('Signing transaction')
     // console.log(fromAddr)
     const tx = lightwallet.signing.signTx(keystore, pwDerivedKey, rawTx, fromAddr)
-    web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
+    paratii.eth.web3.eth.sendRawTransaction(`0x${tx}`, function (err, hash) {
       console.log('Transaction sent: calling callback', callback)
       if (callback) {
         callback(err, hash)

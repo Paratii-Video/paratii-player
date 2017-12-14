@@ -1,6 +1,6 @@
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { UserTransactions } from '/imports/api/transactions.js'
-import { web3 } from '/imports/lib/ethereum/web3.js'
+import { paratii } from '/imports/lib/ethereum/paratii.js'
 
 import './transactions.html'
 
@@ -49,7 +49,7 @@ Template.registerHelper('equals', function (a, b) {
 })
 
 Template.registerHelper('toEther', function (a) {
-  return parseFloat(web3.fromWei(a, 'ether'))
+  return parseFloat(paratii.eth.web3.utils.fromWei(a, 'ether'))
 })
 
 Template.transactions.helpers({

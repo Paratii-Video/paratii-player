@@ -2,8 +2,7 @@
 // e.g. useraccounts configuration file.
 
 // import { Paratii } from 'paratii-lib'
-import { web3 } from '/imports/lib/ethereum/web3.js'
-global.web3 = web3
+
 global.regeneratorRuntime = require('babel-runtime/regenerator')
 console.log('settings.public.http_provider: ', Meteor.settings.public.http_provider)
 
@@ -17,4 +16,4 @@ if (!Meteor.settings.public.http_provider) {
 //   registryAddress: Meteor.settings.public.ParatiiRegistry
 // })
 
-web3.setProvider(new web3.providers.HttpProvider(Meteor.settings.public.http_provider))
+// web3.setProvider(new web3.providers.HttpProvider(Meteor.settings.public.http_provider))

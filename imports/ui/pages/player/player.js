@@ -1,7 +1,7 @@
 import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+import { paratii } from '/imports/lib/ethereum/connection.js'
 import {
   formatNumber,
   showModal,
@@ -340,7 +340,7 @@ Template.player.events({
   'click #unlock-video' (event) {
     event.stopPropagation()
     const button = event.currentTarget
-    const price = web3.toWei(button.dataset.price)
+    const price = paratii.eth.web3.utils.toWei(button.dataset.price)
     const balance = Session.get('pti_balance')
     const ethBalance = Session.get('eth_balance')
     if (Meteor.user()) {
@@ -354,7 +354,7 @@ Template.player.events({
         showGlobalAlert(`You need some <strong>Ether</strong> for sending a transaction - but you have none`, 'error')
       } else if (balance === undefined || balance === 0 || parseFloat(price) > parseFloat(balance)) {
         // The user balance is lower than the video price
-        showGlobalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${web3.fromWei(balance)}</strong>`, 'error')
+        showGlobalAlert(`You don't have enough <strong>PTI</strong>: your balance is <strong>${paratii.eth.web3.utils.fromWei(balance)}</strong>`, 'error')
       } else {
         showModal('unlockVideo',
           {

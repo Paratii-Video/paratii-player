@@ -1,5 +1,5 @@
 import { PTIContract } from '/imports/lib/ethereum/connection.js'
-import { web3 } from '/imports/lib/ethereum/web3.js'
+import { paratii } from '/imports/lib/ethereum/paratii.js'
 import { Settings } from './settings.js'
 import { addETHTransaction, addPTITransaction } from './transaction.js'
 
@@ -10,7 +10,7 @@ export const TransactionSyncHistory = new Mongo.Collection('transactionSyncHisto
 export async function syncTransactions () {
   // syncs all transactions in the blockchain that are not in the database yet
   let fromBlock = (await getLatestSyncedBlockNumber()) + 1
-  let toBlock = web3.eth.blockNumber
+  let toBlock = paratii.eth.web3.eth.blockNumber
   console.log(`syncing transactions from Block ${fromBlock}`)
   for (let i = fromBlock; i <= toBlock; i++) {
     let synchistory = TransactionSyncHistory.findOne(i)
@@ -74,7 +74,7 @@ async function syncETHTransactions (fromBlock, toBlock) {
 async function syncBlockWithDB (blockHashOrNumber) {
   // XXX: This is absolete - we only write event logs to the transaction history...
   // get the block given blockHashOrNumber, find its transactions and write them to the DB
-  await Meteor.wrapAsync(web3.eth.getBlock, web3.eth)(blockHashOrNumber, true, function (error, block) {
+  await Meteor.wrapAsync(paratii.eth.web3.eth.getBlock, paratii.eth.web3.eth)(blockHashOrNumber, true, function (error, block) {
     if (error) {
       throw error
     }
@@ -82,7 +82,7 @@ async function syncBlockWithDB (blockHashOrNumber) {
     if (block != null && block.transactions != null) {
       block.transactions.forEach(function (transaction) {
         try {
-          addETHTransaction(web3.eth.getTransaction(transaction.hash))
+          addETHTransaction(paratii.eth.web3.eth.getTransaction(transaction.hash))
         } catch (err) {
           console.log(err)
           throw err

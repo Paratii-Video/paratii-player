@@ -1,7 +1,6 @@
-// import { paratii } from './paratii.js'
-import { web3 } from './web3.js'
+import { paratii } from './paratii.js'
 // import { paratii } from './connection.js'
-import { paratii } from '/imports/lib/ethereum/paratii.js'
+// import { paratii } from '/imports/lib/ethereum/paratii.js'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'
 import ParatiiRegistrySpec from './contracts/ParatiiRegistry.json'
 import ParatiiTokenSpec from './contracts/ParatiiToken.json'
@@ -48,7 +47,7 @@ export function getParatiiRegistry () {
     let msg = `No paratii registry address known!`
     throw Error(msg)
   }
-  return web3.eth.contract(ParatiiRegistrySpec.abi).at(address)
+  return paratii.eth.getContract('ParatiiRegistry')
 }
 
 // TODO: optimization: do not ask the contract addresses from the registry each time, only on startup/first access
@@ -72,7 +71,7 @@ export async function getContract (name) {
   }
   let address = await paratii.eth.getContractAddress(name)
   if (address) {
-    const contract = web3.eth.contract(contractInfo.spec.abi).at(address)
+    const contract = paratii.eth.web3.eth.contract(contractInfo.spec.abi).at(address)
     return contract
   }
 }
@@ -88,7 +87,7 @@ export async function getParatiiContracts () {
     'VideoStore'
   ]
   for (let i = 0; i < contractNames.length; i++) {
-    contracts[contractNames[i]] = await getContract(contractNames[i])
+    contracts[contractNames[i]] = await paratii.eth.getContract(contractNames[i])
   }
   return contracts
 }

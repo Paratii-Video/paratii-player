@@ -4,7 +4,7 @@
  */
 
 import { add0x } from '../utils.js'
-import { web3 } from './web3.js'
+import { paratii } from './paratii.js'
 // import { paratii } from './paratii.js'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'
 import ParatiiRegistrySpec from './contracts/ParatiiRegistry.json'
@@ -12,20 +12,20 @@ import ParatiiTokenSpec from './contracts/ParatiiToken.json'
 import SendEtherSpec from './contracts/SendEther.json'
 import VideoRegistrySpec from './contracts/VideoRegistry.json'
 import VideoStoreSpec from './contracts/VideoStore.json'
-import { getContract, getParatiiContracts } from './contracts.js'
+import { getParatiiContracts } from './contracts.js'
 
 var promisify = require('promisify-node')
 
 function _deploy (contractSpec, param1, cb) {
   console.log(`deploying contract ${contractSpec.contractName || contractSpec.contract_name}`)
-  let owner = web3.eth.accounts[0]
-  let contract = web3.eth.contract(contractSpec.abi)
+  let owner = paratii.eth.web3.eth.accounts[0]
+  let contract = paratii.eth.web3.eth.contract(contractSpec.abi)
   let contractInstance
   if (param1) {
     contractInstance = contract.new(param1, {
       from: add0x(owner),
       data: contractSpec.bytecode || contractSpec.unlinked_binary,
-      gas: web3.toHex(4e6)
+      gas: paratii.eth.web3.toHex(4e6)
     },
     function (err, myContract) {
       if (!err) {
@@ -46,7 +46,7 @@ function _deploy (contractSpec, param1, cb) {
     contractInstance = contract.new({
       from: add0x(owner),
       data: contractSpec.bytecode || contractSpec.unlinked_binary,
-      gas: web3.toHex(4e6)
+      gas: paratii.eth.web3.toHex(4e6)
     },
     function (err, myContract) {
       if (!err) {
@@ -81,11 +81,11 @@ export async function deployParatiiContracts () {
   let videoStore = await deploy(VideoStoreSpec, paratiiRegistry.address)
 
   console.log(`registering contracts at the ParatiiRegistry at ${paratiiRegistry.address}`)
-  await paratiiRegistry.registerContract('ParatiiAvatar', paratiiAvatar.address, {from: web3.eth.accounts[0]})
-  await paratiiRegistry.registerContract('ParatiiToken', paratiiToken.address, {from: web3.eth.accounts[0]})
-  await paratiiRegistry.registerContract('SendEther', sendEther.address, {from: web3.eth.accounts[0]})
-  await paratiiRegistry.registerContract('VideoRegistry', videoRegistry.address, {from: web3.eth.accounts[0]})
-  await paratiiRegistry.registerContract('VideoStore', videoStore.address, {from: web3.eth.accounts[0]})
+  await paratiiRegistry.registerContract('ParatiiAvatar', paratiiAvatar.address, {from: paratii.eth.web3.eth.accounts[0]})
+  await paratiiRegistry.registerContract('ParatiiToken', paratiiToken.address, {from: paratii.eth.web3.eth.accounts[0]})
+  await paratiiRegistry.registerContract('SendEther', sendEther.address, {from: paratii.eth.web3.eth.accounts[0]})
+  await paratiiRegistry.registerContract('VideoRegistry', videoRegistry.address, {from: paratii.eth.web3.eth.accounts[0]})
+  await paratiiRegistry.registerContract('VideoStore', videoStore.address, {from: paratii.eth.web3.eth.accounts[0]})
   console.log('registering contracts done')
 
   let result = {
@@ -103,26 +103,26 @@ export async function deployParatiiContracts () {
 export { getParatiiContracts }
 
 export async function sendSomeETH (beneficiary, amount) {
-  let fromAddress = web3.eth.accounts[0]
+  let fromAddress = paratii.eth.web3.eth.accounts[0]
   // console.log(`Sending ${amount} ETH from ${fromAddress} to ${beneficiary} `)
-  let result = await web3.eth.sendTransaction({ from: add0x(fromAddress), to: add0x(beneficiary), value: web3.toWei(amount, 'ether'), gas: 21000, gasPrice: 20000000000 })
+  let result = await paratii.eth.web3.eth.sendTransaction({ from: add0x(fromAddress), to: add0x(beneficiary), value: paratii.eth.web3.toWei(amount, 'ether'), gas: 21000, gasPrice: 20000000000 })
   return result
 }
 
 export async function sendSomePTI (beneficiary, amount) {
-  const contract = await getContract('ParatiiToken')
-  let fromAddress = web3.eth.accounts[0]
+  const contract = await paratii.eth.getContract('ParatiiToken')
+  let fromAddress = paratii.eth.web3.eth.accounts[0]
   let value = amount
   // console.log(`Sending ${value} PTI from ${fromAddress} to ${beneficiary} using contract ${contract}`)
-  let result = await contract.transfer(beneficiary, Number(web3.toWei(value)), { gas: 200000, from: fromAddress })
+  let result = await contract.transfer(beneficiary, Number(paratii.eth.web3.toWei(value)), { gas: 200000, from: fromAddress })
   return result
 }
 
 export async function getBalance (address) {
-  return web3.eth.getBalance(address)
+  return paratii.eth.web3.eth.getBalance(address)
 }
 
 export async function getPTIBalance (address) {
-  const contract = await getContract('ParatiiToken')
+  const contract = await paratii.eth.getContract('ParatiiToken')
   return contract.balanceOf(address)
 }

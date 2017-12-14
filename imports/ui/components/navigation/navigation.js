@@ -1,7 +1,7 @@
 /* globals SVGInjector */
 import './navigation.html'
 import { showModal } from '/imports/lib/utils.js'
-import { web3 } from '/imports/lib/ethereum/web3.js'
+import { paratii } from '/imports/lib/ethereum/paratii.js'
 import paratiiIPFS from '/imports/lib/ipfs/index.js'
 import 'meteor/johnantoni:meteor-svginjector'
 import '/imports/ui/components/modals/login.js'
@@ -26,7 +26,7 @@ Template.navigation.helpers({
   pti_balance () {
     const balance = Session.get('pti_balance')
     if (balance !== undefined) {
-      return web3.fromWei(balance, 'ether')
+      return paratii.eth.web3.utils.fromWei(balance, 'ether')
     }
     return ''
   },

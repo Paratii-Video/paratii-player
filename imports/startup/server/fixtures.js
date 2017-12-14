@@ -5,17 +5,22 @@
 import { Meteor } from 'meteor/meteor'
 // import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { watchEvents } from '/imports/api/transactions.js'
-import { getParatiiContracts, setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
+import { setRegistryAddress } from '/imports/lib/ethereum/contracts.js'
 import { populateMongoDb } from '/imports/fixtures/fixtures.js'
-import { web3 } from '/imports/lib/ethereum/web3.js'
 import { paratii } from '/imports/lib/ethereum/paratii.js'
 
 export async function installFixture (fixture) {
   await populateMongoDb(fixture)
-  let contracts = await getParatiiContracts()
+  // let contracts = await paratii.eth.getContracts()
   for (let i = 0; i < fixture.videos.length; i++) {
     let video = fixture.videos[i]
-    await contracts.VideoRegistry.registerVideo(String(video._id), video.uploader.address, Number(web3.toWei(video.price)), {from: web3.eth.accounts[0]})
+
+    await paratii.eth.vids.create({
+      id: video._id,
+      owner: video.uploader.address,
+      price: video.price,
+      ipfsHash: video.src
+    })
   }
 }
 

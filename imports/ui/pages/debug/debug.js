@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Meteor } from 'meteor/meteor'
-import { web3 } from '/imports/lib/ethereum/web3.js'
+import { paratii } from '/imports/lib/ethereum/paratii.js'
 import { updateSession } from '/imports/lib/ethereum/connection.js'
 import { setRegistryAddress, getContractAddress } from '/imports/lib/ethereum/contracts.js'
 import { getKeystore } from '/imports/lib/ethereum/wallet.js'
@@ -101,14 +101,14 @@ Template.debug.helpers({
   eth_balance () {
     const balance = Session.get('eth_balance')
     if (balance !== undefined) {
-      return web3.fromWei(balance, 'ether')
+      return paratii.eth.web3.utils.fromWei(balance, 'ether')
     }
     return ''
   },
   pti_balance () {
     const balance = Session.get('pti_balance')
     if (balance !== undefined) {
-      return web3.fromWei(balance, 'ether')
+      return paratii.eth.web3.utils.fromWei(balance, 'ether')
     }
     return ''
   },
