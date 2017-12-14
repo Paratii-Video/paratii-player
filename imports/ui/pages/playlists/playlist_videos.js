@@ -3,6 +3,8 @@ import { formatNumber, _, showLoader, hideLoader } from '/imports/lib/utils.js'
 import { Videos } from '../../../../imports/api/videos.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
+import { BlazeLayout } from 'meteor/kadira:blaze-layout'
+import { FlowRouter } from 'meteor/kadira:flow-router'
 import '/imports/ui/components/internals/internalsHeader.js'
 import '/imports/ui/components/internals/internalsPagination.js'
 import './playlist_videos.html'
@@ -21,7 +23,13 @@ Template.playlist_videos.onCreated(function () {
   this.totalVideos = new ReactiveVar()
 
   Meteor.subscribe('playlists', () => {
-    this.playlist.set(Playlists.findOne({ _id: getCurrentPlaylistId() }))
+    const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
+    if (playlist) {
+      this.playlist.set(playlist)
+    } else {
+      BlazeLayout.render('App_body', { main: 'App_notFound' })
+      hideLoader()
+    }
   })
 
   // autorun this when the playlist changes
