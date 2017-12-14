@@ -33,73 +33,46 @@ function splitPath (path) {
   return path.substring(6).split('/')
 }
 
-const onReady = () => {
-  hideLoader()
-}
-
-const onPlay = () => {
-  $('#app-container').addClass('playing')
-}
-
-const onPause = () => {
-  $('#app-container').removeClass('playing')
-}
-
-const onEnded = () => {
-  $('#app-container').removeClass('playing')
-}
-
-function renderVideoElement (instance) {
-  // adds the source to the vidoe element on this page
-  const currentVideo = instance.currentVideo.get()
-
-  // document.getElementById('video-player').remove()
-  // const playerContainer = document.getElementById('player-container')
-  // const videoTag = document.createElement('video')
-  // videoTag.className = 'player-video'
-  // videoTag.id = 'video-player'
-  // playerContainer.insertBefore(videoTag, playerContainer.firstChild)
-  // // get video tag element and bind it to player js adapter for HTML5 video
-
-  // log('this is the video', videoTag)
-  // log('this is playerjs', playerjs)
-
-  // if (currentVideo.src.startsWith('magnet:')) {
-  //   createWebtorrentPlayer(instance, currentVideo)
-  //   instance.playerState.set('torrent', true)
-  // } else if (currentVideo.src.startsWith('/ipfs/Qmb3eFpLCNGg1NrPcY5RcHhznibVGuPT28fzZQ7egTzv37')) {
-  //   createIPFSPlayer(instance, currentVideo)
-  //   instance.playerState.set('ipfs', true)
-  // } else if (currentVideo.src.startsWith('/ipfs')) {
-  // let hlsPlayer = new HLSPlayer({video: currentVideo})
-  // instance.playerState.set('ipfs', true)
-  // hlsPlayer.on('status', (text) => {
-  //   instance.playerState.set('status', text)
-  // })
-  // } else {
-  //   const videoElement = $('#video-player')
-  //   const sourceElement = document.createElement('source')
-  //   sourceElement.src = currentVideo.src
-  //   sourceElement.type = currentVideo.mimetype
-  //   videoElement.append(sourceElement)
-  // }
-  CreatePlayer({
-    selector: '#player-container',
-    source: 'https://gateway.paratii.video' + currentVideo.src + '/master.m3u8',
-    thumb: 'https://gateway.paratii.video' + currentVideo.thumb,
-    mimeType: currentVideo.mimetype,
-    ipfsHash: splitPath(currentVideo.src)[0],
-    events: {
-      onReady,
-      onPlay,
-      onPause,
-      onEnded
-    }
-  })
-}
-
 Template.player.onCreated(function () {
-  // showLoader(_('loader-video'))
+  this.onReady = () => {
+    hideLoader()
+  }
+
+  this.onPlay = () => {
+    $('#app-container').addClass('playing')
+    this.playerState.set('playing', true)
+    this.playerState.set('ended', false)
+  }
+
+  this.onPause = () => {
+    $('#app-container').removeClass('playing')
+    this.playerState.set('playing', false)
+    this.playerState.set('ended', false)
+  }
+
+  this.onEnded = () => {
+    $('#app-container').removeClass('playing')
+    this.playerState.set('playing', false)
+    this.playerState.set('ended', true)
+  }
+
+  this.renderVideoElement = () => {
+    const currentVideo = this.currentVideo.get()
+
+    this.player = CreatePlayer({
+      selector: '#player-container',
+      source: 'https://gateway.paratii.video' + currentVideo.src + '/master.m3u8',
+      thumb: 'https://gateway.paratii.video' + currentVideo.thumb,
+      mimeType: currentVideo.mimetype,
+      ipfsHash: splitPath(currentVideo.src)[0],
+      events: {
+        onReady: this.onReady,
+        onPlay: this.onPlay,
+        onPause: this.onPause,
+        onEnded: this.onEnded
+      }
+    })
+  }
 
   const self = this
   const userPTIAddress = getUserPTIAddress()
@@ -173,7 +146,7 @@ Template.player.onCreated(function () {
   const videoId = FlowRouter.getParam('_id')
   Meteor.subscribe('videos', function () {
     self.currentVideo.set(CurrentVideos.findOne({ _id: videoId }))
-    renderVideoElement(instance)
+    self.renderVideoElement()
   })
 
   Meteor.subscribe('playlists')
