@@ -56,7 +56,7 @@ Template.App_body.onCreated(function () {
   resetAlert()
   // TODO: perhaps use a ReactiveDict here and store other state variables as well
   this.navState = new ReactiveVar('minimized')
-
+  console.log('templating')
   // TODO: the next lines (about anonymous keystore creation) should be run as early as possible: (perhaps App_body.onCreated is not the right place?)
 
   // if the user is not logged in, we create an anonymous keystore to use for transacting

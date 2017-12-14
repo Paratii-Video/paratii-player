@@ -229,15 +229,15 @@ function sendTransaction (password, contractName, functionName, args, value, cal
     if (error) throw error
     // sign the transaction
     const txOptions = {
-      nonce: paratii.eth.web3.toHex(nonce),
-      gasPrice: paratii.eth.web3.toHex(GAS_PRICE),
-      gasLimit: paratii.eth.web3.toHex(GAS_LIMIT)
+      nonce: paratii.eth.web3.utils.toHex(nonce),
+      gasPrice: paratii.eth.web3.utils.toHex(GAS_PRICE),
+      gasLimit: paratii.eth.web3.utils.toHex(GAS_LIMIT)
     }
 
     let rawTx
     contract = await paratii.eth.getContract(contractName)
     txOptions.to = contract.address
-    txOptions.value = paratii.eth.web3.toHex(value)
+    txOptions.value = paratii.eth.web3.utils.toHex(value)
     rawTx = lightwallet.txutils.functionTx(contract.abi, functionName, args, txOptions)
     console.log('Signing transaction')
     // console.log(fromAddr)
