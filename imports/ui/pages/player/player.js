@@ -33,6 +33,22 @@ function splitPath (path) {
   return path.substring(6).split('/')
 }
 
+const onReady = () => {
+  hideLoader()
+}
+
+const onPlay = () => {
+  $('#app-container').addClass('playing')
+}
+
+const onPause = () => {
+  $('#app-container').removeClass('playing')
+}
+
+const onEnded = () => {
+  $('#app-container').removeClass('playing')
+}
+
 function renderVideoElement (instance) {
   // adds the source to the vidoe element on this page
   const currentVideo = instance.currentVideo.get()
@@ -74,9 +90,11 @@ function renderVideoElement (instance) {
     mimeType: currentVideo.mimetype,
     ipfsHash: splitPath(currentVideo.src)[0],
     events: {
-      onReady: hideLoader
+      onReady,
+      onPlay,
+      onPause,
+      onEnded
     }
-
   })
 }
 
