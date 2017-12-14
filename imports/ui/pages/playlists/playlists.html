@@ -11,7 +11,7 @@
         <ul class="thumbs-list">
           {{#each playlists}}
             <li class="thumbs-list-item">
-              <a class="thumbs-list-link" href="{{pathFor route='playlists' _id=this._id}}">
+              <a class="thumbs-list-link" href="{{pathFor route='playlist_videos' _id=this._id}}">
                 <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
                 <div class="thumbs-list-count">
                   <p class="thumbs-list-count-value"> {{playlistCounter this }} <span class="visually-hidden">{{_ "videos on playlist" }}</span></p>
@@ -29,7 +29,7 @@
                   </div>
                 {{/if}}
               </a>
-              <a class="thumbs-list-play" href="{{pathFor route='playlists' _id=this._id}}">
+              <a class="thumbs-list-play" href="{{pathFor route='playlist_videos' _id=this._id}}">
                 <svg class="thumbs-list-play-svg">
                   <use class="thumbs-list-play-use" xlink:href="#icon-play"></use>
                 </svg>

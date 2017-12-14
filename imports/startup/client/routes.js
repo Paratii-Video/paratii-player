@@ -8,6 +8,7 @@ import '/imports/ui/layouts/body/body.js'
 import '/imports/ui/pages/debug/debug.js'
 import '/imports/ui/pages/home/home.js'
 import '/imports/ui/pages/playlists/playlists.js'
+import '/imports/ui/pages/playlists/playlist_videos.js'
 import '/imports/ui/pages/player/player.js'
 import '/imports/ui/pages/profile/profile.js'
 import '/imports/ui/pages/myvideos/myvideos.js'
@@ -88,9 +89,9 @@ publicRoute.route('/playlists', {
 })
 
 publicRoute.route('/playlists/:_id', {
-  name: 'playlists',
+  name: 'playlist_videos',
   action () {
-    BlazeLayout.render('App_body', { main: 'playlists' })
+    BlazeLayout.render('App_body', { main: 'playlist_videos' })
   }
 })
 
