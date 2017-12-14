@@ -76,6 +76,7 @@ Template.navigation.events({
   'click #clear-repo' (ev) {
     console.log('clearing cache . ', ev.target)
     ev.target.innerText = 'Clearing...'
+    // paratii.ipfs.clearRepo()
     paratiiIPFS.clearRepo(() => {
       console.log('cache cleared')
       ev.target.innerText = 'Cache Cleared!!'

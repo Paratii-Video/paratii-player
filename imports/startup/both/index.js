@@ -12,7 +12,7 @@ if (!Meteor.settings.public.http_provider) {
   throw Error(msg)
 }
 
-// global.paratii = Paratii({
+// global.paratii = new Paratii({
 //   provider: Meteor.settings.public.http_provider,
 //   registryAddress: Meteor.settings.public.ParatiiRegistry
 // })

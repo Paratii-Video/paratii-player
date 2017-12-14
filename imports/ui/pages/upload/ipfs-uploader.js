@@ -59,6 +59,8 @@ function drop (ev) {
   }
 }
 
+// this will be replaced by
+// paratii.ipfs.uploader.add(....)
 function addToIPFS (files) {
   var fileSize = 0
   var total = 0
@@ -152,11 +154,12 @@ function addToIPFS (files) {
           stats: {
             likes: 0,
             dislikes: 0
-          }}, (err, videoId) => {
-            if (err) throw err
-            console.log('[upload] Video Uploaded: ', videoId)
-            statusEl.innerHTML += '\n Video Uploaded go to <b><a href="/play/' + videoId + '">/play/' + videoId + '</a></b>\n'
-          })
+          }},
+        (err, videoId) => {
+          if (err) throw err
+          console.log('[upload] Video Uploaded: ', videoId)
+          statusEl.innerHTML += '\n Video Uploaded go to <b><a href="/play/' + videoId + '">/play/' + videoId + '</a></b>\n'
+        })
       }
     })
   })
