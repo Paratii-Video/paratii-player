@@ -2,9 +2,7 @@ import { Template } from 'meteor/templating'
 import { showModal, _, showLoader, hideLoader } from '/imports/lib/utils.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import '/imports/ui/components/internals/internalsHeader.js'
-import '/imports/ui/components/internals/internalsPagination.js'
 import '/imports/ui/components/modals/playlist.js'
-import '/imports/ui/components/buttons/settingsButton.js'
 import './playlists.html'
 
 Template.playlists.onCreated(function () {
@@ -16,8 +14,7 @@ Template.playlists.onCreated(function () {
 
 Template.playlists.helpers({
   playlists () {
-    const playlists = Playlists.find()
-    return playlists
+    return Playlists.find()
   },
   playlistCounter (playlist) {
     return playlist.videos.length
@@ -26,11 +23,9 @@ Template.playlists.helpers({
     return title.substring(0, 25)
   },
   getThumbUrl (thumbSrc) {
-    if (thumbSrc.startsWith('/ipfs/')) {
-      return String('https://gateway.paratii.video' + thumbSrc)
-    } else {
-      return String(thumbSrc)
-    }
+    return thumbSrc.startsWith('/ipfs/')
+      ? String('https://gateway.paratii.video' + thumbSrc)
+      : String(thumbSrc)
   }
 })
 
