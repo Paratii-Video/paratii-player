@@ -72,7 +72,7 @@ function renderVideoElement (instance) {
     source: 'https://gateway.paratii.video' + currentVideo.src + '/master.m3u8',
     thumb: 'https://gateway.paratii.video' + currentVideo.thumb,
     mimeType: currentVideo.mimetype,
-    ipfsHash: splitPath(currentVideo.src),
+    ipfsHash: splitPath(currentVideo.src)[0],
     events: {
       onReady: hideLoader
     }
