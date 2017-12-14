@@ -21,14 +21,14 @@ export async function installFixture (fixture) {
 
 export async function deployContractsAndInstallFixture (fixture) {
   console.log('Test environment: deploying contracts on startup')
+
   try {
     let contracts = await paratii.eth.deployContracts()
-
-    await contracts.ParatiiRegistry.registerNumber('VideoRedistributionPoolShare', web3.toWei(0.3), {from: web3.eth.accounts[0]})
-    await contracts.ParatiiAvatar.addToWhitelist(contracts.VideoStore.address, {from: web3.eth.accounts[0]})
-
-    console.log('done installing contracts!')
-    setRegistryAddress(contracts.ParatiiRegistry.address)
+    // console.log(contracts.ParatiiRegistry)
+    // await contracts.ParatiiRegistry.registerNumber('VideoRedistributionPoolShare', web3.toWei(0.3), {from: web3.eth.accounts[0]})
+    // await contracts.ParatiiAvatar.addToWhitelist(contracts.VideoStore.address, {from: web3.eth.accounts[0]})
+    console.log('contract address' + contracts.ParatiiRegistry.options.address)
+    setRegistryAddress(contracts.ParatiiRegistry.options.address)
     installFixture(fixture)
 
     return contracts
@@ -45,7 +45,7 @@ if (Meteor.settings.public.isTestEnv) {
   // we can do all this easily, because accounts[0] is unlocked in testrpc, and has lots of Ether.
   let fixture = require('/imports/fixtures/octobersprintfixture.js')
   deployContractsAndInstallFixture(fixture).then(function (contracts) {
-    setRegistryAddress(contracts.ParatiiRegistry.address)
+    setRegistryAddress(contracts.ParatiiRegistry.options.address)
     watchEvents()
     Meteor.startup(
       function () {

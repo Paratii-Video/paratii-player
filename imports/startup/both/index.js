@@ -4,7 +4,7 @@
 // import { Paratii } from 'paratii-lib'
 import { web3 } from '/imports/lib/ethereum/web3.js'
 global.web3 = web3
-
+global.regeneratorRuntime = require('babel-runtime/regenerator')
 console.log('settings.public.http_provider: ', Meteor.settings.public.http_provider)
 
 if (!Meteor.settings.public.http_provider) {

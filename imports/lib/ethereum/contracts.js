@@ -1,6 +1,7 @@
 // import { paratii } from './paratii.js'
 import { web3 } from './web3.js'
 // import { paratii } from './connection.js'
+import { paratii } from '/imports/lib/ethereum/paratii.js'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'
 import ParatiiRegistrySpec from './contracts/ParatiiRegistry.json'
 import ParatiiTokenSpec from './contracts/ParatiiToken.json'
@@ -30,10 +31,12 @@ const CONTRACTS = {
 }
 
 export function setRegistryAddress (address) {
+  console.log('set registry address' + address)
   Meteor.settings.public.ParatiiRegistry = address
 }
 
 export function getRegistryAddress () {
+  console.log('get registry address' + Meteor.settings.public.ParatiiRegistry)
   return Meteor.settings.public.ParatiiRegistry
   // return paratii.config.registryAddress
 }
@@ -67,7 +70,7 @@ export async function getContract (name) {
   if (!contractInfo) {
     throw Error(`No contract with name "${name}" is known`)
   }
-  let address = await getContractAddress(name)
+  let address = await paratii.eth.getContractAddress(name)
   if (address) {
     const contract = web3.eth.contract(contractInfo.spec.abi).at(address)
     return contract
