@@ -1,31 +1,28 @@
-import playerjs from 'player.js'
-// import { Accounts } from 'meteor/accounts-base'
+// import playerjs from 'player.js'
 import CreatePlayer from 'paratii-mediaplayer'
 import { sprintf } from 'meteor/sgi:sprintfjs'
-import { web3 } from '/imports/lib/ethereum/connection.js'
+// import { web3 } from '/imports/lib/ethereum/connection.js'
 import {
   formatNumber,
-  showModal,
-  showGlobalAlert,
+  // showModal,
+  // showGlobalAlert,
   log,
-  toggleFullscreen,
-  showLoader, hideLoader, _
+  // toggleFullscreen,
+  // showLoader,
+  hideLoader
+  // _
 } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-import { Playlists } from '../../../../imports/api/playlists.js'
+// import { Playlists } from '../../../../imports/api/playlists.js'
 import { RelatedVideos, CurrentVideos } from '../../../api/videos.js'
-import { createWebtorrentPlayer } from './webtorrent.js'
-import HLSPlayer from './ipfs_hls.js'
-import { createIPFSPlayer } from './ipfs.js'
+// import HLSPlayer from './ipfs_hls.js'
+// import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
 import './player.html'
 
-let controlsHandler
-// let volumeHandler
-// let previousVolume = 100
-
+// TODO move this to utils
 function splitPath (path) {
   if (path[path.length - 1] === '/') {
     path = path.substring(0, path.length - 1)
@@ -34,49 +31,9 @@ function splitPath (path) {
 }
 
 Template.player.onCreated(function () {
-  this.onReady = () => {
-    hideLoader()
-  }
-
-  this.onPlay = () => {
-    $('#app-container').addClass('playing')
-    this.playerState.set('playing', true)
-    this.playerState.set('ended', false)
-  }
-
-  this.onPause = () => {
-    $('#app-container').removeClass('playing')
-    this.playerState.set('playing', false)
-    this.playerState.set('ended', false)
-  }
-
-  this.onEnded = () => {
-    $('#app-container').removeClass('playing')
-    this.playerState.set('playing', false)
-    this.playerState.set('ended', true)
-  }
-
-  this.renderVideoElement = () => {
-    const currentVideo = this.currentVideo.get()
-
-    this.player = CreatePlayer({
-      selector: '#player-container',
-      source: 'https://gateway.paratii.video' + currentVideo.src + '/master.m3u8',
-      thumb: 'https://gateway.paratii.video' + currentVideo.thumb,
-      mimeType: currentVideo.mimetype,
-      ipfsHash: splitPath(currentVideo.src)[0],
-      events: {
-        onReady: this.onReady,
-        onPlay: this.onPlay,
-        onPause: this.onPause,
-        onEnded: this.onEnded
-      }
-    })
-  }
-
+  const videoId = FlowRouter.getParam('_id')
   const self = this
   const userPTIAddress = getUserPTIAddress()
-  const instance = Template.instance()
   const bodyView = Blaze.getView('Template.App_body')
   // embed/extra parameters
   const autoplay = parseInt(FlowRouter.getQueryParam('autoplay'))
@@ -120,14 +77,63 @@ Template.player.onCreated(function () {
   // Description
   this.playerState.set('showDescription', false)
 
-  this.togglePlay = () => {
-    const dict = this.playerState
-    if (dict.get('playing')) {
-      pauseVideo(instance)
-    } else {
-      playVideo(instance)
-    }
+  this.renderVideoElement = () => {
+    const currentVideo = this.currentVideo.get()
+
+    console.log('https://gateway.paratii.video' + currentVideo.thumb)
+
+    this.player = CreatePlayer({
+      selector: '#player-container',
+      source: 'https://gateway.paratii.video' + currentVideo.src + '/master.m3u8',
+      poster: 'https://gateway.paratii.video' + currentVideo.thumb,
+      mimeType: currentVideo.mimetype,
+      ipfsHash: splitPath(currentVideo.src)[0],
+      events: {
+        onReady: this.onReady,
+        onPlay: this.onPlay,
+        onPause: this.onPause,
+        onEnded: this.onEnded
+      }
+    })
   }
+
+  this.onReady = () => {
+    hideLoader()
+  }
+
+  this.onPlay = () => {
+    $('#app-container').addClass('playing')
+    this.playerState.set('playing', true)
+    this.playerState.set('ended', false)
+    $('div.main-app').addClass('hide-nav')
+    console.log('---------------play')
+    console.log(this.playerState.get('playing'))
+  }
+
+  this.onPause = () => {
+    $('#app-container').removeClass('playing')
+    this.playerState.set('playing', false)
+    this.playerState.set('ended', false)
+    $('div.main-app').removeClass('hide-nav')
+    console.log('---------------pause')
+    console.log(this.playerState.get('playing'))
+  }
+
+  this.onEnded = () => {
+    $('#app-container').removeClass('playing')
+    this.playerState.set('playing', false)
+    this.playerState.set('ended', true)
+    $('div.main-app').removeClass('hide-nav')
+  }
+
+  // this.togglePlay = () => {
+  //   const dict = this.playerState
+  //   if (dict.get('playing')) {
+  //     pauseVideo(instance)
+  //   } else {
+  //     playVideo(instance)
+  //   }
+  // }
 
   log('navState:', this.navState.get())
 
@@ -141,9 +147,9 @@ Template.player.onCreated(function () {
   }
 
   if (userPTIAddress) {
-    Meteor.subscribe('userTransactions', userPTIAddress)
+    // Meteor.subscribe('userTransactions', userPTIAddress)
   }
-  const videoId = FlowRouter.getParam('_id')
+
   Meteor.subscribe('videos', function () {
     self.currentVideo.set(CurrentVideos.findOne({ _id: videoId }))
     self.renderVideoElement()
@@ -158,18 +164,17 @@ Template.player.onCreated(function () {
     } else {
       self.playerState.set('locked', results)
       // hide everything if the video is unlocked and autoplay is true
-      if (self.playerState.get('autoplay') && !self.playerState.get('locked')) {
-        self.playerState.set('playing', true)
-
-        self.playerState.set('hideControls', true)
-        self.navState.set('closed')
-      }
+      // if (self.playerState.get('autoplay') && !self.playerState.get('locked')) {
+      //   self.playerState.set('playing', true)
+      //   self.playerState.set('hideControls', true)
+      //   self.navState.set('closed')
+      // }
     }
   })
 })
 
 Template.player.onDestroyed(function () {
-  Meteor.clearTimeout(controlsHandler)
+  // Meteor.clearTimeout(controlsHandler)
 })
 
 Template.player.onRendered(function () {
@@ -193,7 +198,7 @@ Template.player.helpers({
     return Template.instance().playerState.get('locked')
   },
   playPause () {
-    return Template.instance().playerState.get('playing') ? 'pause' : 'play'
+    return Template.instance().playerState.get('playing') ? 'play' : 'pause'
   },
   playPauseIcon () {
     const state = Template.instance().playerState.get('playing')
@@ -289,52 +294,52 @@ Template.player.helpers({
   }
 })
 
-const pauseVideo = (instance) => {
-  const video = document.getElementById('video-player')
-  video.pause()
-}
-
-const endedVideo = (instance) => {
-  instance.playerState.set('ended', true)
-  if (!FlowRouter.getQueryParam('playlist')) {
-    // show related only if there's no playlist
-    $('#app-container').addClass('related')
-  }
-  $('#app-container').removeClass('playing')
-}
-const playVideo = (instance) => {
-  const video = document.getElementById('video-player')
-  video.play()
-}
-
-// Set a value (0 ~ 1) to the player volume and volume UX
-const setVolume = (instance, value) => {
-  const videoPlayer = document.getElementById('video-player')
-  videoPlayer.volume = value
-  instance.playerState.set('volumeValue', value * 100)
-  instance.playerState.set('volScrubberTranslate', value * 100)
-  if (value > 0) {
-    instance.playerState.set('muted', false)
-  } else {
-    instance.playerState.set('muted', true)
-  }
-}
-
-const setLoadedProgress = (instance) => {
-  const videoPlayer = document.getElementById('video-player')
-  const torrent = instance.playerState.get('torrent')
-  if (videoPlayer.buffered.length > 0 && !torrent) {
-    const played = instance.playerState.get('playedProgress')
-    let loaded = 0.0
-    // get the nearst end
-    for (let i = 0; i < videoPlayer.buffered.length; i += 1) {
-      if (loaded <= played) {
-        loaded = videoPlayer.buffered.end(i) / videoPlayer.duration
-      }
-    }
-    instance.playerState.set('loadedProgress', loaded * 100)
-  }
-}
+// const pauseVideo = (instance) => {
+//   const video = document.getElementById('video-player')
+//   video.pause()
+// }
+//
+// const endedVideo = (instance) => {
+//   instance.playerState.set('ended', true)
+//   if (!FlowRouter.getQueryParam('playlist')) {
+//     // show related only if there's no playlist
+//     $('#app-container').addClass('related')
+//   }
+//   $('#app-container').removeClass('playing')
+// }
+// const playVideo = (instance) => {
+//   const video = document.getElementById('video-player')
+//   video.play()
+// }
+//
+// // Set a value (0 ~ 1) to the player volume and volume UX
+// const setVolume = (instance, value) => {
+//   const videoPlayer = document.getElementById('video-player')
+//   videoPlayer.volume = value
+//   instance.playerState.set('volumeValue', value * 100)
+//   instance.playerState.set('volScrubberTranslate', value * 100)
+//   if (value > 0) {
+//     instance.playerState.set('muted', false)
+//   } else {
+//     instance.playerState.set('muted', true)
+//   }
+// }
+//
+// const setLoadedProgress = (instance) => {
+//   const videoPlayer = document.getElementById('video-player')
+//   const torrent = instance.playerState.get('torrent')
+//   if (videoPlayer.buffered.length > 0 && !torrent) {
+//     const played = instance.playerState.get('playedProgress')
+//     let loaded = 0.0
+//     // get the nearst end
+//     for (let i = 0; i < videoPlayer.buffered.length; i += 1) {
+//       if (loaded <= played) {
+//         loaded = videoPlayer.buffered.end(i) / videoPlayer.duration
+//       }
+//     }
+//     instance.playerState.set('loadedProgress', loaded * 100)
+//   }
+// }
 
 /*
 Template.player.events({
