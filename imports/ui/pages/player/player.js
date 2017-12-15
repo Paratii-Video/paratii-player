@@ -4,6 +4,7 @@ import { sprintf } from 'meteor/sgi:sprintfjs'
 // import { web3 } from '/imports/lib/ethereum/connection.js'
 import {
   formatNumber,
+  splitPath,
   // showModal,
   // showGlobalAlert,
   log,
@@ -21,14 +22,6 @@ import '/imports/ui/components/modals/embedCustomizer.js'
 import '/imports/ui/components/modals/unlockVideo.js'
 import '/imports/ui/components/buttons/fullScreenButton.js'
 import './player.html'
-
-// TODO move this to utils
-function splitPath (path) {
-  if (path[path.length - 1] === '/') {
-    path = path.substring(0, path.length - 1)
-  }
-  return path.substring(6).split('/')
-}
 
 Template.player.onCreated(function () {
   const videoId = FlowRouter.getParam('_id')
