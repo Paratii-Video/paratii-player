@@ -22,7 +22,7 @@ Template.playlist_videos.onCreated(function () {
   this.page = new ReactiveVar()
   this.totalVideos = new ReactiveVar()
 
-  Meteor.subscribe('playlists', () => {
+  Meteor.subscribe('currentPlaylist', getCurrentPlaylistId(), () => {
     const playlist = Playlists.findOne({ _id: getCurrentPlaylistId() })
     if (playlist) {
       this.playlist.set(playlist)
