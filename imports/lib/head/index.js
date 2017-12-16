@@ -97,7 +97,10 @@ function discoveryOEmbed (params, req, res, next) {
   var videoId = params._id
   var video = Videos.findOne({_id: videoId})
   var videoTitle = video.title
-  req.dynamicHead += '<link rel="alternate" type="application/json+oembed" url="' + rootUrl + '/play/' + videoId + '" title="' + videoTitle + '" />'
+  var videoUrl = rootUrl + '/play/' + videoId
+  var oEmbedBaseJson = rootUrl + '/oembed?url='
+  var fullOembedJson = oEmbedBaseJson + encodeURIComponent(videoUrl) + '&format=json'
+  req.dynamicHead += '<link rel="alternate" type="application/json+oembed" url="' + fullOembedJson + '" title="' + videoTitle + '" />'
 }
 function twitterCardHeadPlayer (params, req, res, next) {
   var rootUrl = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl)
