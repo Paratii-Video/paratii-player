@@ -7,6 +7,7 @@ function setHead () {
     // console.log(params)
     // console.log(req)
     basicHead(params, req, res, next)
+    discoveryOEmbed(params, req, res, next)
     twitterCardHeadPlayer(params, req, res, next)
     facebookOGHeadPlayer(params, req, res, next)
 
@@ -91,6 +92,16 @@ function setHead () {
   })
 }
 
+function discoveryOEmbed (params, req, res, next) {
+  var rootUrl = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl)
+  var videoId = params._id
+  var video = Videos.findOne({_id: videoId})
+  var videoTitle = video.title
+  var videoUrl = rootUrl + '/play/' + videoId
+  var oEmbedBaseJson = rootUrl + '/oembed?url='
+  var fullOembedJson = oEmbedBaseJson + encodeURIComponent(videoUrl) + '&format=json'
+  req.dynamicHead += '<link rel="alternate" type="application/json+oembed" url="' + fullOembedJson + '" title="' + videoTitle + '" />'
+}
 function twitterCardHeadPlayer (params, req, res, next) {
   var rootUrl = removeTrailingSlash(Meteor.absoluteUrl.defaultOptions.rootUrl)
   var ipfsGateway = removeTrailingSlash(Meteor.settings.public.ipfs_gateway.replace(/\/$/, ''))

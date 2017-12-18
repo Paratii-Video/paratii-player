@@ -42,6 +42,12 @@
 
 // Classes
 
+.anim-element-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: opacity .3s linear .1s, transform 1s @ease-smooth; 
+}
+
 .anim-element-out {
   opacity: 0;
   transform: translate3d(0, 20px, 0);
@@ -58,16 +64,7 @@
   .active &,
   .show &,
   .show-content & {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.anim-show-up-1 {
-  .active &,
-  .show &,
-  .show-content & {
-    transition: opacity .3s linear .1s, transform .75s @ease-smooth;
+    &:extend(.anim-element-in all);
   }
 }
 
@@ -75,7 +72,7 @@
   .active &,
   .show &,
   .show-content & {
-    transition: opacity .3s linear .2s, transform .75s @ease-smooth .1s;
+    transition-delay: .2s, .1s;
   }
 }
 
@@ -83,7 +80,7 @@
   .active &,
   .show &,
   .show-content & {
-    transition: opacity .3s linear .3s, transform .75s @ease-smooth .2s;
+    transition-delay: .3s, .2s;
   }
 }
 
@@ -91,7 +88,7 @@
   .active &,
   .show &,
   .show-content & {
-    transition: opacity .3s linear .4s, transform .75s @ease-smooth .3s;
+    transition-delay: .4s, .3s;
   }
 }
 
@@ -99,7 +96,7 @@
   .active &,
   .show &,
   .show-content & {
-    transition: opacity .3s linear .5s, transform .75s @ease-smooth .4s;
+    transition-delay: .5s, .4s;
   }
 }
 

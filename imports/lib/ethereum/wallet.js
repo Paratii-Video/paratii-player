@@ -13,6 +13,7 @@ function createKeystore (password, seedPhrase, key, cb) {
   Session.set('generating-keystore', true)
   // wallet = paratii.paratii.eth.web3.eth.accounts.wallet.create(1, seedPhrase)
   if (seedPhrase == null) {
+    // seedPhrase = paratii.eth.wallet.newMnemonic() will generate a raondom seed
     seedPhrase = lightwallet.keystore.generateRandomSeed()
   }
   // create a new keystore with the given password and seedPhrase
@@ -20,6 +21,11 @@ function createKeystore (password, seedPhrase, key, cb) {
     password,
     seedPhrase
   }
+
+  // wallet = paratii.eth.wallet.create(1, seedPhrase)
+  // serialized = wallet.encrypt('password')
+  // saveKeystore(seedPhrase, serailized, password, ..)
+  // call the cb()
   lightwallet.keystore.createVault(opts, function (err, keystore) {
     if (err) {
       cb(err)
@@ -154,7 +160,7 @@ export function getKeystore (user = null) {
   // }
   // using lightwallet to deserialize the keystore
   if (serializedKeystore !== null) {
-    // keystore = paratii.personal.wallet.decrypt(serializedKeystore)
+    // keystore = paratii.eth.wallet.decrypt(serializedKeystore)
     const keystore = lightwallet.keystore.deserialize(serializedKeystore)
     return keystore
   }
@@ -189,6 +195,7 @@ export function getSeed (password, callback) {
 
 export function getSeedFromKeystore (password, keystore, callback) {
   if (keystore !== null) {
+    // seed = keystore.getMnenomic(password).then(function(err, result) { callback(err, result)})
     keystore.keyFromPassword(password, function (err, pwDerivedKey) {
       if (err) {
         Session.set('errorMessage', 'Incorrect password')

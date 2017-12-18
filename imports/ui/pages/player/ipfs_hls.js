@@ -107,6 +107,7 @@ class HLSPlayer extends EventEmitter {
       maxLoadingDelay: 2
     })
 
+    // paratii.ipfs.isOnline()
     if (paratiiIPFS.isOnline()) {
       this.getDAG((err, dag) => {
         if (err) throw err
@@ -275,11 +276,11 @@ class HLSPlayer extends EventEmitter {
     //   }
     // }
 
-      // print peers and bitswap state for debugging ---------------------------
+    // print peers and bitswap state for debugging ---------------------------
     // let pollStats = setInterval(() => {
     //   updateStats()
     // }, 10000)
-      // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
   }
 }
 
