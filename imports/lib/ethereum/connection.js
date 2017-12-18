@@ -1,4 +1,4 @@
-// import { paratii } from './paratii.js'
+import { paratii } from './paratii.js'
 import { getUserPTIAddress } from '../../api/users.js'
 import { getRegistryAddress, setRegistryAddress } from './contracts.js'
 

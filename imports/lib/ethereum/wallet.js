@@ -3,13 +3,14 @@ import lightwallet from 'eth-lightwallet/dist/lightwallet.js'
 import { Accounts } from 'meteor/accounts-base'
 import { add0x, showModal } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-// import { paratii } from './paratii.js'
+import { paratii } from './paratii.js'
 import { GAS_PRICE, GAS_LIMIT } from './connection.js'
 
 // createKeystore will create a new keystore, and save it in the session object and in local storage
 // it generates an address, and save that in the session too
 function createKeystore (password, seedPhrase, key, cb) {
   // create a new seedPhrase if we have none, and save in in localstorage under 'keystore-{key}'
+
   Session.set('generating-keystore', true)
   // wallet = paratii.paratii.eth.web3.eth.accounts.wallet.create(1, seedPhrase)
   if (seedPhrase == null) {

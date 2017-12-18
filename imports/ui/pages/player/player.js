@@ -1,7 +1,7 @@
 import playerjs from 'player.js'
 // import { Accounts } from 'meteor/accounts-base'
 import { sprintf } from 'meteor/sgi:sprintfjs'
-// import { paratii } from '/imports/lib/ethereum/connection.js'
+import { paratii } from '/imports/lib/ethereum/connection.js'
 import {
   formatNumber,
   showModal,
