@@ -1,7 +1,6 @@
 /* Fill the database and the blockchain with sample data
  if this is a test environment
 */
-
 import { Meteor } from 'meteor/meteor'
 // import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { watchEvents } from '/imports/api/transactions.js'
@@ -28,7 +27,7 @@ export async function deployContractsAndInstallFixture (fixture) {
   console.log('Test environment: deploying contracts on startup')
   try {
     let contracts = await paratii.eth.deployContracts()
-    // console.log(contracts.ParatiiRegistry)
+    console.log(contracts.ParatiiRegistry.options.address)
     // await contracts.ParatiiRegistry.registerNumber('VideoRedistributionPoolShare', web3.toWei(0.3), {from: web3.eth.accounts[0]})
     // await contracts.ParatiiAvatar.addToWhitelist(contracts.VideoStore.address, {from: web3.eth.accounts[0]})
     console.log('contract address' + contracts.ParatiiRegistry.options.address)
