@@ -103,6 +103,7 @@ export function userPrettyName () {
 }
 
 export function getUserPTIAddress () {
+  console.log('getUserPTIAddress')
   if (Session.get('generating-keystore')) {
     // keystore is not available yet
     return undefined

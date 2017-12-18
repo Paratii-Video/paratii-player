@@ -3,7 +3,7 @@ import lightwallet from 'eth-lightwallet/dist/lightwallet.js'
 import { Accounts } from 'meteor/accounts-base'
 import { add0x, showModal } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-import { paratii } from './paratii.js'
+// import { paratii } from './paratii.js'
 import { GAS_PRICE, GAS_LIMIT } from './connection.js'
 
 // createKeystore will create a new keystore, and save it in the session object and in local storage

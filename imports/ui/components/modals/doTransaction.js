@@ -1,7 +1,7 @@
 // TODO: refactoring: remove all refs to the buyvideo workflow from this modal (it's in 'unlockVideo.js' now)
 import { Template } from 'meteor/templating'
 import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
-import { paratii } from '/imports/lib/ethereum/paratii.js'
+// import { paratii } from '/imports/lib/ethereum/paratii.js'
 import { checkPassword } from '/imports/api/users.js'
 
 import '/imports/lib/validate.js'

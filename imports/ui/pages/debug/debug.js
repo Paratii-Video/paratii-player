@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Meteor } from 'meteor/meteor'
-import { paratii } from '/imports/lib/ethereum/paratii.js'
+// import { paratii } from '/imports/lib/ethereum/paratii.js'
 import { updateSession } from '/imports/lib/ethereum/connection.js'
 import { setRegistryAddress, getContractAddress } from '/imports/lib/ethereum/contracts.js'
 import { getKeystore } from '/imports/lib/ethereum/wallet.js'

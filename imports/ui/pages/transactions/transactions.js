@@ -1,6 +1,6 @@
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { UserTransactions } from '/imports/api/transactions.js'
-import { paratii } from '/imports/lib/ethereum/paratii.js'
+// import { paratii } from '/imports/lib/ethereum/paratii.js'
 
 import './transactions.html'
 

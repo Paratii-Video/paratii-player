@@ -26,7 +26,6 @@ export async function installFixture (fixture) {
 
 export async function deployContractsAndInstallFixture (fixture) {
   console.log('Test environment: deploying contracts on startup')
-
   try {
     let contracts = await paratii.eth.deployContracts()
     // console.log(contracts.ParatiiRegistry)

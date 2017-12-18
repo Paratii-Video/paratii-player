@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating'
 import { sendTransaction } from '/imports/lib/ethereum/wallet.js'
-import { paratii } from '/imports/lib/ethereum/connection.js'
+// import { paratii } from '/imports/lib/ethereum/paratii.js'
 // import { getContract } from '/imports/lib/ethereum/contracts.js'
 import { checkPassword, getUserPTIAddress } from '/imports/api/users.js'
 import { showModalAlert } from '/imports/lib/utils.js'

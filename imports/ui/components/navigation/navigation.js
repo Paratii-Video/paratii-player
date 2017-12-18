@@ -1,7 +1,7 @@
 /* globals SVGInjector */
 import './navigation.html'
 import { showModal } from '/imports/lib/utils.js'
-import { paratii } from '/imports/lib/ethereum/paratii.js'
+// import { paratii } from '/imports/lib/ethereum/paratii.js'
 import paratiiIPFS from '/imports/lib/ipfs/index.js'
 import 'meteor/johnantoni:meteor-svginjector'
 import '/imports/ui/components/modals/login.js'

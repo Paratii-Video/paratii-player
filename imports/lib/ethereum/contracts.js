@@ -1,4 +1,4 @@
-import { paratii } from './paratii.js'
+// import { paratii } from './paratii.js'
 // import { paratii } from './connection.js'
 // import { paratii } from '/imports/lib/ethereum/paratii.js'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'

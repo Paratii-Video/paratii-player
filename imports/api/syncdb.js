@@ -1,5 +1,5 @@
 import { PTIContract } from '/imports/lib/ethereum/connection.js'
-import { paratii } from '/imports/lib/ethereum/paratii.js'
+// import { paratii } from '/imports/lib/ethereum/paratii.js'
 import { Settings } from './settings.js'
 import { addETHTransaction, addPTITransaction } from './transaction.js'
 

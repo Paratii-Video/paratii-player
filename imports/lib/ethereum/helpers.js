@@ -4,7 +4,7 @@
  */
 
 import { add0x } from '../utils.js'
-import { paratii } from './paratii.js'
+// import { paratii } from './paratii.js'
 // import { paratii } from './paratii.js'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'
 import ParatiiRegistrySpec from './contracts/ParatiiRegistry.json'
