@@ -20,7 +20,8 @@ function createKeystore (password, seedPhrase, key, cb) {
   // create a new keystore with the given password and seedPhrase
   const opts = {
     password,
-    seedPhrase
+    seedPhrase,
+    hdPathString: "m/0'/0'/0'"
   }
 
   // wallet = paratii.eth.wallet.create(1, seedPhrase)
