@@ -11,3 +11,7 @@ origins = ["all"]
 logging = "own_tx=trace"
 log_file = "parity.log"
 color = true
+[account]
+unlock = ["0x00a329c0648769a73afac7f9381e08fb43dbea72"]
+password = ["password.file"]
+keys_iterations = 10240
