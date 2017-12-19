@@ -1,7 +1,7 @@
 {
   "doc": "These settings are used for developing locally against testrpc",
   "public" : {
-    "http_provider": "http://localhost:8545",
+    "http_provider": "ws://localhost:8546",
     "ipfs_gateway": "https://gateway.paratii.video",
     "first_block": 0,
     "isTestEnv": true,

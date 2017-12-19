@@ -7,6 +7,7 @@
     "dev": "meteor run --settings settings-dev.json",
     "dev-concurrently": "concurrently --kill-others \"npm run testrpc\" \"meteor run --settings settings-dev.json\"",
     "testrpc": "testrpc -a 10 --deterministic",
+    "parity": "parity --config parity-config.toml",
     "test": "meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754",
     "test-concurrently": "concurrently --kill-others \"npm run testrpc\" \"meteor --settings settings-dev.json test --driver-package practicalmeteor:mocha --port 8754\"",
     "test-headless": "TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha --port 9999",

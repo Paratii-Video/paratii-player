@@ -6,3 +6,4 @@ package-lock.json
 .node-xmlhttprequest-sync-*
 weekly.txt
 .vscode/
+parity.log
