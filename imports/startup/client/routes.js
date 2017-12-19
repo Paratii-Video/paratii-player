@@ -19,21 +19,21 @@ import {Sniffer} from '/imports/lib/sniffing/index.js'
 
 var sniffer = new Sniffer({debug: true, test: false})
 
-sniffer.getClasses()          // 'Sony'
-sniffer.mobile()          // 'Sony'
-sniffer.isMobile()          // 'Sony'
-sniffer.phone()          // 'Sony'
-sniffer.isPhone()          // 'Sony'
-sniffer.tablet()          // null
-sniffer.isTablet()          // null
-sniffer.getReferrer()          // null
-sniffer.isEmbedly()          // null
-sniffer.userAgent()       // 'Safari'
-sniffer.os()              // 'AndroidOS'
-sniffer.is('iPhone')      // false
-sniffer.is('bot')         // false
-sniffer.version('Webkit')         // 534.3
-sniffer.versionStr('Build')       // '4.1.A.0.562'
+sniffer.getClasses() // 'Sony'
+sniffer.mobile() // 'Sony'
+sniffer.isMobile() // 'Sony'
+sniffer.phone() // 'Sony'
+sniffer.isPhone() // 'Sony'
+sniffer.tablet() // null
+sniffer.isTablet() // null
+sniffer.getReferrer() // null
+sniffer.isEmbedly() // null
+sniffer.userAgent() // 'Safari'
+sniffer.os() // 'AndroidOS'
+sniffer.is('iPhone') // false
+sniffer.is('bot') // false
+sniffer.version('Webkit') // 534.3
+sniffer.versionStr('Build') // '4.1.A.0.562'
 sniffer.match('playstation|xbox') // false
 
 // define a new router group specific for public routing
@@ -54,8 +54,10 @@ var publicRoute = FlowRouter.group({
 })
 
 function setBodyClass () {
+  console.log(FlowRouter.current().route.name)
   document.body.className = ''
   document.body.className += sniffer.getClasses()
+  document.body.className += FlowRouter.current().route.name
 }
 
 // Set up all routes in the app

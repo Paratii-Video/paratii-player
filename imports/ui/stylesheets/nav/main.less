@@ -28,6 +28,9 @@
 }
 
 //
+body.player .main-nav{
+  display: none;
+}
 
 .main-nav {
   background-color: @color-white;
@@ -78,7 +81,7 @@
     height: @size-main-nav-icon;
     margin: 0 auto;
     width: 50%;
-    
+
     .nav-profile & {
       background-color: @color-white;
       border-radius: 50px;
@@ -105,7 +108,7 @@
 
   &-svg {
     &:extend(.full-block all);
-    
+
     fill: @color-grey-light;
     transition: fill .3s, opacity .3s;
 
