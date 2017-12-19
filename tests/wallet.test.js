@@ -1,7 +1,7 @@
 import { assertUserIsLoggedIn, web3, createUserAndLogin, getEthAccountFromApp, paratii } from './helpers.js'
 import { assert } from 'chai'
 
-describe('wallet: @watch', function () {
+describe('wallet:', function () {
   let userAccount
 
   beforeEach(function () {
