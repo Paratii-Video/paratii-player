@@ -79,16 +79,15 @@ export const initConnection = function () {
   setRegistryAddress(Meteor.settings.public.ParatiiRegistry)
 
   // const filter = paratii.paratii.eth.web3.eth.filter('latest')
-  const filter = paratii.eth.web3.eth.filter('latest')
-  console.log(`setting filter ${filter}`)
 
-  filter.watch(function (error, result) {
+  paratii.eth.web3.eth.subscribe('newBlockHeaders', function (error, result) {
     if (!error) {
       updateSession()
     } else {
       throw error
     }
   })
+
   if (Meteor.isServer) {
     console.log('initConnection')
   }

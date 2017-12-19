@@ -1,7 +1,7 @@
-import { assertUserIsLoggedIn, web3, createUserAndLogin, getEthAccountFromApp } from './helpers.js'
+import { assertUserIsLoggedIn, web3, createUserAndLogin, getEthAccountFromApp, paratii } from './helpers.js'
 import { assert } from 'chai'
 
-describe('wallet:', function () {
+describe('wallet: @watch', function () {
   let userAccount
 
   beforeEach(function () {
@@ -13,6 +13,7 @@ describe('wallet:', function () {
   })
 
   it('should show ETH balance', function () {
+    console.log(paratii.config.account.address)
     browser.sendSomeETH(userAccount, 3.1)
     browser.waitForVisible('.profile-wallet-item:last-child .profile-wallet-item-balance')
     browser.waitUntil(() => {

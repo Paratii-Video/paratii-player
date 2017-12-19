@@ -8,59 +8,40 @@ import { GAS_PRICE, GAS_LIMIT } from './connection.js'
 
 // createKeystore will create a new keystore, and save it in the session object and in local storage
 // it generates an address, and save that in the session too
-function createKeystore (password, seedPhrase, key, cb) {
+async function createKeystore (password, seedPhrase, key, cb) {
+  console.log(key)
   // create a new seedPhrase if we have none, and save in in localstorage under 'keystore-{key}'
-
+  console.log('create keystore')
   Session.set('generating-keystore', true)
   // wallet = paratii.paratii.eth.web3.eth.accounts.wallet.create(1, seedPhrase)
   if (seedPhrase == null) {
     // seedPhrase = paratii.eth.wallet.newMnemonic() will generate a raondom seed
-    seedPhrase = lightwallet.keystore.generateRandomSeed()
+    seedPhrase = paratii.eth.wallet.newMnemonic()
   }
   // create a new keystore with the given password and seedPhrase
-  const opts = {
-    password,
-    seedPhrase,
-    hdPathString: "m/0'/0'/0'"
+  await paratii.eth.wallet.clear()
+  let wallet = await paratii.eth.wallet.create(1, seedPhrase)
+
+  console.log('wallet')
+  let address = wallet[0].address
+  let encrypted = await wallet.encrypt(password)
+  console.log('encrypted')
+  console.log(encrypted)
+
+  if (key) {
+    // if there is a logged user, save the keystore under the given key
+    saveKeystore(seedPhrase, encrypted, address, key)
+    Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
+  } else {
+    // else, save in a temporary session variable
+    // Session.set('tempSeed', seedPhrase)
+    Session.set('tempKeystore', encrypted)
+    Session.set('tempAddress', add0x(address))
+    Session.set('seed', null)
   }
 
-  // wallet = paratii.eth.wallet.create(1, seedPhrase)
-  // serialized = wallet.encrypt('password')
+  Session.set('generating-keystore', false)
   // saveKeystore(seedPhrase, serailized, password, ..)
-  // call the cb()
-  lightwallet.keystore.createVault(opts, function (err, keystore) {
-    if (err) {
-      cb(err)
-      return
-    }
-    // while we are at it, also generate an address for our user
-    keystore.keyFromPassword(password, function (error, pwDerivedKey) {
-      if (error) {
-        cb(error)
-        return
-      }
-      // generate one new address/private key pairs
-      // the corresponding private keys are also encrypted
-      keystore.generateNewAddress(pwDerivedKey, 1)
-      // address = wallet[0].address
-      const address = keystore.getAddresses()[0]
-      if (key) {
-        // if there is a logged user, save the keystore under the given key
-        saveKeystore(seedPhrase, keystore.serialize(), address, key)
-        Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) })
-      } else {
-        // else, save in a temporary session variable
-        // Session.set('tempSeed', seedPhrase)
-        Session.set('tempKeystore', keystore.serialize())
-        Session.set('tempAddress', add0x(address))
-        Session.set('seed', null)
-      }
-      Session.set('generating-keystore', false)
-      if (cb) {
-        cb(error, seedPhrase, keystore)
-      }
-    })
-  })
 }
 
 // save the seed, keystore and address in the session
@@ -68,6 +49,7 @@ function saveKeystore (seedPhrase, keystore, address, key) {
   if (!key) {
     throw Error('No key given1')
   }
+  console.log('save keystore')
   // save the keystiore undeer `keystore-${key}`
   Session.set('seed', seedPhrase)
   RLocalStorage.setItem(`keystore-${key}`, keystore)
@@ -163,7 +145,7 @@ export function getKeystore (user = null) {
   // using lightwallet to deserialize the keystore
   if (serializedKeystore !== null) {
     // keystore = paratii.eth.wallet.decrypt(serializedKeystore)
-    const keystore = lightwallet.keystore.deserialize(serializedKeystore)
+    const keystore = serializedKeystore
     return keystore
   }
   return null

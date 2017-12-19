@@ -152,12 +152,15 @@ export function logout (browser) {
 
 export function createUserAndLogin (browser) {
   let userId = server.execute(createUser)
+  console.log(userId)
   browser.execute(createKeystore, null, userId)
+  console.log('localstorage')
   browser.waitUntil(function () {
     return browser.execute(function (userId) {
       return localStorage.getItem(`keystore-${userId}`)
     }, userId).value
   })
+  console.log('localstorage')
   login(browser)
   waitForUserIsLoggedIn(browser)
 
@@ -240,7 +243,7 @@ export function getAnonymousAddress () {
   return browser.execute(function () {
     const wallet = require('./imports/lib/ethereum/wallet.js')
     const keystore = wallet.getKeystore('anonymous')
-    return keystore.getAddresses()[0]
+    return keystore[0].address
   }).value
 }
 
@@ -279,16 +282,13 @@ export async function getOrDeployParatiiContracts (server, browser) {
     return Meteor.settings.public.ParatiiRegistry
   })
   if (paratiiRegistryAddress) {
-    paratii = new Paratii({
-      provider: 'http://127.0.0.1:8545',
-      registryAddress: paratiiRegistryAddress
-    })
+    paratii.eth.setRegistryAddress(paratiiRegistryAddress)
 
     setRegistryAddress(browser, paratiiRegistryAddress)
     contracts = await paratii.eth.getContracts()
   } else {
     contracts = await paratii.eth.deployContracts()
-    setRegistryAddress(browser, contracts.ParatiiRegistry.address)
+    setRegistryAddress(browser, contracts.ParatiiRegistry.options.address)
   }
   return contracts
 }

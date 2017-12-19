@@ -32,7 +32,7 @@ if (Meteor.isClient) {
         mergeOrCreateNewWallet()
       } else {
         // The normal login, the user has already a wallet on this browser
-        Session.set('userPTIAddress', add0x(keystore.getAddresses()[0]))
+        Session.set('userPTIAddress', add0x(keystore[0].address))
         hideModal()
       }
     }

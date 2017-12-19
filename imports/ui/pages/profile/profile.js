@@ -44,7 +44,7 @@ Template.profile.helpers({
   },
   userPTIAddress () {
     let address = getUserPTIAddress()
-    console.log(paratii)
+    console.log(address)
     if (address !== null) {
       return paratii.eth.web3.utils.toChecksumAddress(address)
     } else {
