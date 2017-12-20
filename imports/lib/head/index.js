@@ -101,7 +101,7 @@ function discoveryOEmbed (params, req, res, next) {
     var videoUrl = rootUrl + '/play/' + videoId
     var oEmbedBaseJson = rootUrl + '/oembed?url='
     var fullOembedJson = oEmbedBaseJson + encodeURIComponent(videoUrl) + '&format=json'
-    req.dynamicHead += '<link rel="alternate" type="application/json+oembed" url="' + fullOembedJson + '" title="' + videoTitle + '" />'
+    req.dynamicHead += '<link rel="alternate" type="application/json+oembed" href="' + fullOembedJson + '" title="' + videoTitle + '" />'
   }
 }
 function twitterCardHeadPlayer (params, req, res, next) {
