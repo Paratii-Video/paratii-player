@@ -81,6 +81,7 @@ export const initConnection = function () {
   // const filter = paratii.paratii.eth.web3.eth.filter('latest')
 
   paratii.eth.web3.eth.subscribe('newBlockHeaders', function (error, result) {
+    console.log('new block')
     if (!error) {
       updateSession()
     } else {
