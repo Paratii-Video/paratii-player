@@ -89,7 +89,8 @@ if (Meteor.isServer) {
       return Videos.find()
     } else {
       const playlist = Playlists.findOne({_id})
-      const videosIds = playlist.videos
+
+      const videosIds = playlist ? playlist.videos : []
       if (page === null) {
         page = 0
       }

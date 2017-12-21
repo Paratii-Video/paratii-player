@@ -1,0 +1,46 @@
+<template name="playlist_videos">
+  <div class="internals playlists">
+    {{ >internalsHeader title=getTitle prevPage=getPrevPage }}
+    <div class="internals-content">
+      {{ >internalsPagination hasNext=hasNext hasPrev=hasPrev getPrevPage=getprevpage getNextPage=getnextpage }}
+      <ul class="thumbs-list">
+        {{#each videos}}
+          <li class="thumbs-list-item">
+            <a class="thumbs-list-link" href="{{videoPath this}}">
+              <h4 class="thumbs-list-title">{{ getThumbTitle title }}</h4>
+              <p class="thumbs-list-time">{{ duration }}</p>
+             <!-- {{formatNumber stats.views}} views || {{stats.likes_percentage}}% -->
+              {{#if isLocked this}}
+                <div class="thumbs-list-price">{{ price }} PTI</div>
+              {{else if hasPrice this}}
+                <div class="thumbs-list-price">✓</div>
+              {{/if}}
+              {{#if thumb}}
+                <div class="thumbs-list-thumb" style="background-image: url({{ getThumbUrl thumb }});">
+                  <img class="thumbs-list-image" src="{{ getThumbUrl thumb }}"/>
+                </div>
+              {{else}}
+                <div class="thumbs-list-thumb" style="background-image: url('/img/cover/default-thumb.png');">
+                  <img class="thumbs-list-image" src="/img/cover/default-thumb.png"/>
+                </div>
+              {{/if}}
+            </a>
+            <div class="thumb-list-modal">
+              <div class="anim-show-up-4">
+                <button class="button-text nocase grey" type="button">{{_ "Watch later" }}</button>
+              </div>
+              <div class="anim-show-up-5">
+                <button class="button-text nocase grey" type="button">{{_ "Add to playlist" }}</button>
+              </div>
+            </div>
+            <button class="thumbs-list-settings">
+              <svg class="thumbs-list-settings-svg">
+                <use class="thumbs-list-settings-svg-use" xlink:href="#icon-reticence"></use>
+              </svg>
+            </button>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</template>

@@ -5,6 +5,10 @@ if (Meteor.isServer) {
     return Playlists.find()
   })
 
+  Meteor.publish('currentPlaylist', function (playlistId) {
+    return Playlists.find({ _id: playlistId })
+  })
+
   Meteor.methods({
     'playlists.create' (playlist) {
       check(playlist, {
