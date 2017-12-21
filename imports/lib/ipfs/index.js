@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import { setImmediate } from 'lodash'
 import Protocol from 'paratii-protocol'
+// import { ParatiiIPFS } from 'paratii-lib'
 
 const REPO_PATH = 'paratii-ipfs-repo'
 function noop () {}
@@ -144,7 +145,7 @@ const paratiiIPFS = {
     // })
   },
 
- /**
+  /**
   * Clear transactions Cache
   * @param  {Function} callback callback when done
   */
@@ -153,7 +154,7 @@ const paratiiIPFS = {
     setImmediate(callback)
   },
 
-/**
+  /**
  * the meteroController handles whether a peer should get the block or not.
  * @param  {Peer}   peer     IPFS Peer Object
  * @param  {uint}   size     total size of the block(s)
