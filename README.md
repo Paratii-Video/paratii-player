@@ -1,3 +1,11 @@
+**This is the first prototype of the Paratii Player. It is not being actively developed anymore. Instead, developmen toccurs in the following repositories:**
+
+* https://github.com/Paratii-Video/paratii-lib/
+* https://github.com/Paratii-Video/paratii-portal/
+* https://github.com/Paratii-Video/paratii-mediaplayer/
+
+
+
 [![CircleCI](https://circleci.com/gh/Paratii-Video/paratii-player.svg?style=svg)](https://circleci.com/gh/Paratii-Video/paratii-player)
 
 # Paratii Player <img align="right" height="80" src="https://i.imgur.com/vNoLqaG.png">
